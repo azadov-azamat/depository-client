@@ -1,0 +1,383 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  ::after {
+    box-sizing: border-box;
+  }
+
+  ::before {
+    box-sizing: border-box;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height:20px;
+}
+
+@media(max-width:1200px){
+  ::-webkit-scrollbar {
+    background: #C4C4C4;
+    border-radius: 10px;
+  }
+    ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+    border: 2px solid #C4C4C4;
+  }
+}
+
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #EAEAEA;
+
+  &:hover {
+    background-color: #132E85;
+  }
+}
+
+.d-lg-block {
+  .dropdown-toggle {
+    &::after {
+      display: none;
+    }
+  }
+}
+
+body {
+  background-color: #f6f6f6;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+}
+
+$family: mon5, Verdana;
+
+.Login {
+  width: 70%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+//       Section.js
+.Section {
+  display: flex;
+
+  .left-content {
+    padding: 2%;
+    height: 500px;
+    width: 50%;
+
+    h1 {
+      font-family: $family;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: rgb(205, 205, 205);
+      text-align: center;
+      margin-bottom: 2%;
+      display: block;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    .nav-tabs {
+      border-bottom: none;
+      flex-direction: column;
+    }
+  }
+
+  .right-content {
+    padding: 2%;
+    height: 500px;
+    width: 50%;
+    border-left: 5px solid rgb(255, 255, 255);
+    position: relative;
+  }
+}
+
+//        Tab.js
+.tab-1, .tab-2, .tab-3 {
+  cursor: pointer;
+  padding: 2%;
+  border-left: 5px solid rgb(205, 205, 205);
+  margin-top: 2%;
+  display: block;
+  margin-bottom: 2%;
+  transition: 0.4s linear;
+  display: flex;
+  align-items: center;
+
+  svg {
+    height: 73px;
+    width: 73px;
+    display: block;
+    fill: rgb(205, 205, 205);
+    transition: 0.4s linear;
+  }
+
+  .vertical_center {
+    margin-left: 2%;
+    color: rgb(205, 205, 205);
+    font-family: $family;
+    font-weight: 200 !important;
+    font-size: 15px;
+    transition: 0.4s linear;
+  }
+
+  &:hover {
+    transition: 0.4s linear;
+    border-left: 5px solid rgb(19, 46, 133);
+
+    svg {
+      fill: rgb(25, 25, 25)
+    }
+
+    .vertical_center {
+      color: rgb(25, 25, 25);
+    }
+  }
+}
+
+.activeTab1{
+  .tab-1, .tab-2, .tab-3 {
+    transition: 0.4s linear;
+    border-color: rgb(19, 46, 133);
+
+    svg {
+      fill: rgb(25, 25, 25)
+    }
+
+    .vertical_center {
+      color: rgb(25, 25, 25);
+    }
+  }
+}
+
+.close{
+  background-color: #FFFFFF;
+  border: none;
+  span{
+    font-family: "Montserrat Black", serif;
+    font-size: 20px;
+  }
+}
+
+//         TabOpen.js
+.TabOpen1, .TabOpen2, .TabOpen3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 74%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(255, 255, 255);
+  padding: 5%;
+
+  h1 {
+    font-family: $family;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+    display: block;
+  }
+
+  p {
+    font-family: $family;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 2%;
+    display: block;
+    padding-bottom: 2%;
+
+    a {
+      text-transform: uppercase;
+      color: rgb(19, 46, 133);
+      font-family: $family;
+      font-size: 12px;
+    }
+  }
+
+  .input_form_auth input[type="text"],
+  .input_form_auth input[type="password"] {
+    background: rgb(246, 246, 246);
+    border: none;
+    width: 100%;
+    margin-bottom: 4px;
+    outline: none;
+    font-size: 12px;
+    padding: 10px;
+    color: rgb(58, 71, 88);
+    transition: all 0.3s ease 0s;
+    text-align: center;
+  }
+
+  .help-block {
+    color: #a94442;
+    font-family: $family;
+    font-size: 10px;
+  }
+}
+
+.unstyle{
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+.butdes2 {
+  //box-shadow: rgba(0, 0, 0, 0.4) 0 6px 40px -8px;
+  background-color: rgb(19, 46, 133);
+  padding-top: 18px;
+  padding-bottom: 18px;
+  font-family: $family;
+  display: block;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
+  transition: all 0.3s ease 0s;
+  width: 100%;
+  border: none;
+  &:hover{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+}
+
+//         TabModal2.js
+.modal {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 2%;
+
+  .modal-body2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: center;
+    padding: 2%;
+
+    .TabModalBut {
+      width: 60px;
+      float: left;
+      font-family: $family;
+      padding: 15px 20px;
+      text-align: center;
+      border-radius: 0;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+}
+
+//         FooterImg.js
+.FooterImg {
+  h1 {
+    font-size: 1.6rem !important;
+  }
+
+  .preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border: 4px solid #132e85;
+    cursor: pointer;
+    max-width: 280px;
+  }
+}
+
+//         ModalImg.js
+.ModalImg3{
+  button{
+    top: 10%;
+    right: 10%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .TabOpen1, .TabOpen2, .TabOpen3 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .tab-1, .tab-2, .tab-3 {
+    svg {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .Login {
+    width: 100%;
+    display: block;
+  }
+  .Section {
+    display: block;
+
+    .left-content {
+      padding: 2%;
+      height: 317px;
+      width: 100%;
+    }
+
+    .right-content {
+      padding: 2%;
+      height: 488px;
+      width: 100%;
+      border-left: none;
+    }
+  }
+  .TabOpen1, .TabOpen2, .TabOpen3 {
+    position: absolute;
+    top: 50%;
+    width: 96%;
+  }
+}
+@media (min-width: 740px){
+  .modal-dialog {
+    max-width: 64%;
+    margin: 1.75rem auto;
+  }
+}
+
+iframe {
+  border: 0;
+  width: 100%;
+  height: 500px;
+}
+@media (max-width: 1000px){
+  iframe {
+    border: 0;
+    width: 100%;
+    height: 400px;
+  }
+}
+@media (max-width: 840px){
+  iframe {
+    border: 0;
+    width: 100%;
+    height: 350px;
+  }
+}
+@media (max-width: 740px){
+  iframe {
+    border: 0;
+    width: 100%;
+    height: 300px;
+  }
+}
+
+body {
+  padding: 0 !important;
+}

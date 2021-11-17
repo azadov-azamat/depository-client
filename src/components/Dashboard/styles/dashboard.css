@@ -1,0 +1,47 @@
+.dashboard {
+  min-height: 99.9vh;
+
+}
+
+.dashboard .wrapper {
+  min-height: 70vh;
+}
+
+.dashboard .wrapper .sections {
+  width: 250px;
+  height: 250px;
+  background: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  -webkit-transition: .5s ease all;
+  transition: .5s ease all;
+}
+
+.dashboard .wrapper .sections:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+  /*background-color: #4266d4;*/
+  color: white;
+  -webkit-box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+}
+
+.dashboard .wrapper .sections a {
+  text-decoration: none;
+  color: #3D5398;
+}
+
+.dashboard .wrapper .sections a img {
+  width: 45px;
+}
+
+.dashboard .wrapper .sections a h3 {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  text-transform: uppercase;
+}
+/*# sourceMappingURL=dashboard.css.map */

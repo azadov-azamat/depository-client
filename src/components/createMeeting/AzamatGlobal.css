@@ -1,0 +1,369 @@
+/* Created azamat_azadov 7/16/2021 */
+.allCss {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.allCss .d-flex h2 {
+  color: #132E85;
+}
+
+.allCss .nab {
+  width: 100%;
+  height: 79vh;
+}
+
+.allCss .nab span {
+  font-size: 36px;
+  color: #132e85;
+}
+
+.allCss .nab .addNab {
+  width: 410px;
+  height: 100px;
+  background: #FFFFFF;
+  -webkit-box-shadow: 0px 2px 10px rgba(19, 46, 133, 0.25);
+          box-shadow: 0px 2px 10px rgba(19, 46, 133, 0.25);
+  border-radius: 6px;
+}
+
+.allCss .nab .addNab span {
+  font-size: 24px;
+  color: black;
+}
+
+.nav-links .active {
+  color: black;
+  border-bottom: 1px solid black;
+}
+
+.nav-links a {
+  color: rgba(186, 107, 101, 0.98);
+  font-size: 23px;
+}
+
+.nav-links a:hover {
+  color: rgba(179, 186, 180, 0.98);
+}
+
+form .disabled1 .form-group select {
+  background: #E5E5E5;
+}
+
+form .card {
+  margin-bottom: 30px;
+}
+
+form .card .card-header {
+  background: #EAF1F4;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 22px;
+  margin-bottom: 15px;
+  color: #132E85;
+}
+
+form .card .card-body .borderCardBody {
+  width: 100%;
+  height: 100%;
+  margin-top: -20px;
+  border-radius: 12px;
+  border: 2px solid #EAF1F4;
+}
+
+form .card .card-body .borderCardBody .btn {
+  width: 7vh;
+}
+
+form .card .card-body .borderCardBody .my-2 {
+  background-color: #38ae00;
+  color: #FFFFFF;
+}
+
+form .card .card-body .borderCardBody .form-group {
+  margin-top: -5px;
+  margin-left: 15px;
+  margin-bottom: 20px;
+}
+
+form .card .card-body .borderCardBody .form-group label {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 17px;
+  color: #000000;
+}
+
+form .card .card-body .borderCardBody .form-group .btn-danger {
+  margin-right: 10px;
+}
+
+form .form-group label {
+  margin-top: 20px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 22px;
+  margin-bottom: 15px;
+  color: #132E85;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+form .form-group input {
+  height: 45px;
+  background: #EAF1F4;
+  border-radius: 6px;
+}
+
+form .form-group select {
+  height: 45px;
+  background: #EAF1F4;
+  border-radius: 6px;
+}
+
+form .form-group select option {
+  background: #EAF1F4;
+  height: 12px;
+}
+
+form .form-group textarea {
+  height: 198px;
+  background: #EAF1F4;
+  border-radius: 6px;
+}
+
+form .form-group #dateIn {
+  margin-top: 16px;
+}
+
+form .form-group #dateOut {
+  margin-top: 16px;
+}
+
+form .btnAll {
+  height: 40px;
+  margin: 20px;
+}
+
+form .create {
+  width: 115px;
+  color: white;
+  background: #133B88;
+  border-radius: 6px;
+}
+
+form .create:hover {
+  color: white;
+}
+
+form .cancel {
+  width: 115px;
+  color: #133B88;
+  border: 2px solid #133B88 !important;
+}
+
+form .cancel:hover {
+  color: #133B88;
+}
+
+form .app-required-select input {
+  background-color: #FFFFFF;
+}
+
+form .app-required-select select {
+  background-color: #FFFFFF;
+}
+
+form .input-group {
+  width: 560px;
+}
+
+form .fileNameInput {
+  width: 550px;
+  height: 3em;
+  border-radius: 6px;
+}
+
+form .btn-link {
+  font-size: 1.7em;
+  margin-left: 18em;
+  margin-top: -55px;
+}
+
+form .btnDownload {
+  width: 25vh;
+  margin-top: 3vh;
+  height: 40px;
+  background: #38ae00;
+  color: #FFFFFF;
+}
+
+form .btnDownload:hover {
+  color: #FFFFFF;
+  background: #38ae00;
+}
+
+form .border1 {
+  width: 100%;
+}
+
+form .file-chosen {
+  display: none;
+}
+
+.table {
+  background-color: #eaf1f4;
+}
+
+.table .navUsers {
+  border-radius: 12px;
+}
+
+.table .navUsers th {
+  color: #133B88;
+}
+
+.table .navUsers .checkIcon {
+  width: 20px;
+}
+
+.table .navUsers td, .table .navUsers th {
+  border: 2px solid #FFFFFF;
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .nav-links a {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 995px) and (min-width: 768px) {
+  .nav-links a {
+    font-size: 13px;
+  }
+  form .form-group label {
+    font-size: 11px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-links .active {
+    display: none;
+  }
+  .nav-links a {
+    display: none;
+  }
+  .card-body .borderCardBody .form-group {
+    margin-top: -5px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+  }
+  .card-body .borderCardBody .form-group label {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 17px;
+    color: #000000;
+  }
+  .card-body .borderCardBody .form-group input {
+    width: 97%;
+    height: 35vh;
+  }
+  .card-body .borderCardBody .form-group .btn-danger {
+    margin-right: 10px;
+  }
+  form .btnDownload {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 35vh;
+  }
+}
+
+@media (max-width: 465px) {
+  form .form-group label {
+    font-size: 13px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 410px) {
+  form .form-group label {
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 381px) {
+  form .form-group label {
+    font-size: 11.7px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 374px) {
+  form .form-group label {
+    font-size: 11px;
+    line-height: 20px;
+  }
+  form .row .col-sm-12 .d-flex .btn {
+    width: 55vh;
+  }
+}
+
+@media (max-width: 353px) {
+  form .form-group label {
+    font-size: 10.5px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 340px) {
+  form .form-group label {
+    font-size: 10px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 326px) {
+  form .form-group label {
+    font-size: 9.5px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 312px) {
+  form .form-group label {
+    font-size: 9px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 299px) {
+  form .form-group label {
+    font-size: 8.5px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 272px) {
+  form .form-group label {
+    font-size: 8.06px;
+    line-height: 22px;
+  }
+}
+/*# sourceMappingURL=AzamatGlobal.css.map */

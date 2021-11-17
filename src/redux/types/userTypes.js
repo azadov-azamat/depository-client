@@ -1,0 +1,1 @@
+export const UPDATE_STATE = "USER/UPDATE_STATE";

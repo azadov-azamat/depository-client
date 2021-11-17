@@ -1,0 +1,75 @@
+.settings .container_wrapper .section_heading {
+  font-family: Montserrat;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 44px;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+@media screen and (max-width: 480px) {
+  .settings .container_wrapper .section_heading {
+    font-size: 24px;
+  }
+}
+
+.settings .container_wrapper .label {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  color: #132E85;
+}
+
+.settings .container_wrapper .setting_input {
+  border-radius: 10px;
+  font-size: 19px;
+}
+
+.settings .container_wrapper .setting_input_transparent {
+  opacity: 0.3;
+  border: 2px solid #132E85;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 10px;
+  outline: none;
+}
+
+.settings .container_wrapper .btn-save {
+  background: #133B88;
+  border-radius: 6px;
+  color: white;
+  border: 2px solid  #133B88;
+  -webkit-transition: .5s ease all;
+  transition: .5s ease all;
+}
+
+.settings .container_wrapper .btn-save:hover {
+  background-color: white;
+  color: #133B88;
+}
+
+.settings .container_wrapper .btn-cancel {
+  border: 2px solid #133B88;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 6px;
+  -webkit-transition: .5s ease all;
+  transition: .5s ease all;
+  color: #133B88;
+  font-weight: bold;
+}
+
+.settings .container_wrapper .btn-cancel:hover {
+  background-color: #133B88;
+  color: white;
+}
+
+.settings .container_wrapper .btn-cancel:hover a {
+  color: white;
+}
+
+.settings .container_wrapper .btn-cancel a {
+  text-decoration: none;
+  color: #133B88;
+}
+/*# sourceMappingURL=settings.css.map */

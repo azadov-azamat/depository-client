@@ -1,0 +1,657 @@
+/* Created azamat_azadov 7/16/2021 */
+@import "~react-toastify/dist/ReactToastify.css";
+@import "~react-datetime/css/react-datetime.css";
+
+.allCss {
+  user-select: none;
+
+  .d-flex {
+
+    h2 {
+      color: #132E85;
+    }
+    .nav-tabs{
+      .active{
+        font-weight: bold;
+        color: black !important;
+      }
+      .nav-link{
+        color: #a1a299;
+        font-size: 18px;
+      }
+    }
+  }
+
+  .nab {
+    width: 100%;
+
+    span {
+      font-size: 28px;
+      color: rgba(19, 46, 133, 1);
+    }
+
+    .nabAdd {
+      .btnAdd {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        transition: 0.5s;
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+        color: rgba(19, 46, 133, 1);
+        &:hover {
+          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+      }
+    }
+
+    .nabLists {
+      width: 23em;
+      height: 80px;
+      border-radius: 6px;
+      border-bottom: 2px solid rgba(19, 46, 133, 1);
+
+      span {
+        font-size: 24px;
+        color: black;
+      }
+    }
+  }
+
+  .NabList {
+    border-radius: 6px;
+    transition: 0.5s;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+    &:hover {
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+    }
+  }
+}
+
+.nav-links {
+
+  .active {
+    color: black;
+    border-bottom: 1px solid rgba(0, 0, 0, 1);
+  }
+
+  a {
+    color: black;
+    font-size: 20px;
+
+    &:hover {
+      color: rgba(179, 186, 180, 0.98);
+    }
+  }
+}
+
+form {
+
+  .forCheck {
+    label {
+      margin-left: 12px;
+      margin-top: 13px;
+      color: #133B88;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .form-check {
+
+      input {
+        background-color: #FFFFFF;
+        font-size: 5vh;
+        margin-left: -23px;
+        margin-top: 20px;
+      }
+
+      input:checked {
+        background-color: #132E85;
+        border-color: #132E85;
+      }
+    }
+  }
+
+  .disabled1 {
+    .form-group {
+      select {
+        background: #E5E5E5;
+      }
+    }
+  }
+
+  .card {
+    margin-bottom: 30px;
+
+    .card-header {
+      background: #EAF1F4;
+      font-family: Montserrat;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 22px;
+      margin-bottom: 15px;
+      color: #132E85;
+    }
+
+    .card-body {
+      .btn {
+        width: 7vh;
+      }
+      .borderCardBody {
+        width: 100%;
+        height: 100%;
+        margin-top: -20px;
+        border-radius: 12px;
+        border: 2px solid #EAF1F4;
+
+        .my-2 {
+          background-color: rgba(56, 174, 0, 1);
+          color: #FFFFFF;
+        }
+
+        .form-group {
+          margin-top: -5px;
+          margin-left: 15px;
+          margin-bottom: 20px;
+
+          label {
+            font-family: Montserrat;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 17px;
+            color: #000000;
+          }
+
+          .btn-danger {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .form-group {
+
+    .setting_input {
+      .ant-select-selector {
+        height: 44px;
+        border-radius: 10px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        //border: 2px solid;
+      }
+    }
+
+    .required_fields{
+      &::after{
+        content: '*';
+        color: red;
+      }
+    }
+
+    label {
+      margin-top: 12px;
+      font-family: Montserrat;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 14px;
+      color: #132E85;
+      align-items: center;
+    }
+
+    input {
+      height: 45px;
+      background: #EAF1F4;
+      border-radius: 6px;
+    }
+
+    select {
+      height: 45px;
+      background: #EAF1F4;
+      border-radius: 6px;
+
+      option {
+        background: #EAF1F4;
+        height: 12px;
+
+        :hover {
+          background-color: #132E85;
+        }
+      }
+    }
+
+    textarea {
+      //position: absolute;
+      height: 198px;
+      background: #EAF1F4;
+      border-radius: 6px;
+    }
+
+    #dateIn {
+      margin-top: 16px;
+    }
+
+    #dateOut {
+      margin-top: 16px;
+    }
+  }
+
+  .app-required-select {
+    input {
+      background-color: #FFFFFF;
+    }
+
+    select {
+      background-color: #FFFFFF;
+    }
+  }
+
+  .input-group {
+    width: 560px;
+  }
+
+  .fileNameInput {
+    width: 550px;
+    height: 3em;
+    border-radius: 6px;
+  }
+
+  .btn-link {
+    font-size: 1.7em;
+    margin-left: 18em;
+    margin-top: -55px;
+  }
+
+  .btnDownload {
+    width: 25vh;
+    margin-top: 3vh;
+    height: 40px;
+    background: #38ae00;
+    color: #FFFFFF;
+
+    &:hover {
+      color: #FFFFFF;
+      background: #38ae00;
+    }
+
+  }
+
+  .border1 {
+    width: 100%;
+  }
+
+  .file-chosen {
+    display: none;
+  }
+
+}
+
+.table {
+  //background-color: rgba(234, 241, 244, 1);
+  th {
+    color: #133B88;
+  }
+
+  .navUsers {
+    border-radius: 12px;
+
+
+    .checkIcon {
+      width: 20px;
+    }
+
+    td, th {
+      border: 2px solid #FFFFFF;
+      text-align: center;
+    }
+  }
+}
+
+.meetingCompanyForm {
+  .input_label {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    color: #132E85;
+  }
+
+  .input {
+    opacity: 0.5;
+    border: 2px solid #132E85;
+    box-sizing: border-box;
+    border-radius: 10px;
+    outline: none;
+  }
+}
+
+.company_list {
+  .company_inner {
+
+    background: #EAF0F4;
+    border-radius: 10px;
+
+    button {
+      font-size: 12px;
+    }
+
+    span {
+      font-size: 12px;
+    }
+
+    .user_info {
+      font-family: Montserrat;
+      font-weight: normal;
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .email {
+      font-size: 14px;
+      padding: 5px 3px;
+    }
+  }
+
+}
+
+.container {
+  .create {
+    background: #133B88;
+    border-radius: 6px;
+    border: 2px solid #133B88;
+    color: white;
+    transition: .5s ease all;
+
+    &:hover {
+      color: #133B88;
+      border: 2px solid #133B88 !important;
+      background-color: white;
+    }
+  }
+
+  .cancel {
+    color: #133B88;
+    border: 2px solid #133B88 !important;
+    transition: .5s ease all;
+
+    &:hover {
+      background-color: #133B88;
+      color: white;
+    }
+  }
+
+}
+
+@media(max-width: 1200px) {
+  .nav-links {
+    a {
+      font-size: 18px;
+    }
+  }
+  form {
+    //.fileNameInput{
+    //  width: 400px;
+    //}
+  }
+}
+
+@media(max-width: 991px) and (min-width: 768px) {
+  .allCss {
+    .nab {
+      width: 100%;
+
+      .nabAdd {
+        span {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+
+  .nav-links {
+    a {
+      font-size: 13px;
+    }
+  }
+
+  form {
+    .form-group {
+      label {
+        font-size: 11px;
+        line-height: 20px;
+      }
+    }
+  }
+}
+
+@media(max-width: 767px) {
+  .allCss {
+    .nab {
+      width: 100%;
+
+      .nabAdd {
+        justify-content: center;
+        span {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+  .nav-links {
+
+    .active {
+      display: none;
+    }
+
+    a {
+      display: none;
+
+    }
+  }
+
+  .card-body {
+    .borderCardBody {
+      .form-group {
+        margin-top: -5px;
+        margin-left: 15px;
+        margin-bottom: 20px;
+
+        label {
+          font-family: Montserrat;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 17px;
+          color: #000000;
+        }
+
+        input {
+          width: 97%;
+          height: 35vh;
+        }
+
+        .btn-danger {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  form {
+    .btnDownload {
+      display: flex;
+      justify-content: center;
+      width: 35vh;
+    }
+  }
+}
+
+@media (max-width: 465px) {
+  .allCss {
+    .nab {
+      .nabLists {
+        width: 18em;
+        height: 60px;
+
+        span {
+          font-size: 20px;
+          color: black;
+        }
+      }
+    }
+  }
+
+
+  form {
+    .form-group {
+      label {
+        font-size: 13px;
+        line-height: 20px;
+      }
+    }
+  }
+
+}
+
+@media(max-width: 410px) {
+  form {
+    .form-group {
+      label {
+        font-size: 12px;
+        line-height: 20px;
+      }
+    }
+  }
+
+}
+
+@media(max-width: 381px) {
+  form {
+    .form-group {
+      label {
+        font-size: 11.7px;
+        line-height: 20px;
+      }
+    }
+  }
+
+}
+
+@media(max-width: 374px) {
+  form {
+    .form-group {
+      label {
+        font-size: 11px;
+        line-height: 20px;
+      }
+    }
+
+    .row {
+      .col-sm-12 {
+        .d-flex {
+          .btn {
+            width: 55vh;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+@media(max-width: 353px) {
+  form {
+    .form-group {
+      label {
+        font-size: 10.5px;
+        line-height: 20px;
+      }
+    }
+  }
+
+}
+
+@media(max-width: 340px) {
+  .nab {
+    width: 100%;
+
+    .nabAdd {
+      span {
+        font-size: 25px;
+      }
+    }
+  }
+
+  form {
+    .form-group {
+      label {
+        font-size: 10px;
+        line-height: 20px;
+      }
+    }
+  }
+
+}
+
+@media(max-width: 326px) {
+  form {
+    .form-group {
+      label {
+        font-size: 9.5px;
+        line-height: 20px;
+      }
+    }
+  }
+
+}
+
+@media(max-width: 312px) {
+  .allCss {
+    .nab {
+      .nabLists {
+        width: 90%;
+        height: 60px;
+
+        span {
+          font-size: 99%;
+          color: black;
+        }
+      }
+    }
+  }
+  form {
+    .form-group {
+      label {
+        font-size: 9px;
+        line-height: 20px;
+      }
+    }
+  }
+
+}
+
+@media(max-width: 299px) {
+  form {
+    .form-group {
+      label {
+        font-size: 8.5px;
+        line-height: 20px;
+      }
+    }
+  }
+
+}
+
+@media(max-width: 272px) {
+  form {
+    .form-group {
+      label {
+        font-size: 8.06px;
+        line-height: 22px;
+      }
+    }
+  }
+
+}

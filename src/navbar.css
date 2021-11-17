@@ -1,0 +1,102 @@
+
+.h {
+    height: 100% !important;
+}
+
+.border-02:hover {
+    border: none !important;
+}
+
+.btn {
+    border: none !important;
+}
+
+.btn:focus {
+    box-shadow: none !important;
+}
+
+.user-logo {
+    width: 42px;
+    /*height: 25px;*/
+    margin-right: 5px;
+}
+
+.fs-7 {
+    font-size: 14px;
+    padding-left: 5px;
+}
+
+.btn-primaryy {
+    background: #132e85 !important;
+}
+
+.hover:hover {
+    background: #132e85 !important;
+    color: white !important;
+    transition: all 0.5s;
+}
+
+@media (min-width: 1220px) and (max-width: 2600px) {
+    .fs {
+        font-size: 18px !important;
+    }
+}
+
+@media (min-width: 1000px) and (max-width: 1219px) {
+    .fs {
+        font-size: 16px !important;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 1000px) {
+    .fs {
+        font-size: 14px !important;
+    }
+
+    .hover:hover {
+        border-bottom: #313131 !important;
+        background: #ffffff !important;
+        transition: all 0.5s;
+        border-bottom: 2px solid #132e85 !important;
+        color: #2337b1 !important;
+    }
+
+    .hover {
+        border-bottom: 2px solid #cbcbcb !important;
+    }
+}
+
+@media (min-width: 200px) and (max-width: 500px) {
+    .fs {
+        font-size: 14px !important;
+    }
+
+    .fs-7 {
+        font-size: 13px !important;
+    }
+
+    .hover:hover {
+        background: #ffffff !important;
+        transition: all 0.5s;
+        border-bottom: 2px solid #132e85 !important;
+        color: #2337b1 !important;
+    }
+
+    .hover {
+        border-bottom: 2px solid #cbcbcb !important;
+    }
+}
+
+.w-autoo {
+    min-width: 0 !important;
+    border: none !important;
+}
+.openLock{
+    /*width: 20px;*/
+    /*height: 20px;*/
+}
+.eimzo span {
+    padding-left: 15px;
+}
+
+

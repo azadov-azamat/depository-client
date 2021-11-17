@@ -1,0 +1,62 @@
+.meeting .btn-meet {
+  background-color: #133B88;
+  color: white;
+  border: 2px solid #133B88;
+}
+
+.meeting .btn-meet:hover {
+  background-color: white;
+  color: #133B88;
+  border: 2px solid #133B88;
+  -webkit-transition: .5s ease all;
+  transition: .5s ease all;
+}
+
+.meeting .btn-meet-outline {
+  background-color: white;
+  color: #133B88;
+  border: 2px solid #133B88;
+  -webkit-transition: .5s ease all;
+  transition: .5s ease all;
+}
+
+.meeting .btn-meet-outline:hover {
+  background-color: #133B88;
+  color: #fff;
+  border: 2px solid #133B88;
+}
+
+.meeting .square {
+  background-color: #133B88;
+  width: 25px;
+  height: 25px;
+}
+
+.meeting .meeting-info {
+  height: 200px;
+}
+
+.meeting .documentationMeeting {
+  height: 200px;
+}
+
+.meeting .btn-gray {
+  background-color: #c4c4c4;
+  border: 2px solid #c4c4c4;
+  -webkit-transition: .5s ease all;
+  transition: .5s ease all;
+}
+
+.meeting .btn-gray:hover {
+  background-color: #333333;
+  border: 2px solid #333333;
+  color: white;
+}
+
+.meeting .comment {
+  background: #EAF1F4;
+  border-radius: 6px;
+  height: 100%;
+  border: none;
+}
+/*# sourceMappingURL=meeting.css.map */

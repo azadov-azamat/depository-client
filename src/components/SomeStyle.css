@@ -1,0 +1,21 @@
+/**NabList.js List.jsx uchun style**/
+
+/**NabList.js**/
+
+.rounded{
+  /*height: 125px;*/
+}
+.rounded > .row{
+
+  margin-top: -11px;
+}
+
+/**NabList.js**/
+
+/**List.jsx**/
+
+.control-button{
+  height: 50px;
+}
+
+/**List.jsx**/
