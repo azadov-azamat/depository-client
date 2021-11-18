@@ -1,16 +1,42 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {AccordionQuestion} from "./Accordions/AccordionQuestion";
 import {AvField, AvForm} from "availity-reactstrap-validation";
-import {DEPOSITORY_USER} from "../../../utils/contants";
+import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER} from "../../../utils/contants";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
+import {Pagination} from "@material-ui/lab";
+import usePagination from "../../Dashboard/Pagination";
 
 export default function Question({list}) {
 
     console.log(list)
     const dispatch = useDispatch();
     const reducers = useSelector(state => state)
-    const {questionLoading} = reducers.meetingStarted
+    const {questionLoading, questionList, loadingLogging} = reducers.meetingStarted
+    const {payload} = reducers.auth.totalCount
+
+    const [page, setPage] = useState(1);
+
+    const size = 10;
+    console.log(payload)
+    const count = Math.ceil(payload && payload[0] / size);
+    const _DATA = usePagination(questionList && questionList, size);
+
+    const startIndex = (page - 1) * size;
+    const lastIndex = startIndex + (payload && payload[1]);
+
+    const handleChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
+    };
+
+    useEffect(() => {
+        dispatch(meetingStartedAction.getQuestionByMeetingAction({
+            meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
+            page,
+            size
+        }))
+    }, [page])
 
     function editQuestion(e, v) {
         const data = {
@@ -29,7 +55,7 @@ export default function Question({list}) {
             <div className="header d-flex justify-content-center py-3">
                 <text className=""><b>Поступающие вопросы от наблюдательного совета</b></text>
             </div>
-            {list.slice(0).reverse().map((element, index) =>
+            {questionList?.slice(0).reverse().map((element, index) =>
                 <AccordionQuestion open={1}>
                     <AccordionQuestion.Item>
                         <AccordionQuestion.Header>
@@ -37,7 +63,8 @@ export default function Question({list}) {
                                 Savol: {element.questionText}
                             </div>
                             <div className="answer">
-                                <span style={element.questionAnswer !== null ? {color: 'black'} : {color: 'red'}}>Javob</span>: {element.questionAnswer}
+                                <span
+                                    style={element.questionAnswer !== null ? {color: 'black'} : {color: 'red'}}>Javob</span>: {element.questionAnswer}
                             </div>
                         </AccordionQuestion.Header>
                         <AccordionQuestion.Body>
@@ -69,6 +96,17 @@ export default function Question({list}) {
                     </AccordionQuestion.Item>
                 </AccordionQuestion>
             )}
+            <Pagination
+                count={count}
+                size="large"
+                page={page}
+                color="primary"
+                variant="outlined"
+                shape="rounded"
+                className={payload && payload[0] === '0' ? 'd-none' : ''}
+                onChange={handleChange}
+                showFirstButton showLastButton
+            />
         </div>
     )
 }

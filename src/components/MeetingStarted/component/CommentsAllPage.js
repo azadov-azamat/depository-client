@@ -18,22 +18,25 @@ import {
     DEPOSITORY_CURRENT_MEETING,
     DEPOSITORY_CURRENT_MEMBER,
     DEPOSITORY_USER,
-    SECRETARY,
-    SPEAKER
+    SECRETARY
 } from "../../../utils/contants";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {AccordionAnswersModal} from "./Accordions/AccordionAnswersModal";
 import {css} from "@emotion/css";
-import ScrollToBottom from "react-scroll-to-bottom";
+import SockJsClient from "react-stomp";
+import {toast} from "react-toastify";
 
 export default function CommentsAllPage({data, roleMember}) {
 
     const dispatch = useDispatch();
     const reducers = useSelector(state => state)
+    let clientRef = useRef(null);
+
     const {loggingList, questionLoading, questionList, questionListMemberId} = reducers.meetingStarted
     const {meetingFile, memberManagerState} = reducers.meeting
     const {currentUser} = reducers.auth
     const {companiesByUserId} = reducers.company
+
     const [booleanMy, setBooleanMy] = useState(false);
     const [openQuestionModal, setOpenQuestionModal] = useState(false);
     const [openAnswerModal, setOpenAnswerModal] = useState(false);
@@ -49,6 +52,7 @@ export default function CommentsAllPage({data, roleMember}) {
                 setBooleanMy(true)
             }
         })
+
         dispatch(meetingActions.getMemberByMeetingId({meetingId: 14352}))
         memberManagerState && memberManagerState.forEach((element, index) => {
             if (element.userId === parseInt(localStorage.getItem(DEPOSITORY_USER))) {
@@ -56,11 +60,6 @@ export default function CommentsAllPage({data, roleMember}) {
             }
         })
     }, [])
-
-    const ROOT_CSS = css({
-        height: 140,
-        width: 322
-    });
 
     console.log(questionListMemberId)
 
@@ -88,14 +87,6 @@ export default function CommentsAllPage({data, roleMember}) {
         }
     }
 
-    const style = {
-        textOverflow: 'ellipsis',
-        overflow: 'hidden',
-        whitespace: 'nowrap',
-        width: '41vh',
-        height: '29px'
-    }
-
     function addQuestion(e, v) {
         const data = {
             meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
@@ -103,8 +94,10 @@ export default function CommentsAllPage({data, roleMember}) {
             questionText: v.questionText
         }
         console.log(data)
-        dispatch(meetingStartedAction.addQuestionAction({data, setOpenQuestionModal}))
+        clientRef.sendMessage('/topic/question', JSON.stringify(data));
+        // dispatch(meetingStartedAction.addQuestionAction({data, setOpenQuestionModal}))
     }
+
 
     return (
         <>
@@ -144,7 +137,7 @@ export default function CommentsAllPage({data, roleMember}) {
                         }
                     </div>
                 </div>
-                {roleMember === SECRETARY ||  roleMember === CHAIRMAN ? "" :
+                {roleMember === SECRETARY || roleMember === CHAIRMAN ? "" :
                     <div className={'questionNabMeeting text-center'}>
                         <button onClick={() => setOpenQuestionModal(true)} className="btn create mt-2 mb-1">
                             Задать вопрос организаторам
@@ -226,6 +219,25 @@ export default function CommentsAllPage({data, roleMember}) {
                     </Row>
                 </ModalBody>
             </Modal>
+            <SockJsClient
+                url={"https://depositary.herokuapp.com:443/websocket/question/"}
+                topics={['/topic/answer']}
+                onConnect={() => console.log("Connected")}
+                onDisconnect={() => console.log("Disconnected")}
+                onMessage={(msg) => {
+                    dispatch({
+                        type: 'REQUEST_SUCCESS_QUESTION_LIST',
+                        payload: msg
+                    })
+                    dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER))}))
+                    // toast.success("Xabaringiz yuborildi")
+                    setOpenQuestionModal(false)
+                }}
+                ref={(client) => {
+                    clientRef = client
+                }}
+
+            />
         </>
     )
 }

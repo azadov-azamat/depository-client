@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {NavbarControlMeeting} from './NavbarControlMeeting'
 import DayPlan from "./component/DayPlan"
 import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
@@ -10,7 +10,8 @@ import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction"
 import {useDispatch, useSelector} from "react-redux";
 import {
     ACTIVE,
-    CANCELED, CHAIRMAN,
+    CANCELED,
+    CHAIRMAN,
     DEPOSITORY_CURRENT_COMPANY,
     DEPOSITORY_CURRENT_MEETING,
     DEPOSITORY_CURRENT_MEMBER,
@@ -19,7 +20,8 @@ import {
     DEPOSITORY_ZOOM_MEETING_LINK,
     DEPOSITORY_ZOOM_MEETING_PASSWORD,
     FINISH,
-    PENDING, SECRETARY
+    PENDING,
+    SECRETARY
 } from "../../utils/contants";
 import Question from "./component/Question";
 import Comment from "./component/Comment";
@@ -33,6 +35,7 @@ import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import importScript from "./component/Zoom Meeting/importScript";
 import {Col, Container, Row} from "reactstrap";
 import {Jutsu} from 'react-jutsu';
+import Socket from "./socket.io/Socket";
 
 export const ControllerMeeting = () => {
 
@@ -42,23 +45,20 @@ export const ControllerMeeting = () => {
     const {pathname} = location
     const reducers = useSelector(state => state)
     const {agendaState, currentMeeting, userMemberType, memberManagerState} = reducers.meeting
-    const {ballotVotingList, questionList, loadingLogging} = reducers.meetingStarted
+    const {loadingLogging} = reducers.meetingStarted
     const {currentUser} = reducers.users
     const {currentCompany} = reducers.company
     const {payload} = reducers.auth.totalCount
 
-    // const room = ('meet_' + Date.now().toString(36));
-    // const room = "azamat"
     const [room, setRoom] = useState()
-    const username = currentUser?.fullName;
     const [end, setEnd] = useState(false);
 
+    const username = currentUser?.fullName;
     const currentCompanyId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_COMPANY));
     const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
 
     const [page, setPage] = useState(1);
     const size = 5;
-    console.log(payload)
     const count = Math.ceil(payload && payload[0] / size);
     const _DATA = usePagination(memberManagerState && memberManagerState, size);
 
@@ -91,28 +91,18 @@ export const ControllerMeeting = () => {
         dispatch(userAction.getUserById({ID: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
         dispatch(adminCompanyAction.getCompanyByIdAction({companyId: currentCompanyId, history}))
         dispatch(meetingActions.getMeetingByIdAction({meetingId: currentMeetingId}))
-        dispatch(meetingActions.getAgendaByMeetingId({meetingId: parseInt(currentMeetingId)}))
-        dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(currentMeetingId)}))
-        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(currentMeetingId)}))
+        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
+        dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId}))
         dispatch(meetingStartedActions.getBallotVoting({
             data: {
                 memberId: localStorage.getItem(DEPOSITORY_CURRENT_MEMBER),
-                meetingId: parseInt(currentMeetingId)
+                meetingId: currentMeetingId
             }
         }))
         dispatch({type: "memberTypeCurrentUser", payload: localStorage.getItem(DEPOSITORY_MEMBER_TYPE_USER)});
 
         setRoom(currentCompanyId + "/" + currentMeetingId)
     }, [])
-
-    function commentLogging(e, v) {
-        const data = {
-            userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-            meetingId: parseInt(currentMeetingId),
-            ...v
-        }
-        dispatch(meetingStartedAction.addLoggingAction({data, currentMeetingId}))
-    }
 
     function startMeeting({status, quorumCount}) {
         if (status === CANCELED || status === PENDING) {
@@ -199,8 +189,6 @@ export const ControllerMeeting = () => {
 
     importScript("https://meet.jit.si/external_api.js");
 
-    // const {userName, roomName, handleStartMeeting, handleClose, zoomEnum} = props;
-
     const [call, setCall] = useState(false)
     const [password, setPassword] = useState('')
     const [close, setClose] = useState(false)
@@ -213,11 +201,6 @@ export const ControllerMeeting = () => {
         localStorage.setItem(DEPOSITORY_ZOOM_MEETING_PASSWORD, password)
         localStorage.setItem(DEPOSITORY_ZOOM_MEETING_LINK, link)
     }
-
-    // const handleClick = event => {
-    //     event.preventDefault()
-    //     if (room && username) setCall(true)
-    // }
 
     const onCloseButton = () => {
         handleClose()
@@ -249,9 +232,9 @@ export const ControllerMeeting = () => {
                                     <DayPlan agendaSubject={agendaState} roleMember={userMemberType}/>
                                 </Route>
                                 <Route path="/issuerLegal/meetingSetting/question">
-                                    <Question list={questionList && questionList}/></Route>
+                                    <Question/></Route>
                                 <Route path="/issuerLegal/meetingSetting/comment-by-meeting">
-                                    <Comment loading={loadingLogging} comment={commentLogging}/>
+                                    <Comment loading={loadingLogging}/>
                                 </Route>
                                 <Route path="/issuerLegal/meetingSetting/control-meeting">
                                     <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}
@@ -291,7 +274,6 @@ export const ControllerMeeting = () => {
                                                 </Col>
                                             </Row>
                                         </Container>
-
                                     ) : (
                                         <Container>
                                             <Row>
@@ -311,7 +293,8 @@ export const ControllerMeeting = () => {
                                                                 maxLength={12}
                                                                 minLength={4}
                                                             />
-                                                            <button className="create py-2 px-3 mt-2" onClick={handleClick}
+                                                            <button className="create py-2 px-3 mt-2"
+                                                                    onClick={handleClick}
                                                                     type='submit'>
                                                                 {userMemberType === CHAIRMAN || userMemberType === SECRETARY ?
                                                                     "Start video-meeting" : "Join video-meeting"
@@ -319,10 +302,10 @@ export const ControllerMeeting = () => {
                                                             </button>
                                                         </form>
                                                     </div>
-                                                        <div className="">
-                                                            <span>{room}</span><br/>
-                                                            <span>password: <code>{password}</code></span>
-                                                        </div>
+                                                    <div className="">
+                                                        <span>{room}</span><br/>
+                                                        <span>password: <code>{password}</code></span>
+                                                    </div>
                                                 </Col>
                                             </Row>
                                         </Container>
