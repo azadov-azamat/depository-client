@@ -108,14 +108,15 @@ export const ControllerMeeting = () => {
         if (status === CANCELED || status === PENDING) {
             const dataForComment = {
                 userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-                meetingId: parseInt(currentMeetingId),
+                meetingId: currentMeetingId,
                 loggingText:
                     status === ACTIVE ? 'Заседание начато' : ''
                     || status === FINISH ? 'Заседание начато' : ''
                     || status === CANCELED ? 'OTMEN KAROCHE' : ''
+                    || status === PENDING ? "Meeting qoldirildi" : ""
             }
             const dataForUpdateMeetingStatus = {
-                id: parseInt(currentMeetingId),
+                id: currentMeetingId,
                 companyId: currentMeeting?.companyId,
                 cityId: currentMeeting?.cityId,
                 address: currentMeeting?.address,
@@ -146,7 +147,7 @@ export const ControllerMeeting = () => {
         } else if (quorumCount >= 75) {
             const dataForComment = {
                 userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-                meetingId: parseInt(currentMeetingId),
+                meetingId: currentMeetingId,
                 loggingText:
                     status === ACTIVE ? 'Заседание начато' : ''
                     || status === FINISH ? 'Заседание начато' : ''
@@ -232,13 +233,14 @@ export const ControllerMeeting = () => {
                                     <DayPlan agendaSubject={agendaState} roleMember={userMemberType}/>
                                 </Route>
                                 <Route path="/issuerLegal/meetingSetting/question">
-                                    <Question/></Route>
+                                    <Question/>
+                                </Route>
                                 <Route path="/issuerLegal/meetingSetting/comment-by-meeting">
                                     <Comment loading={loadingLogging}/>
                                 </Route>
                                 <Route path="/issuerLegal/meetingSetting/control-meeting">
                                     <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}
-                                                    buttonSubmit={startMeeting}
+                                                    currentMeeting={currentMeeting}
                                                     memberList={memberManagerState && memberManagerState}/>
                                 </Route>
                                 <Route path="/issuerLegal/meetingSetting/list_users">

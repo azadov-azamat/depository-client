@@ -102,6 +102,8 @@ export const editStatusQuestionAction = (payload) => async (dispatch) => {
         api: editStatusQuestion,
         types: ["REQUEST_START_STATUS_QUESTION", "", "REQUEST_ERROR_STATUS_QUESTION"],
         data: payload.questionId
+    }).then(res=>{
+        dispatch(getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
     })
 }
 

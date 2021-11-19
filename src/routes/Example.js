@@ -22,7 +22,7 @@ export default function Example() {
         if (val.length >= 3) {
             dispatch(actionUser.getUserFilter({value: val, field: NAME}));
         } else {
-            dispatch({type: types.REQUEST_GET_USERS_LIST_SUCCESS, payload: ''})
+            dispatch({type: types.REQUEST_GET_USERS_LIST_SUCCESS, payload: []})
         }
     }
 
@@ -35,25 +35,25 @@ export default function Example() {
                     <Col md={12}>
                         <div className="d-flex flex-column justify-content-center align-items-center"
                              style={{height: "100vh"}}>
-                            <AvForm>
-                                <AvField
-                                    type={"text"}
-                                    placeholder={"Search"}
-                                    name={"test"}
-                                    onChange={(e) => onChange(e.target.value)}
-                                    value={clicked}
-                                    />
-
+                            <AvForm className={"d-flex justify-content-center"}>
+                                {users && users.length === 0 ?
+                                    <AvField type={'text'}
+                                             name="select2"
+                                             label="Option"
+                                             style={{width: '20vh'}}
+                                             onChange={(e) => onChange(e.target.value)}
+                                    /> :
+                                    <AvField type={'select'}
+                                             name="select"
+                                             label="Option"
+                                             style={{width: '20vh'}}
+                                    >
+                                        {users && users.map((value, index) =>
+                                            <option key={index} value={value.id}>{value.fullName}</option>
+                                        )}
+                                    </AvField>
+                                }
                             </AvForm>
-                            <div className="">
-                                {users && users.map((value, index) =>
-                                    <div onClick={() => setClicked(value.fullName)}
-                                         style={{cursor: 'pointer'}}
-                                         key={index}>
-                                        {value.fullName}
-                                    </div>
-                                )}
-                            </div>
                             {/*<Dropdown>*/}
                             {/*    <Dropdown.Toggle*/}
                             {/*        variant="secondary btn-sm"*/}

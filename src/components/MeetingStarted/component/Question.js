@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {AccordionQuestion} from "./Accordions/AccordionQuestion";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER} from "../../../utils/contants";
@@ -6,11 +6,12 @@ import * as meetingStartedAction from "../../../redux/actions/MeetingStartedActi
 import {useDispatch, useSelector} from "react-redux";
 import {Pagination} from "@material-ui/lab";
 import usePagination from "../../Dashboard/Pagination";
+import SockJsClient from "react-stomp";
 
-export default function Question({list}) {
+export default function Question() {
 
-    console.log(list)
     const dispatch = useDispatch();
+    let clientRef = useRef(null);
     const reducers = useSelector(state => state)
     const {questionLoading, questionList, loadingLogging} = reducers.meetingStarted
     const {payload} = reducers.auth.totalCount
@@ -18,7 +19,6 @@ export default function Question({list}) {
     const [page, setPage] = useState(1);
 
     const size = 10;
-    console.log(payload)
     const count = Math.ceil(payload && payload[0] / size);
     const _DATA = usePagination(questionList && questionList, size);
 
@@ -44,7 +44,8 @@ export default function Question({list}) {
             questionAnswer: v.questionAnswer,
             userId: parseInt(localStorage.getItem(DEPOSITORY_USER))
         }
-        dispatch(meetingStartedAction.editQuestionAction({data}))
+        clientRef.sendMessage('/topic/question', JSON.stringify(data));
+        // dispatch(meetingStartedAction.editQuestionAction({data}))
         if (v.checkbox) {
             dispatch(meetingStartedAction.editStatusQuestionAction({questionId: v.currentId}))
         }
@@ -106,6 +107,27 @@ export default function Question({list}) {
                 className={payload && payload[0] === '0' ? 'd-none' : ''}
                 onChange={handleChange}
                 showFirstButton showLastButton
+            />
+            <SockJsClient
+                url={"https://depositary.herokuapp.com:443/websocket/question/"}
+                topics={['/topic/answer']}
+                onConnect={() => console.log("Connected")}
+                onDisconnect={() => console.log("Disconnected")}
+                onMessage={(msg) => {
+                    console.log(msg)
+                    dispatch({
+                        type: 'REQUEST_SUCCESS_QUESTION_LIST',
+                        payload: msg
+                    })
+                    dispatch(meetingStartedAction.getQuestionByMeetingAction({
+                        meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
+                        page,
+                        size
+                    }))
+                }}
+                ref={(client) => {
+                    clientRef = client
+                }}
             />
         </div>
     )

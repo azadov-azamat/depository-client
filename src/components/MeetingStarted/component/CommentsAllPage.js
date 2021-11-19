@@ -25,6 +25,8 @@ import {AccordionAnswersModal} from "./Accordions/AccordionAnswersModal";
 import {css} from "@emotion/css";
 import SockJsClient from "react-stomp";
 import {toast} from "react-toastify";
+import {Pagination} from "@material-ui/lab";
+import usePagination from "../../Dashboard/Pagination";
 
 export default function CommentsAllPage({data, roleMember}) {
 
@@ -36,15 +38,29 @@ export default function CommentsAllPage({data, roleMember}) {
     const {meetingFile, memberManagerState} = reducers.meeting
     const {currentUser} = reducers.auth
     const {companiesByUserId} = reducers.company
+    const {payload} = reducers.auth.totalCount
 
     const [booleanMy, setBooleanMy] = useState(false);
     const [openQuestionModal, setOpenQuestionModal] = useState(false);
     const [openAnswerModal, setOpenAnswerModal] = useState(false);
 
+    const [page, setPage] = useState(1);
+
+    const size = 10;
+    const count = Math.ceil(payload && payload[0] / size);
+    const _DATA = usePagination(questionList && questionList, size);
+
+    const startIndex = (page - 1) * size;
+    const lastIndex = startIndex + (payload && payload[1]);
+
+    const handleChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
+    };
+
     useEffect(() => {
         dispatch(meetingStartedAction.getLoggingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
         dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
-        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
         dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER))}))
 
         companiesByUserId && companiesByUserId.forEach(element => {
@@ -61,7 +77,9 @@ export default function CommentsAllPage({data, roleMember}) {
         })
     }, [])
 
-    console.log(questionListMemberId)
+    useEffect(()=>{
+        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)), page, size}))
+    },[page])
 
     function fileTypeIcon(type) {
 
@@ -215,6 +233,17 @@ export default function CommentsAllPage({data, roleMember}) {
                                         </AccordionAnswersModal> : ''
                                 )}
                             </div>
+                            <Pagination
+                                count={count}
+                                size="large"
+                                page={page}
+                                color="primary"
+                                variant="outlined"
+                                shape="rounded"
+                                className={payload && payload[0] === '0' ? 'd-none' : ''}
+                                onChange={handleChange}
+                                showFirstButton showLastButton
+                            />
                         </Col>
                     </Row>
                 </ModalBody>
@@ -230,13 +259,11 @@ export default function CommentsAllPage({data, roleMember}) {
                         payload: msg
                     })
                     dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER))}))
-                    // toast.success("Xabaringiz yuborildi")
                     setOpenQuestionModal(false)
                 }}
                 ref={(client) => {
                     clientRef = client
                 }}
-
             />
         </>
     )

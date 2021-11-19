@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Container} from "reactstrap";
 import ProfileRoute from "../../routes/ProfileRoute";
-import {Route, Switch, useHistory, useParams} from "react-router-dom";
+import {Route, Switch, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import * as companyAction from "../../redux/actions/CompanyAction";
 import {DEPOSITORY_USER} from "../../utils/contants";

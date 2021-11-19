@@ -3,7 +3,7 @@ import {Link, useHistory, useParams} from 'react-router-dom'
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {AiOutlineRight, FaArrowLeft, ImCancelCircle} from "react-icons/all";
 import {useDispatch, useSelector} from 'react-redux';
-import {Col, Label, Row} from "reactstrap";
+import {Col, Label, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
 import '../styles/settings.scss';
 import {Select} from "antd";
 import * as adminCompanyAction from '../../../redux/actions/CompanyAction';
@@ -13,6 +13,7 @@ import {useTranslation} from "react-i18next";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import RouteByDashboard from "../RouteByDashboard";
+import * as types from "../../../redux/actionTypes/UsersActionTypes";
 
 const {Option} = Select;
 
@@ -33,8 +34,8 @@ export default function AddOrEditCompany() {
     const [file, setFile] = useState('');
     const [imagePreviewUrl, setImagePreviewUrl] = useState('');
     const [selectUsers, setSelectUsers] = useState({secretary: '', chairman: '', active: false})
-    const [defaultItem, setDefaultItem] = useState(false);
-    const [booleanMyTest, setBooleanMyTest] = useState(false);
+    const [isOpen, setIsOpen] = useState(false)
+    const [selectSecretary, setSelectSecretary] = useState();
 
     let $imagePreview = null;
     if (imagePreviewUrl) {
@@ -57,6 +58,7 @@ export default function AddOrEditCompany() {
         if (!isNaN(current)) {
             dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(id), history}))
             dispatch(actionUser.getUsersList({page: 1, size: 3}))
+            setSelectSecretary(currentCompany?.secretaryId)
         }
     }, [id])
 
@@ -71,7 +73,7 @@ export default function AddOrEditCompany() {
     }
 
     function onFocus() {
-        setDefaultItem(true)
+
     }
 
 
@@ -135,15 +137,21 @@ export default function AddOrEditCompany() {
         setImagePreviewUrl('');
     }
 
-    // const children = [];
-    // for (let i = 10; i < 36; i++) {
-    //     children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-    // }
+    function onChange(val) {
+        console.log(val)
+        const NAME = "FULL_NAME";
+        if (val.length >= 3) {
+            dispatch(actionUser.getUserFilter({value: val, field: NAME}));
+        } else {
+            dispatch({type: types.REQUEST_GET_USERS_LIST_SUCCESS, payload: ''})
+        }
+    }
 
     return (
         <div className="settings p-3">
             <div className="container-fluid" style={{marginTop: '6em'}}>
-                <RouteByDashboard cardName={'компаниями'} disabled={true} link2={`/admin/company`} statusName={currentCompany ? "РЕДАКТИРОВАТЬ КОМПАНИЮ" : "ДОБАВИТЬ КОМПАНИЮ"}/>
+                <RouteByDashboard cardName={'компаниями'} disabled={true} link2={`/admin/company`}
+                                  statusName={currentCompany ? "РЕДАКТИРОВАТЬ КОМПАНИЮ" : "ДОБАВИТЬ КОМПАНИЮ"}/>
                 <div className="d-block d-md-none text-center">
                     <h3>{currentCompany ? "РЕДАКТИРОВАТЬ КОМПАНИЮ" : "ДОБАВИТЬ КОМПАНИЮ"}</h3>
                 </div>
@@ -152,32 +160,32 @@ export default function AddOrEditCompany() {
                     <Row>
                         <Col md={2} className="d-flex justify-content-center align-items-center">
                             {currentCompany && currentCompany.imageUrl !== null ?
-                            <div className='currentCompanyLogo d-flex align-items-center'>
-                                <img className="w-100"
-                                     src={BASE_URL + api.getLogoByCompanyId + currentCompany.id}
-                                     alt=""/>
-                            </div>
+                                <div className='currentCompanyLogo d-flex align-items-center'>
+                                    <img className="w-100"
+                                         src={BASE_URL + api.getLogoByCompanyId + currentCompany.id}
+                                         alt=""/>
+                                </div>
                                 :
-                            <div className="app-custom-file">
-                                <div className={imagePreviewUrl ? `d-none` : ` `}>
-                                    <form action="http://localhost:3000" method="post"
-                                          encType="multipart/form-data">
-                                        <input type="file" onChange={_handleImageChange} hidden={true} id="file"
-                                               accept="image/jpg, image/jpeg, image/png, .svg"/>
-                                        <label htmlFor="file"
-                                               onChange={_handleImageChange}
-                                               className={`app-custom-label`}>
-                                            <div className="app-custom-info">
-                                                <strong>Логотип!</strong>
-                                            </div>
-                                        </label>
-                                    </form>
+                                <div className="app-custom-file">
+                                    <div className={imagePreviewUrl ? `d-none` : ` `}>
+                                        <form action="http://localhost:3000" method="post"
+                                              encType="multipart/form-data">
+                                            <input type="file" onChange={_handleImageChange} hidden={true} id="file"
+                                                   accept="image/jpg, image/jpeg, image/png, .svg"/>
+                                            <label htmlFor="file"
+                                                   onChange={_handleImageChange}
+                                                   className={`app-custom-label`}>
+                                                <div className="app-custom-info">
+                                                    <strong>Логотип!</strong>
+                                                </div>
+                                            </label>
+                                        </form>
 
+                                    </div>
+                                    <div>
+                                        {$imagePreview}
+                                    </div>
                                 </div>
-                                <div>
-                                    {$imagePreview}
-                                </div>
-                            </div>
                             }
                         </Col>
                         <Col md={4}>
@@ -230,24 +238,8 @@ export default function AddOrEditCompany() {
                                 <div className="form-group">
                                     <Label for="companySecretary">Секретарь наб.совета</Label>
                                 </div>
-                                <Select
-                                    className="setting_input w-100"
-                                    showSearch
-                                    placeholder="Search User"
-                                    optionFilterProp="children"
-                                    onChange={forSecretary}
-                                    onFocus={onFocus}
-                                    onBlur={onBlur}
-                                    onSearch={onSearch}
-                                    defaultValue={currentCompany.length !== 0 ? currentCompany.secretaryId : ""}
-                                    filterOption={(input, option) =>
-                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                    }
-                                >
-                                    {users && users.map((value, index) => (
-                                        <Option value={value.id} key={index}>{value.fullName}</Option>
-                                    ))}
-                                </Select>
+                                <button type={"button"} style={{height: '7vh', borderRadius: '12px'}} onClick={()=>setIsOpen(true)}
+                                        className="w-100 bg-transparent border border-1">{selectSecretary ? selectSecretary : "Select user"}</button>
                             </div>
                             <div className="form-group">
                                 <Label className='required_fields'>Телефон</Label>
@@ -265,25 +257,9 @@ export default function AddOrEditCompany() {
                             <div className="">
                                 <div className="form-group">
                                     <Label for="nabChairmanCompany">Председатель наб.совета</Label>
+                                    <button type={"button"} style={{height: '7vh', borderRadius: '12px'}} onClick={()=>setIsOpen(true)}
+                                            className="w-100 bg-transparent border border-1">{selectSecretary ? selectSecretary : "Select user"}</button>
                                 </div>
-                                <Select
-                                    className="setting_input w-100"
-                                    showSearch
-                                    placeholder="Select a person"
-                                    optionFilterProp="children"
-                                    onChange={forChairMan}
-                                    // onFocus={onFocus}
-                                    // onBlur={onBlur}
-                                    onSearch={onSearch}
-                                    value={currentCompany?.chairmanId}
-                                    filterOption={(input, option) =>
-                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                    }
-                                >
-                                    {users && users.map((value, index) => (
-                                        <Option key={index} value={value.id}>{value.fullName}</Option>
-                                    ))}
-                                </Select>
                             </div>
                             <div className="form-group">
                                 <Label className='required_fields'>Электронная Почта</Label>
@@ -370,6 +346,35 @@ export default function AddOrEditCompany() {
                     </Row>
                 </AvForm>
             </div>
+            <Modal isOpen={isOpen} className="modal-dialog modal-lg">
+                <ModalHeader toggle={() => setIsOpen(!isOpen)}
+                             className="d-flex align-items-center">
+                    <h3>Search User</h3>
+                </ModalHeader>
+                <ModalBody>
+                    <AvForm className={"d-flex justify-content-center"}>
+                        <AvField
+                            type={"text"}
+                            placeholder={"Search"}
+                            name={"test"}
+                            onChange={(e) => onChange(e.target.value)}
+                            value={selectSecretary}
+                        />
+                    </AvForm>
+                    <div className="">
+                        {users && users.map((value, index) =>
+                            <div onClick={()=>{
+                                setSelectSecretary(value.fullName)
+                                setIsOpen(false)
+                            }}
+                                 style={{cursor: 'pointer'}}
+                                 key={index}>
+                                {value.fullName}
+                            </div>
+                        )}
+                    </div>
+                </ModalBody>
+            </Modal>
         </div>
     )
 }
