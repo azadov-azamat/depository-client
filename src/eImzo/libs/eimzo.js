@@ -190,7 +190,7 @@
 })(this);
 
 export const CAPIWS = {
-	URL: (window.location.protocol.toLowerCase() === "https:" ? "wss://127.0.0.1:64443" : "ws://127.0.0.1:64646") + "/service/cryptapi",
+	URL: (window.location.protocol.toLowerCase() === "https:" ? "wss://evote-uz.vercel.app" : "ws://127.0.0.1:64646") + "/service/cryptapi",
 	callFunction: function (funcDef, callback, error) {
 		if (!window.WebSocket) {
 			if (error) error();
