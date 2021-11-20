@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Col, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {
     AiOutlineFileExcel,
     AiOutlineFileImage,
@@ -13,73 +13,34 @@ import {
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
-import {
-    CHAIRMAN,
-    DEPOSITORY_CURRENT_MEETING,
-    DEPOSITORY_CURRENT_MEMBER,
-    DEPOSITORY_USER,
-    SECRETARY
-} from "../../../utils/contants";
+import {CHAIRMAN, DEPOSITORY_CURRENT_MEMBER, SECRETARY} from "../../../utils/contants";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {AccordionAnswersModal} from "./Accordions/AccordionAnswersModal";
-import {css} from "@emotion/css";
 import SockJsClient from "react-stomp";
-import {toast} from "react-toastify";
-import {Pagination} from "@material-ui/lab";
-import usePagination from "../../Dashboard/Pagination";
 
-export default function CommentsAllPage({data, roleMember}) {
+export default function CommentsAllPage({
+                                            roleMember,
+                                            list,
+                                            loggingList,
+                                            meetingFile,
+                                            questionListMemberId,
+                                            currentMeetingId
+                                        }) {
 
     const dispatch = useDispatch();
-    const reducers = useSelector(state => state)
     let clientRef = useRef(null);
 
-    const {loggingList, questionLoading, questionList, questionListMemberId} = reducers.meetingStarted
-    const {meetingFile, memberManagerState} = reducers.meeting
-    const {currentUser} = reducers.auth
-    const {companiesByUserId} = reducers.company
-    const {payload} = reducers.auth.totalCount
-
-    const [booleanMy, setBooleanMy] = useState(false);
     const [openQuestionModal, setOpenQuestionModal] = useState(false);
     const [openAnswerModal, setOpenAnswerModal] = useState(false);
 
-    const [page, setPage] = useState(1);
-
-    const size = 10;
-    const count = Math.ceil(payload && payload[0] / size);
-    const _DATA = usePagination(questionList && questionList, size);
-
-    const startIndex = (page - 1) * size;
-    const lastIndex = startIndex + (payload && payload[1]);
-
-    const handleChange = (e, p) => {
-        setPage(p);
-        _DATA.jump(p);
-    };
+    useEffect(() => {
+        dispatch(meetingStartedAction.getLoggingAction({meetingId: currentMeetingId}))
+        dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: currentMeetingId}))
+    }, [currentMeetingId])
 
     useEffect(() => {
-        dispatch(meetingStartedAction.getLoggingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
-        dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
         dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER))}))
-
-        companiesByUserId && companiesByUserId.forEach(element => {
-            if (element.chairmanId === currentUser.id || element.secretaryId === currentUser.id) {
-                setBooleanMy(true)
-            }
-        })
-
-        dispatch(meetingActions.getMemberByMeetingId({meetingId: 14352}))
-        memberManagerState && memberManagerState.forEach((element, index) => {
-            if (element.userId === parseInt(localStorage.getItem(DEPOSITORY_USER))) {
-                localStorage.setItem(DEPOSITORY_CURRENT_MEMBER, element.id)
-            }
-        })
     }, [])
-
-    useEffect(()=>{
-        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)), page, size}))
-    },[page])
 
     function fileTypeIcon(type) {
 
@@ -107,11 +68,10 @@ export default function CommentsAllPage({data, roleMember}) {
 
     function addQuestion(e, v) {
         const data = {
-            meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
+            meetingId: currentMeetingId,
             memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER)),
             questionText: v.questionText
         }
-        console.log(data)
         clientRef.sendMessage('/topic/question', JSON.stringify(data));
         // dispatch(meetingStartedAction.addQuestionAction({data, setOpenQuestionModal}))
     }
@@ -125,7 +85,7 @@ export default function CommentsAllPage({data, roleMember}) {
                         <p>Инфармационное окно</p>
                     </div>
                     <div style={{overflowY: 'scroll'}}>
-                        {loggingList && loggingList.slice(0).reverse().map((element, index) =>
+                        {loggingList?.slice(0).reverse().map((element, index) =>
                             <>
                                 <span
                                     key={index}>{element.createdDate.substr(11, 5)} - {element.loggingText}</span><br/>
@@ -139,8 +99,8 @@ export default function CommentsAllPage({data, roleMember}) {
                         <p>Файлы заседания</p>
                     </div>
                     <div className="h-100" style={{overflowY: 'scroll'}}>
-                        {meetingFile && meetingFile.length !== 0 ?
-                            meetingFile && meetingFile.map((element, index) =>
+                        {meetingFile?.length !== 0 ?
+                            meetingFile?.map((element, index) =>
                                 <>
                                     <a href={BASE_URL + api.downloadFile + element.id} download key={index}
                                        className="text-dark border-0"
@@ -164,7 +124,8 @@ export default function CommentsAllPage({data, roleMember}) {
                                 className="btn cancel mt-2 position-relative">
                             Ответы на вопросы
                         </button>
-                    </div>}
+                    </div>
+                }
             </div>
             <Modal isOpen={openQuestionModal} centered>
                 <ModalHeader toggle={() => setOpenQuestionModal(!openQuestionModal)}
@@ -217,7 +178,7 @@ export default function CommentsAllPage({data, roleMember}) {
                         <Col md={6}>
                             <div className="accordion" id="accordionExample" style={{overflowY: 'scroll'}}>
                                 <span style={{fontWeight: 'bold'}}>Umumiy savollar</span>
-                                {questionList && questionList.map((element, index) =>
+                                {list && list.map((element, index) =>
                                     element.active === true ?
                                         <AccordionAnswersModal open={1} key={index}>
                                             <AccordionAnswersModal.Item>
@@ -233,17 +194,6 @@ export default function CommentsAllPage({data, roleMember}) {
                                         </AccordionAnswersModal> : ''
                                 )}
                             </div>
-                            <Pagination
-                                count={count}
-                                size="large"
-                                page={page}
-                                color="primary"
-                                variant="outlined"
-                                shape="rounded"
-                                className={payload && payload[0] === '0' ? 'd-none' : ''}
-                                onChange={handleChange}
-                                showFirstButton showLastButton
-                            />
                         </Col>
                     </Row>
                 </ModalBody>

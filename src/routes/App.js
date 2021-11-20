@@ -6,9 +6,6 @@ import FooterImg from "../components/Bottom/FooterImg";
 import Dashboard from "../components/Dashboard/Dashboard";
 import AddOrEditCompany from '../components/Dashboard/AdminCompany/AddOrEditCompany';
 import AdminUsers from '../components/Dashboard/AdminUsers/AdminUsers';
-import MeetingMembers from "../components/createMeeting/components/MeetingMembers";
-import MeetingAgenda from "../components/createMeeting/components/MeetingAgenda";
-import MeetingFiles from "../components/createMeeting/components/MeetingFiles";
 import NabPage from "../components/userPages/NabPage";
 import AdminCompany from '../components/Dashboard/AdminCompany/AdminCompany';
 import AdminMeetings from '../components/Dashboard/AdminMeeting/AdminMeetings';
@@ -26,7 +23,6 @@ import {Provider} from "react-redux";
 import store from "../redux";
 import PublicRoute from "../utils/PublicRoute";
 import PrivateRoute from "../utils/PrivateRoute";
-import MeetingReestr from "../components/createMeeting/components/MeetingReestr";
 import ControllerMeeting from "../components/MeetingStarted/ControllerMeeting";
 import Example from "./Example";
 import AddOrEditMeeting from "../components/createMeeting/AddOrEditMeeting";
@@ -47,9 +43,7 @@ const App = () => {
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin"><Dashboard lang={t}/></PrivateRoute>
 
-
                 <PrivateRoute setNav={setInfoV} path="/supervisory/personalData/currentUser" component={MyProfile}/>
-
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users" component={AdminUsers}/>
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users/:id" component={User}/>
@@ -68,9 +62,6 @@ const App = () => {
                               component={AllMeetings}/>
                 <PrivateRoute setNav={setInfoV} exact path="/issuerLegal/archiveMeetings/company_id/:id"
                               component={ArchiveMeetings}/>
-
-                <Route path="/eimzo" exact component={eimzo}/>
-                <Route exact path='/notFound' component={NotFound}/>
 
                 <PrivateRoute setNav={setInfoV} path='/issuerLegal/meetingSetting'
                               component={ControllerMeeting}/>

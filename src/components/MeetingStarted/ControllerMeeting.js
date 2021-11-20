@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {NavbarControlMeeting} from './NavbarControlMeeting'
 import DayPlan from "./component/DayPlan"
 import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
@@ -9,8 +9,6 @@ import * as meetingStartedActions from "../../redux/actions/MeetingStartedAction
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    ACTIVE,
-    CANCELED,
     CHAIRMAN,
     DEPOSITORY_CURRENT_COMPANY,
     DEPOSITORY_CURRENT_MEETING,
@@ -19,15 +17,12 @@ import {
     DEPOSITORY_USER,
     DEPOSITORY_ZOOM_MEETING_LINK,
     DEPOSITORY_ZOOM_MEETING_PASSWORD,
-    FINISH,
     PENDING,
     SECRETARY
 } from "../../utils/contants";
 import Question from "./component/Question";
 import Comment from "./component/Comment";
 import ControlMeeting from "./component/ControlMeeting";
-import {confirmAlert} from "react-confirm-alert";
-import {toast} from "react-toastify";
 import * as userAction from "../../redux/actions/UsersAction";
 import TableUsers from "./component/TableUsers";
 import usePagination from "../Dashboard/Pagination";
@@ -35,7 +30,6 @@ import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import importScript from "./component/Zoom Meeting/importScript";
 import {Col, Container, Row} from "reactstrap";
 import {Jutsu} from 'react-jutsu';
-import Socket from "./socket.io/Socket";
 
 export const ControllerMeeting = () => {
 
@@ -44,8 +38,8 @@ export const ControllerMeeting = () => {
     const location = useLocation();
     const {pathname} = location
     const reducers = useSelector(state => state)
-    const {agendaState, currentMeeting, userMemberType, memberManagerState} = reducers.meeting
-    const {loadingLogging} = reducers.meetingStarted
+    const {agendaState, currentMeeting, userMemberType, memberManagerState, meetingFile} = reducers.meeting
+    const {loadingLogging, questionList, loggingList, questionListMemberId} = reducers.meetingStarted
     const {currentUser} = reducers.users
     const {currentCompany} = reducers.company
     const {payload} = reducers.auth.totalCount
@@ -66,6 +60,12 @@ export const ControllerMeeting = () => {
     const lastIndex = startIndex + (payload && payload[1]);
 
     const [zoomEnum, setZoomEnum] = useState(PENDING);
+
+    const [call, setCall] = useState(false)
+    const [password, setPassword] = useState('')
+    const [close, setClose] = useState(false)
+    const link = 'https://meet.jit.si/' + room;
+
     console.log(memberManagerState)
 
     const handleStartMeeting = (roomName, userName, password, link) => {
@@ -93,6 +93,7 @@ export const ControllerMeeting = () => {
         dispatch(meetingActions.getMeetingByIdAction({meetingId: currentMeetingId}))
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId}))
+        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: currentMeetingId}))
         dispatch(meetingStartedActions.getBallotVoting({
             data: {
                 memberId: localStorage.getItem(DEPOSITORY_CURRENT_MEMBER),
@@ -104,96 +105,16 @@ export const ControllerMeeting = () => {
         setRoom(currentCompanyId + "/" + currentMeetingId)
     }, [])
 
-    function startMeeting({status, quorumCount}) {
-        if (status === CANCELED || status === PENDING) {
-            const dataForComment = {
-                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-                meetingId: currentMeetingId,
-                loggingText:
-                    status === ACTIVE ? 'Заседание начато' : ''
-                    || status === FINISH ? 'Заседание начато' : ''
-                    || status === CANCELED ? 'OTMEN KAROCHE' : ''
-                    || status === PENDING ? "Meeting qoldirildi" : ""
+    useEffect(() => {
+        memberManagerState && memberManagerState.forEach(element => {
+            if (element.userId === parseInt(localStorage.getItem(DEPOSITORY_USER))) {
+                localStorage.setItem(DEPOSITORY_CURRENT_MEMBER, element.id)
             }
-            const dataForUpdateMeetingStatus = {
-                id: currentMeetingId,
-                companyId: currentMeeting?.companyId,
-                cityId: currentMeeting?.cityId,
-                address: currentMeeting?.address,
-                description: currentMeeting?.description,
-                startDate: currentMeeting?.startDate,
-                startRegistration: currentMeeting?.startRegistration,
-                endRegistration: currentMeeting?.endRegistration,
-                status: status,
-                typeEnum: currentMeeting?.typeEnum,
-            }
+        })
+    }, [memberManagerState])
 
-            confirmAlert({
-                title: 'Не активировать',
-                message: 'Вы действительно хотите начать заседанию?',
-                buttons: [
-                    {
-                        label: 'Да',
-                        onClick: () => {
-                            dispatch(meetingStartedAction.addLoggingAction({data: dataForComment}))
-                            dispatch(meetingActions.updateMeetingAction({data: dataForUpdateMeetingStatus}))
-                        }
-                    },
-                    {
-                        label: 'Нет',
-                    }
-                ]
-            });
-        } else if (quorumCount >= 75) {
-            const dataForComment = {
-                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-                meetingId: currentMeetingId,
-                loggingText:
-                    status === ACTIVE ? 'Заседание начато' : ''
-                    || status === FINISH ? 'Заседание начато' : ''
-                    || status === CANCELED ? 'OTMEN KAROCHE' : ''
-                    || status === PENDING ? "Meeting qoldirildi" : ""
-            }
-            const dataForUpdateMeetingStatus = {
-                id: currentMeeting.id,
-                companyId: currentMeeting?.companyId,
-                cityId: currentMeeting?.cityId,
-                address: currentMeeting?.address,
-                description: currentMeeting?.description,
-                startDate: currentMeeting?.startDate,
-                startRegistration: currentMeeting?.startRegistration,
-                endRegistration: currentMeeting?.endRegistration,
-                status: status,
-                typeEnum: currentMeeting?.typeEnum,
-            }
-
-            confirmAlert({
-                title: 'Активировать',
-                message: 'Вы действительно хотите начать заседанию?',
-                buttons: [
-                    {
-                        label: 'Да',
-                        onClick: () => {
-                            dispatch(meetingStartedAction.addLoggingAction({data: dataForComment}))
-                            dispatch(meetingActions.updateMeetingAction({data: dataForUpdateMeetingStatus}))
-                        }
-                    },
-                    {
-                        label: 'Нет',
-                    }
-                ]
-            });
-        } else {
-            toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
-        }
-    }
 
     importScript("https://meet.jit.si/external_api.js");
-
-    const [call, setCall] = useState(false)
-    const [password, setPassword] = useState('')
-    const [close, setClose] = useState(false)
-    const link = 'https://meet.jit.si/' + room;
 
     const handleClick = event => {
         event.preventDefault()
@@ -233,7 +154,7 @@ export const ControllerMeeting = () => {
                                     <DayPlan agendaSubject={agendaState} roleMember={userMemberType}/>
                                 </Route>
                                 <Route path="/issuerLegal/meetingSetting/question">
-                                    <Question/>
+                                    <Question list={questionList && questionList}/>
                                 </Route>
                                 <Route path="/issuerLegal/meetingSetting/comment-by-meeting">
                                     <Comment loading={loadingLogging}/>
@@ -315,7 +236,13 @@ export const ControllerMeeting = () => {
                                 }
                             </div>
                         </div>
-                        <CommentsAllPage roleMember={userMemberType}/>
+                        <CommentsAllPage roleMember={userMemberType} list={questionList && questionList}
+                                         currentUserId={currentUser && currentUser.id}
+                                         meetingFile={meetingFile && meetingFile}
+                                         loggingList={loggingList && loggingList}
+                                         currentMeetingId={currentMeetingId}
+                                         questionListMemberId={questionListMemberId && questionListMemberId}
+                        />
                     </div>
                 </div>
             </div>

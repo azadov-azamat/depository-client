@@ -8,35 +8,10 @@ import {Pagination} from "@material-ui/lab";
 import usePagination from "../../Dashboard/Pagination";
 import SockJsClient from "react-stomp";
 
-export default function Question() {
+export default function Question({list}) {
 
     const dispatch = useDispatch();
     let clientRef = useRef(null);
-    const reducers = useSelector(state => state)
-    const {questionLoading, questionList, loadingLogging} = reducers.meetingStarted
-    const {payload} = reducers.auth.totalCount
-
-    const [page, setPage] = useState(1);
-
-    const size = 10;
-    const count = Math.ceil(payload && payload[0] / size);
-    const _DATA = usePagination(questionList && questionList, size);
-
-    const startIndex = (page - 1) * size;
-    const lastIndex = startIndex + (payload && payload[1]);
-
-    const handleChange = (e, p) => {
-        setPage(p);
-        _DATA.jump(p);
-    };
-
-    useEffect(() => {
-        dispatch(meetingStartedAction.getQuestionByMeetingAction({
-            meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
-            page,
-            size
-        }))
-    }, [page])
 
     function editQuestion(e, v) {
         const data = {
@@ -45,7 +20,7 @@ export default function Question() {
             userId: parseInt(localStorage.getItem(DEPOSITORY_USER))
         }
         clientRef.sendMessage('/topic/question', JSON.stringify(data));
-        // dispatch(meetingStartedAction.editQuestionAction({data}))
+
         if (v.checkbox) {
             dispatch(meetingStartedAction.editStatusQuestionAction({questionId: v.currentId}))
         }
@@ -56,7 +31,7 @@ export default function Question() {
             <div className="header d-flex justify-content-center py-3">
                 <text className=""><b>Поступающие вопросы от наблюдательного совета</b></text>
             </div>
-            {questionList?.slice(0).reverse().map((element, index) =>
+            {list.slice(0).reverse().map((element, index) =>
                 <AccordionQuestion open={1}>
                     <AccordionQuestion.Item>
                         <AccordionQuestion.Header>
@@ -97,17 +72,6 @@ export default function Question() {
                     </AccordionQuestion.Item>
                 </AccordionQuestion>
             )}
-            <Pagination
-                count={count}
-                size="large"
-                page={page}
-                color="primary"
-                variant="outlined"
-                shape="rounded"
-                className={payload && payload[0] === '0' ? 'd-none' : ''}
-                onChange={handleChange}
-                showFirstButton showLastButton
-            />
             <SockJsClient
                 url={"https://depositary.herokuapp.com:443/websocket/question/"}
                 topics={['/topic/answer']}
@@ -119,11 +83,7 @@ export default function Question() {
                         type: 'REQUEST_SUCCESS_QUESTION_LIST',
                         payload: msg
                     })
-                    dispatch(meetingStartedAction.getQuestionByMeetingAction({
-                        meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
-                        page,
-                        size
-                    }))
+                    dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
                 }}
                 ref={(client) => {
                     clientRef = client
