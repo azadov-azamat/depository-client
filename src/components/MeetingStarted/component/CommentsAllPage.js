@@ -76,7 +76,6 @@ export default function CommentsAllPage({
         // dispatch(meetingStartedAction.addQuestionAction({data, setOpenQuestionModal}))
     }
 
-
     return (
         <>
             <div className="col-12 col-md-4 rounded mt-2">
@@ -85,12 +84,15 @@ export default function CommentsAllPage({
                         <p>Инфармационное окно</p>
                     </div>
                     <div style={{overflowY: 'scroll'}}>
-                        {loggingList?.slice(0).reverse().map((element, index) =>
-                            <>
-                                <span
-                                    key={index}>{element.createdDate.substr(11, 5)} - {element.loggingText}</span><br/>
-                            </>
-                        )
+                        {
+                            loggingList?.slice(0).reverse().map((element) => {
+                                let date = new Date(element.createdDate);
+                                return (
+                                    <>
+                                        <span>{(date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" + date.getMinutes()} - {element.loggingText}</span><br/>
+                                    </>
+                                )
+                            })
                         }
                     </div>
                 </div>

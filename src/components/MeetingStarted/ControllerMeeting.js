@@ -66,7 +66,6 @@ export const ControllerMeeting = () => {
     const [close, setClose] = useState(false)
     const link = 'https://meet.jit.si/' + room;
 
-    console.log(memberManagerState)
 
     const handleStartMeeting = (roomName, userName, password, link) => {
         setEnd(false)
@@ -84,8 +83,6 @@ export const ControllerMeeting = () => {
         setPage(p);
         _DATA.jump(p);
     };
-
-    console.log(currentCompany)
 
     useEffect(() => {
         dispatch(userAction.getUserById({ID: parseInt(localStorage.getItem(DEPOSITORY_USER))}))

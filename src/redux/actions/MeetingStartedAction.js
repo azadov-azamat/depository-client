@@ -8,7 +8,8 @@ import {
     getBallotByMeetingApi,
     getBallotByMemberApi,
     getBallotByOptionApi,
-    getBallotByVotingApi, getBallotVotingApi,
+    getBallotByVotingApi,
+    getBallotVotingApi,
     getLoggingApi,
     getQuestionByMeetingIdApi,
     getQuestionByMemberIdApi
@@ -32,10 +33,8 @@ export const addLoggingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_ADD_START_LOGGING", "REQUEST_ADD_SUCCESS_LOGGING", "REQUEST_ADD_ERROR_LOGGING",],
         data: payload.data
     }).then(res => {
-        console.log(res)
         dispatch(getLoggingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
     }).catch(err => {
-        console.log(err.response);
     })
 } // success 95%
 
@@ -45,7 +44,6 @@ export const editStatusAgendaAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_STATUS_AGENDA", "", "REQUEST_ERROR_STATUS_AGENDA"],
         data: payload.data
     }).then(res => {
-        console.log(res);
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: res.payload.meetingId}))
     })
 }
@@ -57,9 +55,7 @@ export const getQuestionByMeetingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_QUESTION_LIST", "REQUEST_SUCCESS_QUESTION_LIST", "REQUEST_ERROR_QUESTION_LIST"],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -69,9 +65,7 @@ export const getQuestionByMemberIdAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_QUESTION_LIST_BY_MEMBER_ID", "REQUEST_SUCCESS_QUESTION_LIST_BY_MEMBER_ID", "REQUEST_ERROR_QUESTION_LIST_BY_MEMBER_ID"],
         data: payload.memberId
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -102,7 +96,7 @@ export const editStatusQuestionAction = (payload) => async (dispatch) => {
         api: editStatusQuestion,
         types: ["REQUEST_START_STATUS_QUESTION", "", "REQUEST_ERROR_STATUS_QUESTION"],
         data: payload.questionId
-    }).then(res=>{
+    }).then(res => {
         dispatch(getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
     })
 }
@@ -114,10 +108,8 @@ export const addBallotAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_ADD_BALLOT", "REQUEST_SUCCESS_ADD_BALLOT", "REQUEST_ERROR_ADD_BALLOT"],
         data: payload.data
     }).then(res => {
-        console.log(res)
         toast.success("ok")
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -127,9 +119,7 @@ export const getBallotByAgendaAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_GET_BALLOT_BY_AGENDA", "REQUEST_SUCCESS_GET_BALLOT_BY_AGENDA", "REQUEST_ERROR_GET_BALLOT_BY_AGENDA"],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -139,9 +129,7 @@ export const getBallotByMeetingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_GET_BALLOT_BY_MEETING", "REQUEST_SUCCESS_GET_BALLOT_BY_MEETING", "REQUEST_ERROR_GET_BALLOT_BY_MEETING"],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -151,9 +139,7 @@ export const getBallotByMemberAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_GET_BALLOT_BY_MEMBER", "REQUEST_SUCCESS_GET_BALLOT_BY_MEMBER", "REQUEST_ERROR_GET_BALLOT_BY_MEMBER"],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -163,9 +149,7 @@ export const getBallotByOptionAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_GET_BALLOT_BY_OPTION", "REQUEST_SUCCESS_GET_BALLOT_BY_OPTION", "REQUEST_ERROR_GET_BALLOT_BY_OPTION"],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -175,9 +159,7 @@ export const getBallotByVotingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_GET_BALLOT_BY_VOTING", "REQUEST_SUCCESS_GET_BALLOT_BY_VOTING", "REQUEST_ERROR_GET_BALLOT_BY_VOTING"],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -187,8 +169,6 @@ export const getBallotVoting = (payload) => async (dispatch) => {
         types: ["REQUEST_START_GET_BALLOT_VOTING", "REQUEST_SUCCESS_GET_BALLOT_VOTING", "REQUEST_ERROR_GET_BALLOT_VOTING"],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }

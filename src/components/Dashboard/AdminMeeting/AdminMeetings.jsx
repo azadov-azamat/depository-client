@@ -37,8 +37,6 @@ function AdminMeetings() {
     const startIndex = (page - 1) * size;
     const lastIndex = startIndex + (payload && payload[1]);
 
-    console.log(payload)
-
     useEffect(() => {
         if (!name) {
             dispatch(adminMeetingAction.getMeetingList({page: page, size: size}));

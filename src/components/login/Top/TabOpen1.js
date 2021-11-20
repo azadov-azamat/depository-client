@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from 'react';
 // import {Dropdown,Button, Col, Label, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
-import {FaDownload} from "react-icons/all";
-import {AvForm, AvGroup, AvInput} from "availity-reactstrap-validation";
-import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import * as eimzoService from "../../../eImzo/services/eimzo";
-import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
-import data from "bootstrap/js/src/dom/data";
 // import "./eimzo.css"
 export default function TabOpen1({lang}) {
 
@@ -38,7 +34,7 @@ export default function TabOpen1({lang}) {
 
     const [result, setresult] = useState("");
 
-    useEffect( ()=>{
+    useEffect(() => {
         eimzoService.startApi();
         eimzoService.getAllCertificates().then((res) => {
             console.log(res)
@@ -52,6 +48,7 @@ export default function TabOpen1({lang}) {
         const keyId = await eimzoService.preLoadKey(keys.find(item => item?.serialNumber === selectedKey));
         eimzoService.postLoadKey(keyId, obj).then((res) => setresult(res));
     }
+
     return (
         <div className="TabOpen1 allCss">
 
@@ -82,11 +79,12 @@ export default function TabOpen1({lang}) {
                             {/*new dropdown page*/}
                             <Dropdown isOpen={dropdownOpen} toggle={toggle} className="drop">
 
-                                <DropdownToggle className="dropToggle d-flex justify-content-between align-items-center">
+                                <DropdownToggle
+                                    className="dropToggle d-flex justify-content-between align-items-center">
                                     <span className="dropToggle2">
-                                        {keys.length == 1 ? keys[0].inn+ " - " + keys[0].parsedAlias.cn.toUpperCase() : "Выберите ключ" }
+                                        {keys.length === 1 ? keys[0].inn + " - " + keys[0].parsedAlias.cn.toUpperCase() : "Выберите ключ"}
                                     </span>
-                                     <img src="../down2.png" className="toggleImg"/>
+                                    <img src="../down2.png" className="toggleImg"/>
                                 </DropdownToggle>
                                 <DropdownMenu className="dropMenu">
 
@@ -100,7 +98,7 @@ export default function TabOpen1({lang}) {
                                             <div className="d-flex align-items-center">
                                                 <b>INN: </b>
                                                 <span className="textB">{item?.inn}</span>
-                                                <b className="textB">{item.parsedAlias.uid? "ФИЗИЧЕСКОE ЛИЦО" : "ЮРИДИЧЕСКОE ЛИЦО"}</b>
+                                                <b className="textB">{item.parsedAlias.uid ? "ФИЗИЧЕСКОE ЛИЦО" : "ЮРИДИЧЕСКОE ЛИЦО"}</b>
                                             </div>
                                             <div className="d-flex align-items-center">
                                                 <b>Ф.И.О.: </b>
@@ -108,7 +106,8 @@ export default function TabOpen1({lang}) {
                                             </div>
                                             <div className="d-flex align-items-center srok">
                                                 <b>Срок дествия сертификата: </b>
-                                                <span className="">{item.parsedAlias.validfrom} - {item.parsedAlias.validto}</span>
+                                                <span
+                                                    className="">{item.parsedAlias.validfrom} - {item.parsedAlias.validto}</span>
                                             </div>
                                         </DropdownItem>
                                     ))}

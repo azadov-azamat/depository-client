@@ -2,32 +2,32 @@
 (function () {
 	"use strict";
 	// existing version for noConflict()
-	var _Base64 = window.Base64;
-	var version = "2.1.4";
+	let _Base64 = window.Base64;
+	let version = "2.1.4";
 	// if node.js, we use Buffer
-	var buffer;
+	let buffer;
 	if (typeof module !== "undefined" && module.exports) {
 		buffer = require("buffer").Buffer;
 	}
 	// constants
-	var b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-	var b64tab = (function (bin) {
-		var t = {};
-		for (var i = 0, l = bin.length; i < l; i++) t[bin.charAt(i)] = i;
+	let b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	let b64tab = (function (bin) {
+		let t = {};
+		for (let i = 0, l = bin.length; i < l; i++) t[bin.charAt(i)] = i;
 		return t;
 	})(b64chars);
-	var fromCharCode = String.fromCharCode;
+	let fromCharCode = String.fromCharCode;
 	// encoder stuff
-	var cb_utob = function (c) {
+	let cb_utob = function (c) {
 		if (c.length < 2) {
-			var cc = c.charCodeAt(0);
+			let cc = c.charCodeAt(0);
 			return cc < 0x80
 				? c
 				: cc < 0x800
 				? fromCharCode(0xc0 | (cc >>> 6)) + fromCharCode(0x80 | (cc & 0x3f))
 				: fromCharCode(0xe0 | ((cc >>> 12) & 0x0f)) + fromCharCode(0x80 | ((cc >>> 6) & 0x3f)) + fromCharCode(0x80 | (cc & 0x3f));
 		} else {
-			var cc = 0x10000 + (c.charCodeAt(0) - 0xd800) * 0x400 + (c.charCodeAt(1) - 0xdc00);
+			let cc = 0x10000 + (c.charCodeAt(0) - 0xd800) * 0x400 + (c.charCodeAt(1) - 0xdc00);
 			return (
 				fromCharCode(0xf0 | ((cc >>> 18) & 0x07)) +
 				fromCharCode(0x80 | ((cc >>> 12) & 0x3f)) +
@@ -36,12 +36,12 @@
 			);
 		}
 	};
-	var re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
-	var utob = function (u) {
+	let re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
+	let utob = function (u) {
 		return u.replace(re_utob, cb_utob);
 	};
-	var cb_encode = function (ccc) {
-		var padlen = [0, 2, 1][ccc.length % 3],
+	let cb_encode = function (ccc) {
+		let padlen = [0, 2, 1][ccc.length % 3],
 			ord = (ccc.charCodeAt(0) << 16) | ((ccc.length > 1 ? ccc.charCodeAt(1) : 0) << 8) | (ccc.length > 2 ? ccc.charCodeAt(2) : 0),
 			chars = [
 				b64chars.charAt(ord >>> 18),
@@ -51,21 +51,21 @@
 			];
 		return chars.join("");
 	};
-	var btoa = window.btoa
+	let btoa = window.btoa
 		? function (b) {
 				return window.btoa(b);
 		  }
 		: function (b) {
 				return b.replace(/[\s\S]{1,3}/g, cb_encode);
 		  };
-	var _encode = buffer
+	let _encode = buffer
 		? function (u) {
 				return new buffer(u).toString("base64");
 		  }
 		: function (u) {
 				return btoa(utob(u));
 		  };
-	var encode = function (u, urisafe) {
+	let encode = function (u, urisafe) {
 		return !urisafe
 			? _encode(u)
 			: _encode(u)
@@ -74,15 +74,15 @@
 					})
 					.replace(/=/g, "");
 	};
-	var encodeURI = function (u) {
+	let encodeURI = function (u) {
 		return encode(u, true);
 	};
 	// decoder stuff
-	var re_btou = new RegExp(["[\xC0-\xDF][\x80-\xBF]", "[\xE0-\xEF][\x80-\xBF]{2}", "[\xF0-\xF7][\x80-\xBF]{3}"].join("|"), "g");
-	var cb_btou = function (cccc) {
+	let re_btou = new RegExp(["[\xC0-\xDF][\x80-\xBF]", "[\xE0-\xEF][\x80-\xBF]{2}", "[\xF0-\xF7][\x80-\xBF]{3}"].join("|"), "g");
+	let cb_btou = function (cccc) {
 		switch (cccc.length) {
 			case 4:
-				var cp =
+				let cp =
 						((0x07 & cccc.charCodeAt(0)) << 18) |
 						((0x3f & cccc.charCodeAt(1)) << 12) |
 						((0x3f & cccc.charCodeAt(2)) << 6) |
@@ -95,11 +95,11 @@
 				return fromCharCode(((0x1f & cccc.charCodeAt(0)) << 6) | (0x3f & cccc.charCodeAt(1)));
 		}
 	};
-	var btou = function (b) {
+	let btou = function (b) {
 		return b.replace(re_btou, cb_btou);
 	};
-	var cb_decode = function (cccc) {
-		var len = cccc.length,
+	let cb_decode = function (cccc) {
+		let len = cccc.length,
 			padlen = len % 4,
 			n =
 				(len > 0 ? b64tab[cccc.charAt(0)] << 18 : 0) |
@@ -110,21 +110,21 @@
 		chars.length -= [0, 0, 2, 1][padlen];
 		return chars.join("");
 	};
-	var atob = window.atob
+	let atob = window.atob
 		? function (a) {
 				return window.atob(a);
 		  }
 		: function (a) {
 				return a.replace(/[\s\S]{1,4}/g, cb_decode);
 		  };
-	var _decode = buffer
+	let _decode = buffer
 		? function (a) {
 				return new buffer(a, "base64").toString();
 		  }
 		: function (a) {
 				return btou(atob(a));
 		  };
-	var decode = function (a) {
+	let decode = function (a) {
 		return _decode(
 			a
 				.replace(/[-_]/g, function (m0) {
@@ -133,8 +133,8 @@
 				.replace(/[^A-Za-z0-9\+\/]/g, "")
 		);
 	};
-	var noConflict = function () {
-		var Base64 = window.Base64;
+	let noConflict = function () {
+		let Base64 = window.Base64;
 		window.Base64 = _Base64;
 		return Base64;
 	};
@@ -154,7 +154,7 @@
 	};
 	// if ES5 is available, make Base64.extendString() available
 	if (typeof Object.defineProperty === "function") {
-		var noEnum = function (v) {
+		let noEnum = function (v) {
 			return {
 				value: v,
 				enumerable: false,
@@ -196,7 +196,7 @@ export const CAPIWS = {
 			if (error) error();
 			return;
 		}
-		var socket;
+		let socket;
 		try {
 			socket = new WebSocket(this.URL);
 		} catch (e) {
@@ -206,7 +206,7 @@ export const CAPIWS = {
 			if (error) error(e);
 		};
 		socket.onmessage = function (event) {
-			var data = JSON.parse(event.data);
+			let data = JSON.parse(event.data);
 			socket.close();
 			callback(event, data);
 		};
@@ -219,7 +219,7 @@ export const CAPIWS = {
 			if (error) error();
 			return;
 		}
-		var socket;
+		let socket;
 		try {
 			socket = new WebSocket(this.URL);
 		} catch (e) {
@@ -229,12 +229,12 @@ export const CAPIWS = {
 			if (error) error(e);
 		};
 		socket.onmessage = function (event) {
-			var data = JSON.parse(event.data);
+			let data = JSON.parse(event.data);
 			socket.close();
 			callback(event, data);
 		};
 		socket.onopen = function () {
-			var o = {
+			let o = {
 				name: "version"
 			};
 			socket.send(JSON.stringify(o));
@@ -245,7 +245,7 @@ export const CAPIWS = {
 			if (error) error();
 			return;
 		}
-		var socket;
+		let socket;
 		try {
 			socket = new WebSocket(this.URL);
 		} catch (e) {
@@ -255,12 +255,12 @@ export const CAPIWS = {
 			if (error) error(e);
 		};
 		socket.onmessage = function (event) {
-			var data = JSON.parse(event.data);
+			let data = JSON.parse(event.data);
 			socket.close();
 			callback(event, data);
 		};
 		socket.onopen = function () {
-			var o = {
+			let o = {
 				name: "apidoc"
 			};
 			socket.send(JSON.stringify(o));
@@ -271,7 +271,7 @@ export const CAPIWS = {
 			if (error) error();
 			return;
 		}
-		var socket;
+		let socket;
 		try {
 			socket = new WebSocket(this.URL);
 		} catch (e) {
@@ -281,14 +281,14 @@ export const CAPIWS = {
 			if (error) error(e);
 		};
 		socket.onmessage = function (event) {
-			var data = JSON.parse(event.data);
+			let data = JSON.parse(event.data);
 			socket.close();
 			if (callback) {
 				callback(event, data);
 			}
 		};
 		socket.onopen = function () {
-			var o = {
+			let o = {
 				name: "apikey",
 				arguments: domainAndKey
 			};

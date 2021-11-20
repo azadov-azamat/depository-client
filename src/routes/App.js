@@ -15,7 +15,6 @@ import {useTranslation} from "react-i18next";
 import {AllMeetings} from "../components/userPages/AllMeetings";
 import {ArchiveMeetings} from "../components/userPages/ArchiveMeetings";
 import NotFound from "../components/NotFound";
-import eimzo from "../eImzo/eimzoo";
 import User from "../pages/User";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'antd/dist/antd.css';
@@ -27,7 +26,7 @@ import ControllerMeeting from "../components/MeetingStarted/ControllerMeeting";
 import Example from "./Example";
 import AddOrEditMeeting from "../components/createMeeting/AddOrEditMeeting";
 import MyProfile from "../components/ProfileSettings/MyProfile";
-
+import eimzo from "../eImzo/eimzoo";
 
 const App = () => {
     const [infoV, setInfoV] = useState(true)
@@ -66,6 +65,7 @@ const App = () => {
                 <PrivateRoute setNav={setInfoV} path='/issuerLegal/meetingSetting'
                               component={ControllerMeeting}/>
 
+                <Route path="/eimzo" exact component={eimzo}/>
                 <Route path="/test" component={Example}/>
                 <Route component={NotFound}/>
             </Switch>

@@ -112,7 +112,6 @@ export default function AddOrEditCompany() {
             image: file,
             ...v
         }
-        console.log(data)
         dispatch(adminCompanyAction.updateCompany({data, history}))
     }
 
@@ -138,7 +137,6 @@ export default function AddOrEditCompany() {
     }
 
     function onChange(val) {
-        console.log(val)
         const NAME = "FULL_NAME";
         if (val.length >= 3) {
             dispatch(actionUser.getUserFilter({value: val, field: NAME}));

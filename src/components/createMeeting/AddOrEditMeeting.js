@@ -54,8 +54,6 @@ export default function AddOrEditMeeting() {
         }
     }, [])
 
-    console.log(currentMeetingId)
-    console.log(currentMeeting)
 
     return (
         <div className="allCss">

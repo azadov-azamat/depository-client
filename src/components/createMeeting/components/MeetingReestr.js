@@ -38,11 +38,9 @@ export default function MeetingReestr({currentMeeting}) {
         if (excelFile.fileName === "") {
             toast.dark("Iltimos faylni tanlang")
         } else {
-            console.log(v)
             const data = new FormData();
             data.append('file', v);
             data.append('meetingId', currentMeeting.id);
-            console.log(data)
             dispatch(meetingActions.addReestrByMeetingAction(data))
         }
     }
@@ -59,7 +57,6 @@ export default function MeetingReestr({currentMeeting}) {
         }
     }
 
-    console.log(memberManagerState)
 
     return (
         <>

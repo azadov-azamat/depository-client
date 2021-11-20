@@ -15,7 +15,6 @@ export const login = (payload) => async (dispatch) => {
             let token = res.payload;
             let parsedToken = jwt(token.id_token);
             let app = parsedToken.auth;
-            console.log(parsedToken)
             const sentence = app.replace(/\s+/g, ' ').trim()
             let arr = sentence.split(',');
             setTimeout(() => {
@@ -28,7 +27,6 @@ export const login = (payload) => async (dispatch) => {
         return true;
     } catch (err) {
         if (err.response) {
-            console.log(err.response.data)
             let code = err.response.data.status;
             if (code === 401) {
                 toast.error(code + ": Login yoki parol xato");

@@ -31,7 +31,6 @@ export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum}) => {
         history.push(value)
     }
 
-    console.log(statusMeeting)
     return (
         roleMember === CHAIRMAN || roleMember === SECRETARY ?
             <div>

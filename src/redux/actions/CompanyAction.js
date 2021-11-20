@@ -36,7 +36,6 @@ export const createCompanyForAdmin = (payload) => async (dispatch) => {
     }).then(res => {
         const payloadDto = payload.data;
         const history = payload.history;
-        console.log(res)
         if (payloadDto.image) {
             const data = new FormData();
             data.append('file', payloadDto.image);
@@ -47,7 +46,6 @@ export const createCompanyForAdmin = (payload) => async (dispatch) => {
         }
     }).catch(err => {
         if (err.response) {
-            console.log(err.response)
             let keyMessage = err.response.data
             if (keyMessage.errorKey === 'phonenumberexists') {
                 toast.error('Telefon raqam oldin ro`yxatdan o`tgan')
@@ -94,7 +92,6 @@ export const updateCompany = (payload) => async (dispatch) => {
         return true;
     } catch (err) {
         if (err.response) {
-            console.log(err.response)
         }
     }
 }
@@ -159,7 +156,6 @@ export const deleteByIdCompany = (payload) => async (dispatch) => {
 } // success 95%
 
 export const getCompanyByUserId = (payload) => async (dispatch) => {
-    console.log(payload)
     dispatch({
         api: getCompanyByUserIdApi,
         types: ['REQUEST_GET_COMPANY_START', 'REQUEST_GET_COMPANY_SUCCESS', "REQUEST_GET_COMPANY_ERROR"],
@@ -173,10 +169,8 @@ export const getLogoCompanyByCompanyIDAction = (payload) => async (dispatch) => 
         types: ['REQUEST_GET_COMPANY_LOGO_START', "REQUEST_GET_COMPANY_LOGO_SUCCESS", "REQUEST_GET_COMPANY_LOGO_ERROR"],
         data: payload.companyId
     }).then(res => {
-        console.log(res)
         // payload.history.push('/admin/company')
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -190,9 +184,7 @@ export const addLogoCompany = (payload) => async (dispatch) => {
         ],
         data: payload.data
     }).then(res => {
-        console.log(res)
         payload.history.push('/admin/company')
     }).catch(err => {
-        console.log(err)
     })
 }

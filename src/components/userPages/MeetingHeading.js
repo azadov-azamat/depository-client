@@ -27,8 +27,6 @@ export default function MeetingHeading({company}) {
         height: '30px'
     }
 
-    console.log(company)
-
     return (
         <div className="container">
             <Row className="d-none d-md-grid">

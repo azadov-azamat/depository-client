@@ -45,10 +45,6 @@ export default function MyProfile() {
         cursor: 'wait'
     }
 
-    console.log(booleanMy)
-    console.log(userCompanies)
-    console.log(userMeetings)
-
     return (
         <div style={loading ? styleCursor : {}}>
             <Container>

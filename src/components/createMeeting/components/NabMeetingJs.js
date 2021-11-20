@@ -137,7 +137,6 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
-            console.log(data)
             dispatch(meetingActions.updateMeetingAction({data, history}))
         }
     }

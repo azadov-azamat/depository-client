@@ -72,7 +72,6 @@ export default function ButtonValue({meetingId, pathname, id}) {
                         }
 
                         if (element.memberTypeEnum === CHAIRMAN || element.memberTypeEnum === SECRETARY) {
-                            console.log(element)
                             return (
                                 <>
                                     <button onClick={() => historyPushItem(element.memberTypeEnum)}

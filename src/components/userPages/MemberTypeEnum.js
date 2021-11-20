@@ -7,8 +7,6 @@ export default function MemberTypeEnum({meetingId}){
     const {memberManagerState} = reducers.meeting
 
 
-    console.log(meetingId.map(element=> element.id))
-
     // dispatch(meetingActions.getMemberByMeetingId({meetingId: 13152}))
 
     return(

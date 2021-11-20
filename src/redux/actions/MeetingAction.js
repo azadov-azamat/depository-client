@@ -31,7 +31,6 @@ export const getMeetingByIdAction = (payload) => async (dispatch) => {
         ],
         data: payload.meetingId
     }).then(res=>{
-        console.log(res)
     })
 } //success 90%
 
@@ -48,7 +47,6 @@ export const getMeetingList = (payload) => async (dispatch) => {
 } //success 90%
 
 export const getMeetingFilter = (payload) => async (dispatch) => {
-    console.log(payload);
     try {
         const res = await dispatch({
             api: getMeetingBySorted,
@@ -56,12 +54,10 @@ export const getMeetingFilter = (payload) => async (dispatch) => {
             data: payload
         });
         if (res.success) {
-            console.log(res)
         }
         return true;
     } catch (err) {
         if (err.response) {
-            console.log(err)
         }
     }
 } // checking !!!
@@ -72,10 +68,10 @@ export const createMeeting = (payload) => async (dispatch) => {
         types: ["REQUEST_START", types.REQUEST_CREATE_MEETING, "",],
         data: payload.data
     }).then(res => {
-        console.log(res)
-        payload.history.push('/supervisory/meetingUsers')
+        const currentMeetingId = res.payload.id;
+        localStorage.setItem(DEPOSITORY_CURRENT_MEETING, currentMeetingId)
+        payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
     }).catch(err => {
-        console.log(err.response);
     })
 } // success 95%
 
@@ -85,16 +81,14 @@ export const updateMeetingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_UPDATE_MEETING", "REQUEST_UPDATE_MEETING", "REQUEST_ERROR_UPDATE_MEETING",],
         data: payload.data
     }).then(res => {
-        dispatch(getMeetingByIdAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
-        payload.history.push('/supervisory/meetingUsers')
+        const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
+        dispatch(getMeetingByIdAction({meetingId: currentMeetingId}))
+        payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
     }).catch(err => {
-        console.log(err.response);
     })
 } // success 95%
 
 export const deleteMeetingById = (payload) => async (dispatch) => {
-    console.log('action')
-    console.log(payload)
     dispatch({
         api: deleteMeeting,
         types: types.REQUEST_DELETE_BY_ID,
@@ -102,7 +96,6 @@ export const deleteMeetingById = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch(getMeetingList({page: 1, size: 6}))
     }).catch(err => {
-        console.log(err)
         toast.error('Извини, ты ошибся')
     })
 } // warning 60%
@@ -122,36 +115,28 @@ export const getMemberById = (payload) => async (dispatch) => {
         types: ["", "REQUEST_GET_MEMBER_BY_ID_SUCCESS", ""],
         data: payload.ID
     }).then(res => {
-        console.log(res)
     });
 } // success 90%
 
 export const addMemberManagers = (payload) => async (dispatch) => {
-    console.log(payload)
     dispatch({
         api: addMemberManagerApi,
         types: ["REQUEST_START", types.REQUEST_MEMBER_MANAGERS, "REQUEST_ERROR_MEMBER",],
         data: payload.data
     }).then(res => {
-        console.log(res)
         dispatch(getMemberByMeetingId({meetingId: payload.data.meetingId, page: 1, size: 6}))
     }).catch(err => {
-        console.log(err.response);
     })
 } // success 95%
 
 export const deleteMemberById = (payload) => async (dispatch) => {
-    console.log('action')
-    console.log(payload)
     dispatch({
         api: deleteMember,
         types: types.REQUEST_DELETE_BY_ID,
         data: payload.currentMemberId
     }).then(res => {
-        console.log(res)
         dispatch(getMemberByMeetingId({meetingId: payload.currentMeetingId, page: 1, size: 6}))
     }).catch(err => {
-        console.log(err)
         toast.error('Извини, ты ошибся')
     })
 } // success 90%
@@ -162,9 +147,7 @@ export const IsConfirmedAction =(payload)=> async (dispatch)=>{
         types: ["REQUEST_START_IS_CONFIRMED", "REQUEST_SUCCESS_IS_CONFIRMED","REQUEST_ERROR_IS_CONFIRMED"],
         data: payload.currentMemberId
     }).then(res=> {
-        console.log(res)
     }).catch(err=>{
-        console.log(err);
     })
 }
 
@@ -174,9 +157,7 @@ export const getAgendaByMeetingId = (payload) => async (dispatch) => {
         types: ["REQUEST_START_AGENDA", "REQUEST_GET_AGENDA_MY_MEETING_ID_SUCCESS", "REQUEST_ERROR_AGENDA"],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err=>{
-        console.log(err)
     })
 }
 
@@ -186,10 +167,8 @@ export const addAgenda = (payload) => async (dispatch) => {
         types: ["REQUEST_START", "REQUEST_AGENDA_SUCCESS", "REQUEST_ERROR_AGENDA",],
         data: payload.data
     }).then(res => {
-        console.log(res)
         dispatch(getAgendaByMeetingId({meetingId: res.payload.meetingId}))
     }).catch(err => {
-        console.log(err.response);
         if (err.response.data.errorKey === "subjectExists") {
             toast.error('Bu kun tartibidagi masalani siz kiritgansiz!')
         }
@@ -202,10 +181,8 @@ export const deleteByIdAgenda = (payload) => async (dispatch) => {
         types: types.REQUEST_DELETE_BY_ID,
         data: payload.currentAgendaId
     }).then(res => {
-        console.log(res)
         dispatch(getAgendaByMeetingId({meetingId: payload.currentMeetingId}))
     }).catch(err => {
-        console.log(err)
         toast.error('Извини, ты ошибся')
     })
 }
@@ -216,11 +193,9 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_REESTR_START", "REQUEST_REESTR_SUCCESS", "REQUEST_REESTR_ERROR"],
         data: payload
     }).then(res => {
-        console.log(res)
         dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId}))
     }).catch(err => {
         const {detail} = err.response.data;
-        console.log(err.response)
         if (detail === "Required request part 'file' is not present") {
             toast.error("\"Fayl\" so'rovining kerakli qismi mavjud emas! iltimos tekshiring")
         } else {
@@ -236,9 +211,7 @@ export const addVotingAgendaAction = (payload) => async (dispatch) => {
         types: ["REQUEST_POST_VOTING_AGENDA_START", "REQUEST_POST_VOTING_AGENDA_SUCCESS", "REQUEST_POST_VOTING_AGENDA_ERROR"],
         payload: payload.data
     }).then(res => {
-        console.log(res);
     }).catch(err => {
-        console.log(err);
     })
 }
 
@@ -262,21 +235,17 @@ export const addAgendaAndMeetingFile = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch(getMeetingFilesByMeetingIdAction({meetingId: res.payload.meetingId}))
     }).catch(err => {
-        console.log(err)
     })
 } // success 90%
 
 export const deleteMeetingFileAction = (payload) => async (dispatch) => {
-    console.log(payload)
     dispatch({
         api: deleteMeetingFile,
         types: "REQUEST_DELETE_FILE_SUCCESS",
         data: payload.id
     }).then(res => {
-        console.log(res)
         dispatch(getMeetingFilesByMeetingIdAction({meetingId: payload.meetingId}))
     }).catch(err => {
-        console.log(err.response)
     })
 } // warning 70%
 

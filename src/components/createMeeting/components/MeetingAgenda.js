@@ -74,7 +74,6 @@ export default function MeetingAgenda({currentMeeting}) {
             typeEnum: 'MOST',
             variants: values
         }
-        console.log(data)
         dispatch(meetingActions.addAgenda({data, history}))
     };
 

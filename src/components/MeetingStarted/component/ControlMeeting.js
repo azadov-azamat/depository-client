@@ -120,7 +120,6 @@ export default function ControlMeeting({meetingStatus, memberList, currentMeetin
         }
     }
 
-    console.log(memberList)
 
     useEffect(() => {
         memberList.forEach(element => {

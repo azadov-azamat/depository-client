@@ -6,20 +6,19 @@ import {dark} from "@material-ui/core/styles/createPalette";
 
 export const createUserForAdmin = (payload) => async (dispatch) => {
     try {
-        console.log('adminUserAction')
         const res = await dispatch({
             api: createUser,
             types: ["", types.REQUEST_CREATE_USER, types.REQUEST_API_ERROR_USERS],
             data: payload.data,
         });
         if (res.success) {
-            console.log(res)
             payload.history.push('/admin/users')
         }
         return true;
     } catch (err) {
-        if (err.response)
-            console.log(err.response.data)
+        if (err.response){
+            console.log(err.response)
+        }
     }
 }
 
@@ -33,14 +32,11 @@ export const getUsersList = (payload) => async (dispatch) => {
         ],
         data: payload
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
 export const getUserFilter = (payload) => async (dispatch) => {
-    console.log(payload)
     try {
         const res = await dispatch({
             api: getFilterUser,
@@ -48,12 +44,10 @@ export const getUserFilter = (payload) => async (dispatch) => {
             data: payload
         });
         if (res.success) {
-            console.log(res)
         }
         return true;
     } catch (err) {
         if (err.response) {
-            console.log(err)
         }
     }
 }
@@ -65,9 +59,7 @@ export const getUserById = (payload) => async (dispatch) => {
         types: types.REQUEST_GET_USER_SUCCESS,
         data: payload.ID
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err)
     })
 }
 
@@ -77,8 +69,6 @@ export const editUserAction = (payload) => async (dispatch) => {
         types: [REQUEST_API_START_USERS, '', REQUEST_API_ERROR_USERS],
         data: payload.data
     }).then(res => {
-        console.log(res)
     }).catch(err => {
-        console.log(err);
     })
 }

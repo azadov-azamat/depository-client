@@ -32,14 +32,12 @@ export default function MeetingFiles({currentMeeting}) {
 
     };
 
-    console.log(currentMeeting)
 
     useEffect(() => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeeting?.id}))
         dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: currentMeeting?.id}))
     }, [currentMeeting])
 
-    console.log(meetingFile)
 
     function downloadSetFile(e, v) {
 

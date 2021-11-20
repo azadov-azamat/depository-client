@@ -118,7 +118,6 @@ export default function MeetingMembers({currentMeeting}) {
         setSelectedRole(value)
     }
 
-    console.log(currentMeeting)
 
     return (
         <Row>
