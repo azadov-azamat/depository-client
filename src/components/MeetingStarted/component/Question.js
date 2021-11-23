@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {AccordionQuestion} from "./Accordions/AccordionQuestion";
 import {AvField, AvForm} from "availity-reactstrap-validation";
-import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER} from "../../../utils/contants";
+import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, TOKEN} from "../../../utils/contants";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
 import {Pagination} from "@material-ui/lab";
@@ -12,6 +12,14 @@ export default function Question({list}) {
 
     const dispatch = useDispatch();
     let clientRef = useRef(null);
+
+    let url = 'https://depositary.herokuapp.com:443/websocket/question/';
+    const authToken = localStorage.getItem(TOKEN)
+
+    if (authToken) {
+        const s = authToken.substr(7, authToken.length -1);
+        url += '?access_token=' + s;
+    }
 
     function editQuestion(e, v) {
         const data = {
@@ -31,7 +39,7 @@ export default function Question({list}) {
             <div className="header d-flex justify-content-center py-3">
                 <text className=""><b>Поступающие вопросы от наблюдательного совета</b></text>
             </div>
-            {list.slice(0).reverse().map((element, index) =>
+            {list?.slice(0).reverse().map((element, index) =>
                 <AccordionQuestion open={1}>
                     <AccordionQuestion.Item>
                         <AccordionQuestion.Header>
@@ -73,7 +81,7 @@ export default function Question({list}) {
                 </AccordionQuestion>
             )}
             <SockJsClient
-                url={"https://depositary.herokuapp.com:443/websocket/question/"}
+                url={url}
                 topics={['/topic/answer']}
                 onConnect={() => console.log("Connected")}
                 onDisconnect={() => console.log("Disconnected")}

@@ -106,10 +106,9 @@ export default function Router({currentCompany, currentMeeting, userMemberType, 
                                 userMemberType === CHAIRMAN || userMemberType === SECRETARY ?
 
                                     localStorage.getItem(DEPOSITORY_ZOOM_MEETING_LINK) ?
-                                        <div className="d-flex justify-content-between align-items-center"
+                                        <div className="d-flex justify-content-end align-items-center"
                                              style={{width: "60vh"}}>
                                             <span>Zoom password: <code>{localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD)}</code></span>
-                                            <span>Посетить конференцию: <a href={localStorage.getItem(DEPOSITORY_ZOOM_MEETING_LINK)} target="_blank"> join</a></span>
                                         </div>
                                         :
                                         <a href="#" onClick={()=> zoomEnum(ACTIVE)}>Создать конференцию</a>

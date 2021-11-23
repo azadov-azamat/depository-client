@@ -39,7 +39,7 @@ export const ControllerMeeting = () => {
     const {pathname} = location
     const reducers = useSelector(state => state)
     const {agendaState, currentMeeting, userMemberType, memberManagerState, meetingFile} = reducers.meeting
-    const {loadingLogging, questionList, loggingList, questionListMemberId} = reducers.meetingStarted
+    const {loadingLogging, questionList, loggingList, questionListMemberId, countBadge} = reducers.meetingStarted
     const {currentUser} = reducers.users
     const {currentCompany} = reducers.company
     const {payload} = reducers.auth.totalCount
@@ -65,7 +65,7 @@ export const ControllerMeeting = () => {
     const [password, setPassword] = useState('')
     const [close, setClose] = useState(false)
     const link = 'https://meet.jit.si/' + room;
-
+    const [badgeCount, setBadgeCount] = useState(0);
 
     const handleStartMeeting = (roomName, userName, password, link) => {
         setEnd(false)
@@ -110,6 +110,13 @@ export const ControllerMeeting = () => {
         })
     }, [memberManagerState])
 
+    useEffect(() => {
+        questionList && questionList.forEach(element => {
+            if (!element.questionAnswer) {
+                setBadgeCount(prevState => prevState + 1)
+            }
+        })
+    }, [])
 
     importScript("https://meet.jit.si/external_api.js");
 
@@ -144,7 +151,8 @@ export const ControllerMeeting = () => {
                 <div className="shadow p-3 my-3">
                     <div className="row">
                         <div className="col-12 col-md-8">
-                            <NavbarControlMeeting roleMember={userMemberType} zoomEnum={zoomEnum}
+                            <NavbarControlMeeting countBadge={badgeCount} roleMember={userMemberType}
+                                                  zoomEnum={zoomEnum}
                                                   statusMeeting={currentMeeting && currentMeeting.status}/>
                             <Switch>
                                 <Route path="/issuerLegal/meetingSetting" exact>

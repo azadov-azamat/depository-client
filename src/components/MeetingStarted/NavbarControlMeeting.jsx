@@ -4,10 +4,11 @@ import {NavLink, useHistory, useLocation} from "react-router-dom";
 import {Select} from "antd";
 import {ACTIVE, CHAIRMAN, SECRETARY} from "../../utils/contants";
 import {Badge} from "@material-ui/core";
+import {useDispatch} from "react-redux";
 
 const {Option} = Select;
 
-export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum}) => {
+export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum, countBadge}) => {
 
     const history = useHistory();
     const location = useLocation();
@@ -24,7 +25,7 @@ export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum}) => {
     const linkMap = ({id, text, link}) => (
         id === 2 ?
             <NavItem>
-                <Badge badgeContent={4} color="secondary">
+                <Badge badgeContent={countBadge} color="secondary">
                     <NavLink to={link} className={"nav-link"}
                              style={roleMember === SECRETARY ? {paddingLeft: "6px", paddingRight: '6px'} : {}}>{text}
                     </NavLink>
@@ -74,8 +75,8 @@ export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum}) => {
                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
                     >
-                        {link.map(value =>
-                            <Option value={value.link}>{value.text}</Option>
+                        {link.map((value, index) =>
+                            <Option key={index} value={value.link}>{value.text}</Option>
                         )}
                         {roleMember === SECRETARY ?
                             <Option value={'/issuerLegal/meetingSetting/list_users'}>Участники</Option> : ""

@@ -33,6 +33,14 @@ export default function CommentsAllPage({
     const [openQuestionModal, setOpenQuestionModal] = useState(false);
     const [openAnswerModal, setOpenAnswerModal] = useState(false);
 
+    let url = 'https://depositary.herokuapp.com:443/websocket/question/';
+    const authToken = localStorage.getItem(TOKEN)
+
+    if (authToken) {
+        const s = authToken.substr(7, authToken.length -1);
+        url += '?access_token=' + s;
+    }
+
     useEffect(() => {
         dispatch(meetingStartedAction.getLoggingAction({meetingId: currentMeetingId}))
         dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: currentMeetingId}))
@@ -75,7 +83,7 @@ export default function CommentsAllPage({
         clientRef.sendMessage('/topic/question', JSON.stringify(data));
         // dispatch(meetingStartedAction.addQuestionAction({data, setOpenQuestionModal}))
     }
-    
+
 
     return (
         <>
@@ -202,7 +210,7 @@ export default function CommentsAllPage({
                 </ModalBody>
             </Modal>
             <SockJsClient
-                url={"https://depositary.herokuapp.com:443/websocket/question/"}
+                url={url}
                 topics={['/topic/answer']}
                 onConnect={() => console.log("Connected")}
                 onDisconnect={() => console.log("Disconnected")}

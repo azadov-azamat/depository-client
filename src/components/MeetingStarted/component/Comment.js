@@ -2,7 +2,6 @@ import React, {useRef} from 'react'
 import {AvField, AvForm} from 'availity-reactstrap-validation'
 import Loader from "react-loader-spinner";
 import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, TOKEN} from "../../../utils/contants";
-import Socket from "../socket.io/Socket";
 import {useDispatch} from "react-redux";
 import SockJsClient from "react-stomp";
 
@@ -12,15 +11,15 @@ export default function Comment({comment, loading}) {
     let clientRef = useRef(null);
 
     let url = 'https://depositary.herokuapp.com:443/websocket/logger/';
-    // const authToken = localStorage.getItem(TOKEN)
-    // const authToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1ei01MjIwODAyNzMxMDAyNiIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2Mzc2ODgxMDB9.nFmDb1xMw3JZJOUy47yyU2raBTQCwjxLt7Cxcs44yQSYa_O4paBAyyO4izeUhJvQthM8f_H90LCh6wUb0LGzOg"
     const authToken = localStorage.getItem(TOKEN)
 
     if (authToken) {
-        url += '?access_token=' + authToken;
+        const s = authToken.substr(7, authToken.length - 1);
+        url += '?access_token=' + s;
     }
 
     const commentLogging = (e, v) => {
+        console.log("keldi==========")
         const data = {
             userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
             meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
@@ -71,7 +70,6 @@ export default function Comment({comment, loading}) {
                 ref={(client) => {
                     clientRef = client
                 }}
-
             />
         </>
     )
