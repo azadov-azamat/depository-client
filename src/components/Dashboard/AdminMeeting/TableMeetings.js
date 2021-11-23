@@ -1,7 +1,7 @@
 import React from "react";
 import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
 import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contants";
-
+import FindCity from './component/FindCity'
 
 export default function TableMeetings({meeting, deleteById, updateMeeting}) {
     const style = {
@@ -35,8 +35,8 @@ export default function TableMeetings({meeting, deleteById, updateMeeting}) {
             </th>
             <td className="text-center company" style={style}>
                 <p style={style}>
-                {meeting.companyName}
-            </p></td>
+                    {meeting.companyName}
+                </p></td>
             <td className="text-center company" style={style}>{status(meeting.status)}</td>
             <td className="text-center company" style={style}>{
                 meeting.startDate.substr(0, 10) + " " + meeting.startDate.substr(11, 5)
@@ -54,7 +54,8 @@ export default function TableMeetings({meeting, deleteById, updateMeeting}) {
                 <span className="text-danger  m-0 p-0"><FaTimes/></span>}
             </td>
             <td className="text-center">
-                <div style={{marginTop: '-10px'}} className="btn text-danger  m-0 p-0" onClick={() => deleteById(meeting.id)}>
+                <div style={{marginTop: '-10px'}} className="btn text-danger  m-0 p-0"
+                     onClick={() => deleteById(meeting.id)}>
                     <FaTrash style={{marginTop: '4px'}}/></div>
             </td>
         </tr>

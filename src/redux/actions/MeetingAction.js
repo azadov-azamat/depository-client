@@ -8,7 +8,7 @@ import {
     deleteMeeting,
     deleteMeetingFile,
     deleteMember, downloadByIdMeetingFilesApi, editMeetingApi,
-    getAgendaByMeetingIdApi, getMeetingByIdApi,
+    getAgendaByMeetingIdApi, getCitiesApi, getCityByIdApi, getMeetingByIdApi,
     getMeetingBySorted,
     getMeetingFilesByMeetingIdApi,
     getMeetings,
@@ -30,7 +30,7 @@ export const getMeetingByIdAction = (payload) => async (dispatch) => {
             "REQUEST_GET_MEETING_ERROR",
         ],
         data: payload.meetingId
-    }).then(res=>{
+    }).then(res => {
     })
 } //success 90%
 
@@ -141,13 +141,13 @@ export const deleteMemberById = (payload) => async (dispatch) => {
     })
 } // success 90%
 
-export const IsConfirmedAction =(payload)=> async (dispatch)=>{
+export const IsConfirmedAction = (payload) => async (dispatch) => {
     dispatch({
         api: isConfirmed,
-        types: ["REQUEST_START_IS_CONFIRMED", "REQUEST_SUCCESS_IS_CONFIRMED","REQUEST_ERROR_IS_CONFIRMED"],
+        types: ["REQUEST_START_IS_CONFIRMED", "REQUEST_SUCCESS_IS_CONFIRMED", "REQUEST_ERROR_IS_CONFIRMED"],
         data: payload.currentMemberId
-    }).then(res=> {
-    }).catch(err=>{
+    }).then(res => {
+    }).catch(err => {
     })
 }
 
@@ -157,7 +157,7 @@ export const getAgendaByMeetingId = (payload) => async (dispatch) => {
         types: ["REQUEST_START_AGENDA", "REQUEST_GET_AGENDA_MY_MEETING_ID_SUCCESS", "REQUEST_ERROR_AGENDA"],
         data: payload
     }).then(res => {
-    }).catch(err=>{
+    }).catch(err => {
     })
 }
 
@@ -253,6 +253,21 @@ export const downloadByIdMeetingFiles = (payload) => async (dispatch) => {
     dispatch({
         api: downloadByIdMeetingFilesApi,
         types: ['REQUEST_DOWNLOAD_START', "REQUEST_DOWNLOAD_SUCCESS", "REQUEST_DOWNLOAD_ERROR"],
+        data: payload
+    })
+}
+
+export const getCityByIdAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: getCityByIdApi,
+        types: ["", "REQUEST_GET_BY_ID_CITY", ""],
+        data: payload.cityId
+    })
+}
+export const getCitiesAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: getCitiesApi,
+        types: "REQUEST_GET_CITIES",
         data: payload
     })
 }

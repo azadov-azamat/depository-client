@@ -3,6 +3,7 @@ import {NavItem} from "reactstrap";
 import {NavLink, useHistory, useLocation} from "react-router-dom";
 import {Select} from "antd";
 import {ACTIVE, CHAIRMAN, SECRETARY} from "../../utils/contants";
+import {Badge} from "@material-ui/core";
 
 const {Option} = Select;
 
@@ -13,18 +14,29 @@ export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum}) => {
     const {pathname} = location;
 
     const link = [
-        {text: 'Повестка дня', link: '/issuerLegal/meetingSetting'},
-        {text: 'Вопросы | +1', link: '/issuerLegal/meetingSetting/question'},
-        {text: 'Комментирование', link: '/issuerLegal/meetingSetting/comment-by-meeting'},
-        {text: 'Управлять', link: '/issuerLegal/meetingSetting/control-meeting'},
+        {id: 1, text: 'Повестка дня', link: '/issuerLegal/meetingSetting'},
+        {id: 2, text: 'Вопросы', link: '/issuerLegal/meetingSetting/question'},
+        {id: 3, text: 'Комментирование', link: '/issuerLegal/meetingSetting/comment-by-meeting'},
+        {id: 4, text: 'Управлять', link: '/issuerLegal/meetingSetting/control-meeting'},
         // {text: 'Zoom', link: '/issuerLegal/meetingSetting/zoom_meeting'},
     ]
 
-    const linkMap = ({text, link}) => (
-        <NavItem>
-            <NavLink to={link} className={"nav-link"}
-                     style={roleMember === SECRETARY ? {paddingLeft: "6px", paddingRight: '6px'} : {}}>{text}</NavLink>
-        </NavItem>
+    const linkMap = ({id, text, link}) => (
+        id === 2 ?
+            <NavItem>
+                <Badge badgeContent={4} color="secondary">
+                    <NavLink to={link} className={"nav-link"}
+                             style={roleMember === SECRETARY ? {paddingLeft: "6px", paddingRight: '6px'} : {}}>{text}
+                    </NavLink>
+                </Badge>
+            </NavItem> :
+            <NavItem>
+                <NavLink to={link} className={"nav-link"}
+                         style={roleMember === SECRETARY ? {
+                             paddingLeft: "6px",
+                             paddingRight: '6px'
+                         } : {}}>{text}</NavLink>
+            </NavItem>
     )
 
     function onChange(value) {
@@ -47,7 +59,8 @@ export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum}) => {
                     }
                     {zoomEnum === ACTIVE ?
                         <NavItem>
-                            <NavLink to={'/issuerLegal/meetingSetting/zoom_meeting'} className={"nav-link"}>Zoom</NavLink>
+                            <NavLink to={'/issuerLegal/meetingSetting/zoom_meeting'}
+                                     className={"nav-link"}>Zoom</NavLink>
                         </NavItem> : ""
                     }
                 </ul>

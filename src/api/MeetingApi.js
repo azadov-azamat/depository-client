@@ -1,5 +1,6 @@
 import HttpClient from "../utils/HttpClient";
 import {api} from "./api";
+import * as url from "url";
 
 export const getMeetingBySorted = (data) => {
     return HttpClient.doGet(api.companyFilter +
@@ -43,7 +44,7 @@ export const deleteMember = (data) => {
     return HttpClient.doDelete(api.member + "/" + data)
 }
 
-export const isConfirmed=(data)=>{
+export const isConfirmed = (data) => {
     return HttpClient.doPut(api.member + "/" + data)
 }
 
@@ -87,4 +88,13 @@ export const deleteMeetingFile = (data) => {
 
 export const downloadByIdMeetingFilesApi = (data) => {
     return HttpClient.doGet(api.downloadFile + data)
+}
+
+
+export const getCityByIdApi = (data) => {
+    return HttpClient.doGet(api.getCountry + "/" + data)
+}
+
+export const getCitiesApi = (data) => {
+    return HttpClient.doGet(api.getCountry)
 }

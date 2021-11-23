@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useDispatch} from "react-redux";
 import * as meetingStarted from "../../../redux/actions/MeetingStartedAction";
 import {confirmAlert} from "react-confirm-alert";
@@ -12,10 +12,16 @@ import {
 } from "../../../utils/contants";
 import {AccordionAgenda} from "./Accordions/AccordionAgenda";
 import {Button} from "reactstrap";
+import * as meetingActions from "../../../redux/actions/MeetingAction";
 
 export default function DayPlan({agendaSubject, roleMember}) {
 
     const dispatch = useDispatch();
+    const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
+
+    useEffect(()=>{
+        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
+    },[currentMeetingId])
 
     function editStatusElement(id) {
         const data = {

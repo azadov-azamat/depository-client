@@ -1,7 +1,7 @@
 import React, {useRef} from 'react'
 import {AvField, AvForm} from 'availity-reactstrap-validation'
 import Loader from "react-loader-spinner";
-import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER} from "../../../utils/contants";
+import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, TOKEN} from "../../../utils/contants";
 import Socket from "../socket.io/Socket";
 import {useDispatch} from "react-redux";
 import SockJsClient from "react-stomp";
@@ -10,6 +10,15 @@ export default function Comment({comment, loading}) {
 
     const dispatch = useDispatch();
     let clientRef = useRef(null);
+
+    let url = 'https://depositary.herokuapp.com:443/websocket/logger/';
+    // const authToken = localStorage.getItem(TOKEN)
+    // const authToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1ei01MjIwODAyNzMxMDAyNiIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2Mzc2ODgxMDB9.nFmDb1xMw3JZJOUy47yyU2raBTQCwjxLt7Cxcs44yQSYa_O4paBAyyO4izeUhJvQthM8f_H90LCh6wUb0LGzOg"
+    const authToken = localStorage.getItem(TOKEN)
+
+    if (authToken) {
+        url += '?access_token=' + authToken;
+    }
 
     const commentLogging = (e, v) => {
         const data = {
@@ -46,8 +55,9 @@ export default function Comment({comment, loading}) {
                     <button className="btn create mt-2">Комментировать</button>
                 }
             </AvForm>
+
             <SockJsClient
-                url={"https://depositary.herokuapp.com:443/websocket/logger/"}
+                url={url}
                 topics={['/topic/user']}
                 onConnect={() => console.log("Connected")}
                 onDisconnect={() => console.log("Disconnected")}

@@ -114,6 +114,15 @@ const reducers = {
         state.meetingFileStart = true
     },
 
+
+
+    ['REQUEST_GET_BY_ID_CITY'](state, action) {
+        state.currentCity = action.payload
+    },
+    ['REQUEST_GET_CITIES'](state, action) {
+        state.citiesList = action.payload
+    },
+
     // [types.REQUEST_DELETE_BY_ID](state, payload) {
     //     const filterMeeting = state.filter(meeting => meeting.id !== payload.payload && meeting)
     //     state = filterMeeting;
@@ -121,69 +130,3 @@ const reducers = {
 }
 
 export default createReducer(initialState, reducers);
-
-// const meetingReducer = (state = initialState, action) => {
-//     switch (action.type) {
-//         case GET_MEETING :
-//             state = action.payload;
-//             return state;
-//         case ADD_MEETING :
-//             state = [...state, action.payload];
-//             return state;
-//         case SEARCH_MEETING :
-//             const searchMeeting = state.filter(meeting => meeting?.companyId.includes(action.payload.companyId.trim()))
-//             state = searchMeeting;
-//             return state;
-//         case UPDATE_MEETING :
-//             const updateState = state.map(meeting => meeting.id === action.payload.id ? action.payload : meeting);
-//             state = updateState;
-//             return state;
-//
-//         case ADD_ROLE_MEETING :
-//             const updateRole = state.map(meeting => meeting.id === action.payload.id ? meeting = {
-//                 ...meeting,
-//                 roles: [...meeting?.roles, action.payload]
-//             } : meeting);
-//             state = updateRole;
-//             return state;
-//         case DELETE_ROLE_MEETING:
-//             const filterRoleMeeting = state.filter(roleMeeting => roleMeeting.id !== action.payload && roleMeeting)
-//             state = filterRoleMeeting;
-//             return state;
-//
-//         case ADD_DAYPLAN_MEETING :
-//             const updateDayplan = state.map(meeting => meeting.id === action.payload.id ? meeting = {
-//                 ...meeting,
-//                 dayplan: [...meeting?.dayplan, action.payload]
-//             } : meeting);
-//             state = updateDayplan;
-//             return state;
-//
-//         case ADD_FILENAME_MEETING :
-//             const updateFileName = state.map(meeting => meeting.id === action.payload.id ? meeting = {
-//                 ...meeting,
-//                 file: [...meeting.file, action.payload.file]
-//             } : meeting);
-//             state = updateFileName;
-//             return state;
-//         case DELETE_FILENAME_MEETING:
-//             const filterFileMeeting = state.filter(fileMeeting => fileMeeting.fileName !== action.payload && fileMeeting)
-//             state = filterFileMeeting;
-//             return state;
-//         case ADD_MEMBERS_LIST :
-//             const updateMemberslist = state.map(meeting => meeting.id === action.payload.id ? meeting = {
-//                 ...meeting,
-//                 memberslist: [...meeting.memberslist, action.payload]
-//             } : meeting);
-//             state = updateMemberslist;
-//             return state;
-//         case DELETE_MEETING :
-//             const filterMeeting = state.filter(meeting => meeting.id !== action.payload && meeting)
-//             state = filterMeeting;
-//             return state;
-//         default:
-//             return state;
-//     }
-// }
-//
-// export default meetingReducer;
