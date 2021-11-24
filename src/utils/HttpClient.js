@@ -23,6 +23,8 @@ export default class HttpClient {
     }
 
     static doGet(url, params = {}) {
+        console.log("Http clientga keldi " + url)
+        console.log("Http clientga keldi " + params)
         return HttpClient.doRequest().get(url, params)
     }
 

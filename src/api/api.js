@@ -40,6 +40,6 @@ export const api = {
     getBallotByMember: '/ballot/by-member',
     getBallotByOption: '/ballot/by-option',
     getBallotByVoting: '/ballot/by-voting',
-    getBallotVoting: "/ballot/by-meet-and-mem",
+    getBallotVoting: "/ballot/ballots-by-agen-mem",
 
 };

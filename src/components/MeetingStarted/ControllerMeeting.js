@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {NavbarControlMeeting} from './NavbarControlMeeting'
-import DayPlan from "./component/DayPlan"
+import Agenda from "./component/Agenda"
 import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import Router from "./Router";
 import CommentsAllPage from "./component/CommentsAllPage";
 import * as meetingActions from "../../redux/actions/MeetingAction";
-import * as meetingStartedActions from "../../redux/actions/MeetingStartedAction";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -18,7 +17,7 @@ import {
     DEPOSITORY_ZOOM_MEETING_LINK,
     DEPOSITORY_ZOOM_MEETING_PASSWORD,
     PENDING,
-    SECRETARY
+    SECRETARY, TOKEN
 } from "../../utils/contants";
 import Question from "./component/Question";
 import Comment from "./component/Comment";
@@ -30,19 +29,24 @@ import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import importScript from "./component/Zoom Meeting/importScript";
 import {Col, Container, Row} from "reactstrap";
 import {Jutsu} from 'react-jutsu';
+import SockJsClient from "react-stomp";
+import {DeleteLoggingByIdAction} from "../../redux/actions/MeetingStartedAction";
 
 export const ControllerMeeting = () => {
 
     const history = useHistory();
     const dispatch = useDispatch();
     const location = useLocation();
+
     const {pathname} = location
     const reducers = useSelector(state => state)
     const {agendaState, currentMeeting, userMemberType, memberManagerState, meetingFile} = reducers.meeting
-    const {loadingLogging, questionList, loggingList, questionListMemberId, countBadge} = reducers.meetingStarted
+    const {loadingLogging, questionList, loggingList, questionListMemberId, password_zoom, password_id} = reducers.meetingStarted
     const {currentUser} = reducers.users
     const {currentCompany} = reducers.company
     const {payload} = reducers.auth.totalCount
+
+    let clientRef = useRef(null);
 
     const [room, setRoom] = useState()
     const [end, setEnd] = useState(false);
@@ -50,6 +54,7 @@ export const ControllerMeeting = () => {
     const username = currentUser?.fullName;
     const currentCompanyId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_COMPANY));
     const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
+    const currentMemberId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER));
 
     const [page, setPage] = useState(1);
     const size = 5;
@@ -84,6 +89,14 @@ export const ControllerMeeting = () => {
         _DATA.jump(p);
     };
 
+    let url = 'https://depositary.herokuapp.com:443/websocket/logger/';
+    const authToken = localStorage.getItem(TOKEN)
+
+    if (authToken) {
+        const s = authToken.substr(7, authToken.length - 1);
+        url += '?access_token=' + s;
+    }
+
     useEffect(() => {
         dispatch(userAction.getUserById({ID: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
         dispatch(adminCompanyAction.getCompanyByIdAction({companyId: currentCompanyId, history}))
@@ -91,12 +104,7 @@ export const ControllerMeeting = () => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId}))
         dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: currentMeetingId}))
-        dispatch(meetingStartedActions.getBallotVoting({
-            data: {
-                memberId: localStorage.getItem(DEPOSITORY_CURRENT_MEMBER),
-                meetingId: currentMeetingId
-            }
-        }))
+
         dispatch({type: "memberTypeCurrentUser", payload: localStorage.getItem(DEPOSITORY_MEMBER_TYPE_USER)});
 
         setRoom(currentCompanyId + "/" + currentMeetingId)
@@ -124,8 +132,13 @@ export const ControllerMeeting = () => {
         event.preventDefault()
         if (room && username) setCall(true)
         handleStartMeeting(room, username, password, link);
-        localStorage.setItem(DEPOSITORY_ZOOM_MEETING_PASSWORD, password)
-        localStorage.setItem(DEPOSITORY_ZOOM_MEETING_LINK, link)
+
+        const data = {
+            userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+            meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
+            loggingText: "PASSWORD_ZOOM: " + password
+        }
+        clientRef.sendMessage('/topic/user-all', JSON.stringify(data));
     }
 
     const onCloseButton = () => {
@@ -134,14 +147,13 @@ export const ControllerMeeting = () => {
         setCall(false);
         setClose(true);
         localStorage.removeItem(DEPOSITORY_ZOOM_MEETING_PASSWORD)
-        localStorage.removeItem(DEPOSITORY_ZOOM_MEETING_LINK)
         setZoomEnum(PENDING)
+        dispatch(meetingStartedAction.DeleteLoggingByIdAction({ID: parseInt(password_id)}))
         history.push("/issuerLegal/meetingSetting")
     }
 
-    const handleCopyLink = () => {
-        navigator.clipboard.writeText(link).then(() => alert("Copied link: " + link))
-    }
+    console.log(password_id);
+    console.log(password_zoom)
 
     return (
         <div className="container meeting">
@@ -152,11 +164,11 @@ export const ControllerMeeting = () => {
                     <div className="row">
                         <div className="col-12 col-md-8">
                             <NavbarControlMeeting countBadge={badgeCount} roleMember={userMemberType}
-                                                  zoomEnum={zoomEnum}
+                                                  zoomEnum={zoomEnum} password_zoom={password_zoom}
                                                   statusMeeting={currentMeeting && currentMeeting.status}/>
                             <Switch>
                                 <Route path="/issuerLegal/meetingSetting" exact>
-                                    <DayPlan agendaSubject={agendaState} roleMember={userMemberType}/>
+                                    <Agenda agendaSubject={agendaState} roleMember={userMemberType}/>
                                 </Route>
                                 <Route path="/issuerLegal/meetingSetting/question">
                                     <Question list={questionList && questionList}/>
@@ -251,6 +263,35 @@ export const ControllerMeeting = () => {
                     </div>
                 </div>
             </div>
+            <SockJsClient
+                url={url}
+                topics={['/topic/user']}
+                onConnect={() => console.log("Connected")}
+                onDisconnect={() => console.log("Disconnected")}
+                onMessage={(msg) => {
+                    console.log(msg)
+                    dispatch({
+                        type: 'REQUEST_SUCCESS_LOGGING_LIST',
+                        payload: msg
+                    })
+                    msg.forEach(element=>{
+                        if (element.loggingText.startsWith("PASSWORD_ZOOM:")){
+                            dispatch({
+                                type: 'PASSWORD_ZOOM_MEETING',
+                                payload: {
+                                    password_zoom: element.loggingText.substr(15, (element.loggingText.length - 1)),
+                                    password_id: element.id
+                                }
+                            })
+                            localStorage.setItem(DEPOSITORY_ZOOM_MEETING_PASSWORD, element.loggingText.substr(15, (element.loggingText.length - 1)))
+                            console.log(element.loggingText.substr(15, (element.loggingText.length - 1)))
+                        }
+                    })
+                }}
+                ref={(client) => {
+                    clientRef = client
+                }}
+            />
         </div>
     )
 }

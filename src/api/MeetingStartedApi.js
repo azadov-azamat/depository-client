@@ -9,6 +9,10 @@ export const addLoggingApi = (data) => {
     return HttpClient.doPost(api.addLogging, data)
 }
 
+export const deleteLoggingByIdApi=(data)=>{
+    return HttpClient.doDelete(api.addLogging + "/" + data)
+}
+
 export const addQuestion = (data) => {
     return HttpClient.doPost(api.addQuestion, data)
 }
@@ -54,5 +58,6 @@ export const getBallotByVotingApi = (data) => {
 }
 
 export const getBallotVotingApi = (data) => {
-    return HttpClient.doGet(api.getBallotVoting + (data && data.meetingId ? "?meetingId=" + data.meetingId + "&memberId=" + data.memberId : ''))
+    console.log("API ga keldi")
+    return HttpClient.doGet(api.getBallotVoting + (data && data.agendaId ? "?agendaId=" + data.agendaId + "&memberId=" + data.memberId : ''))
 }

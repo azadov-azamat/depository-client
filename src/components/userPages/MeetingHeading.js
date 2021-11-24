@@ -80,7 +80,7 @@ export default function MeetingHeading({company}) {
                             <span style={style} className='h4 d-flex justify-content-end'>{company?.name} - </span>
                             {booleanMy ?
                                 <span>
-                                        <img src={currentCompany?.imageUrl} alt="bu rasm"
+                                        <img src={"currentCompany?.imageUrl"} alt="bu rasm"
                                              style={{borderRadius: "50%", width: "8vh", height: "8vh"}}/>
                                     </span>
                                 :

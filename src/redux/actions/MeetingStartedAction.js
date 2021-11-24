@@ -1,7 +1,7 @@
 import {
     addBallotApi,
     addLoggingApi,
-    addQuestion,
+    addQuestion, deleteLoggingByIdApi,
     editQuestion,
     editStatusQuestion,
     getBallotByAgendaApi,
@@ -37,6 +37,24 @@ export const addLoggingAction = (payload) => async (dispatch) => {
     }).catch(err => {
     })
 } // success 95%
+
+export const DeleteLoggingByIdAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: deleteLoggingByIdApi,
+        types: ["REQUEST_DELETE_START_LOGGING", "REQUEST_DELETE_SUCCESS_LOGGING", "REQUEST_DELETE_ERROR_LOGGING",],
+        data: payload.ID
+    }).then(res=>{
+        console.log("bu delete logging =====================")
+        dispatch({
+            type: 'PASSWORD_ZOOM_MEETING',
+            payload: {
+                password_zoom: null,
+                password_id: null
+            }
+        })
+    })
+} // success 95%
+
 
 export const editStatusAgendaAction = (payload) => async (dispatch) => {
     dispatch({
@@ -164,11 +182,15 @@ export const getBallotByVotingAction = (payload) => async (dispatch) => {
 }
 
 export const getBallotVoting = (payload) => async (dispatch) => {
+    console.log("Action ga keldi")
+    console.log(payload)
     dispatch({
         api: getBallotVotingApi,
         types: ["REQUEST_START_GET_BALLOT_VOTING", "REQUEST_SUCCESS_GET_BALLOT_VOTING", "REQUEST_ERROR_GET_BALLOT_VOTING"],
         data: payload
     }).then(res => {
+        console.log(res)
     }).catch(err => {
+        console.log(err)
     })
 }

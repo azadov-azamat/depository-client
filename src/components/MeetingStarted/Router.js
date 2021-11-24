@@ -102,21 +102,20 @@ export default function Router({currentCompany, currentMeeting, userMemberType, 
                                 fontSize={23}/></span>
                             </> : "" ||
                             currentMeeting?.status === ACTIVE ?
-
                                 userMemberType === CHAIRMAN || userMemberType === SECRETARY ?
-
-                                    localStorage.getItem(DEPOSITORY_ZOOM_MEETING_LINK) ?
+                                    localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD) ?
                                         <div className="d-flex justify-content-end align-items-center"
                                              style={{width: "60vh"}}>
                                             <span>Zoom password: <code>{localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD)}</code></span>
                                         </div>
                                         :
-                                        <a href="#" onClick={()=> zoomEnum(ACTIVE)}>Создать конференцию</a>
+                                    <a href="#" onClick={() => zoomEnum(ACTIVE)}>Создать конференцию</a>
                                     :
-                                    <div className="d-flex justify-content-between" style={{width: "57vh"}}>
-                                    <span>Посетить конференцию:<a href={"#"}>join</a></span>
-                                        <span>Zoom password: <code>2208</code></span>
-                                    </div> : ""
+                                    localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD) ?
+                                        <div className="d-flex justify-content-between" style={{width: "57vh"}}>
+                                            <span>Zoom password: <code>{localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD)}</code></span>
+                                        </div> : ""
+                            : "Начата регистрация на засидания"
                     }
                 </div>
             </div>

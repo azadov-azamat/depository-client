@@ -26,13 +26,14 @@ export default function TableUsers({count, page, startIndex, lastIndex, handleCh
                                 <td>{index + 1}</td>
                                 <td>{role.user.fullName}</td>
                                 <td>{role.user.phoneNumber} </td>
-                                <td>{
-                                    role.isConfirmed === true ? <text className="text-success">online</text> :
-                                        <text className="text-danger">offline</text>
-                                }</td>
+                                <td style={role.isInvolved === true ? {backgroundColor: '#F1FFE3'} : {backgroundColor: '#FFECEE'}}>
+                                    {
+                                        role.isInvolved === true ? <text className="text-success">online</text> :
+                                            <text className="text-danger">offline</text>
+                                    }
+                                </td>
                                 <td>
-                                    <button className="btn btn-link"
-                                    >
+                                    <button className="btn btn-link">
                                         <AiOutlineSetting/>
                                     </button>
                                 </td>

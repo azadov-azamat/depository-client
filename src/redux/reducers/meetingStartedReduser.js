@@ -81,6 +81,10 @@ const reducers = {
     },
     ["COUNT_BADGE"](state, action) {
         state.countBadge = action.payload
+    },
+    ["PASSWORD_ZOOM_MEETING"](state, action) {
+        state.password_zoom = action.payload.password_zoom
+        state.password_id = action.payload.password_id
     }
 }
 

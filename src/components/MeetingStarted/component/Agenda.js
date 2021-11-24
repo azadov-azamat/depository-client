@@ -13,8 +13,9 @@ import {
 import {AccordionAgenda} from "./Accordions/AccordionAgenda";
 import {Button} from "reactstrap";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
+import AgendaByVoting from "./AgendaByVoting";
 
-export default function DayPlan({agendaSubject, roleMember}) {
+export default function Agenda({agendaSubject, roleMember}) {
 
     const dispatch = useDispatch();
     const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
@@ -107,31 +108,8 @@ export default function DayPlan({agendaSubject, roleMember}) {
                                                         style={{fontSize: '23px'}}>Решения:</span><br/></> : ""}
                                                     <span style={{fontWeight: 'bold'}}>{elementOption.votingText}</span>
                                                 </div>
-                                                <div className="container d-flex justify-content-center align-items-center">
-                                                    <Button style={{width: "33%"}} color={"success"}
-                                                            className="text-white" onClick={() =>
-                                                        addBallot({
-                                                            votingId: elementOption.id,
-                                                            option: FOR,
-                                                            agendaId: element.id
-                                                        })}>
-                                                        За
-                                                    </Button>
-                                                    <Button style={{width: "33%"}} color={"danger"}
-                                                            onClick={() => addBallot({
-                                                                votingId: elementOption.id,
-                                                                option: REFRAIN,
-                                                                agendaId: element.id
-                                                            })}
-                                                            className='mx-2'>Против</Button>
-                                                    <Button style={{width: "33%"}}
-                                                            onClick={() => addBallot({
-                                                                votingId: elementOption.id,
-                                                                option: AGAINST,
-                                                                agendaId: element.id
-                                                            })}
-                                                    >Воздержался</Button>
-                                                </div>
+                                                <AgendaByVoting agendaId={element.id} votingOptionID={elementOption.id}/>
+
                                             </>
                                         )}
                                     </AccordionAgenda.Body>

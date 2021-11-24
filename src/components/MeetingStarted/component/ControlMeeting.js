@@ -6,7 +6,7 @@ import {
     DEPOSITORY_USER,
     DISABLED,
     FINISH,
-    PENDING
+    PENDING, TOKEN
 } from "../../../utils/contants";
 import {confirmAlert} from "react-confirm-alert";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
@@ -21,6 +21,14 @@ export default function ControlMeeting({meetingStatus, memberList, currentMeetin
     const [count, setCount] = useState(0);
     const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
     let clientRef = useRef(null);
+
+    let url = 'https://depositary.herokuapp.com:443/websocket/logger/';
+    const authToken = localStorage.getItem(TOKEN)
+
+    if (authToken) {
+        const s = authToken.substr(7, authToken.length - 1);
+        url += '?access_token=' + s;
+    }
 
     function startMeeting({status, quorumCount}) {
         if (status === CANCELED || status === PENDING) {
@@ -53,7 +61,7 @@ export default function ControlMeeting({meetingStatus, memberList, currentMeetin
                     {
                         label: 'Да',
                         onClick: () => {
-                            // clientRef.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
+                            clientRef.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
                             dispatch(meetingActions.updateMeetingAction({data: dataForUpdateMeetingStatus}))
                         }
                     },
@@ -92,7 +100,7 @@ export default function ControlMeeting({meetingStatus, memberList, currentMeetin
                     {
                         label: 'Да',
                         onClick: () => {
-                            // clientRef.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
+                            clientRef.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
                             dispatch(meetingActions.updateMeetingAction({data: dataForUpdateMeetingStatus}))
                         }
                     },
@@ -187,22 +195,22 @@ export default function ControlMeeting({meetingStatus, memberList, currentMeetin
                         </div> : ''
                 }
             </div>
-            {/*<SockJsClient*/}
-            {/*    url={"https://depositary.herokuapp.com:443/websocket/logger/"}*/}
-            {/*    topics={['/topic/user']}*/}
-            {/*    onConnect={() => console.log("Connected")}*/}
-            {/*    onDisconnect={() => console.log("Disconnected")}*/}
-            {/*    onMessage={(msg) => {*/}
-            {/*        console.log(msg)*/}
-            {/*        dispatch({*/}
-            {/*            type: 'REQUEST_SUCCESS_LOGGING_LIST',*/}
-            {/*            payload: msg*/}
-            {/*        })*/}
-            {/*    }}*/}
-            {/*    ref={(client) => {*/}
-            {/*        clientRef = client*/}
-            {/*    }}*/}
-            {/*/>*/}
+            <SockJsClient
+                url={url}
+                topics={['/topic/user']}
+                onConnect={() => console.log("Connected")}
+                onDisconnect={() => console.log("Disconnected")}
+                onMessage={(msg) => {
+                    console.log(msg)
+                    dispatch({
+                        type: 'REQUEST_SUCCESS_LOGGING_LIST',
+                        payload: msg
+                    })
+                }}
+                ref={(client) => {
+                    clientRef = client
+                }}
+            />
         </>
     )
 }

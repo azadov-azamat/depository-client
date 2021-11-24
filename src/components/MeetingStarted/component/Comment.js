@@ -1,7 +1,12 @@
 import React, {useRef} from 'react'
 import {AvField, AvForm} from 'availity-reactstrap-validation'
 import Loader from "react-loader-spinner";
-import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, TOKEN} from "../../../utils/contants";
+import {
+    DEPOSITORY_CURRENT_MEETING,
+    DEPOSITORY_USER,
+    DEPOSITORY_ZOOM_MEETING_PASSWORD,
+    TOKEN
+} from "../../../utils/contants";
 import {useDispatch} from "react-redux";
 import SockJsClient from "react-stomp";
 
