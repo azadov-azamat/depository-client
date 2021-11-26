@@ -14,11 +14,13 @@ import RouteByDashboard from "../RouteByDashboard";
 import PaginationDashboard from "../PaginationDashboard";
 import {logDOM} from "@testing-library/react";
 import {DEPOSITORY_CURRENT_MEETING} from "../../../utils/contants";
+import {useTranslation} from "react-i18next";
 
 function AdminMeetings() {
 
     const dispatch = useDispatch();
     const history = useHistory();
+    const {t} = useTranslation();
 
     const reducers = useSelector(state => state);
 
@@ -110,8 +112,8 @@ function AdminMeetings() {
         <div className="dashboard p-3">
             <div className="container-fluid">
                 <div className="users">
-                    <RouteByDashboard link={'/supervisory/addOrEditMeeting'} cardName={'заседаниями'}
-                                      startIndex={startIndex} lastIndex={lastIndex} payload={payload}/>
+                        <RouteByDashboard link={'/supervisory/addOrEditMeeting'} cardName={t("routes.controlPage.meeting")}
+                                      startIndex={startIndex} lastIndex={lastIndex} payload={payload} lang={t}/>
                     <div className="minWidth d-flex justify-content-center align-items-center">
                         <div className="list_wrapper">
                             <Table className="usersList" hover>
@@ -139,7 +141,7 @@ function AdminMeetings() {
                             </Table>
                         </div>
                     </div>
-                    <PaginationDashboard payload={payload} lastIndex={lastIndex} startIndex={startIndex} count={count} page={page} handleChange={handleChange}/>
+                    <PaginationDashboard lang={t} payload={payload} lastIndex={lastIndex} startIndex={startIndex} count={count} page={page} handleChange={handleChange}/>
                 </div>
             </div>
         </div>

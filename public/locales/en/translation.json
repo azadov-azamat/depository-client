@@ -14,6 +14,7 @@
   "shareHolders": "For the Supervisory Board",
   "comfortTable": "Comfort table",
   "fast": "Fast",
+  "cancel": "Cancel",
   "security": "SAFELY",
   "documentation": "Documentation",
   "levelCorporate": "Raising the level of corporate",
@@ -109,5 +110,49 @@
     "creat": "User create",
     "update": "User update",
     "error": "This user is present at the company or meeting"
+  },
+
+  "createButton": "Create record | ",
+
+  "companiesList" : {
+    "nameCompany" : "Name",
+    "email" : "mail",
+    "phoneNumber" : "Telephone",
+    "webSite" : "Web site",
+    "inn" : "inn",
+    "accountCount" : "Account",
+    "from": "from"
+  },
+  "routes" : {
+    "menu" : "Main menu",
+    "electronVoting": "Electronic voting",
+    "controlPage" : {
+      "company": "companies",
+      "meeting": "meetings",
+      "user": "users",
+      "control": "Control ",
+      "clientPage": "Joint Stock Company"
+    },
+    "addOrEditPage" : {
+      "addCompany" : "ADD COMPANY",
+      "editCompany": "EDIT COMPANY",
+
+      "addMeeting" : "Creation of a meeting",
+      "editMeeting": "Editing meeting"
+    }
+  },
+  "pages" : {
+    "company": {
+      "nameCompany": "Name of company",
+      "status": "Status",
+      "inn": "TIN of the organization",
+      "secretary": "Secretary of the Supervisory Board",
+      "chairman": "Chairman of the Supervisory Board",
+      "mail": "Email",
+      "mailingAddress": "Mailing address",
+      "legalAddress": "Legal address",
+      "comment": "Description of the organization",
+      "addCompany": "Create a company"
+    }
   }
 }

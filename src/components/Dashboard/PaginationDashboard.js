@@ -1,7 +1,7 @@
 import React from "react";
 import {Pagination} from "@material-ui/lab";
 
-export default function PaginationDashboard({count, page, handleChange, payload, startIndex, lastIndex}) {
+export default function PaginationDashboard({count, page, lang, handleChange, payload, startIndex, lastIndex}) {
     return (
         <>
             <div className="d-none d-md-flex justify-content-between align-items-center position-fixed"
@@ -19,8 +19,8 @@ export default function PaginationDashboard({count, page, handleChange, payload,
                 />
                 <p className="d-none d-lg-flex align-items-center justify-content-end users_count">
                     {payload && payload[0] === '0' ?
-                        'Учётний запись - 0' :
-                        'Учётний запись ' + (startIndex + 1) + ' - ' + lastIndex + ' из ' + (payload && payload[0])
+                        lang("companiesList.accountCount") + ' - 0' :
+                        lang("companiesList.accountCount") + " "+(startIndex + 1) + ' - ' + lastIndex + " " + lang("companiesList.from") + " " + (payload && payload[0])
                     }
                 </p>
             </div>

@@ -77,8 +77,7 @@ export default function MeetingSettingRoutes({isDisabled, id}) {
                 <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
                     голосование</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link to={'/issuerLegal'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Акционерное
-                    общества</Link>
+                <Link to={'/issuerLegal'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Акционерное общества</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'#'}
                       className="nav-link h4 disabled text-dark">{pathname === '/supervisory/addOrEditMeeting' ? 'Создание заседание наб.совета' : 'Редактирование заседание'}</Link>

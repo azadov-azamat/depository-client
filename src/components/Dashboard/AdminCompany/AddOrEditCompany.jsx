@@ -167,10 +167,10 @@ export default function AddOrEditCompany() {
     return (
         <div className="settings p-3">
             <div className="container-fluid" style={{marginTop: '12vh'}}>
-                <RouteByDashboard cardName={'компаниями'} disabled={true} link2={`/admin/company`}
-                                  statusName={currentCompany ? "РЕДАКТИРОВАТЬ КОМПАНИЮ" : "ДОБАВИТЬ КОМПАНИЮ"}/>
+                <RouteByDashboard lang={t} cardName={t("routes.controlPage.company")} disabled={true} link2={`/admin/company`}
+                                  statusName={currentCompany ? t("routes.addOrEditPage.editCompany") : t("routes.addOrEditPage.addCompany")}/>
                 <div className="d-block d-md-none text-center">
-                    <h3>{currentCompany ? "РЕДАКТИРОВАТЬ КОМПАНИЮ" : "ДОБАВИТЬ КОМПАНИЮ"}</h3>
+                    <h3>{currentCompany ? t("routes.addOrEditPage.editCompany") : t("routes.addOrEditPage.addCompany")}</h3>
                 </div>
                 <AvForm className="container_wrapper" onValidSubmit={currentCompany ? editCompany : addCompany}
                         enctype="multipart/form-data">
@@ -207,7 +207,7 @@ export default function AddOrEditCompany() {
                         </Col>
                         <Col md={4}>
                             <div className="form-group">
-                                <Label className='required_fields'>Наименование организации</Label>
+                                <Label className='required_fields'>{t("pages.company.nameCompany")}</Label>
                                 <AvField
                                     type="text"
                                     name="name"
@@ -220,7 +220,7 @@ export default function AddOrEditCompany() {
                             <Row>
                                 <Col md={6}>
                                     <div className="form-group">
-                                        <Label>Статус</Label>
+                                        <Label>{t("pages.company.status")}</Label>
                                         <Select
                                             className="setting_input w-100"
                                             placeholder="Выберите статус"
@@ -237,7 +237,7 @@ export default function AddOrEditCompany() {
                                 </Col>
                                 <Col md={6}>
                                     <div className="form-group">
-                                        <Label className='required_fields'>ИНН организации</Label>
+                                        <Label className='required_fields'>{t("pages.company.inn")}</Label>
                                         <input
                                             ref={ref}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
@@ -255,7 +255,7 @@ export default function AddOrEditCompany() {
                         <Col md={3}>
                             <div className="">
                                 <div className="form-group">
-                                    <Label for="companySecretary">Секретарь наб.совета</Label>
+                                    <Label for="companySecretary">{t("pages.company.secretary")}</Label>
                                 </div>
                                 <Select
                                     className="setting_input w-100"
@@ -275,7 +275,7 @@ export default function AddOrEditCompany() {
                                 </Select>
                             </div>
                             <div className="form-group">
-                                <Label className='required_fields'>Телефон</Label>
+                                <Label className='required_fields'>{t("companiesList.phoneNumber")}</Label>
                                 <div className="setting_input border"  style={{backgroundColor: "#ffffff"}}>
                                     <PhoneInput
                                         placeholder="Enter phone number"
@@ -287,7 +287,7 @@ export default function AddOrEditCompany() {
                         <Col md={3}>
                             <div className="">
                                 <div className="form-group">
-                                    <Label for="nabChairmanCompany">Председатель наб.совета</Label>
+                                    <Label for="nabChairmanCompany">{t("pages.company.chairman")}</Label>
                                     <Select
                                         className="setting_input w-100"
                                         showSearch
@@ -307,7 +307,7 @@ export default function AddOrEditCompany() {
                                 </div>
                             </div>
                             <div className="form-group">
-                                <Label className='required_fields'>Электронная Почта</Label>
+                                <Label className='required_fields'>{t("pages.company.mail")}</Label>
                                 <AvField
                                     type="email"
                                     value={currentCompany?.email}
@@ -323,7 +323,7 @@ export default function AddOrEditCompany() {
                     <Row>
                         <Col md={6}>
                             <div className="form-group">
-                                <Label className='required_fields'>Почтовый адрес</Label>
+                                <Label className='required_fields'>{t("pages.company.mailingAddress")}</Label>
                                 <AvField
                                     type="text"
                                     label=""
@@ -335,7 +335,7 @@ export default function AddOrEditCompany() {
                                 />
                             </div>
                             <div className="form-group">
-                                <Label className='required_fields'>Юридический адрес</Label>
+                                <Label className='required_fields'>{t("pages.company.legalAddress")}</Label>
                                 <AvField
                                     type="text"
                                     label=""
@@ -347,7 +347,7 @@ export default function AddOrEditCompany() {
                             </div>
                             <AvField
                                 type="text"
-                                label="Веб сайт"
+                                label={t("companiesList.webSite")}
                                 name="webPage"
                                 value={currentCompany?.webPage}
                                 style={{backgroundColor: "#ffffff"}}
@@ -356,7 +356,7 @@ export default function AddOrEditCompany() {
                         </Col>
                         <Col md={6}>
                             <div className="form-group">
-                                <Label className='required_fields'>Описание организации</Label>
+                                <Label className='required_fields'>{t("pages.company.comment")}</Label>
                                 <AvField
                                     type="textarea"
                                     name="description"
@@ -382,9 +382,9 @@ export default function AddOrEditCompany() {
                                 </div>
                                 :
                                 <button type="submit"
-                                        className="btn-save px-3 py-2 my-1 mx-2">{currentCompany ? "Редактировать" : "Создать компанию"}</button>
+                                        className="btn-save px-3 py-2 my-1 mx-2">{currentCompany ? t("settings") : t("pages.company.addCompany")}</button>
                             }
-                            <button className="btn-cancel  my-1 px-3 py-2 mx-2"><Link to="/admin/company">Отмена</Link>
+                            <button className="btn-cancel  my-1 px-3 py-2 mx-2"><Link to="/admin/company">{t("cancel")}</Link>
                             </button>
                         </div>
                     </Row>

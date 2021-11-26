@@ -7,7 +7,6 @@
   "pinfl": "PINFL",
   "inn": "INN",
   "phoneNumber": "Telefon",
-
   "electronVoice": "Elektron ovoz berish",
   "serviceMain": "BIZNING ASOSIY XIZMAT XUSUSIYATLARI",
   "chairMan": "Rais",
@@ -15,16 +14,17 @@
   "comfortTable": "Qulay",
   "fast": "Tez",
   "security": "XAVFSIZ",
+  "cancel": "Bekor qilish",
   "documentation": "Hujjatlar",
   "levelCorporate": "Korporativ darajani oshirish",
   "ownerEngagement": "Uy egalarining ishtiroki oshdi",
   "realTime": "Haqiqiy vaqtda qabul qiling",
   "centralDepos": "Qimmatli qog'ozlar markaziy depozitariysi ",
-  "toBegin" : "Boshlash",
+  "toBegin": "Boshlash",
   "aboutDepos": "Tizim haqida",
   "InstructionalVideo": "O`quv videosi",
-  "userProfile" : "Profil",
-  "settings":"Tahrirlash",
+  "userProfile": "Profil",
+  "settings": "Tahrirlash",
   "signIn": "Kirish",
   "exit": "Chiqish",
   "placeholderLogin": "USERNAME KIRITING",
@@ -109,5 +109,46 @@
     "creat": "Foydalanuvhi yaratildi",
     "update": "Foydalanuvhi o'zgartirildi",
     "error": "Bu foydalanuvchi kompaniya yoki meetingda mavjud"
+  },
+  "createButton": "Yozuv yaratish | ",
+  "companiesList": {
+    "nameCompany": "Ism",
+    "email": "pochta",
+    "phoneNumber": "Telefon",
+    "webSite": "Veb sayt",
+    "inn": "inn",
+    "accountCount": "Hisob",
+    "from": "dan"
+  },
+  "routes": {
+    "menu": "Asosiy menyu",
+    "electronVoting": "Elektron ovoz berish",
+    "controlPage": {
+      "company": "kompaniyalar",
+      "meeting": "uchrashuvlar",
+      "user": "foydalanuvchilar",
+      "control": "Boshqaruv ",
+      "clientPage": "Aksiyadorlik jamiyati"
+    },
+    "addOrEditPage": {
+      "addCompany": "KOMPANIYA QO'SHISH",
+      "editCompany": "KOMPANIYANI TAHRIRLASH",
+      "addMeeting": "Kengash yig'ilishini tashkil etish",
+      "editMeeting": "Uchrashuvni tahrirlash"
+    }
+  },
+  "pages": {
+    "company": {
+      "nameCompany": "Kompaniya nomi",
+      "status": "Holati",
+      "inn": "Tashkilotning STIR",
+      "secretary": "Kuzatuv kengashi kotibi",
+      "chairman": "Kuzatuv kengashi raisi",
+      "mail": "Elektron pochtasi",
+      "mailingAddress": "Pochta manzili",
+      "legalAddress": "Yuridik manzili",
+      "comment": "Tashkilot tavsifi",
+      "addCompany": "Kompaniya yarating"
+    }
   }
 }

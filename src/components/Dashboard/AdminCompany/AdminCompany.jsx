@@ -80,7 +80,6 @@ function AdminCompany() {
         }
     }
 
-
     const submit = (id) => {
         confirmAlert({
             title: 'Удалить',
@@ -108,7 +107,8 @@ function AdminCompany() {
         <div className="dashboard p-3">
             <div className="container-fluid">
                 <div className="users">
-                    <RouteByDashboard disabled={false} link={'/admin/company/create'} cardName={'компаниями'} startIndex={startIndex}
+                    <RouteByDashboard disabled={false} link={'/admin/company/create'} cardName={t("routes.controlPage.company")}
+                                      startIndex={startIndex} lang={t}
                                       lastIndex={lastIndex} payload={payload}/>
                     <div className="minWidth w-100 d-flex justify-content-center align-items-center">
                         <div className="list_wrapper">
@@ -116,20 +116,17 @@ function AdminCompany() {
                                 <thead>
                                 <tr>
                                     <th style={{width: '15px'}}/>
-                                    <th style={{width: '170px'}} className='text-center'>Наименование</th>
-                                    <th style={{width: '140px'}} className='text-center'>Почта</th>
-                                    <th style={{width: '135px'}} className='text-center'>Телефон</th>
-                                    <th style={{width: '123px'}} className='text-center'>Веб-сайт</th>
-                                    <th style={{width: '135px'}} className='text-center'>ИНН</th>
+                                    <th style={{width: '170px'}} className='text-center'>{t("companiesList.nameCompany")}</th>
+                                    <th style={{width: '140px'}} className='text-center'>{t("companiesList.email")}</th>
+                                    <th style={{width: '135px'}} className='text-center'>{t("companiesList.phoneNumber")}</th>
+                                    <th style={{width: '123px'}} className='text-center'>{t("companiesList.webSite")}</th>
+                                    <th style={{width: '135px'}} className='text-center'>{t("companiesList.inn")}</th>
                                     <th style={{width: '15px'}}/>
                                     <th style={{width: '15px'}}/>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <Form getName={getName}/>
-                                {/*{loading ?*/}
-                                {/*    <LoadingSkeleton/>*/}
-                                {/*    :*/}
                                 {
                                     companies && companies.map((company, i) =>
                                         <TableCompany deleteById={submit} company={company} key={i}
@@ -140,7 +137,8 @@ function AdminCompany() {
                             </Table>
                         </div>
                     </div>
-                   <PaginationDashboard payload={payload} lastIndex={lastIndex} startIndex={startIndex} count={count} page={page} handleChange={handleChange}/>
+                    <PaginationDashboard payload={payload} lastIndex={lastIndex} startIndex={startIndex} count={count}
+                                         page={page} handleChange={handleChange} lang={t}/>
                 </div>
             </div>
         </div>
