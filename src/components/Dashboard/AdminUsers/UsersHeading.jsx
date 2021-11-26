@@ -22,7 +22,7 @@ function UsersHeading(props) {
                 <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
                     голосование</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link to={'/admin'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Щиток приборов</Link>
+                <Link to={'/admin'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Главное меню</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'#'} className="nav-link h4 disabled" style={{color: "#3D5398"}}>Управление пользователями</Link>
             </div>
