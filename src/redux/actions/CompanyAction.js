@@ -28,7 +28,6 @@ export const getCompanyByIdAction = (payload) => async (dispatch) => {
 }
 
 export const createCompanyForAdmin = (payload) => async (dispatch) => {
-    debugger
     dispatch({
         api: createCompany,
         types: ["REQUEST_CREATE_NEW_COMPANY_START",types.REQUEST_CREATE_COMPANY, "REQUEST_CREATE_NEW_COMPANY_ERROR"],

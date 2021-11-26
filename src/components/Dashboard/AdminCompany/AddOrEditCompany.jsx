@@ -103,14 +103,14 @@ export default function AddOrEditCompany() {
                 active: selectUsers.active,
                 chairmanId: selectUsers.chairman,
                 secretaryId: selectUsers.secretary,
-                imageUrl: null,
+                imageUrl: file ? "yes" : 'no',
                 image: file,
                 phoneNumber: phoneNumber,
                 inn: inn,
                 ...v
             }
             console.log(data)
-            // dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
+            dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
         }else {
             toast.warning("Пожалуйста, Заполните все")
         }
@@ -122,9 +122,10 @@ export default function AddOrEditCompany() {
             active: selectUsers.active,
             chairmanId: selectUsers.chairman,
             secretaryId: selectUsers.secretary,
-            imageUrl: null,
+            imageUrl: file ? "yes" : 'no',
             image: file,
             phoneNumber: phoneNumber,
+            inn: inn,
             ...v
         }
         dispatch(adminCompanyAction.updateCompany({data, history}))
@@ -172,7 +173,7 @@ export default function AddOrEditCompany() {
                         enctype="multipart/form-data">
                     <Row>
                         <Col md={2} className="d-flex justify-content-center align-items-center">
-                            {currentCompany && currentCompany.imageUrl !== null ?
+                            {currentCompany && currentCompany.imageUrl === "yes" ?
                                 <div className='currentCompanyLogo d-flex align-items-center'>
                                     <img className="w-100"
                                          src={BASE_URL + api.getLogoByCompanyId + currentCompany.id}
@@ -355,7 +356,6 @@ export default function AddOrEditCompany() {
                                 <Label className='required_fields'>Описание организации</Label>
                                 <AvField
                                     type="textarea"
-                                    label=""
                                     name="description"
                                     value={currentCompany?.description}
                                     style={{backgroundColor: "#ffffff", resize: "none"}}
@@ -381,41 +381,12 @@ export default function AddOrEditCompany() {
                                 <button type="submit"
                                         className="btn-save px-3 py-2 my-1 mx-2">{currentCompany ? "Редактировать" : "Создать компанию"}</button>
                             }
-                            <button className="btn-cancel  my-1 px-3 py-2 mx-2"><Link to="/admin">Отмена</Link>
+                            <button className="btn-cancel  my-1 px-3 py-2 mx-2"><Link to="/admin/company">Отмена</Link>
                             </button>
                         </div>
                     </Row>
                 </AvForm>
             </div>
-            <Modal isOpen={isOpen} className="modal-dialog modal-lg">
-                <ModalHeader toggle={() => setIsOpen(!isOpen)}
-                             className="d-flex align-items-center">
-                    <h3>Search User</h3>
-                </ModalHeader>
-                <ModalBody>
-                    <AvForm className={"d-flex justify-content-center"}>
-                        <AvField
-                            type={"text"}
-                            placeholder={"Search"}
-                            name={"test"}
-                            onChange={(e) => onChange(e.target.value)}
-                            value={selectSecretary}
-                        />
-                    </AvForm>
-                    <div className="">
-                        {users && users.map((value, index) =>
-                            <div onClick={()=>{
-                                setSelectSecretary(value.fullName)
-                                setIsOpen(false)
-                            }}
-                                 style={{cursor: 'pointer'}}
-                                 key={index}>
-                                {value.fullName}
-                            </div>
-                        )}
-                    </div>
-                </ModalBody>
-            </Modal>
         </div>
     )
 }
