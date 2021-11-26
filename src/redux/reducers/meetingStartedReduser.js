@@ -4,7 +4,8 @@ const initialState = {
     loadingLogging: false,
     loggingList: [],
     questionListMemberId: [],
-    countBadge: 0
+    countBadge: 0,
+    currentBallotVotingList: {}
 };
 
 const reducers = {
@@ -75,9 +76,22 @@ const reducers = {
         state.questionListMemberId = action.payload
     },
 
+    ["REQUEST_START_ADD_BALLOT"](state){
+        state.loadingBallot = true
+    },
+    ["REQUEST_SUCCESS_ADD_BALLOT"](state){
+        state.loadingBallot = false
+    },
+    ["REQUEST_DELETE_BALLOT_START"](state) {
+        state.loadingBallot = true
+    },
+    ["REQUEST_DELETE_BALLOT_SUCCESS"](state) {
+        state.loadingBallot = false
+    },
+
 
     ["REQUEST_SUCCESS_GET_BALLOT_VOTING"](state, action) {
-        state.ballotVotingList = action.payload
+        state.currentBallotVotingList[action.requestData.agendaId] = action.payload
     },
     ["COUNT_BADGE"](state, action) {
         state.countBadge = action.payload

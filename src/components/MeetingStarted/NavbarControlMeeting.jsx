@@ -19,7 +19,6 @@ export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum, count
         {id: 2, text: 'Вопросы', link: '/issuerLegal/meetingSetting/question'},
         {id: 3, text: 'Комментирование', link: '/issuerLegal/meetingSetting/comment-by-meeting'},
         {id: 4, text: 'Управлять', link: '/issuerLegal/meetingSetting/control-meeting'},
-        // {text: 'Zoom', link: '/issuerLegal/meetingSetting/zoom_meeting'},
     ]
 
     const linkMap = ({id, text, link}) => (
@@ -62,13 +61,13 @@ export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum, count
                         roleMember === CHAIRMAN || roleMember === SECRETARY ?
                             <NavItem>
                                 <NavLink to={'/issuerLegal/meetingSetting/zoom_meeting'}
-                                         className={"nav-link"}>Zoom</NavLink>
+                                         className={"nav-link"}>Zoom1234</NavLink>
                             </NavItem> :
-                        localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD) ?
-                            <NavItem>
-                                <NavLink to={'/issuerLegal/meetingSetting/zoom_meeting'}
-                                         className={"nav-link"}>Zoom</NavLink>
-                            </NavItem> : ""
+                            password_zoom ?
+                                <NavItem>
+                                    <NavLink to={'/issuerLegal/meetingSetting/zoom_meeting'}
+                                             className={"nav-link"}>Zoom123</NavLink>
+                                </NavItem> : ""
                         : ""
                     }
                 </ul>
@@ -98,9 +97,12 @@ export const NavbarControlMeeting = ({roleMember, statusMeeting, zoomEnum, count
                         дня</NavLink>
                 </NavItem>
                 {statusMeeting === ACTIVE ?
-                    <NavItem>
-                        <NavLink to={'/issuerLegal/meetingSetting/zoom_meeting'} className={"nav-link"}>Zoom</NavLink>
-                    </NavItem> : ""
+                    password_zoom ?
+                        <NavItem>
+                            <NavLink to={'/issuerLegal/meetingSetting/zoom_meeting'}
+                                     className={"nav-link"}>Zoom</NavLink>
+                        </NavItem> : ""
+                    : ""
                 }
             </ul>
     )

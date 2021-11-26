@@ -20,6 +20,7 @@ const apiMiddleware = ({dispatch}) => (next) => (action) => {
                 const sizeData = response.data
                 dispatch({
                     type: SUCCESS,
+                    requestData: data,
                     payload: response.data
                 });
                 dispatch({

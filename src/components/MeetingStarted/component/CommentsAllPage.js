@@ -7,7 +7,7 @@ import {
     AiOutlineFileImage,
     AiOutlineFilePdf,
     AiOutlineFileWord,
-    AiOutlineVideoCameraAdd,
+    AiOutlineVideoCameraAdd, BsFillFileEarmarkImageFill,
     BsFillImageFill
 } from "react-icons/all";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
@@ -24,7 +24,8 @@ export default function CommentsAllPage({
                                             loggingList,
                                             meetingFile,
                                             questionListMemberId,
-                                            currentMeetingId
+                                            currentMeetingId,
+                                            password_id
                                         }) {
 
     const dispatch = useDispatch();
@@ -37,7 +38,7 @@ export default function CommentsAllPage({
     const authToken = localStorage.getItem(TOKEN)
 
     if (authToken) {
-        const s = authToken.substr(7, authToken.length -1);
+        const s = authToken.substr(7, authToken.length - 1);
         url += '?access_token=' + s;
     }
 
@@ -66,9 +67,9 @@ export default function CommentsAllPage({
         } else if (type === pdf) {
             return <AiOutlineFilePdf fontSize={30} className='text-danger'/>
         } else if (type === imgPNG) {
-            return <AiOutlineFileImage fontSize={30} className='text-info'/>
+            return <BsFillFileEarmarkImageFill fontSize={30} className='text-info'/>
         } else if (type === image) {
-            return <BsFillImageFill fontSize={30} style={{color: '#132e85'}}/>
+            return <AiOutlineFileImage fontSize={30} style={{color: '#132e85'}}/>
         } else if (type === video) {
             return <AiOutlineVideoCameraAdd fontSize={30} className='text-warning'/>
         }
@@ -98,7 +99,7 @@ export default function CommentsAllPage({
                                 let date = new Date(element.createdDate);
                                 return (
                                     <>
-                                        <span>{(date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" + date.getMinutes()} - {element.loggingText}</span><br/>
+                                        <span>{(date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" + (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes())} - {element.loggingText}</span><br/>
                                     </>
                                 )
                             })

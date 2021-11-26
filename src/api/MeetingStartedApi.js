@@ -9,7 +9,7 @@ export const addLoggingApi = (data) => {
     return HttpClient.doPost(api.addLogging, data)
 }
 
-export const deleteLoggingByIdApi=(data)=>{
+export const deleteLoggingByIdApi = (data) => {
     return HttpClient.doDelete(api.addLogging + "/" + data)
 }
 
@@ -58,6 +58,9 @@ export const getBallotByVotingApi = (data) => {
 }
 
 export const getBallotVotingApi = (data) => {
-    console.log("API ga keldi")
     return HttpClient.doGet(api.getBallotVoting + (data && data.agendaId ? "?agendaId=" + data.agendaId + "&memberId=" + data.memberId : ''))
+}
+
+export const deleteBallot = (data) => {
+    return HttpClient.doDelete(api.ballotMethod + "/" + data)
 }

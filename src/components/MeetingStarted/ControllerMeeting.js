@@ -152,14 +152,11 @@ export const ControllerMeeting = () => {
         history.push("/issuerLegal/meetingSetting")
     }
 
-    console.log(password_id);
-    console.log(password_zoom)
-
     return (
         <div className="container meeting">
             <div>
                 <Router zoomEnum={setZoomEnum} currentMeeting={currentMeeting && currentMeeting}
-                        currentCompany={currentCompany && currentCompany} userMemberType={userMemberType}/>
+                        currentCompany={currentCompany && currentCompany} userMemberType={userMemberType} password_zoom={password_zoom}/>
                 <div className="shadow p-3 my-3">
                     <div className="row">
                         <div className="col-12 col-md-8">

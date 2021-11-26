@@ -1,17 +1,9 @@
 import React, {useEffect} from 'react'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import * as meetingStarted from "../../../redux/actions/MeetingStartedAction";
 import {confirmAlert} from "react-confirm-alert";
-import {
-    AGAINST, CHAIRMAN,
-    DEPOSITORY_CURRENT_MEETING,
-    DEPOSITORY_CURRENT_MEMBER,
-    FOR,
-    REFRAIN,
-    SECRETARY
-} from "../../../utils/contants";
+import {CHAIRMAN, DEPOSITORY_CURRENT_MEETING, DEPOSITORY_CURRENT_MEMBER, SECRETARY} from "../../../utils/contants";
 import {AccordionAgenda} from "./Accordions/AccordionAgenda";
-import {Button} from "reactstrap";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import AgendaByVoting from "./AgendaByVoting";
 
@@ -19,10 +11,12 @@ export default function Agenda({agendaSubject, roleMember}) {
 
     const dispatch = useDispatch();
     const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
+    const reducers = useSelector(state => state)
+    const {currentBallotVotingList} = reducers.meetingStarted
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
-    },[currentMeetingId])
+    }, [currentMeetingId])
 
     function editStatusElement(id) {
         const data = {
@@ -49,6 +43,7 @@ export default function Agenda({agendaSubject, roleMember}) {
     }
 
     const addBallot = ({votingId, option, agendaId}) => {
+
         confirmAlert({
             title: 'Проголосовать',
             message: 'Вы действительно хотите удалить в компанию?',
@@ -63,6 +58,7 @@ export default function Agenda({agendaSubject, roleMember}) {
                             options: option,
                             votingOptionId: votingId
                         }
+
                         dispatch(meetingStarted.addBallotAction({data}))
                     }
                 },
@@ -73,8 +69,28 @@ export default function Agenda({agendaSubject, roleMember}) {
         });
     };
 
+    const deleteBallot = (votingId) => {
+        confirmAlert({
+            title: 'Удалить голось',
+            message: 'Вы действительно хотите удалить в голось?',
+            buttons: [
+                {
+                    label: 'Да',
+                    onClick: () => {
+                        dispatch(meetingStarted.deleteBallotAction({data: votingId}))
+                    }
+                },
+                {
+                    label: 'Нет',
+                }
+            ]
+        });
+    }
     return (
-        <div style={{overflowY: 'scroll', height: roleMember === CHAIRMAN || roleMember === SECRETARY ? '57vh' : "75vh"}}>
+        <div style={{
+            overflowY: 'scroll',
+            height: roleMember === CHAIRMAN || roleMember === SECRETARY ? '57vh' : "75vh"
+        }}>
             <div className="header d-flex justify-content-center py-3">
                 <text className=""><b>Повестка дня</b></text>
             </div>
@@ -108,8 +124,8 @@ export default function Agenda({agendaSubject, roleMember}) {
                                                         style={{fontSize: '23px'}}>Решения:</span><br/></> : ""}
                                                     <span style={{fontWeight: 'bold'}}>{elementOption.votingText}</span>
                                                 </div>
-                                                <AgendaByVoting agendaId={element.id} votingOptionID={elementOption.id}/>
-
+                                                <AgendaByVoting deleteBallot={deleteBallot} agenda={element}
+                                                                variant={elementOption} addBallot={addBallot}/>
                                             </>
                                         )}
                                     </AccordionAgenda.Body>

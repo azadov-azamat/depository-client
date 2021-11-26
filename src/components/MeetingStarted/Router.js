@@ -14,7 +14,7 @@ import {
 } from "../../utils/contants";
 import {RiTimeFill} from "react-icons/ri";
 
-export default function Router({currentCompany, currentMeeting, userMemberType, zoomEnum}) {
+export default function Router({currentCompany, currentMeeting, userMemberType, zoomEnum, password_zoom}) {
 
     const style = {
         textOverflow: 'ellipsis',
@@ -109,13 +109,23 @@ export default function Router({currentCompany, currentMeeting, userMemberType, 
                                             <span>Zoom password: <code>{localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD)}</code></span>
                                         </div>
                                         :
-                                    <a href="#" onClick={() => zoomEnum(ACTIVE)}>Создать конференцию</a>
+                                        <a href="#" onClick={() => zoomEnum(ACTIVE)}>Создать конференцию</a>
                                     :
-                                    localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD) ?
+                                    password_zoom ?
                                         <div className="d-flex justify-content-between" style={{width: "57vh"}}>
                                             <span>Zoom password: <code>{localStorage.getItem(DEPOSITORY_ZOOM_MEETING_PASSWORD)}</code></span>
-                                        </div> : ""
-                            : "Начата регистрация на засидания"
+                                        </div>
+                                        :
+                                        <>
+                                            Начата регистрация на засидания <span
+                                            className="text-success text-2xl "><RiTimeFill
+                                            fontSize={23}/></span>
+                                        </>
+                                :
+                                <>
+                                    Начата регистрация на засидания <span className="text-success text-2xl "><RiTimeFill
+                                    fontSize={23}/></span>
+                                </>
                     }
                 </div>
             </div>

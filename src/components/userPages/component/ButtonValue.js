@@ -13,7 +13,7 @@ import {REQUEST_CREATE_MEETING} from "../../../redux/actionTypes/MeetingActionTy
 import SockJsClient from "react-stomp";
 
 
-export default function ButtonValue({meetingId, pathname, id}) {
+export default function ButtonValue({meetingId, pathname, companyId}) {
     const dispatch = useDispatch();
     const history = useHistory();
     const reducers = useSelector(state => state)
@@ -31,7 +31,7 @@ export default function ButtonValue({meetingId, pathname, id}) {
     function historyPushItem(role, memberId) {
         socketIo(memberId)
         localStorage.setItem(DEPOSITORY_CURRENT_MEETING, meetingId)
-        localStorage.setItem(DEPOSITORY_CURRENT_COMPANY, id)
+        localStorage.setItem(DEPOSITORY_CURRENT_COMPANY, companyId)
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch({
             type: "memberTypeCurrentUser",
@@ -43,7 +43,7 @@ export default function ButtonValue({meetingId, pathname, id}) {
     function isConfirmed(memberId, role) {
         socketIo(memberId)
         localStorage.setItem(DEPOSITORY_CURRENT_MEETING, meetingId)
-        localStorage.setItem(DEPOSITORY_CURRENT_COMPANY, id)
+        localStorage.setItem(DEPOSITORY_CURRENT_COMPANY, companyId)
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
         dispatch({
@@ -91,7 +91,7 @@ export default function ButtonValue({meetingId, pathname, id}) {
             {
                 memberManagerState && memberManagerState.map(element => {
                     if (element.userId === currentUserId) {
-                        if (pathname === '/supervisory/activeMeeting/currentUser/' + id) {
+                        if (pathname === '/supervisory/activeMeeting/currentUser/' + companyId) {
                             return (
                                 <>
                                     <button onClick={() => historyPushItem(element.memberTypeEnum, element.id)}

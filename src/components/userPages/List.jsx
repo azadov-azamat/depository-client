@@ -99,7 +99,7 @@ export const List = ({pathname, meetings}) => {
                                     className="col-md-4 d-flex justify-content-end align-items-center d-none d-md-grid">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
                                         btnValue(userMeeting.id) :
-                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} id={id}/>
+                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={id}/>
                                     }
                                 </div>
                             </div>

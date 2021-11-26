@@ -1,7 +1,7 @@
 import {
     addBallotApi,
     addLoggingApi,
-    addQuestion, deleteLoggingByIdApi,
+    addQuestion, deleteBallot, deleteLoggingByIdApi,
     editQuestion,
     editStatusQuestion,
     getBallotByAgendaApi,
@@ -192,5 +192,19 @@ export const getBallotVoting = (payload) => async (dispatch) => {
         console.log(res)
     }).catch(err => {
         console.log(err)
+    })
+}
+
+export const deleteBallotAction=(payload)=> async (dispatch)=>{
+    dispatch({
+        api: deleteBallot,
+        types: ["REQUEST_DELETE_BALLOT_START", "REQUEST_DELETE_BALLOT_SUCCESS", "REQUEST_DELETE_BALLOT_ERROR"],
+        data: payload.data
+    }).then(res=>{
+        console.log(res)
+        console.log("success")
+    }).catch(err=>{
+        console.log(err)
+        console.log("error")
     })
 }
