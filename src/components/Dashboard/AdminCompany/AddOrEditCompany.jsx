@@ -42,7 +42,7 @@ export default function AddOrEditCompany() {
     const [isOpen, setIsOpen] = useState(false)
     const [selectSecretary, setSelectSecretary] = useState();
     const [phoneNumber, setPhoneNumber] = useState()
-    const [inn, setInn] = useState()
+    const [inn, setInn] = useState() ////
 
     let $imagePreview = null;
     if (imagePreviewUrl) {
@@ -64,12 +64,14 @@ export default function AddOrEditCompany() {
         const current = parseInt(id);
         if (!isNaN(current)) {
             dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(id), history}))
-            dispatch(actionUser.getUsersList({page: 1, size: 3}))
-            // setSelectSecretary(currentCompany?.secretaryId)
-            setPhoneNumber(currentCompany.phoneNumber)
+            dispatch(actionUser.getUsersList())
+            // setSelectSecretary(currentCompany?.secretaryId)//
         }
     }, [id])
 
+    useEffect(()=>{
+        setPhoneNumber(currentCompany?.phoneNumber)
+    },[currentCompany])
     function onSearch(val) {
         const NAME = "FULL_NAME";
         if (val.length >= 3) {
@@ -78,6 +80,7 @@ export default function AddOrEditCompany() {
     }
 
     function onBlur() {
+
     }
 
     function onFocus() {
@@ -225,10 +228,10 @@ export default function AddOrEditCompany() {
                                             onChange={forStatus}
                                             onFocus={onFocus}
                                             onBlur={onBlur}
-                                            defaultValue={currentCompany.length !== 0 ? currentCompany.active : ""}
+                                            defaultValue={currentCompany.length !== 0 ? currentCompany.active : "true"}
                                         >
-                                            <Option value={true}>Активно</Option>
-                                            <Option value={false}>Неактивно</Option>
+                                            <Option value={"true"}>Активно</Option>
+                                            <Option value={"false"}>Неактивно</Option>
                                         </Select>
                                     </div>
                                 </Col>
