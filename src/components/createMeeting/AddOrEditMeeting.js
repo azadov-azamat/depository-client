@@ -1,27 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Col, Container, Label, Row} from "reactstrap";
+import {Container} from "reactstrap";
 import './AzamatGlobal.scss';
-import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
 import {Route, Switch, useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    ACTIVE,
-    CANCELED, DEPOSITORY_CURRENT_MEETING,
-    DEPOSITORY_ROLE,
-    DISABLED,
-    EXTRAORDINARY,
-    FINISH,
-    ORDINARY,
-    PENDING
-} from "../../utils/contants";
+import {DEPOSITORY_CURRENT_MEETING} from "../../utils/contants";
 import {Select} from 'antd';
 import 'antd/dist/antd.css';
-import * as adminCompanyAction from "../../redux/actions/CompanyAction";
-import * as companyAction from "../../redux/actions/CompanyAction";
-import axios from "axios";
-import {BASE_URL} from "../../utils/config";
-import {api} from "../../api/api";
-import {toast} from "react-toastify";
 import * as meetingActions from '../../redux/actions/MeetingAction';
 import MeetingSettingRoutes from "../../routes/MeetingSettingRoutes";
 import NabMeetingJs from "./components/NabMeetingJs";
@@ -43,10 +27,10 @@ export default function AddOrEditMeeting() {
     const [currentMeetingId, setCurrentMeetingId] = useState();
 
     useEffect(() => {
-        if (localStorage.getItem(DEPOSITORY_CURRENT_MEETING)){
+        if (localStorage.getItem(DEPOSITORY_CURRENT_MEETING)) {
             dispatch(meetingActions.getMeetingByIdAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
             setCurrentMeetingId(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))
-        }else {
+        } else {
             dispatch({
                 type: "REQUEST_GET_MEETING_SUCCESS",
                 payload: []

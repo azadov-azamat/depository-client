@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Link, useHistory, useParams} from 'react-router-dom'
-import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {AvField, AvForm, AvInput} from 'availity-reactstrap-validation';
 import {AiOutlineRight, FaArrowLeft, ImCancelCircle} from "react-icons/all";
 import {useDispatch, useSelector} from 'react-redux';
 import {Col, Label, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
@@ -14,6 +14,9 @@ import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import RouteByDashboard from "../RouteByDashboard";
 import * as types from "../../../redux/actionTypes/UsersActionTypes";
+import PhoneInput from "react-phone-number-input";
+import { useIMask } from 'react-imask';
+import {toast} from "react-toastify";
 
 const {Option} = Select;
 
@@ -31,11 +34,15 @@ export default function AddOrEditCompany() {
     const {logoCompany} = reducers.file
     const {users} = reducers.users
 
+    const [ opts, setOpts ] = useState({ mask: Number});
+    const { ref, maskRef } = useIMask(opts);
     const [file, setFile] = useState('');
     const [imagePreviewUrl, setImagePreviewUrl] = useState('');
     const [selectUsers, setSelectUsers] = useState({secretary: '', chairman: '', active: false})
     const [isOpen, setIsOpen] = useState(false)
     const [selectSecretary, setSelectSecretary] = useState();
+    const [phoneNumber, setPhoneNumber] = useState()
+    const [inn, setInn] = useState()
 
     let $imagePreview = null;
     if (imagePreviewUrl) {
@@ -58,7 +65,8 @@ export default function AddOrEditCompany() {
         if (!isNaN(current)) {
             dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(id), history}))
             dispatch(actionUser.getUsersList({page: 1, size: 3}))
-            setSelectSecretary(currentCompany?.secretaryId)
+            // setSelectSecretary(currentCompany?.secretaryId)
+            setPhoneNumber(currentCompany.phoneNumber)
         }
     }, [id])
 
@@ -90,16 +98,22 @@ export default function AddOrEditCompany() {
     }
 
     const addCompany = (e, v) => {
-        debugger
-        const data = {
-            active: selectUsers.active,
-            chairmanId: selectUsers.chairman,
-            secretaryId: selectUsers.secretary,
-            imageUrl: null,
-            image: file,
-            ...v
+        if (selectUsers && phoneNumber && inn) {
+            const data = {
+                active: selectUsers.active,
+                chairmanId: selectUsers.chairman,
+                secretaryId: selectUsers.secretary,
+                imageUrl: null,
+                image: file,
+                phoneNumber: phoneNumber,
+                inn: inn,
+                ...v
+            }
+            console.log(data)
+            // dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
+        }else {
+            toast.warning("Пожалуйста, Заполните все")
         }
-        dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
     }
 
     const editCompany = (e, v) => {
@@ -110,6 +124,7 @@ export default function AddOrEditCompany() {
             secretaryId: selectUsers.secretary,
             imageUrl: null,
             image: file,
+            phoneNumber: phoneNumber,
             ...v
         }
         dispatch(adminCompanyAction.updateCompany({data, history}))
@@ -147,7 +162,7 @@ export default function AddOrEditCompany() {
 
     return (
         <div className="settings p-3">
-            <div className="container-fluid" style={{marginTop: '6em'}}>
+            <div className="container-fluid" style={{marginTop: '12vh'}}>
                 <RouteByDashboard cardName={'компаниями'} disabled={true} link2={`/admin/company`}
                                   statusName={currentCompany ? "РЕДАКТИРОВАТЬ КОМПАНИЮ" : "ДОБАВИТЬ КОМПАНИЮ"}/>
                 <div className="d-block d-md-none text-center">
@@ -209,7 +224,7 @@ export default function AddOrEditCompany() {
                                             onChange={forStatus}
                                             onFocus={onFocus}
                                             onBlur={onBlur}
-                                            defaultValue={currentCompany.active}
+                                            defaultValue={currentCompany.length !== 0 ? currentCompany.active : ""}
                                         >
                                             <Option value={true}>Активно</Option>
                                             <Option value={false}>Неактивно</Option>
@@ -219,11 +234,13 @@ export default function AddOrEditCompany() {
                                 <Col md={6}>
                                     <div className="form-group">
                                         <Label className='required_fields'>ИНН организации</Label>
-                                        <AvField
-                                            style={{backgroundColor: "#ffffff"}}
+                                        <input
+                                            ref={ref}
+                                            style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="inn"
                                             value={currentCompany?.inn}
                                             minLength={9} maxLength={9}
+                                            onChange={(e)=> setInn(e.target.value)}
                                             className="setting_input border "
                                             required
                                         />
@@ -236,27 +253,53 @@ export default function AddOrEditCompany() {
                                 <div className="form-group">
                                     <Label for="companySecretary">Секретарь наб.совета</Label>
                                 </div>
-                                <button type={"button"} style={{height: '7vh', borderRadius: '12px'}} onClick={()=>setIsOpen(true)}
-                                        className="w-100 bg-transparent border border-1">{selectSecretary ? selectSecretary : "Select user"}</button>
+                                <Select
+                                    className="setting_input w-100"
+                                    showSearch
+                                    placeholder="Выберите статус"
+                                    optionFilterProp="children"
+                                    defaultValue={currentCompany.length !== 0 ? currentCompany.secretaryId : ""}
+                                    onChange={forSecretary}
+                                    onSearch={onSearch}
+                                    filterOption={(input, option) =>
+                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                >
+                                    {users && users.map((value, index) =>
+                                        <Option value={value.id} key={index}>{value.fullName}</Option>
+                                    )}
+                                </Select>
                             </div>
                             <div className="form-group">
                                 <Label className='required_fields'>Телефон</Label>
-                                <AvField
-                                    type="text"
-                                    name="phoneNumber"
-                                    value={currentCompany?.phoneNumber}
-                                    style={{backgroundColor: "#ffffff"}}
-                                    className="setting_input border "
-                                    required
-                                />
+                                <div className="setting_input border"  style={{backgroundColor: "#ffffff"}}>
+                                    <PhoneInput
+                                        placeholder="Enter phone number"
+                                        value={phoneNumber}
+                                        onChange={setPhoneNumber}/>
+                                </div>
                             </div>
                         </Col>
                         <Col md={3}>
                             <div className="">
                                 <div className="form-group">
                                     <Label for="nabChairmanCompany">Председатель наб.совета</Label>
-                                    <button type={"button"} style={{height: '7vh', borderRadius: '12px'}} onClick={()=>setIsOpen(true)}
-                                            className="w-100 bg-transparent border border-1">{selectSecretary ? selectSecretary : "Select user"}</button>
+                                    <Select
+                                        className="setting_input w-100"
+                                        showSearch
+                                        placeholder="Выберите статус"
+                                        optionFilterProp="children"
+                                        defaultValue={currentCompany.length !== 0 ? currentCompany.secretaryId : ""}
+                                        onChange={forChairMan}
+                                        onSearch={onSearch}
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
+                                        {users && users.map((value, index) =>
+                                            <Option value={value.id} key={index}>{value.fullName}</Option>
+                                        )}
+                                    </Select>
                                 </div>
                             </div>
                             <div className="form-group">

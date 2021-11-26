@@ -183,6 +183,19 @@ form {
         align-items: center;
         //border: 2px solid;
       }
+      &:focus{
+        outline: none;
+      }
+      .PhoneInput{
+        margin-left: 5px;
+      }
+      input{
+        border: none;
+        background: none;
+        &:focus{
+          outline: none;
+        }
+      }
     }
 
     .required_fields{

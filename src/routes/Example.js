@@ -1,75 +1,43 @@
-import React, {useState} from "react";
-import {Col, Container, Input, Row} from "reactstrap";
-import {Dropdown} from 'react-bootstrap';
-import * as actionUser from "../redux/actions/UsersAction";
-import {useHistory} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {AvField, AvForm} from 'availity-reactstrap-validation';
-import * as types from ".././redux/actionTypes/UsersActionTypes";
+// import { useState } from 'react';
+// import { useIMask } from 'react-imask';
+//
+// export default function Example () {
+//     const [ opts, setOpts ] = useState({ mask: Number});
+//     const { ref, maskRef } = useIMask(opts);
+//
+//     return (
+//         <input ref={ref} />
+//     );
+// }
+
+// import React from "react";
+// // import MuiPhoneNumber from 'material-ui-phone-number';
+// import TextField from '@mui/material/TextField';
+//
+// export default function Example(){
+//     const inputProps = {
+//         step: 300,
+//     };
+//     return(
+//         <>
+//             {/*<MuiPhoneNumber defaultCountry={'us'}/>,*/}
+//             <TextField id="time" type="time" inputProps={inputProps} />;
+//         </>
+//     )
+// }
+
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+import {useState} from "react";
 
 export default function Example() {
-
-    const history = useHistory()
-    const dispatch = useDispatch();
-    const reducers = useSelector(state => state)
-    const {users} = reducers.users
-
-    const [clicked, setClicked] = useState();
-
-    function onChange(val) {
-        console.log(val)
-        const NAME = "FULL_NAME";
-        if (val.length >= 3) {
-            dispatch(actionUser.getUserFilter({value: val, field: NAME}));
-        } else {
-            dispatch({type: types.REQUEST_GET_USERS_LIST_SUCCESS, payload: []})
-        }
-    }
-
-    console.log(users)
-
+    // `value` will be the parsed phone number in E.164 format.
+    // Example: "+12133734253".
+    const [value, setValue] = useState()
     return (
-        <>
-            <Container>
-                <Row>
-                    <Col md={12}>
-                        <div className="d-flex flex-column justify-content-center align-items-center"
-                             style={{height: "100vh"}}>
-                            <AvForm className={"d-flex justify-content-center"}>
-                                {users && users.length === 0 ?
-                                    <AvField type={'text'}
-                                             name="select2"
-                                             label="Option"
-                                             style={{width: '20vh'}}
-                                             onChange={(e) => onChange(e.target.value)}
-                                    /> :
-                                    <AvField type={'select'}
-                                             name="select"
-                                             label="Option"
-                                             style={{width: '20vh'}}
-                                    >
-                                        {users && users.map((value, index) =>
-                                            <option key={index} value={value.id}>{value.fullName}</option>
-                                        )}
-                                    </AvField>
-                                }
-                            </AvForm>
-                            {/*<Dropdown>*/}
-                            {/*    <Dropdown.Toggle*/}
-                            {/*        variant="secondary btn-sm"*/}
-                            {/*        id="dropdown-basic">*/}
-                            {/*        Language*/}
-                            {/*    </Dropdown.Toggle>*/}
-
-                            {/*    <Dropdown.Menu style={{backgroundColor:'#73a47'}}>*/}
-                            {/*        <Dropdown.Item href="#" >Arabic</Dropdown.Item>*/}
-                            {/*        <Dropdown.Item href="#">English</Dropdown.Item>*/}
-                            {/*    </Dropdown.Menu>*/}
-                            {/*</Dropdown>*/}
-                        </div>
-                    </Col>
-                </Row>
-            </Container>
-        </>
+        <PhoneInput
+            placeholder="Enter phone number"
+            value={value}
+            onChange={setValue}/>
     )
 }
