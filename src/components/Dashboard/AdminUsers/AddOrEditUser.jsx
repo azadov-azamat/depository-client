@@ -10,6 +10,8 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {ENTITY, ERI, FOREIGNER, INDIVIDUAL, INPASS} from "../../../utils/contants";
 import RouteByDashboard from "../RouteByDashboard";
 import {useTranslation} from "react-i18next";
+import PhoneInput from "react-phone-number-input";
+import {useIMask} from "react-imask";
 
 export default function AddOrEditUser() {
 
@@ -25,6 +27,10 @@ export default function AddOrEditUser() {
         showPassword: false,
         generatePassword: ""
     })
+    const [phoneNumber, setPhoneNumber] = useState();
+    const [opts, setOpts] = useState({mask: Number});
+    const {ref, maskRef} = useIMask(opts);
+
     const addUser = (e, v) => {
         const data = {
             fullName: v.fullName,
@@ -105,7 +111,7 @@ export default function AddOrEditUser() {
                                     name="fullName"
                                     value={currentEditUser?.fullName}
                                     style={{backgroundColor: "#ffffff"}}
-                                    className="setting_input border border-2 p-2 w-100"
+                                    className="setting_input border  p-2 w-100"
                                     type="text"
 
                                 />
@@ -114,7 +120,7 @@ export default function AddOrEditUser() {
                                     label={t("AdminUser.email")}
                                     value={currentEditUser?.email}
                                     style={{backgroundColor: "#ffffff"}}
-                                    className="setting_input border border-2 p-2 w-100"
+                                    className="setting_input border  p-2 w-100"
                                     type="email"
                                 />
                                 <Row>
@@ -122,7 +128,7 @@ export default function AddOrEditUser() {
                                         <AvField type="select"
                                                  label={t("AdminUser.group")}
                                                  style={{backgroundColor: "#ffffff"}}
-                                                 className="setting_input border border-2 p-2 w-100" name="groupEnum"
+                                                 className="setting_input border  p-2 w-100" name="groupEnum"
                                                  id="groupEnum">
                                             <option value={INDIVIDUAL}>{t("user.jismoniy")}</option>
                                             <option value={ENTITY}>{t("user.yuridik")}</option>
@@ -131,7 +137,7 @@ export default function AddOrEditUser() {
                                     </Col>
                                     <Col md={6}>
                                         <AvField
-                                            className="setting_input border border-2"
+                                            className="setting_input border "
                                             label={t("user.grajdan")}
                                             type="select" name="resident"
                                             style={{backgroundColor: "#ffffff"}}
@@ -144,21 +150,20 @@ export default function AddOrEditUser() {
                                 </Row>
                                 <div className="row">
                                     <Col md={6}>
-                                        <AvField
-                                            label={t("user.tel")}
-                                            name="phoneNumber"
-                                            value={currentEditUser?.phoneNumber}
-                                            className="setting_input border border-2"
-                                            style={{backgroundColor: "#ffffff"}}
-                                            minLength={6}
-                                        />
+                                        <Label>{t("companiesList.phoneNumber")}</Label>
+                                        <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
+                                            <PhoneInput
+                                                placeholder="Enter phone number"
+                                                value={phoneNumber}
+                                                onChange={setPhoneNumber}/>
+                                        </div>
                                     </Col>
                                     <Col md={6}>
                                         <AvField type="select"
                                                  label={t("user.status")}
                                                  helpMessage=""
                                                  style={{backgroundColor: "#ffffff"}}
-                                                 className="setting_input border border-2 p-2 w-100" name="activated"
+                                                 className="setting_input border  p-2 w-100" name="activated"
                                                  id="activated"
                                                  defaultValue={true}>
                                             <option value={true}>{t("user.aktiv")}</option>
@@ -188,28 +193,32 @@ export default function AddOrEditUser() {
                         <Col md={6}>
                             <Row>
                                 <Col md={6}>
-                                    <div className="form-group">
+                                    <div className="form-group d-flex flex-column">
                                         <Label className='required_fields'>{t("user.pnfl")}</Label>
-                                        <AvField
-                                            className="setting_input border border-2"
-                                            type="text" name="pinfl"
-                                            value={currentEditUser?.pinfl}
-                                            style={{backgroundColor: "#ffffff"}}
+                                        <input
+                                            ref={ref}
+                                            style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
+                                            name="inn"
                                             minLength={14} maxLength={14}
-                                            onChange={savePinfl}
+                                            // onChange={savePinfl}
+                                            className="setting_input border "
+                                            required
                                         />
                                     </div>
 
                                 </Col>
                                 <Col md={6}>
-                                    <AvField
-                                        style={{backgroundColor: "#ffffff"}}
-                                        name="inn"
-                                        label={t("user.inn")}
-                                        value={currentEditUser?.inn}
-                                        minLength={9} maxLength={9}
-                                        className="setting_input border-2"
-                                    />
+                                    <div className="form-group d-flex flex-column">
+                                        <Label className='required_fields'>{t("user.inn")}</Label>
+                                        <input
+                                            ref={ref}
+                                            style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
+                                            name="inn"
+                                            value={currentEditUser?.inn}
+                                            minLength={9} maxLength={9}
+                                            className="setting_input border"
+                                        />
+                                    </div>
                                 </Col>
                             </Row>
                             <Row>
@@ -217,7 +226,7 @@ export default function AddOrEditUser() {
                                     <div className="form-group">
                                         <Label className='required_fields'>{t("user.login")}</Label>
                                         <AvField
-                                            className="setting_input border-2"
+                                            className="setting_input border"
                                             value={currentEditUser?.username}
                                             type="text"
                                             name="username"
@@ -232,7 +241,7 @@ export default function AddOrEditUser() {
                                         name="password"
                                         label={t("user.parol")}
                                         value={currentEditUser?.password}
-                                        className="setting_input border-2"
+                                        className="setting_input border"
                                         style={{backgroundColor: "#ffffff"}}
                                         onChange={handlePasswordChange("password")}
                                         type={password.showPassword ? "text" : "password"}
@@ -256,11 +265,11 @@ export default function AddOrEditUser() {
                                     <AvField type="select"
                                              label={t("user.registr")}
                                              style={{backgroundColor: "#ffffff"}}
-                                             className="setting_input border border-2" name="authTypeEnum"
-                                             // defaultValue={selectItem.authTypeEnum ? authTypeEnum : INPASS}
+                                             className="setting_input border" name="authTypeEnum"
+                                        // defaultValue={selectItem.authTypeEnum ? authTypeEnum : INPASS}
                                     >
-                                        <option value={INPASS}>{t("user.loginetp")}</option>
                                         <option value={ERI}>{t("user.etp")}</option>
+                                        <option value={INPASS}>{t("user.loginetp")}</option>
                                     </AvField>
                                 </Col>
                                 <Col md={6}>
@@ -269,7 +278,7 @@ export default function AddOrEditUser() {
                                         name="passport"
                                         value={currentEditUser?.passport}
                                         label={t("user.passport")}
-                                        className="setting_input border-2"
+                                        className="setting_input border"
                                         minLength={2}
                                         maxLength={9}
                                     />
