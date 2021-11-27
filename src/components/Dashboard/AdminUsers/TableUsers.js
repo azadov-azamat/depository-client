@@ -1,39 +1,17 @@
 import React from "react";
 import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
-import {useDispatch} from "react-redux";
-import {DELETE_USER} from "../../../redux/actionTypes/actionTypes";
 import {Link} from "react-router-dom";
-import {useHistory} from "react-router";
-import {confirmAlert} from "react-confirm-alert";
 
 export default function TableUsers({user}) {
 
-    const dispatch = useDispatch()
-    const history = useHistory();
-    const deleteUser = (id) => {
-        dispatch({type: DELETE_USER, payload: id})
-    }
-    const submit = (id) => {
-        confirmAlert({
-            title: 'Удалить',
-            message: 'Вы действительно хотите удалить пользователя?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: () => deleteUser(id)
-                },
-                {
-                    label: 'Нет',
-                    // onClick: () => alert('Click No')
-                }
-            ]
-        });
-    };
+    console.log(user)
+    const editUser = () => {
 
-    function editUser() {
-        history.push(`/admin/users/${user.id}`)
     }
 
+    const submit = () => {
+
+    }
     return (
         <>
             <tr className=''>

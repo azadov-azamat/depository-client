@@ -20,7 +20,7 @@ export default function PaginationDashboard({count, page, lang, handleChange, pa
                 <p className="d-none d-lg-flex align-items-center justify-content-end users_count">
                     {payload && payload[0] === '0' ?
                         lang("companiesList.accountCount") + ' - 0' :
-                        lang("companiesList.accountCount") + " "+(startIndex + 1) + ' - ' + lastIndex + " " + lang("companiesList.from") + " " + (payload && payload[0])
+                        lang("companiesList.accountCount") + " " + (startIndex + 1) + ' - ' + lastIndex + " " + lang("companiesList.from") + " " + (payload && payload[0])
                     }
                 </p>
             </div>

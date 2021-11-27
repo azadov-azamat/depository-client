@@ -12,7 +12,7 @@ export default function RouteByDashboard({
                                              disabled,
                                              link2,
                                              statusName,
-    lang
+                                             lang
                                          }) {
 
     const history = useHistory();
@@ -25,14 +25,19 @@ export default function RouteByDashboard({
         <div className="py-1 d-sm-flex justify-content-between align-items-center" style={{marginTop: '50px'}}>
             <div className="d-lg-inline-flex align-items-center d-none">
                 <Link to="/admin" className="nav-link text-dark"><FaArrowLeft/></Link>
-                <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
+                <Link to={'/'} className="nav-link"
+                      style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link to={'/admin'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.menu")}</Link>
+                <Link to={'/admin'} className="nav-link"
+                      style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.menu")}</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 {disabled ?
                     <div className='d-flex align-items-center'>
                         <Link to={link2} className={`nav-link`}
-                              style={{color: "rgba(155,153,150,0.98)", fontSize: '17px'}}>{lang("routes.controlPage.control")} {cardName}</Link>
+                              style={{
+                                  color: "rgba(155,153,150,0.98)",
+                                  fontSize: '17px'
+                              }}>{lang("routes.controlPage.control")} {cardName}</Link>
                         <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                         <Link to={'#'}
                               className="nav-link text-dark h5">{statusName}</Link>
@@ -50,7 +55,7 @@ export default function RouteByDashboard({
                 <p className="d-flex d-md-none users_count mt-2">
                     {payload && payload[0] === '0' ?
                         lang("companiesList.accountCount") + '  - 0' :
-                        lang("companiesList.accountCount") + (startIndex + 1) + ' - ' + lastIndex + lang("companiesList.from") + (payload && payload[0])
+                        lang("companiesList.accountCount") + " " + (startIndex + 1) + ' - ' + lastIndex + " " + lang("companiesList.from") + " " + (payload && payload[0])
                     }
                 </p>
             </div>

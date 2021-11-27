@@ -70,7 +70,7 @@
     "email": "E-mail",
     "number": "Phone number",
     "group": "Group",
-    "pnfl": "PNFL"
+    "pinfl": "PINFL"
   },
   "UsersHeading": {
     "sound": "Electronic voting",

@@ -1,6 +1,10 @@
 import {createUser, editUserApi, getById, getFilterUser, getUsers} from "../../api/UsersApi";
 import * as types from "../actionTypes/UsersActionTypes";
-import {REQUEST_API_ERROR_USERS, REQUEST_API_START_USERS} from "../actionTypes/UsersActionTypes";
+import {
+    REQUEST_API_ERROR_USERS,
+    REQUEST_API_START_USERS,
+    REQUEST_GET_USERS_LIST_SUCCESS
+} from "../actionTypes/UsersActionTypes";
 import {dark} from "@material-ui/core/styles/createPalette";
 
 
@@ -44,6 +48,11 @@ export const getUserFilter = (payload) => async (dispatch) => {
             data: payload
         });
         if (res.success) {
+            console.log(res)
+            dispatch({
+                type: REQUEST_GET_USERS_LIST_SUCCESS,
+                payload: res.payload
+            })
         }
         return true;
     } catch (err) {

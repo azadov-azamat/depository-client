@@ -70,7 +70,7 @@ export default function ControlMeeting({meetingStatus, memberList, currentMeetin
                     }
                 ]
             });
-        } else if (quorumCount >= 75) {
+        } else if (quorumCount >= 60) {
             const dataForComment = {
                 userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
                 meetingId: currentMeetingId,

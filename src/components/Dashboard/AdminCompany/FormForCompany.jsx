@@ -3,7 +3,7 @@ import {RiUserSearchLine} from "react-icons/all";
 import {Input} from "reactstrap";
 import {FaCheck, FaTrash} from "react-icons/fa";
 
-export default function Form({getName}) {
+export default function FormForCompany({getName}) {
 
     const Name = (name, index) => {
         getName(name, index)

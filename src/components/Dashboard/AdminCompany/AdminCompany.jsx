@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import '../styles/users.css'
 import {useDispatch, useSelector} from 'react-redux'
 import {Table} from "reactstrap";
-import Form from "../Form";
+import FormForCompany from "./FormForCompany";
 import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 import usePagination from "../Pagination";
 import {Pagination} from "@material-ui/lab";
@@ -20,8 +20,7 @@ function AdminCompany() {
     const {t} = useTranslation();
 
     const reducers = useSelector(state => state)
-    const {loading} = reducers.company
-    const companies = reducers.company.companies;
+    const {loading, companies} = reducers.company
     const {payload} = reducers.auth.totalCount
 
     const [name, setName] = useState('');
@@ -126,7 +125,7 @@ function AdminCompany() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <Form getName={getName}/>
+                                <FormForCompany getName={getName}/>
                                 {
                                     companies && companies.map((company, i) =>
                                         <TableCompany deleteById={submit} company={company} key={i}

@@ -27,6 +27,7 @@ import Example from "./Example";
 import AddOrEditMeeting from "../components/createMeeting/AddOrEditMeeting";
 import MyProfile from "../components/ProfileSettings/MyProfile";
 import eimzo from "../eImzo/eimzoo";
+import AddOrEditUser from "../components/Dashboard/AdminUsers/AddOrEditUser";
 
 const App = () => {
     const [infoV, setInfoV] = useState(true)
@@ -45,7 +46,7 @@ const App = () => {
                 <PrivateRoute setNav={setInfoV} path="/supervisory/personalData/currentUser" component={MyProfile}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users" component={AdminUsers}/>
-                <PrivateRoute setNav={setInfoV} exact path="/admin/users/:id" component={User}/>
+                <PrivateRoute setNav={setInfoV} exact path="/admin/users/:id" component={AddOrEditUser}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company" component={AdminCompany}/>
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company/create" component={AddOrEditCompany}/>

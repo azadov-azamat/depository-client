@@ -228,7 +228,7 @@ const User = (props) => {
                                 <Col md={6}>
                                     <AvField
                                         className="setting_input border border-2"
-                                        label={t("user.pnfl") + "*"}
+                                            label={t("user.pnfl") + "*"}
                                         type="text"
                                         name="pinfl"
                                         style={{backgroundColor: "#ffffff"}}
