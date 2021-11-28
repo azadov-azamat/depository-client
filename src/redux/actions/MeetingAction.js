@@ -63,15 +63,29 @@ export const getMeetingFilter = (payload) => async (dispatch) => {
 } // checking !!!
 
 export const createMeeting = (payload) => async (dispatch) => {
+    const lang = localStorage.getItem("i18nextLng")
     dispatch({
         api: postMeeting,
-        types: ["REQUEST_START", types.REQUEST_CREATE_MEETING, "",],
+        types: ["REQUEST_START", types.REQUEST_CREATE_MEETING, "REQUEST_ERROR_CREATE_MEETING",],
         data: payload.data
     }).then(res => {
+        console.log(res)
         const currentMeetingId = res.payload.id;
         localStorage.setItem(DEPOSITORY_CURRENT_MEETING, currentMeetingId)
         payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
     }).catch(err => {
+        console.log(err.response.data)
+        if (err.response.data.detail === "Company must have Chairmen or Secretary"){
+            if (lang === "uz"){
+                payload.toast.error("Kompaniyada rais yoki kotib bo'lishi kerak")
+            }
+            if (lang === "ru"){
+                payload.toast.error("Компания должна иметь председателя или секретаря")
+            }
+            if (lang === "en"){
+                payload.toast.error(err.response.data.detail)
+            }
+        }
     })
 } // success 95%
 

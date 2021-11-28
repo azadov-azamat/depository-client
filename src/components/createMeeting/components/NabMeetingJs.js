@@ -116,7 +116,8 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
-            dispatch(meetingActions.createMeeting({data, history}))
+            console.log(data)
+            dispatch(meetingActions.createMeeting({data, history, toast}))
         }
     }
 
