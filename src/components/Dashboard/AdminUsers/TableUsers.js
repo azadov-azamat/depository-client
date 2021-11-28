@@ -1,11 +1,10 @@
 import React from "react";
 import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
 import {Link} from "react-router-dom";
-import {ACTIVE, CANCELED, DISABLED, ENTITY, FINISH, FOREIGNER, INDIVIDUAL, PENDING} from "../../../utils/contants";
+import {ENTITY, FOREIGNER, INDIVIDUAL} from "../../../utils/contants";
 
-export default function TableUsers({user, t}) {
+export default function TableUsers({user, t, updateUser}) {
 
-    console.log(user)
     const editUser = () => {
 
     }
@@ -36,7 +35,8 @@ export default function TableUsers({user, t}) {
         <>
             <tr className=''>
                 <th scope="row" className=' text-center'>
-                    <Link to={`/admin/users/${user.id}`} className='text-warning'><FaPen/></Link>
+                    <Link to={`/admin/users/${user.id}`} onClick={() => updateUser(user.id)}
+                          className='text-warning'><FaPen/></Link>
                 </th>
                 <td onClick={editUser} className='text-center'>
                     <p style={style}>

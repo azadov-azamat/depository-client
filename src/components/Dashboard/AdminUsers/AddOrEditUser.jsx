@@ -1,13 +1,13 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {useHistory, useParams} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Col, Label, Row} from "reactstrap";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import {ENTITY, ERI, FOREIGNER, INDIVIDUAL, INPASS} from "../../../utils/contants";
+import {DEPOSITORY_USER, ENTITY, ERI, FOREIGNER, INDIVIDUAL, INPASS} from "../../../utils/contants";
 import RouteByDashboard from "../RouteByDashboard";
 import {useTranslation} from "react-i18next";
 import PhoneInput from "react-phone-number-input";
@@ -24,20 +24,41 @@ export default function AddOrEditUser() {
     const {id} = useParams();
     const {t} = useTranslation();
 
-    const currentUser = ''
-    const currentEditUser = ''
+    const reducers = useSelector(state => state)
+    const {currentForUser} = reducers.users
+
     const lang = localStorage.getItem('i18nextLng')
+    const [opts, setOpts] = useState({mask: Number});
+    const {ref, maskRef} = useIMask(opts);
+
     const [password, setPassword] = useState({
         password: "",
         showPassword: false,
         generatePassword: "",
     })
+
     const [generateLogin, setGenerateLogin] = useState();
     const [savedPinfl, setSavedPinfl] = useState();
     const [savedInn, setSavedInn] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
-    const [opts, setOpts] = useState({mask: Number});
-    const {ref, maskRef} = useIMask(opts);
+    const currentUserId = parseInt(localStorage.getItem("currentEditUser"));
+    const [myBoolean, setMyBoolean] = useState(false);
+
+    useEffect(() => {
+        const current = parseInt(id);
+        if (!isNaN(current)) {
+            dispatch(adminUsersAction.getUserById({userId: currentUserId, history}))
+            localStorage.setItem("currentEditUser", currentForUser.id)
+            setPhoneNumber(currentForUser.phoneNumber)
+            setSavedPinfl(currentForUser.pinfl)
+            setSavedInn(currentForUser.inn)
+            setGenerateLogin(currentForUser.login)
+            const auth = currentForUser.authorities
+            if ({...auth} === "ROLE_MODERATOR"){
+                setMyBoolean(true)
+            }
+        }
+    }, [id, currentUserId])
 
     const addUser = (e, v) => {
 
@@ -72,16 +93,36 @@ export default function AddOrEditUser() {
     }
 
     const editUser = (e, v) => {
-        // console.log(v)
-        // e.preventDefault();
-        // const data = {
-        //     id: parseInt(id),
-        //     ...v,
-        //
-        // }
-        // // console.log(data)
-        // dispatch({type: UPDATE_USER, payload: data})
-        // history.push('/admin/users')
+        console.log(v)
+        const authority = [];
+        if (v.isAdmin === true) {
+            authority.push("ROLE_MODERATOR")
+        } else if (v.isAdmin === false) {
+            authority.push("ROLE_USER")
+        }
+
+        if (savedPinfl && authority && generateLogin && savedInn) {
+            const data = {
+                id: currentUserId,
+                fullName: v.fullName,
+                activated: v.activated,
+                authTypeEnum: v.authTypeEnum,
+                authorities: authority,
+                email: v.email,
+                groupEnum: v.groupEnum,
+                inn: savedInn,
+                login: generateLogin,
+                password: v.password,
+                passport: v.passport,
+                pinfl: savedPinfl,
+                resident: v.resident,
+                phoneNumber: phoneNumber
+            }
+            console.log(data)
+            dispatch(adminUsersAction.editUserAction({data, history}))
+        } else {
+            toast.warning("Iltimos kerakli hamma malumotlarni to`ldiring")
+        }
     }
 
     const savePinfl = (e) => {
@@ -138,40 +179,40 @@ export default function AddOrEditUser() {
             <div className="container-fluid" style={{marginTop: '12vh'}}>
                 <RouteByDashboard lang={t} cardName={t("routes.controlPage.user")} disabled={true}
                                   link2={`/admin/users`}
-                                  statusName={currentUser ? t("routes.addOrEditPage.editUser") : t("routes.addOrEditPage.addUser")}/>
+                                  statusName={currentUserId ? t("routes.addOrEditPage.editUser") : t("routes.addOrEditPage.addUser")}/>
             </div>
             <div className='container'>
-                <AvForm className="container_wrapper" onValidSubmit={currentUser ? editUser : addUser}>
+                <AvForm className="container_wrapper" onValidSubmit={currentUserId ? editUser : addUser}>
                     <Row>
                         <Col md={6}>
                             <div className="form-group">
                                 <Label className='required_fields'>{t("AdminUser.fullName")}</Label>
                                 <AvField
                                     name="fullName"
-                                    value={currentEditUser?.fullName}
+                                    value={currentForUser?.fullName}
                                     style={{backgroundColor: "#ffffff"}}
-                                    className="setting_input border  p-2 w-100"
+                                    /* FULL_NAME */ className="setting_input border  p-2 w-100"
                                     type="text"
                                     required
                                 />
                                 <Label className='required_fields'>{t("AdminUser.email")}</Label>
                                 <AvField
                                     name="email"
-                                    // label={t("AdminUser.email")}
-                                    value={currentEditUser?.email}
+                                    value={currentForUser?.email}
                                     style={{backgroundColor: "#ffffff"}}
-                                    className="setting_input border  p-2 w-100"
+                                    /* EMAIL */ className="setting_input border  p-2 w-100"
                                     type="email"
                                     required
                                 />
                                 <Row>
                                     <Col md={6}>
-                                        <AvField type="select"
-                                                 label={t("AdminUser.group")}
-                                                 style={{backgroundColor: "#ffffff"}}
-                                                 className="setting_input border  p-2 w-100" name="groupEnum"
-                                                 id="groupEnum"
-                                                 defaultValue={INDIVIDUAL}
+                                        <AvField
+                                            type="select"
+                                            label={t("AdminUser.group")}
+                                            style={{backgroundColor: "#ffffff"}}
+                                            className="setting_input border  p-2 w-100" name="groupEnum"
+                                            /* GROUP_ENUM */ id="groupEnum"
+                                            defaultValue={currentUserId ? currentForUser.groupEnum : INDIVIDUAL}
                                         >
                                             <option value={INDIVIDUAL}>{t("user.jismoniy")}</option>
                                             <option value={ENTITY}>{t("user.yuridik")}</option>
@@ -184,7 +225,8 @@ export default function AddOrEditUser() {
                                             label={t("user.grajdan")}
                                             type="select" name="resident"
                                             style={{backgroundColor: "#ffffff"}}
-                                            defaultValue={true}
+                                            /* RESIDENT */
+                                            defaultValue={currentUserId ? currentForUser.resident : true}
                                         >
                                             <option value={true}>{t("user.rezident")}</option>
                                             <option value={false}>{t("user.nerezident")}</option>
@@ -197,17 +239,18 @@ export default function AddOrEditUser() {
                                         <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                             <PhoneInput
                                                 placeholder="Enter phone number"
-                                                value={phoneNumber}
+                                                /* PHONE_NUMBER */ value={phoneNumber}
                                                 onChange={setPhoneNumber}/>
                                         </div>
                                     </Col>
                                     <Col md={6}>
-                                        <AvField type="select"
-                                                 label={t("user.status")}
-                                                 style={{backgroundColor: "#ffffff"}}
-                                                 className="setting_input border  p-2 w-100" name="activated"
-                                                 id="activated"
-                                                 defaultValue={true}>
+                                        <AvField
+                                            type="select"
+                                            label={t("user.status")}
+                                            /* ACTIVATED */ style={{backgroundColor: "#ffffff"}}
+                                            className="setting_input border  p-2 w-100" name="activated"
+                                            id="activated"
+                                            defaultValue={currentUserId ? currentForUser.activated : true}>
                                             <option value={true}>{t("user.aktiv")}</option>
                                             <option value={false}>{t("user.neaktiv")}</option>
                                         </AvField>
@@ -222,6 +265,7 @@ export default function AddOrEditUser() {
                                                 id='forCheck'
                                                 type='checkbox'
                                                 name='isAdmin'
+                                                defaultChecked={myBoolean}
                                             />
                                             <Label for='forCheck'>{t("user.dostup")}</Label>
                                         </div>
@@ -307,7 +351,7 @@ export default function AddOrEditUser() {
                                              label={t("user.registr")}
                                              style={{backgroundColor: "#ffffff"}}
                                              className="setting_input border" name="authTypeEnum"
-                                             defaultValue={ERI}
+                                             defaultValue={currentUserId ? currentForUser.authTypeEnum : ERI}
                                     >
                                         <option value={ERI}>{t("user.etp")}</option>
                                         <option value={INPASS}>{t("user.loginetp")}</option>
@@ -317,7 +361,7 @@ export default function AddOrEditUser() {
                                     <AvField
                                         style={{backgroundColor: "#ffffff"}}
                                         name="passport"
-                                        value={currentEditUser?.passport}
+                                        value={currentForUser?.passport}
                                         label={t("user.passport")}
                                         className="setting_input border"
                                         minLength={2}
@@ -333,6 +377,7 @@ export default function AddOrEditUser() {
                                             type='checkbox'
                                             name='isAdmin'
                                             style={{width: "20px", height: "20px", borderRadius: "5px"}}
+                                            defaultChecked={myBoolean}
                                         />
                                         <Label for='forCheck'>{t("user.dostup")}</Label>
                                     </div>
@@ -341,7 +386,7 @@ export default function AddOrEditUser() {
                                     <div
                                         className="d-inline-flex d-sm-flex justify-content-md-center justify-content-end  w-100 mt-md-4">
                                         <button type="submit" className="btn-save d-block px-3 py-2 mx-2 my-1">
-                                            {currentUser ? t("user.redaktorovat") : t("user.sozdat")}
+                                            {currentUserId ? t("user.redaktorovat") : t("user.sozdat")}
                                         </button>
                                         <button onClick={() => history.push('/admin')}
                                                 className="btn-cancel px-3 py-2 my-1 mx-2"> {t("cancel")}

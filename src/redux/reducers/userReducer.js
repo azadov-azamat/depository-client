@@ -3,7 +3,7 @@ import {createReducer} from "../../utils/StoreUtils";
 
 const initialState = {
     loading: false,
-    currentForUser: {},
+    currentForUser: [],
     users: []
 }
 

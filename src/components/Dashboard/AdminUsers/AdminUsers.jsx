@@ -10,8 +10,9 @@ import {useTranslation} from "react-i18next";
 import RouteByDashboard from "../RouteByDashboard";
 import PaginationDashboard from "../PaginationDashboard";
 import * as adminUserAction from "../../../redux/actions/UsersAction";
-import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 import TableUsers from "./TableUsers";
+import {DEPOSITORY_USER} from "../../../utils/contants";
+import * as types from "../../../redux/actionTypes/UsersActionTypes";
 
 
 export default function AdminUsers() {
@@ -45,6 +46,11 @@ export default function AdminUsers() {
         if (!name) {
             dispatch(adminUserAction.getUsersList({page, size}));
         }
+        localStorage.removeItem(DEPOSITORY_USER)
+        dispatch({
+            type: types.REQUEST_GET_USER_SUCCESS,
+            payload: []
+        })
     }, [page, name])
     const del = () => {
 
@@ -93,10 +99,9 @@ export default function AdminUsers() {
         }
     }
 
-    const updateCompany = (currentMeetingId) => {
-        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: currentMeetingId, history}))
+    const updateUser = (userId) => {
+        dispatch(adminUserAction.getUserById({userId: userId, history}))
     }
-
 
     return (
         <div className="dashboard p-3">
@@ -124,8 +129,8 @@ export default function AdminUsers() {
                                 {
                                     users && users.map((user, i) =>
                                         user.authorities[0] === "ROLE_ADMIN" ? "" :
-                                        <TableUsers deleteById={del} user={user} key={i}
-                                                    updateCompany={updateCompany} t={t}/>
+                                            <TableUsers deleteById={del} user={user} key={i}
+                                                        updateUser={updateUser} t={t}/>
                                     )
                                 }
                                 </tbody>

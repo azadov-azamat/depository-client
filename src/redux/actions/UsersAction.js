@@ -6,6 +6,8 @@ import {
     REQUEST_GET_USERS_LIST_SUCCESS
 } from "../actionTypes/UsersActionTypes";
 import {dark} from "@material-ui/core/styles/createPalette";
+import {toast} from "react-toastify";
+import {DEPOSITORY_USER} from "../../utils/contants";
 
 
 export const createUserForAdmin = (payload) => async (dispatch) => {
@@ -103,13 +105,15 @@ export const getUserFilter = (payload) => async (dispatch) => {
 }
 
 export const getUserById = (payload) => async (dispatch) => {
-
     dispatch({
         api: getById,
-        types: types.REQUEST_GET_USER_SUCCESS,
-        data: payload.ID
+        types: ["",types.REQUEST_GET_USER_SUCCESS,""],
+        data: payload.userId
     }).then(res => {
+        // toast.success("keldi")
+        localStorage.setItem("currentEditUser", payload.userId)
     }).catch(err => {
+        console.log(err.response)
     })
 }
 
@@ -119,6 +123,8 @@ export const editUserAction = (payload) => async (dispatch) => {
         types: [REQUEST_API_START_USERS, '', REQUEST_API_ERROR_USERS],
         data: payload.data
     }).then(res => {
+        toast.success("keldi")
     }).catch(err => {
+        console.log(err.response)
     })
 }
