@@ -12,10 +12,7 @@ import AdminMeetings from '../components/Dashboard/AdminMeeting/AdminMeetings';
 import NavbarIn from '../components/NavbarIn';
 import NavbarOut from "../components/NavbarOut";
 import {useTranslation} from "react-i18next";
-import {AllMeetings} from "../components/userPages/AllMeetings";
-import {ArchiveMeetings} from "../components/userPages/ArchiveMeetings";
 import NotFound from "../components/NotFound";
-import User from "../pages/User";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'antd/dist/antd.css';
 import {Provider} from "react-redux";
@@ -55,11 +52,13 @@ const App = () => {
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company/update/:id" component={AddOrEditCompany}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/meetings" component={AdminMeetings}/>
-                <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/create" component={AddOrEditMeeting}/>
+                <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/create"
+                              component={AddOrEditMeeting}/>
                 <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/:id" component={AddOrEditMeeting}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/issuerLegal" component={NabPage}/>
-                <PrivateRoute setNav={setInfoV} path="/issuerLegal/meetings/company_id/:id/active" component={MeetingLists}/>
+                <PrivateRoute setNav={setInfoV} path="/issuerLegal/meetings/company_id/:id/active"
+                              component={MeetingLists}/>
 
                 <PrivateRoute setNav={setInfoV} path='/issuerLegal/meetingSetting'
                               component={ControllerMeeting}/>
