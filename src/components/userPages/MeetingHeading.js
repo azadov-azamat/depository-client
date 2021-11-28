@@ -5,6 +5,8 @@ import {AiOutlineLeft, AiOutlineRight, FaArrowLeft} from "react-icons/all";
 import {NavbarMeeting} from "./NavbarMeeting";
 import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import {useDispatch, useSelector} from "react-redux";
+import {BASE_URL} from "../../utils/config";
+import {api} from "../../api/api";
 
 export default function MeetingHeading({company}) {
 
@@ -50,9 +52,9 @@ export default function MeetingHeading({company}) {
                                 </div>
                             </div>
                             <div className="d-flex flex-column align-items-center">
-                                {booleanMy ?
+                                {currentCompany && currentCompany.imageUrl === "yes" ?
                                     <span>
-                                        <img src={"currentCompany?.imageUrl"} alt="bu rasm"
+                                        <img src={BASE_URL + api.getLogoByCompanyId + currentCompany.id} alt="bu rasm"
                                              style={{borderRadius: "50%", width: "4em", height: "4em"}}/>
                                     </span>
                                     :
@@ -78,9 +80,9 @@ export default function MeetingHeading({company}) {
                         <Link to={'/issuerLegal'} className="nav-link text-dark"><AiOutlineLeft className="h3"/></Link>
                         <div className="d-flex align-items-center float-end">
                             <span style={style} className='h4 d-flex justify-content-end'>{company?.name} - </span>
-                            {booleanMy ?
+                            {currentCompany && currentCompany.imageUrl === "yes" ?
                                 <span>
-                                        <img src={"currentCompany?.imageUrl"} alt="bu rasm"
+                                        <img src={BASE_URL + api.getLogoByCompanyId + currentCompany.id} alt="bu rasm"
                                              style={{borderRadius: "50%", width: "8vh", height: "8vh"}}/>
                                     </span>
                                 :

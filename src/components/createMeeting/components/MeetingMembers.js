@@ -52,7 +52,16 @@ export default function MeetingMembers({currentMeeting}) {
         }))
         memberManagerState && memberManagerState.forEach((element, value) => {
             if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER) {
-                membersByMeeting.push(element)
+                console.log(element);
+                console.log(membersByMeeting)
+
+                membersByMeeting.forEach(elementPushed => {
+                        console.log(elementPushed)
+                        if (elementPushed.id !== element.id) {
+                            membersByMeeting.push(element)
+                        }
+                    }
+                );
             }
         })
     }, [page])

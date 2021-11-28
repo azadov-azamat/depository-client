@@ -33,17 +33,16 @@ export const MeetingLists = () => {
         <div className="allCss">
             <MeetingHeading company={company}/>
             <div className="container">
-                <Switch>
-                   <Route path={"/issuerLegal/meetings/company_id/:id"} exact>
-
-                   </Route>
-                   <Route path={"/issuerLegal/meetings/company_id/:id"}>
-
-                   </Route>
-                </Switch>
                 <Row>
                     <Col md={12}>
-                        <List meetings={meeting} watcher={Watcher}/>
+                        <Switch>
+                            <Route exact path={"/issuerLegal/meetings/company_id/" + id + "/active"}>
+                                <List meetings={meeting} watcher={Watcher}/>
+                            </Route>
+                            <Route path={"/issuerLegal/meetings/company_id/" + id + "/archive"}>
+                                <List meetings={meeting} pathname={'archive'}/>
+                            </Route>
+                        </Switch>
                     </Col>
                 </Row>
             </div>

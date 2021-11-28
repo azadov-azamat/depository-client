@@ -24,14 +24,16 @@ export default function NabPage() {
     const {companiesByUserId, loading} = reducers.company
     const [booleanMy, setBooleanMy] = useState(false);
 
-
-    useEffect(() => {
-        dispatch(companyAction.getCompanyByUserId({currentUserId: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
+    useEffect(()=>{
         companiesByUserId && companiesByUserId.forEach(element => {
             if (element.chairmanId === currentUser.id || element.secretaryId === currentUser.id) {
                 setBooleanMy(true)
             }
         })
+    },[booleanMy, companiesByUserId])
+
+    useEffect(() => {
+        dispatch(companyAction.getCompanyByUserId({currentUserId: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
         dispatch({
             type: 'REQUEST_GET_MEETING_SUCCESS',
             payload: []
