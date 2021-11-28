@@ -135,7 +135,6 @@ export const deleteUserAction = (payload) => async (dispatch) => {
         types: [REQUEST_API_START_USERS, 'REQUEST_SUCCESS_DELETE_USER', REQUEST_API_ERROR_USERS],
         data: payload.userId
     }).then(res => {
-        toast.success("keldi")
         dispatch(getUsersList({page: payload.page, size: 6}))
     }).catch(err => {
         console.log(err.response)
