@@ -23,3 +23,6 @@ export const getById =(data)=>{
 export const editUserApi = (data)=>{
     return HttpClient.doPut(api.userMethods, data)
 }
+export const deleteUserApi = (data)=>{
+    return HttpClient.doDelete(api.userMethods + "/" + data)
+}

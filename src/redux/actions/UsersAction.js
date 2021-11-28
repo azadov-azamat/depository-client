@@ -1,4 +1,4 @@
-import {createUser, editUserApi, getById, getFilterUser, getUsers} from "../../api/UsersApi";
+import {createUser, deleteUserApi, editUserApi, getById, getFilterUser, getUsers} from "../../api/UsersApi";
 import * as types from "../actionTypes/UsersActionTypes";
 import {
     REQUEST_API_ERROR_USERS,
@@ -20,7 +20,7 @@ export const createUserForAdmin = (payload) => async (dispatch) => {
         payload.history.push('/admin/users')
     }).catch(err => {
         if (err.response.data.status === 400) {
-            if (err.response.data.errorKey === 'phonenumberexists') {
+            if (err.response.data.title === 'Passport already used!') {
                 if (lang === "ru") {
                     payload.toast.error("Паспорт уже использовался!")
                 }
@@ -31,7 +31,7 @@ export const createUserForAdmin = (payload) => async (dispatch) => {
                     payload.toast.error(err.response.data.title)
                 }
             }
-            if (err.response.data.title === 'Phone-number is already in use!') {
+            if (err.response.data.errorKey === 'phonenumberexists') {
                 if (lang === "ru") {
                     payload.toast.error("Телефонный номер уже используется!")
                 }
@@ -124,6 +124,19 @@ export const editUserAction = (payload) => async (dispatch) => {
         data: payload.data
     }).then(res => {
         toast.success("keldi")
+    }).catch(err => {
+        console.log(err.response)
+    })
+}
+
+export const deleteUserAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: deleteUserApi,
+        types: [REQUEST_API_START_USERS, 'REQUEST_SUCCESS_DELETE_USER', REQUEST_API_ERROR_USERS],
+        data: payload.userId
+    }).then(res => {
+        toast.success("keldi")
+        dispatch(getUsersList({page: payload.page, size: 6}))
     }).catch(err => {
         console.log(err.response)
     })

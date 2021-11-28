@@ -29,13 +29,13 @@ export default function AdminUsers() {
     const [name, setName] = useState('');
     const [page, setPage] = useState(1);
 
-    const size = (page === 1 ? 7 : 6);
+    const size = 6;
 
     const count = Math.ceil(payload && payload[0] / size);
     const _DATA = usePagination(users && users, size);
 
     const startIndex = (page - 1) * size;
-    const lastIndex = startIndex + (payload && (payload[1] - 1));
+    const lastIndex = startIndex + (payload && payload[1]);
 
     const handleChange = (e, p) => {
         setPage(p);
@@ -46,13 +46,14 @@ export default function AdminUsers() {
         if (!name) {
             dispatch(adminUserAction.getUsersList({page, size}));
         }
-        localStorage.removeItem(DEPOSITORY_USER)
+        localStorage.removeItem("currentEditUser")
         dispatch({
             type: types.REQUEST_GET_USER_SUCCESS,
             payload: []
         })
     }, [page, name])
-    const del = () => {
+
+    const del = (userId) => {
 
         confirmAlert({
             title: 'Удалить',
@@ -60,12 +61,11 @@ export default function AdminUsers() {
             buttons: [
                 {
                     label: 'Да',
-                    onClick: ''
+                    onClick: () => dispatch(adminUserAction.deleteUserAction({userId, page}))
                 },
                 {
                     label: 'Нет',
-                    // onClick: () => props.updateState({deleteModal : true})
-                    // onClick : () => props.deleteModal
+                    // onClick: () => dispatch(adminUserAction.deleteUserAction(userId))
                 }
             ]
         });
@@ -128,7 +128,7 @@ export default function AdminUsers() {
                                 <FormForUser getName={getName} t={t}/>
                                 {
                                     users && users.map((user, i) =>
-                                        user.authorities[0] === "ROLE_ADMIN" ? "" :
+                                        // user.authorities[0] === "ROLE_ADMIN" ? "" :
                                             <TableUsers deleteById={del} user={user} key={i}
                                                         updateUser={updateUser} t={t}/>
                                     )
