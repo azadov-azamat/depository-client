@@ -133,6 +133,10 @@
     "addOrEditPage": {
       "addCompany": "KOMPANIYA QO'SHISH",
       "editCompany": "KOMPANIYANI TAHRIRLASH",
+
+      "addUser" : "Foydalanuvchi qo`shish",
+      "editUser": "Foydalanuvchini tahrirlash",
+
       "addMeeting": "Kengash yig'ilishini tashkil etish",
       "editMeeting": "Uchrashuvni tahrirlash"
     }

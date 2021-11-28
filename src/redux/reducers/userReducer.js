@@ -41,8 +41,8 @@ const reducers = {
         state.searchLoading = true
     },
 
-    [types.REQUEST_CREATE_USERS](state, payload) {
-        state.users = [...state, payload.payload];
+    [types.REQUEST_CREATE_USERS](state, action) {
+        state.users = action.payload;
         return state;
     },
     [types.REQUEST_UPDATE_BY_ID](state, payload){

@@ -169,9 +169,6 @@ export default function AddOrEditCompany() {
             <div className="container-fluid" style={{marginTop: '12vh'}}>
                 <RouteByDashboard lang={t} cardName={t("routes.controlPage.company")} disabled={true} link2={`/admin/company`}
                                   statusName={currentCompany ? t("routes.addOrEditPage.editCompany") : t("routes.addOrEditPage.addCompany")}/>
-                <div className="d-block d-md-none text-center">
-                    <h3>{currentCompany ? t("routes.addOrEditPage.editCompany") : t("routes.addOrEditPage.addCompany")}</h3>
-                </div>
                 <AvForm className="container_wrapper" onValidSubmit={currentCompany ? editCompany : addCompany}
                         enctype="multipart/form-data">
                     <Row>

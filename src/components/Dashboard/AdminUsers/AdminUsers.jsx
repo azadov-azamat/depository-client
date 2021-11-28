@@ -22,26 +22,19 @@ export default function AdminUsers() {
 
     const reducers = useSelector(state => state);
 
-    const style = {
-        textOverflow: 'ellipsis',
-        overflow: 'hidden',
-        whitespace: 'nowrap',
-        width: '20% !important',
-    };
-
     const {loading, users} = reducers.users
     const {payload} = reducers.auth.totalCount
 
     const [name, setName] = useState('');
     const [page, setPage] = useState(1);
 
-    const size = 7;
+    const size = (page === 1 ? 7 : 6);
 
     const count = Math.ceil(payload && payload[0] / size);
     const _DATA = usePagination(users && users, size);
 
     const startIndex = (page - 1) * size;
-    const lastIndex = startIndex + (payload && payload[1]);
+    const lastIndex = startIndex + (payload && (payload[1] - 1));
 
     const handleChange = (e, p) => {
         setPage(p);
@@ -109,7 +102,7 @@ export default function AdminUsers() {
         <div className="dashboard p-3">
             <div className="container-fluid">
                 <div className="users">
-                    <RouteByDashboard link={'/admin/users/:id'} cardName={t("routes.controlPage.user")}
+                    <RouteByDashboard link={'/admin/users/create'} cardName={t("routes.controlPage.user")}
                                       startIndex={startIndex} lastIndex={lastIndex} payload={payload} lang={t}/>
                     <div className="minWidth w-100 d-flex justify-content-center align-items-center">
                         <div className="list_wrapper">
@@ -130,8 +123,9 @@ export default function AdminUsers() {
                                 <FormForUser getName={getName} t={t}/>
                                 {
                                     users && users.map((user, i) =>
+                                        user.authorities[0] === "ROLE_ADMIN" ? "" :
                                         <TableUsers deleteById={del} user={user} key={i}
-                                                    updateCompany={updateCompany}/>
+                                                    updateCompany={updateCompany} t={t}/>
                                     )
                                 }
                                 </tbody>

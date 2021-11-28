@@ -9,21 +9,62 @@ import {dark} from "@material-ui/core/styles/createPalette";
 
 
 export const createUserForAdmin = (payload) => async (dispatch) => {
-    try {
-        const res = await dispatch({
-            api: createUser,
-            types: ["", types.REQUEST_CREATE_USER, types.REQUEST_API_ERROR_USERS],
-            data: payload.data,
-        });
-        if (res.success) {
-            payload.history.push('/admin/users')
+    const lang = localStorage.getItem('i18nextLng')
+    dispatch({
+        api: createUser,
+        types: ["REQUEST_START_CREATE_USER", types.REQUEST_CREATE_USER, types.REQUEST_API_ERROR_USERS],
+        data: payload.data,
+    }).then(res => {
+        payload.history.push('/admin/users')
+    }).catch(err => {
+        if (err.response.data.status === 400) {
+            if (err.response.data.errorKey === 'phonenumberexists') {
+                if (lang === "ru") {
+                    payload.toast.error("Паспорт уже использовался!")
+                }
+                if (lang === "uz") {
+                    payload.toast.error("Pasport allaqachon ishlatilgan!")
+                }
+                if (lang === "en") {
+                    payload.toast.error(err.response.data.title)
+                }
+            }
+            if (err.response.data.title === 'Phone-number is already in use!') {
+                if (lang === "ru") {
+                    payload.toast.error("Телефонный номер уже используется!")
+                }
+                if (lang === "uz") {
+                    payload.toast.error("Telefon raqami allaqachon ishlatilmoqda!")
+                }
+                if (lang === "en") {
+                    payload.toast.error(err.response.data.title)
+                }
+            }
+            if (err.response.data.errorKey === 'emailexists') {
+                if (lang === "ru") {
+                    payload.toast.error("Email уже используется!")
+                }
+                if (lang === "uz") {
+                    payload.toast.error("Email allaqachon ishlatilmoqda!")
+                }
+                if (lang === "en") {
+                    payload.toast.error(err.response.data.title)
+                }
+            }
+            if (err.response.data.errorKey === 'innexists'){
+                if (lang === "ru") {
+                    payload.toast.error("ИНН уже используется!")
+                }
+                if (lang === "uz") {
+                    payload.toast.error("INN allaqachon ishlatilmoqda!")
+                }
+                if (lang === "en") {
+                    payload.toast.error(err.response.data.title)
+                }
+            }
         }
-        return true;
-    } catch (err) {
-        if (err.response){
-            console.log(err.response)
-        }
-    }
+        console.log(err.response)
+    })
 }
 
 export const getUsersList = (payload) => async (dispatch) => {

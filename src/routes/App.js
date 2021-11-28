@@ -46,6 +46,7 @@ const App = () => {
                 <PrivateRoute setNav={setInfoV} path="/supervisory/personalData/currentUser" component={MyProfile}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users" component={AdminUsers}/>
+                <PrivateRoute setNav={setInfoV} exact path="/admin/users/create" component={AddOrEditUser}/>
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users/:id" component={AddOrEditUser}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company" component={AdminCompany}/>

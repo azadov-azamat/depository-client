@@ -137,6 +137,9 @@
       "addCompany" : "ADD COMPANY",
       "editCompany": "EDIT COMPANY",
 
+      "addUser" : "Create user",
+      "editUser": "Editing user",
+
       "addMeeting" : "Creation of a meeting",
       "editMeeting": "Editing meeting"
     }
