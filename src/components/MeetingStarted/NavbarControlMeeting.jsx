@@ -2,9 +2,8 @@ import React from 'react'
 import {NavItem} from "reactstrap";
 import {NavLink, useHistory, useLocation} from "react-router-dom";
 import {Select} from "antd";
-import {ACTIVE, CHAIRMAN, DEPOSITORY_ZOOM_MEETING_PASSWORD, SECRETARY} from "../../utils/contants";
+import {ACTIVE, CHAIRMAN, SECRETARY} from "../../utils/contants";
 import {Badge} from "@material-ui/core";
-import {useDispatch} from "react-redux";
 
 const {Option} = Select;
 

@@ -64,8 +64,9 @@ export default function NabLists({company}) {
                         <a style={style} href={company.webPage} target='_blank'
                            className='text-dark nav-link'><b>{company.webPage}</b></a>
                     </p>
-                    <Button onClick={() => history.push('/issuerLegal/meetings/company_id/' + company.id + "?type=active")}
-                            className="create">
+                    <Button
+                        onClick={() => history.push('/issuerLegal/meetings/company_id/' + company.id + "?type=active")}
+                        className="create">
                         Всего заседаний - {company.meetingCount}
                     </Button>
                 </div>
@@ -77,7 +78,7 @@ export default function NabLists({company}) {
                        className='text-dark'><b>{company.webPage}</b></a>
                 </div>
                 <div className="col-md-4 d-flex  justify-content-center align-items-center">
-                    <Link to={'/issuerLegal/meetings/company_id/' + company.id}
+                    <Link to={'/issuerLegal/meetings/company_id/' + company.id + "?type=active"}
                           className="d-lg-inline-flex d-none align-items-center text-dark nav-link ">
                         <div
                             className="d-flex justify-content-center align-items-center m-2 border border-2"

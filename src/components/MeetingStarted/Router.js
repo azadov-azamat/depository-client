@@ -5,7 +5,6 @@ import {AiOutlineLeft, AiOutlineRight, FaArrowLeft} from "react-icons/all";
 import {
     ACTIVE,
     CHAIRMAN,
-    DEPOSITORY_ZOOM_MEETING_LINK,
     DEPOSITORY_ZOOM_MEETING_PASSWORD,
     EXTRAORDINARY,
     ORDINARY,
@@ -61,7 +60,8 @@ export default function Router({currentCompany, currentMeeting, userMemberType, 
 
                                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
 
-                                <Link to={'/issuerLegal/meetings/company_id/' + currentCompany?.id} className="nav-link"
+                                <Link to={'/issuerLegal/meetings/company_id/' + currentCompany?.id + "?type=active"}
+                                      className="nav-link"
                                       style={styleCompany}>{currentCompany?.name}</Link>
 
                                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
@@ -78,7 +78,7 @@ export default function Router({currentCompany, currentMeeting, userMemberType, 
             <Row className="d-md-none">
                 <Col md={12}>
                     <div style={{marginTop: '4em'}} className="d-flex justify-content-between align-items-center">
-                        <Link to={'/issuerLegal/meetings/company_id/' + currentCompany?.id}
+                        <Link to={'/issuerLegal/meetings/company_id/' + currentCompany?.id + "?type=active"}
                               className="nav-link text-dark"><AiOutlineLeft className="h3"/></Link>
                         <div style={styleMobile} className='h5 float-end text-center'>{
                             currentMeeting?.typeEnum === ORDINARY ? 'Внеплановое заседание наблюдательного совета' : '' ||

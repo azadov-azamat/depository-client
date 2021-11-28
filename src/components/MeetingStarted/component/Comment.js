@@ -1,12 +1,7 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import {AvField, AvForm} from 'availity-reactstrap-validation'
 import Loader from "react-loader-spinner";
-import {
-    DEPOSITORY_CURRENT_MEETING,
-    DEPOSITORY_USER,
-    DEPOSITORY_ZOOM_MEETING_PASSWORD,
-    TOKEN
-} from "../../../utils/contants";
+import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, TOKEN} from "../../../utils/contants";
 import {useDispatch} from "react-redux";
 import SockJsClient from "react-stomp";
 
@@ -14,6 +9,8 @@ export default function Comment({comment, loading}) {
 
     const dispatch = useDispatch();
     let clientRef = useRef(null);
+
+    const [logging, setLogging] = useState();
 
     let url = 'https://depositary.herokuapp.com:443/websocket/logger/';
     const authToken = localStorage.getItem(TOKEN)
@@ -24,12 +21,13 @@ export default function Comment({comment, loading}) {
     }
 
     const commentLogging = (e, v) => {
-        console.log("keldi==========")
         const data = {
             userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
             meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
-            ...v
+            loggingText: logging
         }
+
+        console.log(data)
         clientRef.sendMessage('/topic/user-all', JSON.stringify(data));
     };
 
@@ -41,6 +39,8 @@ export default function Comment({comment, loading}) {
                     name="loggingText"
                     label="Комментирование"
                     className="border"
+                    value={logging}
+                    onChange={(e) => setLogging(e.target.value)}
                     style={{backgroundColor: '#FFFFFF', resize: 'none', height: '30vh'}}
                 />
                 {loading ?
@@ -67,6 +67,7 @@ export default function Comment({comment, loading}) {
                 onDisconnect={() => console.log("Disconnected")}
                 onMessage={(msg) => {
                     console.log(msg)
+                    setLogging('')
                     dispatch({
                         type: 'REQUEST_SUCCESS_LOGGING_LIST',
                         payload: msg
