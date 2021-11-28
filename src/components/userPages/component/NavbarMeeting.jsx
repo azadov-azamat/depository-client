@@ -7,8 +7,8 @@ export const NavbarMeeting = ({companyId}) => {
     const {id} = useParams();
 
     const link = [
-        {text: 'Общее заседание', link: '/issuerLegal/meetings/company_id/' + id + "/active"},
-        {text: 'Архив заседание', link: '/issuerLegal/meetings/company_id/' + id + "/archive"},
+        {text: 'Общее заседание', link: '/issuerLegal/meetings/company_id/' + id + "?type=active"},
+        {text: 'Архив заседание', link: '/issuerLegal/meetings/company_id/' + id + "?type=archive"},
     ]
 
     const linkMap = ({text, link}) => (
@@ -24,4 +24,5 @@ export const NavbarMeeting = ({companyId}) => {
             </ul>
         </div>
     )
+
 }

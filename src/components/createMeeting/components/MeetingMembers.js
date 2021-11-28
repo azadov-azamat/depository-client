@@ -26,7 +26,7 @@ export default function MeetingMembers({currentMeeting}) {
     const {memberManagerState} = reducers.meeting
     const {payload} = reducers.auth.totalCount
 
-    const [membersByMeeting] = useState([]);
+    const [membersByMeeting, setMembersByMeeting] = useState([]);
     const [selectedUser, setSelectedUser] = useState();
     const [selectedRole, setSelectedRole] = useState();
 
@@ -45,26 +45,29 @@ export default function MeetingMembers({currentMeeting}) {
     };
 
     useEffect(() => {
+        const array = []
+        memberManagerState && memberManagerState.forEach((element, value) => {
+            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER) {
+                // setMembersByMeeting(prev =>[...prev, element] )
+                array.push(element)
+                // membersByMeeting.forEach(elementPushed => {
+                //         if (elementPushed.id !== element.id) {
+                //             membersByMeeting.push(element)
+                //         }
+                //     }
+                // );
+            }
+        })
+        setMembersByMeeting(prev =>[...prev, ...array] )
+    }, [memberManagerState])
+
+    useEffect(()=>{
         dispatch(meetingActions.getMemberByMeetingId({
             meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
             page,
             size
         }))
-        memberManagerState && memberManagerState.forEach((element, value) => {
-            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER) {
-                console.log(element);
-                console.log(membersByMeeting)
-
-                membersByMeeting.forEach(elementPushed => {
-                        console.log(elementPushed)
-                        if (elementPushed.id !== element.id) {
-                            membersByMeeting.push(element)
-                        }
-                    }
-                );
-            }
-        })
-    }, [page])
+    },[page])
 
     const submit = (currentMemberId) => {
         confirmAlert({

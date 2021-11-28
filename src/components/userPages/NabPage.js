@@ -25,11 +25,7 @@ export default function NabPage() {
     const [booleanMy, setBooleanMy] = useState(false);
 
     useEffect(() => {
-        companiesByUserId && companiesByUserId.forEach(element => {
-            if (element.chairmanId === currentUser.id || element.secretaryId === currentUser.id) {
-                setBooleanMy(true)
-            }
-        })
+        setBooleanMy(companiesByUserId && companiesByUserId.some(element => element.chairmanId === currentUser.id || element.secretaryId === currentUser.id));
     }, [booleanMy, companiesByUserId])
 
     useEffect(() => {
