@@ -3,10 +3,10 @@ import {Col, Row} from "reactstrap";
 import {Link, useHistory, useParams} from "react-router-dom";
 import {AiOutlineLeft, AiOutlineRight, FaArrowLeft} from "react-icons/all";
 import {NavbarMeeting} from "./NavbarMeeting";
-import * as adminCompanyAction from "../../redux/actions/CompanyAction";
+import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 import {useDispatch, useSelector} from "react-redux";
-import {BASE_URL} from "../../utils/config";
-import {api} from "../../api/api";
+import {BASE_URL} from "../../../utils/config";
+import {api} from "../../../api/api";
 
 export default function MeetingHeading({company}) {
 

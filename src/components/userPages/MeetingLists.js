@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {List} from './List'
+import {List} from './component/List'
 
 import "../MeetingStarted/meeting.css"
 import {Col, Row} from "reactstrap";
 import {Route, Switch, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import MeetingHeading from "./MeetingHeading";
+import MeetingHeading from "./component/MeetingHeading";
 import * as companyAction from "../../redux/actions/CompanyAction";
 import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, SPEAKER} from "../../utils/contants";
 import * as meetingActions from "../../redux/actions/MeetingAction";

@@ -2,8 +2,8 @@ import React, {useEffect} from "react";
 import {Link, useHistory} from "react-router-dom";
 import AOS from "aos";
 import {Button} from "reactstrap";
-import {BASE_URL} from "../../utils/config";
-import {api} from "../../api/api";
+import {BASE_URL} from "../../../utils/config";
+import {api} from "../../../api/api";
 
 export default function NabLists({company}) {
 

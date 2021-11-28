@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import '../SomeStyle.css';
+import '../../SomeStyle.css';
 import {useHistory, useParams} from "react-router-dom";
 import {
     ACTIVE,
@@ -11,8 +11,8 @@ import {
     FINISH,
     ORDINARY,
     PENDING
-} from "../../utils/contants";
-import ButtonValue from "./component/ButtonValue";
+} from "../../../utils/contants";
+import ButtonValue from "./ButtonValue";
 
 export const List = ({pathname, meetings}) => {
 

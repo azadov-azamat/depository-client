@@ -3,7 +3,7 @@ import {Col, Container, Row} from "reactstrap";
 import {useHistory} from "react-router-dom";
 import {BsBookmarkPlus} from "react-icons/all";
 import {useDispatch, useSelector} from "react-redux";
-import NabLists from "./NabLists";
+import NabLists from "./component/NabLists";
 import * as companyAction from "../../redux/actions/CompanyAction";
 import {useTranslation} from "react-i18next";
 import {
@@ -24,13 +24,13 @@ export default function NabPage() {
     const {companiesByUserId, loading} = reducers.company
     const [booleanMy, setBooleanMy] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
         companiesByUserId && companiesByUserId.forEach(element => {
             if (element.chairmanId === currentUser.id || element.secretaryId === currentUser.id) {
                 setBooleanMy(true)
             }
         })
-    },[booleanMy, companiesByUserId])
+    }, [booleanMy, companiesByUserId])
 
     useEffect(() => {
         dispatch(companyAction.getCompanyByUserId({currentUserId: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
@@ -43,7 +43,7 @@ export default function NabPage() {
         localStorage.removeItem(DEPOSITORY_CURRENT_MEMBER)
         localStorage.removeItem(DEPOSITORY_MEMBER_TYPE_USER)
 
-    }, [booleanMy])
+    }, [localStorage.getItem(DEPOSITORY_USER)])
 
     return (
         <div className="allCss">
@@ -79,7 +79,7 @@ export default function NabPage() {
                                     <span>Создать заседание</span>
                                     <div className="btnAdd border mx-3 d-flex justify-content-center text-center">
                                         <button className="btn"
-                                                onClick={() => history.push("/supervisory/addOrEditMeeting")}>
+                                                onClick={() => history.push("/supervisory/addOrEditMeeting/create")}>
                                             <BsBookmarkPlus style={{fontSize: '25px'}}/>
                                         </button>
                                     </div>

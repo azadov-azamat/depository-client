@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Col, Container, Row} from "reactstrap";
 import ProfileRoute from "../../../routes/ProfileRoute";
 import {useHistory} from "react-router-dom";
-import {List} from "../../userPages/List";
+import {List} from "../../userPages/component/List";
 import {useDispatch, useSelector} from "react-redux";
 import * as companyAction from "../../../redux/actions/CompanyAction";
 
