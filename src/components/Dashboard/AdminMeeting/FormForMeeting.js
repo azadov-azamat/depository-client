@@ -53,11 +53,16 @@ export default function FormForMeeting({getName}) {
                 </td>
                 <td style={{width: '135px'}}>
                     <Input className="input text-center input-group-sm" type="select" name="status" id="name">
-                        <option value={'ALL'}>Всё</option>
+                        <option value={'ALL'}>{
+                            language === 'uz' ? "Hammasi" : ""
+                            || language === 'en' ? "All" : ""
+                            || language === "ru" ? "Всё" : ""
+                        }</option>
                         {country && country.map((value, index) =>
-                            <option value={value.id}>{
-                                language && language === 'uz' || language === 'en' ?
-                                    value.nameUz : value.nameRu
+                            <option key={index} value={value.id}>{
+                                language === 'uz' ? value.nameUz : ""
+                                || language === 'en' ? value.nameEn : ""
+                                || language === "ru" ? value.nameRu : ""
                             }</option>
                         )}
                     </Input>

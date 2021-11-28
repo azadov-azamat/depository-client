@@ -7,8 +7,8 @@ import {
     AiOutlineFileImage,
     AiOutlineFilePdf,
     AiOutlineFileWord,
-    AiOutlineVideoCameraAdd, BsFillFileEarmarkImageFill,
-    BsFillImageFill
+    AiOutlineVideoCameraAdd,
+    BsFillFileEarmarkImageFill
 } from "react-icons/all";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {BASE_URL} from "../../../utils/config";

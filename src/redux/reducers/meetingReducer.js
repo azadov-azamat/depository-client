@@ -6,7 +6,8 @@ const initialState = {
     loading: false,
     totalCount: '',
     memberManagerState: [],
-    currentMeeting: []
+    currentMeeting: [],
+    currentCity: {}
 };
 
 const reducers = {
@@ -117,7 +118,8 @@ const reducers = {
 
 
     ['REQUEST_GET_BY_ID_CITY'](state, action) {
-        state.currentCity = action.payload
+        // state.currentCity = action.payload
+       state.currentCity[action.requestData] = action.payload
     },
     ['REQUEST_GET_CITIES'](state, action) {
         state.citiesList = action.payload

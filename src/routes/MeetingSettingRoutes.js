@@ -16,7 +16,7 @@ export default function MeetingSettingRoutes({isDisabled, id}) {
     const links = [
         {
             id: 1,
-            href: id ? "/supervisory/addOrEditMeeting/" + id : "/supervisory/addOrEditMeeting",
+            href: id ? "/supervisory/addOrEditMeeting/" + id : "/supervisory/addOrEditMeeting/create",
             text: 'Общее',
             className: ''
         },

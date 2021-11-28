@@ -33,18 +33,15 @@ export default function NabPage() {
             }
         })
         dispatch({
-            type: 'updateState',
-            payload: {
-                currentCompany: '',
-                currentMeeting: ''
-            }
+            type: 'REQUEST_GET_MEETING_SUCCESS',
+            payload: []
         });
         localStorage.removeItem(DEPOSITORY_CURRENT_MEETING)
         localStorage.removeItem(DEPOSITORY_CURRENT_COMPANY)
         localStorage.removeItem(DEPOSITORY_CURRENT_MEMBER)
         localStorage.removeItem(DEPOSITORY_MEMBER_TYPE_USER)
-        // localStorage.removeItem(DEPOSITORY_ROLE)
-    }, [])
+
+    }, [booleanMy])
 
     return (
         <div className="allCss">

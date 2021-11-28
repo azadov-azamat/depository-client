@@ -110,7 +110,7 @@ function AdminMeetings() {
         <div className="dashboard p-3">
             <div className="container-fluid">
                 <div className="users">
-                    <RouteByDashboard link={'/supervisory/addOrEditMeeting'} cardName={t("routes.controlPage.meeting")}
+                    <RouteByDashboard link={'/supervisory/addOrEditMeeting/create'} cardName={t("routes.controlPage.meeting")}
                                       startIndex={startIndex} lastIndex={lastIndex} payload={payload} lang={t}/>
                     <div className="minWidth d-flex justify-content-center align-items-center">
                         <div className="list_wrapper">

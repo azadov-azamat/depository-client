@@ -26,6 +26,17 @@ export default function TableMeetings({meeting, deleteById, updateMeeting}) {
         }
     }
 
+    function getDate(currentDate) {
+        let date = new Date(currentDate);
+        return (
+            <>
+                {(date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" + (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes()) + " " +date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()}
+            </>
+        )
+    }
+
+    console.log(meeting)
+
     return (
         <tr>
             <th scope="row" className=' text-center'>
@@ -38,15 +49,11 @@ export default function TableMeetings({meeting, deleteById, updateMeeting}) {
                     {meeting.companyName}
                 </p></td>
             <td className="text-center company" style={style}>{status(meeting.status)}</td>
-            <td className="text-center company" style={style}>{
-                meeting.startDate.substr(0, 10) + " " + meeting.startDate.substr(11, 5)
-            }</td>
-            <td className="text-center company" style={style}>{
-                meeting.startRegistration.substr(0, 10) + " " + meeting.startRegistration.substr(11, 5)
-            }</td>
+            <td className="text-center company" style={style}>{getDate(meeting.startDate)}</td>
+            <td className="text-center company" style={style}>{getDate(meeting.startRegistration)}</td>
             <td className="text-center company" style={style}>
                 <p style={style}>
-                    {meeting.address}
+                    <FindCity cityId={meeting.cityId}/>
                 </p>
             </td>
             <td className="text-center">{meeting.status === ACTIVE || meeting.status === PENDING ?

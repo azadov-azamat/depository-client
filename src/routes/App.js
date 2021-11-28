@@ -54,13 +54,11 @@ const App = () => {
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company/update/:id" component={AddOrEditCompany}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/meetings" component={AdminMeetings}/>
-
-                <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting"
-                              component={AddOrEditMeeting}/>
+                <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/create" component={AddOrEditMeeting}/>
+                <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/:id" component={AddOrEditMeeting}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/issuerLegal" component={NabPage}/>
-                <PrivateRoute setNav={setInfoV} exact path="/issuerLegal/meetings/company_id/:id"
-                              component={AllMeetings}/>
+                <PrivateRoute setNav={setInfoV} exact path="/issuerLegal/meetings/company_id/:id" component={AllMeetings}/>
                 <PrivateRoute setNav={setInfoV} exact path="/issuerLegal/archiveMeetings/company_id/:id"
                               component={ArchiveMeetings}/>
 

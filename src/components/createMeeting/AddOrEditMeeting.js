@@ -27,7 +27,8 @@ export default function AddOrEditMeeting() {
     const [currentMeetingId, setCurrentMeetingId] = useState();
 
     useEffect(() => {
-        if (localStorage.getItem(DEPOSITORY_CURRENT_MEETING)) {
+        const current = parseInt(id);
+        if (!isNaN(current)) {
             dispatch(meetingActions.getMeetingByIdAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
             setCurrentMeetingId(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))
         } else {
@@ -36,7 +37,11 @@ export default function AddOrEditMeeting() {
                 payload: []
             })
         }
-    }, [])
+    }, [currentMeetingId, localStorage.getItem(DEPOSITORY_CURRENT_MEETING)])
+
+    useEffect(()=>{
+
+    },[])
 
 
     return (
@@ -45,7 +50,7 @@ export default function AddOrEditMeeting() {
             <Container>
                 <Switch>
                     <Route
-                        path={currentMeetingId ? ("/supervisory/addOrEditMeeting/" + currentMeetingId) : ("/supervisory/addOrEditMeeting")}
+                        path={currentMeetingId ? ("/supervisory/addOrEditMeeting/" + currentMeetingId) : ("/supervisory/addOrEditMeeting/create")}
                         exact>
                         <NabMeetingJs id={currentMeetingId} currentMeeting={currentMeeting}/>
                     </Route>
