@@ -9,13 +9,14 @@ import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import {CHAIRMAN} from "../../../utils/contants";
+import Loader from "react-loader-spinner";
 
 export default function MeetingReestr({currentMeeting}) {
 
     const dispatch = useDispatch()
     const reducers = useSelector(state => state)
     const {loadingReestr, currentReestr, memberManagerState} = reducers.meeting
-
+    const [fromReestr, setFromReestr] = useState([])
     const [excelFile, setExcelFile] = useState({
         fileName: "",
         excelFiles: [0],
@@ -24,8 +25,18 @@ export default function MeetingReestr({currentMeeting}) {
     });
 
     useEffect(() => {
+        const array = []
+        memberManagerState && memberManagerState.forEach((element, value) => {
+            if (element.fromReestr) {
+                array.push(element)
+            }
+        })
+        setFromReestr(prev => [...prev, ...array])
+    }, [memberManagerState])
+
+    useEffect(() => {
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeeting?.id}))
-    }, [])
+    }, [currentMeeting?.id])
 
     const hiddenFileInput1 = React.useRef(null);
 
@@ -51,7 +62,7 @@ export default function MeetingReestr({currentMeeting}) {
         } else if (loadingReestr === 'download') {
             return (<a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>file yuklang</a>)
         } else if (loadingReestr === 'error') {
-            return (<p>xatolik yuz berdi</p>)
+            return (<p>xatolik yuz berdi, Iltimos tekshiring</p>)
         } else if (!currentReestr) {
             return (<p>file yuklang</p>)
         }
@@ -93,7 +104,20 @@ export default function MeetingReestr({currentMeeting}) {
                         </AvGroup>
                     </Col>
                     <Col md={3} sm={6}>
-                        <button className={"btn create mt-4"}>Загрузить</button>
+                        {loadingReestr === "loading" ?
+                            <div className="d-flex align-items-center justify-content-center" style={{
+                                width: '8em', height: '44px', background: '#133B88', borderRadius: '6px',
+                                marginTop: '5vh'
+                            }}>
+                                <Loader
+                                    type="ThreeDots"
+                                    color="white"
+                                    height={30}
+                                    width={30}
+                                />
+                            </div> :
+                            <button className={"btn create mt-4 px-3 py-2"}>Загрузить</button>
+                        }
                     </Col>
                 </Row>
                 <div className="">
@@ -119,29 +143,24 @@ export default function MeetingReestr({currentMeeting}) {
                             </tr>
                             </thead>
                             <tbody className="navUsers border">
-                            {memberManagerState && memberManagerState.length !== 0 ?
-                                memberManagerState && memberManagerState.map((element, index) =>
-                                        element.fromReestr ?
-                                            <tr key={index}>
-                                                <td>{index + 1}</td>
-                                                <td>{element.user.fullName}</td>
-                                                <td>{element.user.pinfl}</td>
-                                                <td>{element.hldIt}</td>
-                                                <td>{element.user.passport}</td>
-                                                <td>{element.user.phoneNumber}</td>
-                                                <td>{element.user.email}</td>
-                                                <td>{element.position}</td>
-                                                <td>
-                                                    {element.memberTypeEnum === CHAIRMAN ? <FaCheck/> : ''}
-                                                </td>
-                                            </tr> : ''
-                                    // index === 1 ?
-                                    //     <tr className='text-center'>
-                                    //         <th colSpan="8">Ничего не найдена</th>
-                                    //     </tr> : ''
+                            {fromReestr.length !== 0 ?
+                                fromReestr.map((element, index) =>
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{element.user.fullName}</td>
+                                        <td>{element.user.pinfl}</td>
+                                        <td>{element.hldIt}</td>
+                                        <td>{element.user.passport}</td>
+                                        <td>{element.user.phoneNumber}</td>
+                                        <td>{element.user.email}</td>
+                                        <td>{element.position}</td>
+                                        <td>
+                                            {element.memberTypeEnum === CHAIRMAN ? <FaCheck/> : ''}
+                                        </td>
+                                    </tr>
                                 ) :
                                 <tr className='text-center'>
-                                    <th colSpan="8">Ничего не найдена</th>
+                                    <th colSpan="9">Ничего не найдена</th>
                                 </tr>
                             }
                             </tbody>
