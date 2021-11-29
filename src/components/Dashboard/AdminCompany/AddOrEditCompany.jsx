@@ -42,7 +42,7 @@ export default function AddOrEditCompany() {
     const [isOpen, setIsOpen] = useState(false)
     const [selectSecretary, setSelectSecretary] = useState();
     const [phoneNumber, setPhoneNumber] = useState()
-    const [inn, setInn] = useState() ////
+    const [inn, setInn] = useState();
 
     let $imagePreview = null;
     if (imagePreviewUrl) {
@@ -70,6 +70,7 @@ export default function AddOrEditCompany() {
     }, [id])
 
     useEffect(()=>{
+        setInn(currentCompany?.inn)
         setPhoneNumber(currentCompany?.phoneNumber)
     },[currentCompany])
     function onSearch(val) {
@@ -225,10 +226,10 @@ export default function AddOrEditCompany() {
                                             onChange={forStatus}
                                             onFocus={onFocus}
                                             onBlur={onBlur}
-                                            defaultValue={currentCompany.length !== 0 ? currentCompany.active : "true"}
+                                            defaultValue={!currentCompany?.active}
                                         >
-                                            <Option value={"true"}>Активно</Option>
-                                            <Option value={"false"}>Неактивно</Option>
+                                            <Option value={true}>Активно</Option>
+                                            <Option value={false}>Неактивно</Option>
                                         </Select>
                                     </div>
                                 </Col>
@@ -239,7 +240,7 @@ export default function AddOrEditCompany() {
                                             ref={ref}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="inn"
-                                            value={currentCompany?.inn}
+                                            value={inn}
                                             minLength={9} maxLength={9}
                                             onChange={(e)=> setInn(e.target.value)}
                                             className="setting_input border "

@@ -388,7 +388,7 @@ export default function AddOrEditUser() {
                                         <button type="submit" className="btn-save d-block px-3 py-2 mx-2 my-1">
                                             {id ? t("user.redaktorovat") : t("user.sozdat")}
                                         </button>
-                                        <button onClick={() => history.push('/admin')}
+                                        <button onClick={() => history.push('/admin/users')}
                                                 className="btn-cancel px-3 py-2 my-1 mx-2"> {t("cancel")}
                                         </button>
                                     </div>
