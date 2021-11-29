@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {Link, useHistory, useParams} from 'react-router-dom'
-import {AvField, AvForm, AvInput} from 'availity-reactstrap-validation';
-import {AiOutlineRight, FaArrowLeft, ImCancelCircle} from "react-icons/all";
+import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {ImCancelCircle} from "react-icons/all";
 import {useDispatch, useSelector} from 'react-redux';
-import {Col, Label, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
+import {Col, Label, Row} from "reactstrap";
 import '../styles/settings.scss';
 import {Select} from "antd";
 import * as adminCompanyAction from '../../../redux/actions/CompanyAction';
@@ -15,7 +15,7 @@ import {api} from "../../../api/api";
 import RouteByDashboard from "../RouteByDashboard";
 import * as types from "../../../redux/actionTypes/UsersActionTypes";
 import PhoneInput from "react-phone-number-input";
-import { useIMask } from 'react-imask';
+import {useIMask} from 'react-imask';
 import {toast} from "react-toastify";
 
 const {Option} = Select;
@@ -34,8 +34,8 @@ export default function AddOrEditCompany() {
     const {logoCompany} = reducers.file
     const {users} = reducers.users
 
-    const [ opts, setOpts ] = useState({ mask: Number});
-    const { ref, maskRef } = useIMask(opts);
+    const [opts, setOpts] = useState({mask: Number});
+    const {ref, maskRef} = useIMask(opts);
     const [file, setFile] = useState('');
     const [imagePreviewUrl, setImagePreviewUrl] = useState('');
     const [selectUsers, setSelectUsers] = useState({secretary: '', chairman: '', active: false})
@@ -69,10 +69,11 @@ export default function AddOrEditCompany() {
         }
     }, [id])
 
-    useEffect(()=>{
+    useEffect(() => {
         setInn(currentCompany?.inn)
         setPhoneNumber(currentCompany?.phoneNumber)
-    },[currentCompany])
+    }, [currentCompany])
+
     function onSearch(val) {
         const NAME = "FULL_NAME";
         if (val.length >= 3) {
@@ -115,7 +116,7 @@ export default function AddOrEditCompany() {
             }
             console.log(data)
             dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
-        }else {
+        } else {
             toast.warning("Пожалуйста, Заполните все")
         }
     }
@@ -165,10 +166,12 @@ export default function AddOrEditCompany() {
         }
     }
 
+    console.log(currentCompany)
     return (
         <div className="settings p-3">
             <div className="container-fluid" style={{marginTop: '12vh'}}>
-                <RouteByDashboard lang={t} cardName={t("routes.controlPage.company")} disabled={true} link2={`/admin/company`}
+                <RouteByDashboard lang={t} cardName={t("routes.controlPage.company")} disabled={true}
+                                  link2={`/admin/company`}
                                   statusName={currentCompany ? t("routes.addOrEditPage.editCompany") : t("routes.addOrEditPage.addCompany")}/>
                 <AvForm className="container_wrapper" onValidSubmit={currentCompany ? editCompany : addCompany}
                         enctype="multipart/form-data">
@@ -242,7 +245,7 @@ export default function AddOrEditCompany() {
                                             name="inn"
                                             value={inn}
                                             minLength={9} maxLength={9}
-                                            onChange={(e)=> setInn(e.target.value)}
+                                            onChange={(e) => setInn(e.target.value)}
                                             className="setting_input border "
                                             required
                                         />
@@ -260,7 +263,7 @@ export default function AddOrEditCompany() {
                                     showSearch
                                     placeholder="Выберите статус"
                                     optionFilterProp="children"
-                                    defaultValue={currentCompany.length !== 0 ? currentCompany.secretaryId : ""}
+                                    defaultValue={currentCompany.length !== 0 ? currentCompany?.secretaryId : null}
                                     onChange={forSecretary}
                                     onSearch={onSearch}
                                     filterOption={(input, option) =>
@@ -274,7 +277,7 @@ export default function AddOrEditCompany() {
                             </div>
                             <div className="form-group">
                                 <Label className='required_fields'>{t("companiesList.phoneNumber")}</Label>
-                                <div className="setting_input border"  style={{backgroundColor: "#ffffff"}}>
+                                <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                     <PhoneInput
                                         placeholder="Enter phone number"
                                         value={phoneNumber}
@@ -382,7 +385,8 @@ export default function AddOrEditCompany() {
                                 <button type="submit"
                                         className="btn-save px-3 py-2 my-1 mx-2">{currentCompany ? t("settings") : t("pages.company.addCompany")}</button>
                             }
-                            <button className="btn-cancel  my-1 px-3 py-2 mx-2"><Link to="/admin/company">{t("cancel")}</Link>
+                            <button className="btn-cancel  my-1 px-3 py-2 mx-2"><Link
+                                to="/admin/company">{t("cancel")}</Link>
                             </button>
                         </div>
                     </Row>

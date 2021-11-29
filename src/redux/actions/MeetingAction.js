@@ -209,11 +209,19 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId}))
     }).catch(err => {
-        const {detail} = err.response.data;
-        if (detail === "Required request part 'file' is not present") {
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title} = err.response.data;
+        console.log(err.response.data)
+        if (errorKey === "chairmenError"){
+            if (lang === "uz"){
+                toast.error("Bu Reestrning kompaniya bo'yicha raislari yo'q");
+            }else if (lang === "ru"){
+                toast.error("Исходя из этого, у Reestr нет председателей по компаниям")
+            }else {
+                toast.error(title)
+            }
+        } else if (detail === "Required request part 'file' is not present") {
             toast.error("\"Fayl\" so'rovining kerakli qismi mavjud emas! iltimos tekshiring")
-        } else {
-            toast.error('Извини, ты ошибся')
         }
     })
 }

@@ -324,6 +324,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
                             className="border"
                             defaultValue={currentMeeting.length !== 0 ? currentMeeting.description : ""}
                             style={{backgroundColor: '#FFFFFF', resize: 'none', height: '24vh'}}
+                            required
                         />
                     </AvGroup>
                     <div className="d-md-none d-flex justify-content-center mt-3 mb-3">

@@ -9,7 +9,7 @@ import 'antd/dist/antd.css';
 import * as adminUsersAction from "../../../redux/actions/UsersAction";
 import * as meetingActions from '../../../redux/actions/MeetingAction';
 import {toast} from "react-toastify";
-import {DEPOSITORY_CURRENT_MEETING, SECRETARY, SPEAKER, WATCHER} from "../../../utils/contants";
+import {CHAIR_MAN, DEPOSITORY_CURRENT_MEETING, SECRETARY, SPEAKER, WATCHER} from "../../../utils/contants";
 import usePagination from "../../Dashboard/Pagination";
 import {Pagination} from "@material-ui/lab";
 import {confirmAlert} from "react-confirm-alert";
@@ -94,7 +94,8 @@ export default function MeetingMembers({currentMeeting}) {
     const roleUser = [
         {value: SPEAKER, text: 'Доклатчик'},
         {value: WATCHER, text: 'Приглашенный'},
-        {value: SECRETARY, text: 'Секретарь'}
+        {value: SECRETARY, text: 'Секретарь'},
+        {value: CHAIR_MAN, text: 'Председатель'}
     ];
 
     function onSearch(val) {
