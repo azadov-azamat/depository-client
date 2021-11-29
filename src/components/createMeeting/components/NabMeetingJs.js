@@ -101,7 +101,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
 
     function CreateMeeting(e, v) {
         e.preventDefault();
-
+        console.log("keldi create")
         if (!selectCompany && !selectStatus && !selectCountry && !selectTypeEnum) {
             toast.warning("Пожалуйста, Заполните все")
         } else {
@@ -306,7 +306,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 </Col>
                 <Col md={3}>
                     <div className="d-none d-md-flex justify-content-center" style={{marginTop: '25px'}}>
-                        <button
+                        <button type={"submit"}
                             className="btn btnAll m-2 create">{currentMeeting.length !== 0 ? 'Редактировать' : 'Создать'}
                         </button>
                         <button className="btn btnAll m-2 cancel"
@@ -324,7 +324,6 @@ export default function NabMeetingJs({id, currentMeeting}) {
                             className="border"
                             defaultValue={currentMeeting.length !== 0 ? currentMeeting.description : ""}
                             style={{backgroundColor: '#FFFFFF', resize: 'none', height: '24vh'}}
-                            required
                         />
                     </AvGroup>
                     <div className="d-md-none d-flex justify-content-center mt-3 mb-3">
