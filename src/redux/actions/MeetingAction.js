@@ -7,14 +7,19 @@ import {
     deleteAgenda,
     deleteMeeting,
     deleteMeetingFile,
-    deleteMember, downloadByIdMeetingFilesApi, editMeetingApi,
-    getAgendaByMeetingIdApi, getCitiesApi, getCityByIdApi, getMeetingByIdApi,
+    deleteMember,
+    downloadByIdMeetingFilesApi,
+    editMeetingApi,
+    getAgendaByMeetingIdApi,
+    getCitiesApi,
+    getCityByIdApi,
+    getMeetingByIdApi,
     getMeetingBySorted,
     getMeetingFilesByMeetingIdApi,
     getMeetings,
     getMemberByIdApi,
     getMemberByMeetingIdApi,
-    getReestrByMeetingApi, isConfirmed,
+    isConfirmed,
     postMeeting
 } from "../../api/MeetingApi";
 import * as types from "../actionTypes/MeetingActionTypes";
@@ -75,14 +80,14 @@ export const createMeeting = (payload) => async (dispatch) => {
         payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
     }).catch(err => {
         console.log(err.response.data)
-        if (err.response.data.detail === "Company must have Chairmen or Secretary"){
-            if (lang === "uz"){
+        if (err.response.data.detail === "Company must have Chairmen or Secretary") {
+            if (lang === "uz") {
                 payload.toast.error("Kompaniyada rais yoki kotib bo'lishi kerak")
             }
-            if (lang === "ru"){
+            if (lang === "ru") {
                 payload.toast.error("Компания должна иметь председателя или секретаря")
             }
-            if (lang === "en"){
+            if (lang === "en") {
                 payload.toast.error(err.response.data.detail)
             }
         }
@@ -212,25 +217,32 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title} = err.response.data;
         console.log(err.response.data)
-        if (errorKey === "chairmenError"){
-            if (lang === "uz"){
+        if (errorKey === "chairmenError") {
+            if (lang === "uz") {
                 toast.error("Ushbu reestr uchun Rais topilmadi!");
-            }else if (lang === "ru"){
+            } else if (lang === "ru") {
                 toast.error("По этому Реестру не найдено Председателя!")
-            }else {
+            } else {
                 toast.error(title)
             }
-        }
-        else if (errorKey==="NullPointer"){
-            if (lang === "uz"){
+        } else if (errorKey === "NullPointer") {
+            if (lang === "uz") {
                 toast.error("Hujayra null bo'lmasligi kerak");
-            }else if (lang === "ru"){
+            } else if (lang === "ru") {
                 toast.error("Ячейка не должна содержать null")
-            }else {
+            } else {
                 toast.error(title)
             }
         }
-        else if (detail === "Required request part 'file' is not present") {
+        else if (errorKey === "emailexists") {
+            if (lang === "uz") {
+                toast.error("Email allaqachon ishlatilmoqda!");
+            } else if (lang === "ru") {
+                toast.error("Email уже используется!")
+            } else {
+                toast.error(title)
+            }
+        } else if (detail === "Required request part 'file' is not present") {
             toast.error("\"Fayl\" so'rovining kerakli qismi mavjud emas! iltimos tekshiring")
         }
     })

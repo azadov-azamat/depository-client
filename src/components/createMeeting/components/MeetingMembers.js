@@ -47,15 +47,8 @@ export default function MeetingMembers({currentMeeting}) {
     useEffect(() => {
         const array = []
         memberManagerState && memberManagerState.forEach((element, value) => {
-            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER) {
-                // setMembersByMeeting(prev =>[...prev, element] )
+            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER || element.memberTypeEnum === SECRETARY) {
                 array.push(element)
-                // membersByMeeting.forEach(elementPushed => {
-                //         if (elementPushed.id !== element.id) {
-                //             membersByMeeting.push(element)
-                //         }
-                //     }
-                // );
             }
         })
         setMembersByMeeting(prev =>[...prev, ...array] )
