@@ -47,7 +47,7 @@ export default function MeetingReestr({currentMeeting}) {
 
     function responseReestr() {
         if (loadingReestr === 'loading') {
-            return (<p>Yuklanmoqda</p>)
+            return (<p>Yuklanmoqda...</p>)
         } else if (loadingReestr === 'download') {
             return (<a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>file yuklang</a>)
         } else if (loadingReestr === 'error') {
