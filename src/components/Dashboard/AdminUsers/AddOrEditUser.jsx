@@ -45,20 +45,20 @@ export default function AddOrEditUser() {
     const [myBoolean, setMyBoolean] = useState(false);
 
     useEffect(() => {
-        const current = parseInt(id);
-        if (!isNaN(current)) {
-            dispatch(adminUsersAction.getUserById({userId: currentUserId, history}))
-            localStorage.setItem("currentEditUser", currentForUser.id)
-            setPhoneNumber(currentForUser.phoneNumber)
-            setSavedPinfl(currentForUser.pinfl)
-            setSavedInn(currentForUser.inn)
-            setGenerateLogin(currentForUser.login)
+            setPhoneNumber(currentForUser?.phoneNumber)
+            setSavedPinfl(currentForUser?.pinfl)
+            setSavedInn(currentForUser?.inn)
+            setGenerateLogin(currentForUser?.login)
             const auth = currentForUser.authorities
             if ({...auth} === "ROLE_MODERATOR"){
                 setMyBoolean(true)
-            }
         }
-    }, [id, currentUserId])
+    }, [currentForUser])
+
+    useEffect(()=>{
+        const current = parseInt(id);
+        dispatch(adminUsersAction.getUserById({userId: current, history}))
+    },[id])
 
     const addUser = (e, v) => {
 
@@ -100,10 +100,10 @@ export default function AddOrEditUser() {
         } else if (v.isAdmin === false) {
             authority.push("ROLE_USER")
         }
-
+        const current = parseInt(id);
         if (savedPinfl && authority && generateLogin && savedInn) {
             const data = {
-                id: currentUserId,
+                id: current,
                 fullName: v.fullName,
                 activated: v.activated,
                 authTypeEnum: v.authTypeEnum,
@@ -179,10 +179,10 @@ export default function AddOrEditUser() {
             <div className="container-fluid" style={{marginTop: '12vh'}}>
                 <RouteByDashboard lang={t} cardName={t("routes.controlPage.user")} disabled={true}
                                   link2={`/admin/users`}
-                                  statusName={currentUserId ? t("routes.addOrEditPage.editUser") : t("routes.addOrEditPage.addUser")}/>
+                                  statusName={id ? t("routes.addOrEditPage.editUser") : t("routes.addOrEditPage.addUser")}/>
             </div>
             <div className='container'>
-                <AvForm className="container_wrapper" onValidSubmit={currentUserId ? editUser : addUser}>
+                <AvForm className="container_wrapper" onValidSubmit={id ? editUser : addUser}>
                     <Row>
                         <Col md={6}>
                             <div className="form-group">
@@ -212,7 +212,7 @@ export default function AddOrEditUser() {
                                             style={{backgroundColor: "#ffffff"}}
                                             className="setting_input border  p-2 w-100" name="groupEnum"
                                             /* GROUP_ENUM */ id="groupEnum"
-                                            defaultValue={currentUserId ? currentForUser.groupEnum : INDIVIDUAL}
+                                            defaultValue={id ? currentForUser.groupEnum : INDIVIDUAL}
                                         >
                                             <option value={INDIVIDUAL}>{t("user.jismoniy")}</option>
                                             <option value={ENTITY}>{t("user.yuridik")}</option>
@@ -226,7 +226,7 @@ export default function AddOrEditUser() {
                                             type="select" name="resident"
                                             style={{backgroundColor: "#ffffff"}}
                                             /* RESIDENT */
-                                            defaultValue={currentUserId ? currentForUser.resident : true}
+                                            defaultValue={id ? currentForUser.resident : true}
                                         >
                                             <option value={true}>{t("user.rezident")}</option>
                                             <option value={false}>{t("user.nerezident")}</option>
@@ -250,7 +250,7 @@ export default function AddOrEditUser() {
                                             /* ACTIVATED */ style={{backgroundColor: "#ffffff"}}
                                             className="setting_input border  p-2 w-100" name="activated"
                                             id="activated"
-                                            defaultValue={currentUserId ? currentForUser.activated : true}>
+                                            defaultValue={id ? currentForUser.activated : true}>
                                             <option value={true}>{t("user.aktiv")}</option>
                                             <option value={false}>{t("user.neaktiv")}</option>
                                         </AvField>
@@ -351,7 +351,7 @@ export default function AddOrEditUser() {
                                              label={t("user.registr")}
                                              style={{backgroundColor: "#ffffff"}}
                                              className="setting_input border" name="authTypeEnum"
-                                             defaultValue={currentUserId ? currentForUser.authTypeEnum : ERI}
+                                             defaultValue={id ? currentForUser.authTypeEnum : ERI}
                                     >
                                         <option value={ERI}>{t("user.etp")}</option>
                                         <option value={INPASS}>{t("user.loginetp")}</option>
@@ -386,7 +386,7 @@ export default function AddOrEditUser() {
                                     <div
                                         className="d-inline-flex d-sm-flex justify-content-md-center justify-content-end  w-100 mt-md-4">
                                         <button type="submit" className="btn-save d-block px-3 py-2 mx-2 my-1">
-                                            {currentUserId ? t("user.redaktorovat") : t("user.sozdat")}
+                                            {id ? t("user.redaktorovat") : t("user.sozdat")}
                                         </button>
                                         <button onClick={() => history.push('/admin')}
                                                 className="btn-cancel px-3 py-2 my-1 mx-2"> {t("cancel")}
