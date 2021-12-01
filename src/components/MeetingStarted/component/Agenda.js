@@ -7,21 +7,21 @@ import {AccordionAgenda} from "./Accordions/AccordionAgenda";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import AgendaByVoting from "./AgendaByVoting";
 
-export default function Agenda({agendaSubject, roleMember}) {
+export default function Agenda({agendaSubject, roleMember, meetingId, memberId}) {
 
     const dispatch = useDispatch();
-    const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
+
     const reducers = useSelector(state => state)
     const {currentBallotVotingList} = reducers.meetingStarted
 
     useEffect(() => {
-        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
-    }, [currentMeetingId])
+        dispatch(meetingActions.getAgendaByMeetingId({meetingId: meetingId}))
+    }, [meetingId])
 
     function editStatusElement(id) {
         const data = {
             id: id,
-            meetingId: agendaSubject.meetingId
+            meetingId: meetingId
         }
 
         confirmAlert({
@@ -53,8 +53,8 @@ export default function Agenda({agendaSubject, roleMember}) {
                     onClick: () => {
                         const data = {
                             agendaId: agendaId,
-                            meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
-                            memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER)),
+                            meetingId: meetingId,
+                            memberId: memberId,
                             options: option,
                             votingOptionId: votingId
                         }

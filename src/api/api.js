@@ -5,6 +5,7 @@ export const api = {
     userFilter: '/moder/user/filter',
 
     meetingMethod: '/meeting',
+    meetingByCompany: '/meeting/by-company',
     member: '/member',
     memberManager: '/member/managers',
     memberByMeetingId: '/member/by-meeting',
@@ -23,7 +24,7 @@ export const api = {
     companyMethod: '/company',
     companyFilter: '/company/filter',
     addLogoCompany: '/file/upload/logo',
-    getLogoByCompanyId: '/file/logo/',
+    getLogoByCompanyId: '/file/logo',
     companyUserById: '/company/user',
 
     getLoggingByMeeting: '/logging/by-meeting',

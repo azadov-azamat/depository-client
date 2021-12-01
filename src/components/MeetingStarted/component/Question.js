@@ -6,20 +6,19 @@ import * as meetingStartedAction from "../../../redux/actions/MeetingStartedActi
 import {useDispatch, useSelector} from "react-redux";
 import {Pagination} from "@material-ui/lab";
 import usePagination from "../../Dashboard/Pagination";
-import SockJsClient from "react-stomp";
+import {subscribe, unsubscribe} from "../../../redux/actions/socketActions";
 
 export default function Question({list}) {
-
     const dispatch = useDispatch();
-    let clientRef = useRef(null);
 
-    let url = 'https://depositary.herokuapp.com:443/websocket/question/';
-    const authToken = localStorage.getItem(TOKEN)
+    const socketClient = useSelector((state) => state.socket.client);
 
-    if (authToken) {
-        const s = authToken.substr(7, authToken.length -1);
-        url += '?access_token=' + s;
-    }
+    useEffect(() => {
+        dispatch(subscribe('/topic/answer'));
+        return () => {
+            dispatch(unsubscribe('/topic/answer'));
+        }
+    }, [dispatch])
 
     function editQuestion(e, v) {
         const data = {
@@ -27,7 +26,7 @@ export default function Question({list}) {
             questionAnswer: v.questionAnswer,
             userId: parseInt(localStorage.getItem(DEPOSITORY_USER))
         }
-        clientRef.sendMessage('/topic/question', JSON.stringify(data));
+        socketClient.sendMessage('/topic/question', JSON.stringify(data));
 
         if (v.checkbox) {
             dispatch(meetingStartedAction.editStatusQuestionAction({questionId: v.currentId}))
@@ -80,23 +79,6 @@ export default function Question({list}) {
                     </AccordionQuestion.Item>
                 </AccordionQuestion>
             )}
-            <SockJsClient
-                url={url}
-                topics={['/topic/answer']}
-                onConnect={() => console.log("Connected")}
-                onDisconnect={() => console.log("Disconnected")}
-                onMessage={(msg) => {
-                    console.log(msg)
-                    dispatch({
-                        type: 'REQUEST_SUCCESS_QUESTION_LIST',
-                        payload: msg
-                    })
-                    dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
-                }}
-                ref={(client) => {
-                    clientRef = client
-                }}
-            />
         </div>
     )
 }

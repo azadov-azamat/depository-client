@@ -6,7 +6,7 @@ import FooterImg from "../components/Bottom/FooterImg";
 import Dashboard from "../components/Dashboard/Dashboard";
 import AddOrEditCompany from '../components/Dashboard/AdminCompany/AddOrEditCompany';
 import AdminUsers from '../components/Dashboard/AdminUsers/AdminUsers';
-import NabPage from "../components/userPages/NabPage";
+import CompaniesPage from "../components/userPages/CompaniesPage";
 import AdminCompany from '../components/Dashboard/AdminCompany/AdminCompany';
 import AdminMeetings from '../components/Dashboard/AdminMeeting/AdminMeetings';
 import NavbarIn from '../components/NavbarIn';
@@ -51,14 +51,14 @@ const App = () => {
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company/create" component={AddOrEditCompany}/>
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company/update/:id" component={AddOrEditCompany}/>
 
+                <PrivateRoute setNav={setInfoV} exact path="/issuerLegal/companies" component={CompaniesPage}/>
+                <PrivateRoute setNav={setInfoV} path="/issuerLegal/meetings" component={MeetingLists}/>
+
                 <PrivateRoute setNav={setInfoV} exact path="/admin/meetings" component={AdminMeetings}/>
                 <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/create" component={AddOrEditMeeting}/>
                 <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/:id" component={AddOrEditMeeting}/>
 
-                <PrivateRoute setNav={setInfoV} exact path="/issuerLegal" component={NabPage}/>
-                <PrivateRoute setNav={setInfoV} path="/issuerLegal/meetings/company_id/:id" component={MeetingLists}/>
-
-                <PrivateRoute setNav={setInfoV} path='/issuerLegal/meetingSetting'
+                <PrivateRoute setNav={setInfoV} path='/issuerLegal/meeting/:id'
                               component={ControllerMeeting}/>
 
                 <Route path="/eimzo" exact component={eimzo}/>

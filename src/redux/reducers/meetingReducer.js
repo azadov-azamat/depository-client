@@ -5,6 +5,7 @@ import {DEPOSITORY_MEMBER_TYPE_USER} from "../../utils/contants";
 const initialState = {
     loading: false,
     totalCount: '',
+    meetings: [],
     memberManagerState: [],
     currentMeeting: [],
     currentCity: {}
@@ -40,6 +41,9 @@ const reducers = {
         state.currentMeeting = action.payload;
     },
 
+    ["REQUEST_GET_MEETING_BY_COMPANY_ID"](state, action){
+      state.meetings = action.payload
+    },
 
     [types.REQUEST_GET_MEETING_LIST_START](state) {
         state.loading = true;

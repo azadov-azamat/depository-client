@@ -29,7 +29,7 @@ function Submit({t}) {
             } else if (app === "ROLE_MODERATOR") {
                 history.push('/admin')
             } else {
-                history.push("/issuerLegal");
+                history.push("/issuerLegal/companies");
             }
         } else {
             history.push('/site/login')

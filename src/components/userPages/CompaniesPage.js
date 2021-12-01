@@ -14,7 +14,7 @@ import {
     DEPOSITORY_USER
 } from "../../utils/contants";
 
-export default function NabPage() {
+export default function CompaniesPage() {
 
     const history = useHistory();
     const dispatch = useDispatch()
@@ -32,6 +32,10 @@ export default function NabPage() {
         dispatch(companyAction.getCompanyByUserId({currentUserId: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
         dispatch({
             type: 'REQUEST_GET_MEETING_SUCCESS',
+            payload: []
+        });
+        dispatch({
+            type: 'REQUEST_GET_MEETING_BY_COMPANY_ID',
             payload: []
         });
         localStorage.removeItem(DEPOSITORY_CURRENT_MEETING)

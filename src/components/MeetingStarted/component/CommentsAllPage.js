@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Col, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     AiOutlineFileExcel,
     AiOutlineFileImage,
@@ -13,10 +13,10 @@ import {
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
-import {CHAIRMAN, DEPOSITORY_CURRENT_MEMBER, SECRETARY, TOKEN} from "../../../utils/contants";
+import {CHAIRMAN, SECRETARY} from "../../../utils/contants";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {AccordionAnswersModal} from "./Accordions/AccordionAnswersModal";
-import SockJsClient from "react-stomp";
+import {subscribe, unsubscribe} from "../../../redux/actions/socketActions";
 
 export default function CommentsAllPage({
                                             roleMember,
@@ -25,31 +25,29 @@ export default function CommentsAllPage({
                                             meetingFile,
                                             questionListMemberId,
                                             currentMeetingId,
+                                            memberId,
                                             password_id
                                         }) {
 
     const dispatch = useDispatch();
-    let clientRef = useRef(null);
 
     const [openQuestionModal, setOpenQuestionModal] = useState(false);
     const [openAnswerModal, setOpenAnswerModal] = useState(false);
 
-    let url = 'https://depositary.herokuapp.com:443/websocket/question/';
-    const authToken = localStorage.getItem(TOKEN)
+    const socketClient = useSelector((state) => state.socket.client);
 
-    if (authToken) {
-        const s = authToken.substr(7, authToken.length - 1);
-        url += '?access_token=' + s;
-    }
+    useEffect(() => {
+        dispatch(subscribe('/topic/answer'));
+        return () => {
+            dispatch(unsubscribe('/topic/answer'));
+        }
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(meetingStartedAction.getLoggingAction({meetingId: currentMeetingId}))
         dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: currentMeetingId}))
+        dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: currentMeetingId}));
     }, [currentMeetingId])
-
-    useEffect(() => {
-        dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER))}))
-    }, [])
 
     function fileTypeIcon(type) {
 
@@ -78,11 +76,10 @@ export default function CommentsAllPage({
     function addQuestion(e, v) {
         const data = {
             meetingId: currentMeetingId,
-            memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER)),
+            memberId: memberId,
             questionText: v.questionText
         }
-        clientRef.sendMessage('/topic/question', JSON.stringify(data));
-        // dispatch(meetingStartedAction.addQuestionAction({data, setOpenQuestionModal}))
+        socketClient.sendMessage('/topic/question', JSON.stringify(data));
     }
 
 
@@ -210,23 +207,6 @@ export default function CommentsAllPage({
                     </Row>
                 </ModalBody>
             </Modal>
-            <SockJsClient
-                url={url}
-                topics={['/topic/answer']}
-                onConnect={() => console.log("Connected")}
-                onDisconnect={() => console.log("Disconnected")}
-                onMessage={(msg) => {
-                    dispatch({
-                        type: 'REQUEST_SUCCESS_QUESTION_LIST',
-                        payload: msg
-                    })
-                    dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER))}))
-                    setOpenQuestionModal(false)
-                }}
-                ref={(client) => {
-                    clientRef = client
-                }}
-            />
         </>
     )
 }

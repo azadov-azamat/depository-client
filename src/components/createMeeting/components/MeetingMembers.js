@@ -47,13 +47,14 @@ export default function MeetingMembers({currentMeeting}) {
     useEffect(() => {
         const array = []
         memberManagerState && memberManagerState.forEach((element, value) => {
-            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER || element.memberTypeEnum === SECRETARY) {
+            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER || element.memberTypeEnum === "SECRETARY") {
                 array.push(element)
             }
         })
         setMembersByMeeting(prev =>[...prev, ...array] )
     }, [memberManagerState])
 
+    console.log(membersByMeeting)
     useEffect(()=>{
         dispatch(meetingActions.getMemberByMeetingId({
             meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
@@ -85,10 +86,10 @@ export default function MeetingMembers({currentMeeting}) {
     };
 
     const roleUser = [
+        {value: SECRETARY, text: 'Секретарь'},
         {value: SPEAKER, text: 'Доклатчик'},
         {value: WATCHER, text: 'Приглашенный'},
-        {value: SECRETARY, text: 'Секретарь'},
-        {value: CHAIR_MAN, text: 'Председатель'}
+        // {value: CHAIR_MAN, text: 'Председатель'}
     ];
 
     function onSearch(val) {
@@ -190,7 +191,8 @@ export default function MeetingMembers({currentMeeting}) {
                                     <td>{role.user.pinfl} </td>
                                     <td>{
                                         role.memberTypeEnum === SPEAKER ? 'Доклатчик' : '' ||
-                                        role.memberTypeEnum === WATCHER ? 'Приглашенный' : ''
+                                        role.memberTypeEnum === WATCHER ? 'Приглашенный' : ''||
+                                        role.memberTypeEnum === SECRETARY ? 'Секретар' : ''
                                     }</td>
                                     <td>
                                         <button className="btn btn-link"

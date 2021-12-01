@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {RiUserSearchLine} from "react-icons/all";
 import {Input} from "reactstrap";
 import {FaCheck, FaTrash} from "react-icons/fa";
@@ -12,7 +12,8 @@ export default function FormForCompany({getName}) {
     return (
         <>
             <tr>
-                <th scope="row" className="text-center"><RiUserSearchLine className='mt-2' style={{color: '#132E85'}}/></th>
+                <th scope="row" className="text-center"><RiUserSearchLine className='mt-2' style={{color: '#132E85'}}/>
+                </th>
                 <td><Input className="input input-group-sm" type="text" name="name"
                            onChange={e => Name(e.target.value, 0)}/></td>
                 <td><Input className="input input-group-sm" type="text" name="email"

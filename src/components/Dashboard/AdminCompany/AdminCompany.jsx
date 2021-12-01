@@ -5,7 +5,6 @@ import {Table} from "reactstrap";
 import FormForCompany from "./FormForCompany";
 import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 import usePagination from "../Pagination";
-import {Pagination} from "@material-ui/lab";
 import TableCompany from "./TableCompany";
 import {confirmAlert} from "react-confirm-alert";
 import {useHistory} from "react-router-dom";
@@ -106,7 +105,8 @@ function AdminCompany() {
         <div className="dashboard p-3">
             <div className="container-fluid">
                 <div className="users">
-                    <RouteByDashboard disabled={false} link={'/admin/company/create'} cardName={t("routes.controlPage.company")}
+                    <RouteByDashboard disabled={false} link={'/admin/company/create'}
+                                      cardName={t("routes.controlPage.company")}
                                       startIndex={startIndex} lang={t}
                                       lastIndex={lastIndex} payload={payload}/>
                     <div className="minWidth w-100 d-flex justify-content-center align-items-center">
@@ -115,10 +115,13 @@ function AdminCompany() {
                                 <thead>
                                 <tr>
                                     <th style={{width: '15px'}}/>
-                                    <th style={{width: '170px'}} className='text-center'>{t("companiesList.nameCompany")}</th>
+                                    <th style={{width: '170px'}}
+                                        className='text-center'>{t("companiesList.nameCompany")}</th>
                                     <th style={{width: '140px'}} className='text-center'>{t("companiesList.email")}</th>
-                                    <th style={{width: '135px'}} className='text-center'>{t("companiesList.phoneNumber")}</th>
-                                    <th style={{width: '123px'}} className='text-center'>{t("companiesList.webSite")}</th>
+                                    <th style={{width: '135px'}}
+                                        className='text-center'>{t("companiesList.phoneNumber")}</th>
+                                    <th style={{width: '123px'}}
+                                        className='text-center'>{t("companiesList.webSite")}</th>
                                     <th style={{width: '135px'}} className='text-center'>{t("companiesList.inn")}</th>
                                     <th style={{width: '15px'}}/>
                                     <th style={{width: '15px'}}/>

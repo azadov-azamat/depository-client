@@ -28,10 +28,7 @@ export default function AddOrEditCompany() {
     const {t} = useTranslation();
 
     const reducers = useSelector(state => state)
-    const {currentCompany} = reducers.company;
-    const {createCompanyLoading} = reducers.company;
-    const {loading} = reducers.file
-    const {logoCompany} = reducers.file
+    const {currentCompany, createCompanyLoading} = reducers.company;
     const {users} = reducers.users
 
     const [opts, setOpts] = useState({mask: Number});
@@ -96,6 +93,10 @@ export default function AddOrEditCompany() {
 
     function forSecretary(value) {
         setSelectUsers({...selectUsers, secretary: value})
+        // dispatch({
+        //     type: "REQUEST_API_SUCCESS_USERS",
+        //     payload: []
+        // })
     }
 
     function forStatus(value) {
@@ -212,6 +213,7 @@ export default function AddOrEditCompany() {
                                 <AvField
                                     type="text"
                                     name="name"
+                                    placeholder={'Введите название '}
                                     value={currentCompany.length !== 0 ? currentCompany.name : ""}
                                     style={{backgroundColor: "#ffffff"}}
                                     className="setting_input border"
@@ -241,6 +243,7 @@ export default function AddOrEditCompany() {
                                         <Label className='required_fields'>{t("pages.company.inn")}</Label>
                                         <input
                                             ref={ref}
+                                            placeholder={'Введите ИНН '}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="inn"
                                             value={inn}
@@ -261,15 +264,18 @@ export default function AddOrEditCompany() {
                                 <Select
                                     className="setting_input w-100"
                                     showSearch
-                                    placeholder="Выберите статус"
+                                    allowClear={true}
+                                    placeholder="Выберите пользвателя"
                                     optionFilterProp="children"
                                     defaultValue={currentCompany.length !== 0 ? currentCompany?.secretaryId : null}
                                     onChange={forSecretary}
                                     onSearch={onSearch}
+                                    // value={selectUsers.secretary}
                                     filterOption={(input, option) =>
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
                                 >
+                                    <Option value={null}>пока никто</Option>
                                     {users && users.map((value, index) =>
                                         <Option value={value.id} key={index}>{value.fullName}</Option>
                                     )}
@@ -279,7 +285,7 @@ export default function AddOrEditCompany() {
                                 <Label className='required_fields'>{t("companiesList.phoneNumber")}</Label>
                                 <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                     <PhoneInput
-                                        placeholder="Enter phone number"
+                                        placeholder="Введите номер телефона"
                                         value={phoneNumber}
                                         onChange={setPhoneNumber}/>
                                 </div>
@@ -287,20 +293,23 @@ export default function AddOrEditCompany() {
                         </Col>
                         <Col md={3}>
                             <div className="">
-                                <div className="form-group">
-                                    <Label for="nabChairmanCompany">{t("pages.company.chairman")}</Label>
+                                <div className="">
+                                    <div className="form-group">
+                                        <Label for="companySecretary">{t("pages.company.chairman")}</Label>
+                                    </div>
                                     <Select
                                         className="setting_input w-100"
                                         showSearch
-                                        placeholder="Выберите статус"
+                                        placeholder="Выберите пользвателя"
                                         optionFilterProp="children"
-                                        defaultValue={currentCompany.length !== 0 ? currentCompany.secretaryId : ""}
+                                        defaultValue={currentCompany.length !== 0 ? currentCompany?.chairmanId : null}
                                         onChange={forChairMan}
                                         onSearch={onSearch}
                                         filterOption={(input, option) =>
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                         }
                                     >
+                                        <Option value={null}>пока никто</Option>
                                         {users && users.map((value, index) =>
                                             <Option value={value.id} key={index}>{value.fullName}</Option>
                                         )}
@@ -311,6 +320,7 @@ export default function AddOrEditCompany() {
                                 <Label className='required_fields'>{t("pages.company.mail")}</Label>
                                 <AvField
                                     type="email"
+                                    placeholder={"Введите адрес электронной почты "}
                                     value={currentCompany?.email}
                                     label=""
                                     name="email"
@@ -328,6 +338,7 @@ export default function AddOrEditCompany() {
                                 <AvField
                                     type="text"
                                     label=""
+                                    placeholder={"Введите почтовый адрес "}
                                     name="postalAddress"
                                     value={currentCompany?.postalAddress}
                                     style={{backgroundColor: "#ffffff"}}
@@ -340,6 +351,7 @@ export default function AddOrEditCompany() {
                                 <AvField
                                     type="text"
                                     label=""
+                                    placeholder={"Введите юридический адрес "}
                                     name="legalAddress"
                                     value={currentCompany?.legalAddress}
                                     style={{backgroundColor: "#FFFFFF"}}
@@ -348,6 +360,7 @@ export default function AddOrEditCompany() {
                             </div>
                             <AvField
                                 type="text"
+                                placeholder={"Введите веб сайт "}
                                 label={t("companiesList.webSite")}
                                 name="webPage"
                                 value={currentCompany?.webPage}
@@ -361,6 +374,7 @@ export default function AddOrEditCompany() {
                                 <AvField
                                     type="textarea"
                                     name="description"
+                                    placeholder={"Краткая информация"}
                                     value={currentCompany?.description}
                                     style={{backgroundColor: "#ffffff", resize: "none"}}
                                     className="setting_input border "

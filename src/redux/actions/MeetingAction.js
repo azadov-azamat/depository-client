@@ -13,6 +13,7 @@ import {
     getAgendaByMeetingIdApi,
     getCitiesApi,
     getCityByIdApi,
+    getMeetingByCompanyIdApi,
     getMeetingByIdApi,
     getMeetingBySorted,
     getMeetingFilesByMeetingIdApi,
@@ -206,6 +207,18 @@ export const deleteByIdAgenda = (payload) => async (dispatch) => {
     })
 }
 
+export const getMeetingByCompanyId = (payload) => async (dispatch) => {
+    dispatch({
+        api: getMeetingByCompanyIdApi,
+        types: ['', 'REQUEST_GET_MEETING_BY_COMPANY_ID', ''],
+        data: payload
+    }).then(res => {
+        console.log(res)
+    }).catch(err => {
+        console.log(err)
+    })
+}
+
 export const addReestrByMeetingAction = (payload) => async (dispatch) => {
     dispatch({
         api: addReestrByMeetingApi,
@@ -233,8 +246,7 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
             } else {
                 toast.error(title)
             }
-        }
-        else if (errorKey === "emailexists") {
+        } else if (errorKey === "emailexists") {
             if (lang === "uz") {
                 toast.error("Email allaqachon ishlatilmoqda!");
             } else if (lang === "ru") {

@@ -11,6 +11,7 @@ import FileReducer from "./reducers/FileReducer";
 import meetingReducer from "./reducers/meetingReducer";
 import meetingStartedReducer from "./reducers/meetingStartedReduser";
 import {usersReducer} from "./reducers/usersReducer";
+import socketReducer from './reducers/socketReducer';
 
 const history = createBrowserHistory();
 const routeMiddleware = routerMiddleware(history);
@@ -27,7 +28,8 @@ const store = createStore(
         file: FileReducer,
         auth: authReducer,
         meeting: meetingReducer,
-        meetingStarted: meetingStartedReducer
+        meetingStarted: meetingStartedReducer,
+        socket: socketReducer,
     }),
     compose(
         applyMiddleware(...middleWares)

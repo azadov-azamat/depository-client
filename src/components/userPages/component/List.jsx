@@ -10,11 +10,9 @@ import {
     EXTRAORDINARY,
     FINISH,
     ORDINARY,
-    PENDING,
-    TOKEN
+    PENDING
 } from "../../../utils/contants";
 import ButtonValue from "./ButtonValue";
-import SockJsClient from "react-stomp";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -24,27 +22,17 @@ function useQuery() {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export const List = ({pathname, meetings}) => {
+export const List = ({pathname, meetings, setStatusOnlineUser}) => {
 
     const {id} = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
     const reducers = useSelector(state => state)
-    const {memberManagerState} = reducers.meeting
     const [statusMeet, setStatusMeet] = useState({success: FINISH, cancel: CANCELED, active: DISABLED})
 
     let query = useQuery();
-    let clientRef = useRef(null);
 
-    let url = 'https://depositary.herokuapp.com:443/websocket/online/';
-    const authToken = localStorage.getItem(TOKEN)
-
-    if (authToken) {
-        const s = authToken.substr(7, authToken.length - 1);
-        url += '?access_token=' + s;
-    }
-
-    console.log(query.get("type"))
+    const companyId = query.get("company_id");
 
     useEffect(() => {
         if (query.get("type") === 'archive') {
@@ -75,7 +63,7 @@ export const List = ({pathname, meetings}) => {
     function historyPushItem(meetingId) {
         localStorage.setItem(DEPOSITORY_CURRENT_MEETING, meetingId)
         localStorage.setItem(DEPOSITORY_CURRENT_COMPANY, id)
-        history.push('/issuerLegal/meetingSetting')
+        // history.push('/issuerLegal/meeting/' + meetingId + "?memberId=" + memberId + "&page=agenda')
     }
 
     function btnValue(meetingId) {
@@ -98,60 +86,29 @@ export const List = ({pathname, meetings}) => {
         )
     }
 
-    const socketIo = (memberId) => {
-        const data = {
-            memberId: memberId,
-            online: true
-        }
-        clientRef.sendMessage('/topic/setStatus', JSON.stringify(data));
-    }
-
     function historyPushItem(role, memberId, meetingId) {
-        socketIo(memberId)
-        localStorage.setItem(DEPOSITORY_CURRENT_MEETING, meetingId)
-        localStorage.setItem(DEPOSITORY_CURRENT_COMPANY, id)
+        setStatusOnlineUser(memberId)
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch({
             type: "memberTypeCurrentUser",
             payload: role
         });
-        history.push('/issuerLegal/meetingSetting')
+        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
     }
 
     function isConfirmed(memberId, role, meetingId) {
-        socketIo(memberId)
-        localStorage.setItem(DEPOSITORY_CURRENT_MEETING, meetingId)
-        localStorage.setItem(DEPOSITORY_CURRENT_COMPANY, id)
+        setStatusOnlineUser(memberId)
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
         dispatch({
             type: "memberTypeCurrentUser",
             payload: role
         });
-        history.push('/issuerLegal/meetingSetting')
+        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId);
     }
 
     return (
         <>
-            <SockJsClient url={url}
-                          topics={['/topic/getMember']}
-                          onConnect={() => {
-                              console.log("CONNECT online users !!!!!!!!")
-                          }}
-                          onDisconnect={() => {
-                              console.log("Disconnected online users !!!!!!")
-                          }}
-                          onMessage={(msg) => {
-                              console.log("RESPONSE FROM QUESTION", msg)
-                              dispatch({
-                                  type: 'REQUEST_GET_MEMBER_LIST_SUCCESS',
-                                  payload: msg
-                              })
-                          }}
-                          ref={(client) => {
-                              clientRef = client
-                          }}
-            />
             {meetings && meetings.map(userMeeting => {
                 return (
                     userMeeting.status === statusMeet.success || userMeeting.status === statusMeet.cancel || userMeeting.status === statusMeet.active ? " " :
@@ -188,7 +145,8 @@ export const List = ({pathname, meetings}) => {
                                     className="col-md-4 d-flex justify-content-end align-items-center d-none d-md-grid">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
                                         btnValue(userMeeting.id) :
-                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={id} isConfirmed={isConfirmed} historyPushItem={historyPushItem}/>
+                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={id}
+                                                     isConfirmed={isConfirmed} historyPushItem={historyPushItem}/>
                                     }
                                 </div>
                             </div>

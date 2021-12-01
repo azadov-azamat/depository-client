@@ -1,25 +1,32 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Col, Row} from "reactstrap";
-import {Link, useHistory, useParams} from "react-router-dom";
+import {Link, useHistory, useLocation} from "react-router-dom";
 import {AiOutlineLeft, AiOutlineRight, FaArrowLeft} from "react-icons/all";
 import {NavbarMeeting} from "./NavbarMeeting";
-import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 import {useDispatch, useSelector} from "react-redux";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
+import * as adminCompanyAction from '../../../redux/actions/CompanyAction';
+
+function useQuery() {
+    const {search} = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 export default function MeetingHeading({company}) {
 
-    const {id} = useParams();
     const history = useHistory();
     const dispatch = useDispatch()
-    const [booleanMy, setBooleanMy] = useState(false);
     const reducers = useSelector(state => state)
     const {currentCompany} = reducers.company;
 
+    let query = useQuery();
+    const companyId = query.get("company_id");
+
     useEffect(() => {
-        // dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(id), history}))
-    }, [id])
+        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(companyId), history}))
+    }, [companyId])
 
     const style = {
         textOverflow: 'ellipsis',
@@ -38,11 +45,12 @@ export default function MeetingHeading({company}) {
                              className="organizationImg d-flex justify-content-between align-items-center">
                             <div className="d-flex flex-column">
                                 <div className="d-flex">
-                                    <Link to="/issuerLegal" className="nav-link text-dark"><FaArrowLeft/></Link>
+                                    <Link to="/issuerLegal/companies"
+                                          className="nav-link text-dark"><FaArrowLeft/></Link>
                                     <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
                                         голосование</Link>
                                     <Link className="nav-link disabled"><AiOutlineRight/></Link>
-                                    <Link to={'/issuerLegal'} className="nav-link"
+                                    <Link to={'/issuerLegal/companies'} className="nav-link"
                                           style={{color: "rgba(155,153,150,0.98)"}}>Акционерное общества</Link>
                                     <Link className="nav-link disabled"><AiOutlineRight/></Link>
                                     <Link className="nav-link h5 disabled text-dark">{company?.name}</Link>
@@ -77,7 +85,8 @@ export default function MeetingHeading({company}) {
             <Row className="d-md-none">
                 <Col md={12}>
                     <div style={{marginTop: '5em'}} className="d-flex justify-content-between align-items-center">
-                        <Link to={'/issuerLegal'} className="nav-link text-dark"><AiOutlineLeft className="h3"/></Link>
+                        <Link to={'/issuerLegal/companies'} className="nav-link text-dark"><AiOutlineLeft
+                            className="h3"/></Link>
                         <div className="d-flex align-items-center float-end">
                             <span style={style} className='h4 d-flex justify-content-end'>{company?.name} - </span>
                             {currentCompany && currentCompany.imageUrl === "yes" ?

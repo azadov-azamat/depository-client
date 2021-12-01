@@ -23,12 +23,14 @@ export default function NabLists({company}) {
         height: '32px'
     };
 
+    console.log(company)
+
     return (
         <div className={"p-3 rounded my-3 NabList"}>
             <div className="row">
                 <div className="col-12 col-md-2 justify-content-center align-items-center d-flex">
                     <div className="row justify-content-center align-items-center w-100">
-                        <Link to={'/issuerLegal/meetings/company_id/' + company.id + "?type=active"}
+                        <Link to={'/issuerLegal/meetings?company_id=' + company.id + "&type=active"}
                               className="col-3 font-bold col-md-12 d-flex text-dark nav-link align-items-center justify-content-center">
                             {company && company.imageUrl === "yes" ?
                                 <>
@@ -65,20 +67,20 @@ export default function NabLists({company}) {
                            className='text-dark nav-link'><b>{company.webPage}</b></a>
                     </p>
                     <Button
-                        onClick={() => history.push('/issuerLegal/meetings/company_id/' + company.id + "?type=active")}
+                        onClick={() => history.push('/issuerLegal/meetings?company_id=' + company.id + "&type=active")}
                         className="create">
                         Всего заседаний - {company.meetingCount}
                     </Button>
                 </div>
                 <div className="col-md-6 d-none d-md-block"
-                     onClick={() => history.push('/issuerLegal/meetings/company_id/' + company.id + "?type=active")}>
+                     onClick={() => history.push('/issuerLegal/meetings?company_id=' + company.id + "&type=active")}>
                     <h3>{company.name}</h3>
                     <p>{company.description}</p>
                     <a href={company.webPage} target='_blank'
                        className='text-dark'><b>{company.webPage}</b></a>
                 </div>
                 <div className="col-md-4 d-flex  justify-content-center align-items-center">
-                    <Link to={'/issuerLegal/meetings/company_id/' + company.id + "?type=active"}
+                    <Link to={'/issuerLegal/meetings?company_id=' + company.id + "&type=active"}
                           className="d-lg-inline-flex d-none align-items-center text-dark nav-link ">
                         <div
                             className="d-flex justify-content-center align-items-center m-2 border border-2"

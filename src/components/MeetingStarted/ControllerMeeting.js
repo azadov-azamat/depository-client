@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {NavbarControlMeeting} from './NavbarControlMeeting'
 import Agenda from "./component/Agenda"
-import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import {Route, Switch, useHistory, useLocation, useParams} from 'react-router-dom';
 import Router from "./Router";
 import CommentsAllPage from "./component/CommentsAllPage";
 import * as meetingActions from "../../redux/actions/MeetingAction";
@@ -14,10 +14,9 @@ import {
     DEPOSITORY_CURRENT_MEMBER,
     DEPOSITORY_MEMBER_TYPE_USER,
     DEPOSITORY_USER,
-    DEPOSITORY_ZOOM_MEETING_LINK,
     DEPOSITORY_ZOOM_MEETING_PASSWORD,
     PENDING,
-    SECRETARY, TOKEN
+    SECRETARY
 } from "../../utils/contants";
 import Question from "./component/Question";
 import Comment from "./component/Comment";
@@ -29,32 +28,46 @@ import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import importScript from "./component/Zoom Meeting/importScript";
 import {Col, Container, Row} from "reactstrap";
 import {Jutsu} from 'react-jutsu';
-import SockJsClient from "react-stomp";
-import {DeleteLoggingByIdAction} from "../../redux/actions/MeetingStartedAction";
+import Socket from "./Socket";
+import {subscribe, unsubscribe} from "../../redux/actions/socketActions";
+
+function useQuery() {
+    const {search} = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 export const ControllerMeeting = () => {
 
+    const {id} = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
     const location = useLocation();
 
+    let query = useQuery();
+    const companyId = query.get("companyId");
+    const memberId = query.get("memberId");
+
     const {pathname} = location
     const reducers = useSelector(state => state)
     const {agendaState, currentMeeting, userMemberType, memberManagerState, meetingFile} = reducers.meeting
-    const {loadingLogging, questionList, loggingList, questionListMemberId, password_zoom, password_id} = reducers.meetingStarted
+    const {
+        loadingLogging,
+        questionList,
+        loggingList,
+        questionListMemberId,
+        password_zoom,
+        password_id
+    } = reducers.meetingStarted
     const {currentUser} = reducers.users
     const {currentCompany} = reducers.company
     const {payload} = reducers.auth.totalCount
 
-    let clientRef = useRef(null);
 
     const [room, setRoom] = useState()
     const [end, setEnd] = useState(false);
 
     const username = currentUser?.fullName;
-    const currentCompanyId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_COMPANY));
-    const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
-    const currentMemberId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEMBER));
 
     const [page, setPage] = useState(1);
     const size = 5;
@@ -71,6 +84,8 @@ export const ControllerMeeting = () => {
     const [close, setClose] = useState(false)
     const link = 'https://meet.jit.si/' + room;
     const [badgeCount, setBadgeCount] = useState(0);
+
+    const socketClient = useSelector((state) => state.socket.client);
 
     const handleStartMeeting = (roomName, userName, password, link) => {
         setEnd(false)
@@ -89,26 +104,18 @@ export const ControllerMeeting = () => {
         _DATA.jump(p);
     };
 
-    let url = 'https://depositary.herokuapp.com:443/websocket/logger/';
-    const authToken = localStorage.getItem(TOKEN)
-
-    if (authToken) {
-        const s = authToken.substr(7, authToken.length - 1);
-        url += '?access_token=' + s;
-    }
-
     useEffect(() => {
         dispatch(userAction.getUserById({ID: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
-        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: currentCompanyId, history}))
-        dispatch(meetingActions.getMeetingByIdAction({meetingId: currentMeetingId}))
-        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
-        dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId}))
-        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: currentMeetingId}))
+        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(companyId), history}))
+        dispatch(meetingActions.getMeetingByIdAction({meetingId: parseInt(id)}))
+        dispatch(meetingActions.getAgendaByMeetingId({meetingId: parseInt(id)}))
+        dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(id)}))
+        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(id)}))
 
         dispatch({type: "memberTypeCurrentUser", payload: localStorage.getItem(DEPOSITORY_MEMBER_TYPE_USER)});
 
-        setRoom(currentCompanyId + "/" + currentMeetingId)
-    }, [])
+        setRoom(companyId + "/" + id)
+    }, [companyId, id])
 
     useEffect(() => {
         memberManagerState && memberManagerState.forEach(element => {
@@ -124,11 +131,19 @@ export const ControllerMeeting = () => {
                 setBadgeCount(prevState => prevState + 1)
             }
         })
-    }, [])
+    }, [questionList])
+
+
+    useEffect(() => {
+        dispatch(subscribe('/topic/user'));
+        return () => {
+            dispatch(unsubscribe('/topic/user'));
+        }
+    }, [dispatch])
 
     importScript("https://meet.jit.si/external_api.js");
 
-    const handleClick = event => {
+    const StartZoomMeeting = event => {
         event.preventDefault()
         if (room && username) setCall(true)
         handleStartMeeting(room, username, password, link);
@@ -138,10 +153,10 @@ export const ControllerMeeting = () => {
             meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
             loggingText: "PASSWORD_ZOOM: " + password
         }
-        clientRef.sendMessage('/topic/user-all', JSON.stringify(data));
+        socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
     }
 
-    const onCloseButton = () => {
+    const FinishZoomMeeting = () => {
         handleClose()
         setPassword('')
         setCall(false);
@@ -149,43 +164,47 @@ export const ControllerMeeting = () => {
         localStorage.removeItem(DEPOSITORY_ZOOM_MEETING_PASSWORD)
         setZoomEnum(PENDING)
         dispatch(meetingStartedAction.DeleteLoggingByIdAction({ID: parseInt(password_id)}))
-        history.push("/issuerLegal/meetingSetting")
+        history.push("/issuerLegal/meeting/")
     }
 
     return (
         <div className="container meeting">
             <div>
                 <Router zoomEnum={setZoomEnum} currentMeeting={currentMeeting && currentMeeting}
-                        currentCompany={currentCompany && currentCompany} userMemberType={userMemberType} password_zoom={password_zoom}/>
+                        currentCompany={currentCompany && currentCompany} userMemberType={userMemberType}
+                        password_zoom={password_zoom}/>
                 <div className="shadow p-3 my-3">
                     <div className="row">
                         <div className="col-12 col-md-8">
                             <NavbarControlMeeting countBadge={badgeCount} roleMember={userMemberType}
-                                                  zoomEnum={zoomEnum} password_zoom={password_zoom}
-                                                  statusMeeting={currentMeeting && currentMeeting.status}/>
+                                                  memberId={memberId} companyId={companyId}/>
                             <Switch>
-                                <Route path="/issuerLegal/meetingSetting" exact>
-                                    <Agenda agendaSubject={agendaState} roleMember={userMemberType}/>
+                                <Route path={"/issuerLegal/meeting/" + id + "/agenda"}>
+                                    <Agenda agendaSubject={agendaState} roleMember={userMemberType}
+                                            meetingId={parseInt(id)} memberId={parseInt(memberId)}/>
                                 </Route>
-                                <Route path="/issuerLegal/meetingSetting/question">
-                                    <Question list={questionList && questionList}/>
+                                <Route path={"/issuerLegal/meeting/" + id + "/question"}>
+                                    <Question list={questionList}/>
                                 </Route>
-                                <Route path="/issuerLegal/meetingSetting/comment-by-meeting">
-                                    <Comment loading={loadingLogging}/>
+                                <Route path={"/issuerLegal/meeting/" + id + "/addComment"}>
+                                    <Comment loading={loadingLogging} socketClient={socketClient}
+                                             meetingId={parseInt(id)}/>
                                 </Route>
-                                <Route path="/issuerLegal/meetingSetting/control-meeting">
+                                <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
                                     <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}
                                                     currentMeeting={currentMeeting}
-                                                    memberList={memberManagerState && memberManagerState}/>
+                                                    memberList={memberManagerState && memberManagerState}
+                                                    socketClient={socketClient} meetingId={parseInt(id)}/>
                                 </Route>
-                                <Route path="/issuerLegal/meetingSetting/list_users">
+                                <Route path={"/issuerLegal/meeting/" + id + "/all_users_list"}>
                                     <TableUsers page={page} startIndex={startIndex} handleChange={handleChange}
                                                 count={count} lastIndex={lastIndex}
                                                 members={memberManagerState && memberManagerState} payload={payload}/>
                                 </Route>
 
                             </Switch>
-                            <div className={pathname === "/issuerLegal/meetingSetting/zoom_meeting" ? '' : "d-none"}>
+                            <div
+                                className={pathname === "/issuerLegal/meeting/" + id + "/zoom-meeting" ? '' : "d-none"}>
                                 {
                                     call ? (
                                         <Container>
@@ -195,10 +214,10 @@ export const ControllerMeeting = () => {
                                                     <div aria-hidden={close}>
                                                         <Jutsu
                                                             roomName={room}
-                                                            containerStyles={{width: '739px', height: '377px'}}
+                                                            containerStyles={{width: '748px', height: '377px'}}
                                                             displayName={username}
                                                             password={password}
-                                                            onMeetingEnd={() => onCloseButton()}
+                                                            onMeetingEnd={() => FinishZoomMeeting()}
                                                             loadingComponent={<p>loading ...</p>}
                                                             errorComponent={<p>Oops, something went wrong</p>}
                                                             configOverwrite={{
@@ -218,31 +237,22 @@ export const ControllerMeeting = () => {
                                                      className="d-flex flex-column justify-content-between text-center align-items-center w-100 mt-4"
                                                      style={{height: '53vh'}}
                                                 >
-                                                    <div className="">
-                                                        <h2>Zoom Meeting</h2>
-                                                        <form>
-                                                            <input
-                                                                className="form-control"
-                                                                id='password' type='text'
-                                                                placeholder='Password (optional)'
-                                                                value={password}
-                                                                onChange={(e) => setPassword(e.target.value)}
-                                                                maxLength={12}
-                                                                minLength={4}
-                                                            />
-                                                            <button className="create py-2 px-3 mt-2"
-                                                                    onClick={handleClick}
-                                                                    type='submit'>
-                                                                {userMemberType === CHAIRMAN || userMemberType === SECRETARY ?
-                                                                    "Start video-meeting" : "Join video-meeting"
-                                                                }
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                    <div className="">
-                                                        <span>{room}</span><br/>
-                                                        <span>password: <code>{password}</code></span>
-                                                    </div>
+                                                    {userMemberType === CHAIRMAN || userMemberType === SECRETARY ?
+                                                        <div className="">
+                                                            <h2>Zoom Meeting</h2>
+                                                                <button className="create py-2 px-3 mt-2"
+                                                                        onClick={StartZoomMeeting}
+                                                                        type='submit'>
+                                                                    Start video-meeting
+                                                                </button>
+                                                        </div>
+                                                         :
+                                                        <div>
+                                                            <h5>
+                                                                Видео конференция еще не запущено
+                                                            </h5>
+                                                        </div>
+                                                    }
                                                 </Col>
                                             </Row>
                                         </Container>
@@ -254,41 +264,13 @@ export const ControllerMeeting = () => {
                                          currentUserId={currentUser && currentUser.id}
                                          meetingFile={meetingFile && meetingFile}
                                          loggingList={loggingList && loggingList}
-                                         currentMeetingId={currentMeetingId}
+                                         currentMeetingId={parseInt(id)}
                                          questionListMemberId={questionListMemberId && questionListMemberId}
-                        />
+                                         memberId={parseInt(memberId)}/>
                     </div>
                 </div>
             </div>
-            <SockJsClient
-                url={url}
-                topics={['/topic/user']}
-                onConnect={() => console.log("Connected")}
-                onDisconnect={() => console.log("Disconnected")}
-                onMessage={(msg) => {
-                    console.log(msg)
-                    dispatch({
-                        type: 'REQUEST_SUCCESS_LOGGING_LIST',
-                        payload: msg
-                    })
-                    msg.forEach(element=>{
-                        if (element.loggingText.startsWith("PASSWORD_ZOOM:")){
-                            dispatch({
-                                type: 'PASSWORD_ZOOM_MEETING',
-                                payload: {
-                                    password_zoom: element.loggingText.substr(15, (element.loggingText.length - 1)),
-                                    password_id: element.id
-                                }
-                            })
-                            localStorage.setItem(DEPOSITORY_ZOOM_MEETING_PASSWORD, element.loggingText.substr(15, (element.loggingText.length - 1)))
-                            console.log(element.loggingText.substr(15, (element.loggingText.length - 1)))
-                        }
-                    })
-                }}
-                ref={(client) => {
-                    clientRef = client
-                }}
-            />
+            <Socket/>
         </div>
     )
 }

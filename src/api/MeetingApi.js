@@ -1,6 +1,5 @@
 import HttpClient from "../utils/HttpClient";
 import {api} from "./api";
-import * as url from "url";
 
 export const getMeetingBySorted = (data) => {
     return HttpClient.doGet(api.companyFilter +
@@ -28,6 +27,10 @@ export const getMeetings = (data) => {
 
 export const deleteMeeting = (data) => {
     return HttpClient.doDelete(api.meetingMethod + "/" + data)
+}
+
+export const getMeetingByCompanyIdApi = (data) => {
+    return HttpClient.doGet(api.meetingByCompany +  (data && data.companyId ? "?companyId=" + data.companyId  : ""))
 }
 
 

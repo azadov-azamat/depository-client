@@ -1,23 +1,27 @@
 import React from 'react'
-import {Link, useLocation, useParams} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 function useQuery() {
     const {search} = useLocation();
-
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export const NavbarMeeting = ({companyId}) => {
+export const NavbarMeeting = () => {
 
-    const {id} = useParams();
-    const location = useLocation();
-    const {pathname} = location;
     let query = useQuery();
+    const companyId = query.get("company_id");
 
-    console.log(pathname)
     const link = [
-        {text: 'Общее заседание', link: '/issuerLegal/meetings/company_id/' + id + "?type=active", type: 'active'},
-        {text: 'Архив заседание', link: '/issuerLegal/meetings/company_id/' + id + "?type=archive", type: 'archive'},
+        {
+            text: 'Общее заседание',
+            link: '/issuerLegal/meetings?company_id=' + companyId + "&type=active",
+            type: 'active'
+        },
+        {
+            text: 'Архив заседание',
+            link: '/issuerLegal/meetings?company_id=' + companyId + "&type=archive",
+            type: 'archive'
+        },
     ]
 
     const linkMap = ({text, link, type}) => (
@@ -32,5 +36,4 @@ export const NavbarMeeting = ({companyId}) => {
             {link.map(linkMap)}
         </ul>
     )
-
 }

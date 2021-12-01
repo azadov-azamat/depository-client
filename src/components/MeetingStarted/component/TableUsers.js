@@ -1,8 +1,11 @@
 import React from "react";
 import {Table} from "reactstrap";
 import {AiOutlineSetting, BiCheckDouble} from "react-icons/all";
+import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../utils/contants";
 
 export default function TableUsers({count, page, startIndex, lastIndex, handleChange, members, payload}) {
+
+    console.log(members)
 
     return (
         <div className="d-flex justify-content-center" style={{overflowY: 'scroll', height: '57vh'}}>
@@ -14,6 +17,7 @@ export default function TableUsers({count, page, startIndex, lastIndex, handleCh
                         <th scope="col" className='w-25'>Ф.И.О.</th>
                         <th scope="col" className='w-25'>Телефон</th>
                         <th scope="col" className='w-25'>Онлайн</th>
+                        <th scope="col" className='w-25'>Роль</th>
                         <th scope="col" style={{width: '0'}}>
                             <BiCheckDouble fontSize={25} color={"green"}/>
                         </th>
@@ -32,6 +36,13 @@ export default function TableUsers({count, page, startIndex, lastIndex, handleCh
                                             <text className="text-danger">offline</text>
                                     }
                                 </td>
+                                <td>{
+                                    role.memberTypeEnum === SPEAKER ? 'Доклатчик' : '' ||
+                                    role.memberTypeEnum === WATCHER ? 'Приглашенный' : ''||
+                                    role.memberTypeEnum === SECRETARY ? 'Секретар' : '' ||
+                                    role.memberTypeEnum === CHAIRMAN ? 'Председатель' : '' ||
+                                    role.memberTypeEnum === SIMPLE ? 'Обычный' : ''
+                                }</td>
                                 <td>
                                     <button className="btn btn-link">
                                         <AiOutlineSetting/>

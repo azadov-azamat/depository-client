@@ -69,7 +69,7 @@ export default function AddOrEditUser() {
         } else if (v.isAdmin === false) {
             authority.push("ROLE_USER")
         }
-        if (savedPinfl && authority && generateLogin && savedInn) {
+        if (savedPinfl && authority && generateLogin) {
             const data = {
                 fullName: v.fullName,
                 activated: v.activated,
@@ -101,7 +101,7 @@ export default function AddOrEditUser() {
             authority.push("ROLE_USER")
         }
         const current = parseInt(id);
-        if (savedPinfl && authority && generateLogin && savedInn) {
+        if (savedPinfl && authority && generateLogin) {
             const data = {
                 id: current,
                 fullName: v.fullName,
@@ -290,21 +290,21 @@ export default function AddOrEditUser() {
                                     </div>
 
                                 </Col>
-                                <Col md={6}>
-                                    <div className="form-group d-flex flex-column">
-                                        <Label className='required_fields'>{t("user.inn")}</Label>
-                                        <AvField
-                                            // ref={ref}
-                                            style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
-                                            name="inn"
-                                            value={savedInn}
-                                            onChange={(e) => setSavedInn(e.target.value)}
-                                            minLength={9} maxLength={9}
-                                            className="setting_input border"
-                                            required
-                                        />
-                                    </div>
-                                </Col>
+                                {/*<Col md={6}>*/}
+                                {/*    <div className="form-group d-flex flex-column">*/}
+                                {/*        <Label className='required_fields'>{t("user.inn")}</Label>*/}
+                                {/*        <AvField*/}
+                                {/*            // ref={ref}*/}
+                                {/*            style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}*/}
+                                {/*            name="inn"*/}
+                                {/*            value={savedInn}*/}
+                                {/*            onChange={(e) => setSavedInn(e.target.value)}*/}
+                                {/*            minLength={9} maxLength={9}*/}
+                                {/*            className="setting_input border"*/}
+                                {/*            required*/}
+                                {/*        />*/}
+                                {/*    </div>*/}
+                                {/*</Col>*/}
                             </Row>
                             <Row>
                                 <Col md={6}>

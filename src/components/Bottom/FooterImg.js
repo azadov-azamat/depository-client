@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ModalImg3 from "./ModalImg3";
 import ModalImg2 from "./ModalImg2";
 import ModalImg1 from "./ModalImg1";
