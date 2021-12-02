@@ -90,7 +90,7 @@ export const List = ({pathname, meetings, setStatusOnlineUser}) => {
         setStatusOnlineUser(memberId)
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch({
-            type: "memberTypeCurrentUser",
+            type: "CURRENT_MEMBER_TYPE",
             payload: role
         });
         history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
@@ -101,7 +101,7 @@ export const List = ({pathname, meetings, setStatusOnlineUser}) => {
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
         dispatch({
-            type: "memberTypeCurrentUser",
+            type: "CURRENT_MEMBER_TYPE",
             payload: role
         });
         history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId);

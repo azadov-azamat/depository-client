@@ -7,17 +7,7 @@ import CommentsAllPage from "./component/CommentsAllPage";
 import * as meetingActions from "../../redux/actions/MeetingAction";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    CHAIRMAN,
-    DEPOSITORY_CURRENT_COMPANY,
-    DEPOSITORY_CURRENT_MEETING,
-    DEPOSITORY_CURRENT_MEMBER,
-    DEPOSITORY_MEMBER_TYPE_USER,
-    DEPOSITORY_USER,
-    DEPOSITORY_ZOOM_MEETING_PASSWORD,
-    PENDING,
-    SECRETARY
-} from "../../utils/contants";
+import {CHAIRMAN, DEPOSITORY_USER, PENDING, SECRETARY} from "../../utils/contants";
 import Question from "./component/Question";
 import Comment from "./component/Comment";
 import ControlMeeting from "./component/ControlMeeting";
@@ -56,16 +46,15 @@ export const ControllerMeeting = () => {
         questionList,
         loggingList,
         questionListMemberId,
-        password_zoom,
-        password_id
+        startCallMeeting,
+        endCallMeeting,
+        passwordZoomMeeting
     } = reducers.meetingStarted
     const {currentUser} = reducers.users
     const {currentCompany} = reducers.company
     const {payload} = reducers.auth.totalCount
 
-
     const [room, setRoom] = useState()
-    const [end, setEnd] = useState(false);
 
     const username = currentUser?.fullName;
 
@@ -80,7 +69,7 @@ export const ControllerMeeting = () => {
     const [zoomEnum, setZoomEnum] = useState(PENDING);
 
     const [call, setCall] = useState(false)
-    const [password, setPassword] = useState('')
+    const [password, setPassword] = useState(passwordZoomMeeting)
     const [close, setClose] = useState(false)
     const link = 'https://meet.jit.si/' + room;
     const [badgeCount, setBadgeCount] = useState(0);
@@ -88,15 +77,11 @@ export const ControllerMeeting = () => {
     const socketClient = useSelector((state) => state.socket.client);
 
     const handleStartMeeting = (roomName, userName, password, link) => {
-        setEnd(false)
+        setCall(true)
         console.log(roomName)
         console.log(userName)
         console.log(password)
         console.log(link)
-    }
-
-    const handleClose = () => {
-        setEnd(true)
     }
 
     const handleChange = (e, p) => {
@@ -112,18 +97,8 @@ export const ControllerMeeting = () => {
         dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(id)}))
         dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(id)}))
 
-        dispatch({type: "memberTypeCurrentUser", payload: localStorage.getItem(DEPOSITORY_MEMBER_TYPE_USER)});
-
         setRoom(companyId + "/" + id)
     }, [companyId, id])
-
-    useEffect(() => {
-        memberManagerState && memberManagerState.forEach(element => {
-            if (element.userId === parseInt(localStorage.getItem(DEPOSITORY_USER))) {
-                localStorage.setItem(DEPOSITORY_CURRENT_MEMBER, element.id)
-            }
-        })
-    }, [memberManagerState])
 
     useEffect(() => {
         questionList && questionList.forEach(element => {
@@ -133,46 +108,102 @@ export const ControllerMeeting = () => {
         })
     }, [questionList])
 
+    useEffect(() => {
+        memberManagerState && memberManagerState.forEach(element => {
+            if (element.id === parseInt(memberId)) {
+                dispatch({
+                    type: 'CURRENT_MEMBER_TYPE',
+                    payload: element.memberTypeEnum
+                })
+            }
+        })
+    }, [memberManagerState])
 
     useEffect(() => {
         dispatch(subscribe('/topic/user'));
+        dispatch(subscribe('/topic/get-zoom'));
         return () => {
             dispatch(unsubscribe('/topic/user'));
+            dispatch(unsubscribe('/topic/get-zoom'));
         }
     }, [dispatch])
+
+    useEffect(() => {
+        if (endCallMeeting && !startCallMeeting) {
+            setCall(false)
+        }
+    }, [startCallMeeting, endCallMeeting])
+
 
     importScript("https://meet.jit.si/external_api.js");
 
     const StartZoomMeeting = event => {
         event.preventDefault()
-        if (room && username) setCall(true)
-        handleStartMeeting(room, username, password, link);
-
-        const data = {
-            userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-            meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
-            loggingText: "PASSWORD_ZOOM: " + password
+        let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let string_length = 8;
+        let randomstring = '';
+        for (let i = 0; i < string_length; i++) {
+            let rnum = Math.floor(Math.random() * chars.length);
+            randomstring += chars.substring(rnum, rnum + 1);
         }
-        socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
+        setPassword(randomstring)
+
+        if (endCallMeeting && !startCallMeeting) {
+            if (room && username)
+                handleStartMeeting(room, username, password, link);
+
+            const data = {
+                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+                meetingId: parseInt(id),
+                loggingText: "Видео конференция запущено, прошу присоединиться."
+            }
+
+            const dataZoom = {
+                password: randomstring,
+                startCall: true,
+                endCall: false
+            }
+
+            socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
+            socketClient.sendMessage('/topic/start-zoom', JSON.stringify(dataZoom));
+        } else if (startCallMeeting && !endCallMeeting) {
+            setPassword(passwordZoomMeeting)
+            if (room && username)
+                handleStartMeeting(room, username, password, link);
+        }
     }
 
     const FinishZoomMeeting = () => {
-        handleClose()
-        setPassword('')
-        setCall(false);
-        setClose(true);
-        localStorage.removeItem(DEPOSITORY_ZOOM_MEETING_PASSWORD)
-        setZoomEnum(PENDING)
-        dispatch(meetingStartedAction.DeleteLoggingByIdAction({ID: parseInt(password_id)}))
-        history.push("/issuerLegal/meeting/")
+
+        if (userMemberType === CHAIRMAN || userMemberType === SECRETARY) {
+
+            const dataZoom = {
+                password: null,
+                startCall: false,
+                endCall: true
+            }
+            socketClient.sendMessage('/topic/start-zoom', JSON.stringify(dataZoom));
+
+            const data = {
+                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+                meetingId: parseInt(id),
+                loggingText: "Видео конференция завершено"
+            }
+            socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
+            // false
+            setCall(endCallMeeting)
+        } else {
+            setCall(false)
+        }
+
+        // history.push("/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
     }
 
     return (
         <div className="container meeting">
             <div>
                 <Router zoomEnum={setZoomEnum} currentMeeting={currentMeeting && currentMeeting}
-                        currentCompany={currentCompany && currentCompany} userMemberType={userMemberType}
-                        password_zoom={password_zoom}/>
+                        currentCompany={currentCompany && currentCompany} userMemberType={userMemberType}/>
                 <div className="shadow p-3 my-3">
                     <div className="row">
                         <div className="col-12 col-md-8">
@@ -211,13 +242,13 @@ export const ControllerMeeting = () => {
                                             <Row>
                                                 <Col md={12}
                                                      className="d-flex flex-column justify-content-center text-center align-items-center">
-                                                    <div aria-hidden={close}>
+                                                    <div aria-hidden={endCallMeeting}>
                                                         <Jutsu
                                                             roomName={room}
                                                             containerStyles={{width: '748px', height: '377px'}}
                                                             displayName={username}
                                                             password={password}
-                                                            onMeetingEnd={() => FinishZoomMeeting()}
+                                                            onMeetingEnd={FinishZoomMeeting}
                                                             loadingComponent={<p>loading ...</p>}
                                                             errorComponent={<p>Oops, something went wrong</p>}
                                                             configOverwrite={{
@@ -237,20 +268,31 @@ export const ControllerMeeting = () => {
                                                      className="d-flex flex-column justify-content-between text-center align-items-center w-100 mt-4"
                                                      style={{height: '53vh'}}
                                                 >
-                                                    {userMemberType === CHAIRMAN || userMemberType === SECRETARY ?
+                                                    {userMemberType === CHAIRMAN || userMemberType === SECRETARY
+                                                        ?
                                                         <div className="">
                                                             <h2>Zoom Meeting</h2>
-                                                                <button className="create py-2 px-3 mt-2"
-                                                                        onClick={StartZoomMeeting}
-                                                                        type='submit'>
-                                                                    Start video-meeting
-                                                                </button>
+                                                            <button className="create py-2 px-3 mt-2"
+                                                                    onClick={StartZoomMeeting}
+                                                                    type='submit'>
+                                                                {
+                                                                    startCallMeeting && !endCallMeeting ?
+                                                                        "Join zoom-meeting" : "Start video-meeting"
+                                                                }
+                                                            </button>
                                                         </div>
-                                                         :
+                                                        :
                                                         <div>
-                                                            <h5>
-                                                                Видео конференция еще не запущено
-                                                            </h5>
+                                                            {
+                                                                endCallMeeting && !startCallMeeting ?
+                                                                    <h5>Видео конференция еще не запущено</h5>
+                                                                    :
+                                                                    <button className="create py-2 px-3 mt-2"
+                                                                            onClick={StartZoomMeeting}
+                                                                            type='submit'>
+                                                                        Join video-meeting
+                                                                    </button>
+                                                            }
                                                         </div>
                                                     }
                                                 </Col>

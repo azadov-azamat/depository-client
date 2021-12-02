@@ -32,15 +32,17 @@ export const Socket = () => {
             topics={topics}
             onConnect={() => console.log("Connected")}
             onDisconnect={() => console.log("Disconnected")}
-            onMessage={(msg, topic, b, x, v) => {
+            onMessage={(msg, topic) => {
 
                 if (topic === '/topic/user') {
                     dispatch({
                         type: 'REQUEST_SUCCESS_LOGGING_LIST',
                         payload: msg
                     })
+
                     msg.forEach(element => {
                         if (element.loggingText.startsWith("PASSWORD_ZOOM:")) {
+                            console.log(element)
                             dispatch({
                                 type: 'PASSWORD_ZOOM_MEETING',
                                 payload: {
@@ -53,6 +55,7 @@ export const Socket = () => {
                         }
                     })
                 }
+
                 if (topic === '/topic/answer') {
                     dispatch({
                         type: 'REQUEST_SUCCESS_QUESTION_LIST',
@@ -60,12 +63,37 @@ export const Socket = () => {
                     })
                     dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}));
                 }
+
                 if (topic === "/topic/getMember") {
                     console.log("RESPONSE FROM QUESTION", msg)
                     dispatch({
                         type: 'REQUEST_GET_MEMBER_LIST_SUCCESS',
                         payload: msg
                     })
+                }
+
+                if (topic === '/topic/get-zoom'){
+                    debugger
+                    console.log(msg)
+                    if (msg.startCall){
+                        dispatch({
+                            type: "PASSWORD_ZOOM_MEETING",
+                            payload: {
+                                startCallMeeting: true,
+                                endCallMeeting: false,
+                                passwordZoomMeeting: msg.password
+                            }
+                        })
+                    }else if (msg.endCall){
+                        dispatch({
+                            type: "PASSWORD_ZOOM_MEETING",
+                            payload: {
+                                startCallMeeting: false,
+                                endCallMeeting: true,
+                                passwordZoomMeeting: null
+                            }
+                        })
+                    }
                 }
             }}
         />

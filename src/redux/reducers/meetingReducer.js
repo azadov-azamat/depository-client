@@ -12,8 +12,7 @@ const initialState = {
 };
 
 const reducers = {
-    ['memberTypeCurrentUser'](state, action) {
-        localStorage.setItem(DEPOSITORY_MEMBER_TYPE_USER, action.payload)
+    ['CURRENT_MEMBER_TYPE'](state, action) {
         state.userMemberType = action.payload;
     },
     [types.TOTAL_COUNT_MEETING](state, action) {

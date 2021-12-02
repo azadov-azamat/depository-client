@@ -5,7 +5,11 @@ const initialState = {
     loggingList: [],
     questionListMemberId: [],
     countBadge: 0,
-    currentBallotVotingList: {}
+    currentBallotVotingList: {},
+
+    startCallMeeting: false,
+    endCallMeeting: true,
+    passwordZoomMeeting: null
 };
 
 const reducers = {
@@ -76,10 +80,10 @@ const reducers = {
         state.questionListMemberId = action.payload
     },
 
-    ["REQUEST_START_ADD_BALLOT"](state){
+    ["REQUEST_START_ADD_BALLOT"](state) {
         state.loadingBallot = true
     },
-    ["REQUEST_SUCCESS_ADD_BALLOT"](state){
+    ["REQUEST_SUCCESS_ADD_BALLOT"](state) {
         state.loadingBallot = false
     },
     ["REQUEST_DELETE_BALLOT_START"](state) {
@@ -97,8 +101,9 @@ const reducers = {
         state.countBadge = action.payload
     },
     ["PASSWORD_ZOOM_MEETING"](state, action) {
-        state.password_zoom = action.payload.password_zoom
-        state.password_id = action.payload.password_id
+        state.startCallMeeting = action.payload.startCallMeeting
+        state.endCallMeeting = action.payload.endCallMeeting
+        state.passwordZoomMeeting = action.payload.passwordZoomMeeting
     }
 }
 

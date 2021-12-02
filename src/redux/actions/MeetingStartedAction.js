@@ -45,6 +45,7 @@ export const DeleteLoggingByIdAction = (payload) => async (dispatch) => {
         data: payload.ID
     }).then(res=>{
         console.log("bu delete logging =====================")
+        dispatch(getLoggingAction({meetingId: payload.meetingId}))
         dispatch({
             type: 'PASSWORD_ZOOM_MEETING',
             payload: {
@@ -52,6 +53,8 @@ export const DeleteLoggingByIdAction = (payload) => async (dispatch) => {
                 password_id: null
             }
         })
+    }).catch(err=>{
+        console.log(err)
     })
 } // success 95%
 
