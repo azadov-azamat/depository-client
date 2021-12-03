@@ -16,7 +16,7 @@ import {confirmAlert} from "react-confirm-alert";
 
 const {Option} = Select;
 
-export default function MeetingMembers({currentMeeting}) {
+export default function MeetingMembers({currentMeetingId}) {
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -24,7 +24,6 @@ export default function MeetingMembers({currentMeeting}) {
     const reducers = useSelector(state => state)
     const {users} = reducers.users
     const {memberManagerState} = reducers.meeting
-    const {payload} = reducers.auth.totalCount
 
     const [membersByMeeting, setMembersByMeeting] = useState([]);
     const [selectedUser, setSelectedUser] = useState();
@@ -47,21 +46,21 @@ export default function MeetingMembers({currentMeeting}) {
     useEffect(() => {
         const array = []
         memberManagerState && memberManagerState.forEach((element, value) => {
-            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER || element.memberTypeEnum === "SECRETARY") {
+            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER || element.memberTypeEnum === SECRETARY) {
                 array.push(element)
             }
         })
-        setMembersByMeeting(prev =>[...prev, ...array] )
+        setMembersByMeeting(prev => [...prev, ...array])
     }, [memberManagerState])
 
     console.log(membersByMeeting)
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(meetingActions.getMemberByMeetingId({
             meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
             page,
             size
         }))
-    },[page])
+    }, [page])
 
     const submit = (currentMemberId) => {
         confirmAlert({
@@ -73,7 +72,7 @@ export default function MeetingMembers({currentMeeting}) {
                     onClick: () => {
                         dispatch(meetingActions.deleteMemberById({
                             currentMemberId: currentMemberId,
-                            currentMeetingId: currentMeeting.id
+                            currentMeetingId: currentMeetingId
                         }))
                     }
 
@@ -104,12 +103,12 @@ export default function MeetingMembers({currentMeeting}) {
         }
     }
 
-    function addedUsers(e, v) {
+    function addedUsers() {
         if (!selectedUser && !selectedRole) {
             toast.error('Пожалуйста, Заполните все')
         } else {
             const data = {
-                meetingId: currentMeeting?.id,
+                meetingId: currentMeetingId,
                 memberTypeEnum: selectedRole,
                 userId: selectedUser
             }
@@ -191,7 +190,7 @@ export default function MeetingMembers({currentMeeting}) {
                                     <td>{role.user.pinfl} </td>
                                     <td>{
                                         role.memberTypeEnum === SPEAKER ? 'Доклатчик' : '' ||
-                                        role.memberTypeEnum === WATCHER ? 'Приглашенный' : ''||
+                                        role.memberTypeEnum === WATCHER ? 'Приглашенный' : '' ||
                                         role.memberTypeEnum === SECRETARY ? 'Секретар' : ''
                                     }</td>
                                     <td>

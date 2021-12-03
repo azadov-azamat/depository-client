@@ -1,9 +1,15 @@
 import React, {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
-import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_ZOOM_MEETING_PASSWORD, TOKEN} from "../../utils/contants";
+import {
+    DEPOSITORY_CURRENT_MEETING,
+    DEPOSITORY_USER,
+    DEPOSITORY_ZOOM_MEETING_PASSWORD,
+    TOKEN
+} from "../../utils/contants";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
+import {addLoggingAction} from "../../redux/actions/MeetingStartedAction";
 
 export const Socket = () => {
     const dispatch = useDispatch();
@@ -31,7 +37,7 @@ export const Socket = () => {
             url={url}
             topics={topics}
             onConnect={() => console.log("Connected")}
-            onDisconnect={() => console.log("Disconnected")}
+            onDisconnect={() => {console.log("Disconnected")}}
             onMessage={(msg, topic) => {
 
                 if (topic === '/topic/user') {
@@ -72,10 +78,8 @@ export const Socket = () => {
                     })
                 }
 
-                if (topic === '/topic/get-zoom'){
-                    debugger
-                    console.log(msg)
-                    if (msg.startCall){
+                if (topic === '/topic/get-zoom') {
+                    if (msg.startCall) {
                         dispatch({
                             type: "PASSWORD_ZOOM_MEETING",
                             payload: {
@@ -84,7 +88,7 @@ export const Socket = () => {
                                 passwordZoomMeeting: msg.password
                             }
                         })
-                    }else if (msg.endCall){
+                    } else if (msg.endCall) {
                         dispatch({
                             type: "PASSWORD_ZOOM_MEETING",
                             payload: {

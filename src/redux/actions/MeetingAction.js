@@ -49,6 +49,10 @@ export const getMeetingList = (payload) => async (dispatch) => {
             types.REQUEST_GET_MEETING_LIST_ERROR
         ],
         data: payload
+    }).then(res=>{
+        // console.log(res)
+    }).catch(err=>{
+
     })
 } //success 90%
 
@@ -257,6 +261,17 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
         } else if (detail === "Required request part 'file' is not present") {
             toast.error("\"Fayl\" so'rovining kerakli qismi mavjud emas! iltimos tekshiring")
         }
+       else if (errorKey === 'userexists') {
+            if (lang === "ru") {
+                payload.toast.error("Паспорт уже использовался!")
+            }
+            if (lang === "uz") {
+                payload.toast.error("Passport allaqachon ishlatilgan!")
+            }
+            if (lang === "en") {
+                payload.toast.error(err.response.data.title)
+            }
+        }
     })
 }
 
@@ -323,7 +338,7 @@ export const getCityByIdAction = (payload) => async (dispatch) => {
 export const getCitiesAction = (payload) => async (dispatch) => {
     dispatch({
         api: getCitiesApi,
-        types: "REQUEST_GET_CITIES",
+        types: ["","REQUEST_GET_CITIES",""],
         data: payload
     })
 }

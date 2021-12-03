@@ -10,7 +10,7 @@ import * as userAction from '../../../redux/actions/UsersAction'
 import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
 
-export default function ProfileUser({lang, currentUser, loading}) {
+export default function ProfileUser({lang, currentUser, loading, ID}) {
 
     const dispatch = useDispatch()
     const [parol, setParol] = React.useState({

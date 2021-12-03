@@ -31,7 +31,7 @@ export default function MeetingReestr({currentMeeting}) {
                 array.push(element)
             }
         })
-        setFromReestr(prev => [...prev, ...array])
+        setFromReestr(array)
     }, [memberManagerState])
 
     useEffect(() => {

@@ -161,12 +161,16 @@ export const ControllerMeeting = () => {
             const dataZoom = {
                 password: randomstring,
                 startCall: true,
-                endCall: false
+                endCall: false,
+                meetingId: parseInt(id),
+                memberId: parseInt(memberId)
             }
 
             socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
             socketClient.sendMessage('/topic/start-zoom', JSON.stringify(dataZoom));
-        } else if (startCallMeeting && !endCallMeeting) {
+        }
+
+        else if (startCallMeeting && !endCallMeeting) {
             setPassword(passwordZoomMeeting)
             if (room && username)
                 handleStartMeeting(room, username, password, link);

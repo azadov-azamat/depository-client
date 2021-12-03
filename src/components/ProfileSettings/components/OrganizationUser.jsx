@@ -1,12 +1,29 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Col, Row} from "reactstrap";
 import "../../Dashboard/styles/Profile.scss";
+import * as companyAction from "../../../redux/actions/CompanyAction";
+import {getUserById} from "../../../redux/actions/UsersAction";
+import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
 
-export default function OrganizationUser({lang, userCompanies}) {
+export default function OrganizationUser({lang, ID}) {
+
+    const {id} = useParams();
+    const {t} = useTranslation();
+    const dispatch = useDispatch();
+    const reducers = useSelector(state => state)
+    const {currentUser, loading} = reducers.users
+    const {companiesByUserId} = reducers.company
+
+    useEffect(() => {
+        dispatch(companyAction.getCompanyByUserId({currentUserId: ID}))
+        dispatch(getUserById({ID: ID}))
+    }, [id])
 
     return (
         <Row className='mt-4 mt-md-0'>
-            {userCompanies && userCompanies.map((value, i) => (
+            {companiesByUserId && companiesByUserId.map((value, i) => (
                 value.id % 2 !== 0 ?
                     <Col md={6}>
                         <div key={i} className="organization d-flex align-items-center mb-4">

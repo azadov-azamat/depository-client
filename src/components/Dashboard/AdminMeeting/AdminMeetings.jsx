@@ -22,9 +22,8 @@ function AdminMeetings() {
 
     const reducers = useSelector(state => state);
 
-    // const companies = reducers.company.companies;
     const {payload} = reducers.auth.totalCount
-    const {meetings} = reducers.meeting
+    const {meetings, citiesList} = reducers.meeting
 
     const [name, setName] = useState('');
 
@@ -53,30 +52,11 @@ function AdminMeetings() {
             type: 'REQUEST_GET_MEETING_SUCCESS',
             payload: []
         });
-        localStorage.removeItem(DEPOSITORY_CURRENT_MEETING)
     }, [page, name])
 
     const handleChange = (e, p) => {
         setPage(p);
         _DATA.jump(p);
-    };
-
-    const submit = (id) => {
-        confirmAlert({
-            title: 'Удалить',
-            message: 'Вы действительно хотите удалить в компанию?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: () => {
-                        dispatch(adminMeetingAction.deleteMeetingById(id))
-                    }
-                },
-                {
-                    label: 'Нет',
-                }
-            ]
-        });
     };
 
     const getName = (value, index) => {
@@ -97,20 +77,26 @@ function AdminMeetings() {
         }
     }
 
+    // useEffect(() => {
+    //     dispatch(adminMeetingAction.getCitiesAction());
+    // }, [])
+
     const updateMeeting = (currentMeeting) => {
         dispatch({
             type: REQUEST_CREATE_MEETING,
             payload: currentMeeting
         })
-        history.push('/supervisory/addOrEditMeeting/' + currentMeeting.id)
-        localStorage.setItem(DEPOSITORY_CURRENT_MEETING, currentMeeting.id)
+        history.push("/supervisory/addOrEditMeeting/meeting?type=update&meeting_id=" + currentMeeting.id)
     }
+
+    console.log(citiesList)
 
     return (
         <div className="dashboard p-3">
             <div className="container-fluid">
                 <div className="users">
-                    <RouteByDashboard link={'/supervisory/addOrEditMeeting/create'} cardName={t("routes.controlPage.meeting")}
+                    <RouteByDashboard link={"/supervisory/addOrEditMeeting/meeting?type=create"}
+                                      cardName={t("routes.controlPage.meeting")}
                                       startIndex={startIndex} lastIndex={lastIndex} payload={payload} lang={t}/>
                     <div className="minWidth d-flex justify-content-center align-items-center">
                         <div className="list_wrapper">
@@ -129,12 +115,7 @@ function AdminMeetings() {
                                 </thead>
                                 <tbody>
                                 <FormForMeeting getName={getName}/>
-                                {
-                                    meetings && meetings.map((meeting, index) => (
-                                        <TableMeetings meeting={meeting} deleteById={submit} key={index}
-                                                       updateMeeting={updateMeeting}/>
-                                    ))
-                                }
+                                <TableMeetings meetings={meetings}/>
                                 </tbody>
                             </Table>
                         </div>

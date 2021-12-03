@@ -2,7 +2,6 @@ import * as types from "../actionTypes/actionTypes";
 import {createReducer} from "../../utils/StoreUtils";
 import {TOKEN} from "../../utils/contants";
 import {AUTH_GET_CURRENT_USER_REQUEST} from "../actionTypes/AuthActionTypes";
-import {number} from "prop-types";
 
 const initState = {
     token: null,
@@ -11,8 +10,8 @@ const initState = {
     isUser: false,
     isModer: false,
     loading: false,
-    totalCount: number,
-    networkState: true
+    totalCount: [],
+    networkState: true,
 };
 
 const reducers = {
@@ -32,10 +31,10 @@ const reducers = {
     [types.AUTH_LOGOUT](state) {
         localStorage.removeItem(TOKEN);
         localStorage.removeItem('role')
-        state.currentUser = "";
+        state.currentUser = {};
     },
-    [types.NETWORK_AUTHENTICATION](state, action){
-      state.networkState = action.data
+    [types.NETWORK_AUTHENTICATION](state, action) {
+        state.networkState = action.data
     },
     [types.AUTH_GET_CURRENT_USER_REQUEST](state) {
         state.loading = true;

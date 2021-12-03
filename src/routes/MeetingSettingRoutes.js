@@ -7,38 +7,54 @@ import {DEPOSITORY_ROLE} from "../utils/contants";
 
 const {Option} = Select;
 
+function useQuery() {
+    const {search} = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 export default function MeetingSettingRoutes({isDisabled, id}) {
     const history = useHistory();
     const location = useLocation();
     const {pathname} = location;
     const roleRoute = localStorage.getItem(DEPOSITORY_ROLE)
 
+    let query = useQuery();
+    const typeMeeting = query.get("type");
+
     const links = [
         {
             id: 1,
-            href: id ? "/supervisory/addOrEditMeeting/" + id : "/supervisory/addOrEditMeeting/create",
+            href: typeMeeting === "update" ? ("/supervisory/addOrEditMeeting/meeting?type=update&meeting_id=" + id)
+                :
+               ("/supervisory/addOrEditMeeting/meeting?type=create"),
             text: 'Общее',
             className: ''
         },
         {
             id: 2,
-            href: "/supervisory/addOrEditMeeting/" + id + "/member-by-meeting",
+            href: "/supervisory/addOrEditMeeting/add_members?type=update&meeting_id=" + id,
             text: 'Пользователи системы',
             className: isDisabled ? 'disabled' : ''
         },
         {
             id: 3,
-            href: "/supervisory/addOrEditMeeting/" + id + "/agenda-by-meeting",
+            href: "/supervisory/addOrEditMeeting/add_agenda?type=update&meeting_id=" + id,
             text: 'Вопросы повестки дня',
             className: isDisabled ? 'disabled' : ''
         },
         {
             id: 4,
-            href: "/supervisory/addOrEditMeeting/" + id + "/reestr-by-meeting",
+            href: "/supervisory/addOrEditMeeting/add_reestr?type=update&meeting_id=" + id,
             text: 'Список членов наб совета',
             className: isDisabled ? 'disabled' : ''
         },
-        {id: 5, href: "/supervisory/addOrEditMeeting/" + id + "/files-by-meeting", text: 'Файлы заседание', className: isDisabled ? 'disabled' : ''},
+        {
+            id: 5,
+            href: "/supervisory/addOrEditMeeting/add_files?type=update&meeting_id=" + id,
+            text: 'Файлы заседание',
+            className: isDisabled ? 'disabled' : ''
+        },
     ];
 
     const createNavItem = ({href, text, className}) => (
@@ -65,7 +81,7 @@ export default function MeetingSettingRoutes({isDisabled, id}) {
                     заседание</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'#'}
-                      className="nav-link h4 disabled text-dark">{pathname === '/supervisory/addOrEditMeeting' ? 'Создание заседание наб.совета' : 'Редактирование заседание'}</Link>
+                      className="nav-link h4 disabled text-dark">{typeMeeting === "create" ? 'Создание заседание наб.совета' : 'Редактирование заседание'}</Link>
             </div>
         )
     }
@@ -77,10 +93,11 @@ export default function MeetingSettingRoutes({isDisabled, id}) {
                 <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
                     голосование</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link to={'/issuerLegal'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Акционерное общества</Link>
+                <Link to={'/issuerLegal'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Акционерное
+                    общества</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'#'}
-                      className="nav-link h4 disabled text-dark">{pathname === '/supervisory/addOrEditMeeting' ? 'Создание заседание наб.совета' : 'Редактирование заседание'}</Link>
+                      className="nav-link h4 disabled text-dark">{typeMeeting === 'create' ? 'Создание заседание наб.совета' : 'Редактирование заседание'}</Link>
             </div>
         )
     }
@@ -107,7 +124,7 @@ export default function MeetingSettingRoutes({isDisabled, id}) {
                         <div style={{marginTop: '3em'}} className="d-flex justify-content-between align-items-center">
                             <Link to={'/admin/meetings'} className="nav-link text-dark"><AiOutlineLeft
                                 className="h3"/></Link>
-                            <h3 style={{color: '#132E85'}}>{pathname === '/supervisory/addOrEditMeeting' ? 'Создание заседание наб.совета' : 'Редактирование заседание'}</h3>
+                            <h3 style={{color: '#132E85'}}>{typeMeeting === "create" ? 'Создание заседание наб.совета' : 'Редактирование заседание'}</h3>
                         </div>
                     </Col>
                     <div className="form-group text-center">
@@ -115,7 +132,7 @@ export default function MeetingSettingRoutes({isDisabled, id}) {
                             className="setting_input w-100"
                             optionFilterProp="children"
                             onChange={onChange}
-                            value={pathname}
+                            value={pathname + "?type=update&meeting_id=" + id}
                             filterOption={(input, option) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }

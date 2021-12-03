@@ -10,6 +10,7 @@ import OrganizationUser from "./components/OrganizationUser";
 import ActiveNab from "./components/ActiveNab";
 import {useTranslation} from "react-i18next";
 import {getUserById} from "../../redux/actions/UsersAction";
+import {List} from "../userPages/component/List";
 
 export default function MyProfile() {
 
@@ -21,25 +22,32 @@ export default function MyProfile() {
     const {companiesByUserId} = reducers.company
 
     const [booleanMy, setBooleanMy] = useState(false);
-    const ID = parseInt(localStorage.getItem(DEPOSITORY_USER))
+    // const ID = parseInt(localStorage.getItem(DEPOSITORY_USER))
+
+    console.log(currentUser)
 
     useEffect(() => {
-        dispatch(companyAction.getCompanyByUserId({currentUserId: ID}))
-        dispatch(getUserById({ID: ID}))
+        // dispatch(companyAction.getCompanyByUserId({currentUserId: ID}))
+        // dispatch(getUserById({ID: ID}))
     }, [id])
 
     const userCompanies = [];
     const userMeetings = [];
 
-    companiesByUserId && companiesByUserId.forEach(element => {
-        if (element.chairmanId === currentUser.id || element.secretaryId === currentUser.id) {
-            userCompanies.push(element)
-            setBooleanMy(true)
-            element.meetings.forEach(meet => {
-                userMeetings.push(meet)
-            })
-        }
-    })
+    useEffect(() => {
+        setBooleanMy(
+            companiesByUserId?.some(element => element.chairmanId === currentUser.id || element.secretaryId === currentUser.id));
+    }, [booleanMy, companiesByUserId])
+
+    // companiesByUserId && companiesByUserId.forEach(element => {
+    //     if (element.chairmanId === currentUser.id || element.secretaryId === currentUser.id) {
+    //         userCompanies.push(element)
+    //         setBooleanMy(true)
+    //         element.meetings.forEach(meet => {
+    //             userMeetings.push(meet)
+    //         })
+    //     }
+    // })
 
     const styleCursor = {
         cursor: 'wait'
@@ -50,14 +58,14 @@ export default function MyProfile() {
             <Container>
                 <ProfileRoute lang={t} booleanComp={booleanMy}/>
                 <Switch>
-                    <Route path={"/supervisory/personalData/currentUser"} exact>
+                    <Route path={"/supervisory/profile/:id"}>
                         <ProfileUser lang={t} loading={loading} currentUser={currentUser}/>
                     </Route>
-                    <Route path={"/supervisory/organization/currentUser/" + ID}>
+                    <Route path={"/supervisory/profile/:id/organization"}>
                         <OrganizationUser lang={t} userCompanies={userCompanies}/>
                     </Route>
-                    <Route path={"/supervisory/activeMeeting/currentUser/" + ID}>
-                        <ActiveNab lang={t} userMeetings={userMeetings}/>
+                    <Route path={"/supervisory/profile/:id/meetings"}>
+                        <List lang={t} userMeetings={userMeetings}/>
                     </Route>
                 </Switch>
             </Container>

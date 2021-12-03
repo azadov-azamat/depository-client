@@ -23,7 +23,6 @@ import ControllerMeeting from "../components/MeetingStarted/ControllerMeeting";
 import Example from "./Example";
 import AddOrEditMeeting from "../components/createMeeting/AddOrEditMeeting";
 import MyProfile from "../components/ProfileSettings/MyProfile";
-import eimzo from "../eImzo/eimzoo";
 import AddOrEditUser from "../components/Dashboard/AdminUsers/AddOrEditUser";
 import {MeetingLists} from "../components/userPages/MeetingLists";
 
@@ -35,35 +34,46 @@ const App = () => {
         <Provider store={store}>
             {infoV === true ? <NavbarOut setNav={setInfoV}/> : <NavbarIn setNav={setInfoV}/>}
             <Switch>
+
                 <PublicRoute exact path="/"><Home setNav={setInfoV} lang={t}/></PublicRoute>
+
                 <PublicRoute path="/site/login" component={Login}/>
+
                 <PublicRoute exact path="/site/info" component={FooterImg}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin"><Dashboard lang={t}/></PrivateRoute>
 
-                <PrivateRoute setNav={setInfoV} path="/supervisory/personalData/currentUser" component={MyProfile}/>
+                <PrivateRoute setNav={setInfoV} path="/supervisory/profile/:id" component={MyProfile}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users" component={AdminUsers}/>
+
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users/create" component={AddOrEditUser}/>
+
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users/:id" component={AddOrEditUser}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company" component={AdminCompany}/>
+
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company/create" component={AddOrEditCompany}/>
+
                 <PrivateRoute setNav={setInfoV} exact path="/admin/company/update/:id" component={AddOrEditCompany}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/issuerLegal/companies" component={CompaniesPage}/>
-                <PrivateRoute setNav={setInfoV} path="/issuerLegal/meetings" component={MeetingLists}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/meetings" component={AdminMeetings}/>
-                <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/create" component={AddOrEditMeeting}/>
-                <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting/:id" component={AddOrEditMeeting}/>
+
+                <PrivateRoute setNav={setInfoV} path="/issuerLegal/meetings" component={MeetingLists}/>
+
+                <PrivateRoute setNav={setInfoV} path="/supervisory/addOrEditMeeting" component={AddOrEditMeeting}/>
 
                 <PrivateRoute setNav={setInfoV} path='/issuerLegal/meeting/:id'
                               component={ControllerMeeting}/>
 
-                <Route path="/eimzo" exact component={eimzo}/>
+                {/*<Route path="/eimzo" exact component={eimzo}/>*/}
+
                 <Route path="/test" component={Example}/>
+
                 <Route component={NotFound}/>
+
             </Switch>
         </Provider>
     );

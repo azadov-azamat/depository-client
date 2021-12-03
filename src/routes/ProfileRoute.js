@@ -1,6 +1,6 @@
 import React from "react";
 import {Col, Nav, Navbar, NavItem, Row} from "reactstrap";
-import {Link, NavLink, useHistory, useLocation, useParams} from "react-router-dom";
+import {Link, NavLink, useHistory, useLocation} from "react-router-dom";
 import "../components/Dashboard/styles/Profile.scss";
 import "../components/createMeeting/AzamatGlobal.scss";
 import {AiOutlineRight, FaArrowLeft} from "react-icons/all";
@@ -22,26 +22,31 @@ export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
     const routesProfile = [
         {
             text: lang("personalData"),
-            link: "/supervisory/personalData/currentUser",
+            link: "/supervisory/" + id,
             style: '14em',
             className: "nav-link m-2"
         },
         {
             text: 'Мои организации',
-            link: "/supervisory/organization/currentUser/" + id,
+            link: "/supervisory/" + id + "/organization",
             className: booleanComp ? 'nav-link m-2' : 'd-none',
             style: ''
         },
         {
             text: 'Активные заседание',
-            link: "/supervisory/activeMeeting/currentUser/" + id,
+            link: "/supervisory/" + id + "/meetings?type=active",
             className: booleanComp ? 'nav-link m-2' : 'd-none',
             style: ''
         },
-        {text: 'Черновик', link: "/supervisory/draft/" + id, className: booleanComp ? 'nav-link m-2' : 'd-none', style: ''},
+        {
+            text: 'Черновик',
+            link: "/supervisory/" + id + "/draft?type=draft",
+            className: booleanComp ? 'nav-link m-2' : 'd-none',
+            style: ''
+        },
         {
             text: 'Архив заседание',
-            link: "/supervisory/archiveMeeting/currentUser/" + id,
+            link: "/supervisory/" + id + "/meetings?type=archive",
             className: booleanComp ? 'nav-link m-2' : 'd-none',
             style: ''
         },
@@ -79,7 +84,7 @@ export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
                 <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
                     голосование</Link>
                 <Link className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link to={'/issuerLegal'} className="nav-link"
+                <Link to={'/issuerLegal/companies'} className="nav-link"
                       style={{color: "rgba(155,153,150,0.98)"}}>Акционерное общества</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link className="nav-link h4 disabled" style={{color: "#3D5398"}}>Мой профиль</Link>

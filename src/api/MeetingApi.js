@@ -1,5 +1,6 @@
 import HttpClient from "../utils/HttpClient";
 import {api} from "./api";
+import {TOTAL_COUNT_MEETING} from "../redux/actionTypes/MeetingActionTypes";
 
 export const getMeetingBySorted = (data) => {
     return HttpClient.doGet(api.companyFilter +
@@ -22,7 +23,8 @@ export const getMeetingByIdApi = (data) => {
 }
 
 export const getMeetings = (data) => {
-    return HttpClient.doGet(api.meetingMethod + (data && data.page && data.size ? "?page=" + (data.page - 1) + "&size=" + data.size : ""))
+    return HttpClient.doGet(api.meetingMethod +
+        (data && data.page && data.size ? "?page=" + (data.page - 1) + "&size=" + data.size : ""))
 }
 
 export const deleteMeeting = (data) => {
@@ -30,7 +32,7 @@ export const deleteMeeting = (data) => {
 }
 
 export const getMeetingByCompanyIdApi = (data) => {
-    return HttpClient.doGet(api.meetingByCompany +  (data && data.companyId ? "?companyId=" + data.companyId  : ""))
+    return HttpClient.doGet(api.meetingByCompany + (data && data.companyId ? "?companyId=" + data.companyId : ""))
 }
 
 

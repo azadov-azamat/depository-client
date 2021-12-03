@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Container} from "reactstrap";
 import './AzamatGlobal.scss';
-import {Route, Switch, useHistory, useParams} from "react-router-dom";
+import {Route, Switch, useHistory, useLocation, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {DEPOSITORY_CURRENT_MEETING} from "../../utils/contants";
 import {Select} from 'antd';
@@ -16,6 +16,12 @@ import MeetingFiles from "./components/MeetingFiles";
 
 const {Option} = Select;
 
+function useQuery() {
+    const {search} = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 export default function AddOrEditMeeting() {
 
     const {id} = useParams();
@@ -24,20 +30,21 @@ export default function AddOrEditMeeting() {
 
     const reducers = useSelector(state => state)
     const {currentMeeting} = reducers.meeting
-    const [currentMeetingId, setCurrentMeetingId] = useState();
+
+    let query = useQuery();
+    const typeMeeting = query.get("type");
+    const meetingId = query.get("meeting_id");
 
     useEffect(() => {
-        const current = parseInt(id);
-        if (!isNaN(current)) {
-            dispatch(meetingActions.getMeetingByIdAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}))
-            setCurrentMeetingId(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))
+        if (typeMeeting === "update") {
+            dispatch(meetingActions.getMeetingByIdAction({meetingId: parseInt(meetingId)}))
         } else {
             dispatch({
                 type: "REQUEST_GET_MEETING_SUCCESS",
                 payload: []
             })
         }
-    }, [currentMeetingId, localStorage.getItem(DEPOSITORY_CURRENT_MEETING)])
+    }, [typeMeeting])
 
     useEffect(()=>{
 
@@ -46,24 +53,22 @@ export default function AddOrEditMeeting() {
 
     return (
         <div className="allCss">
-            <MeetingSettingRoutes isDisabled={currentMeeting.length === 0} id={currentMeetingId}/>
+            <MeetingSettingRoutes isDisabled={typeMeeting === "create"} id={meetingId}/>
             <Container>
                 <Switch>
-                    <Route
-                        path={currentMeetingId ? ("/supervisory/addOrEditMeeting/" + currentMeetingId) : ("/supervisory/addOrEditMeeting/create")}
-                        exact>
-                        <NabMeetingJs id={currentMeetingId} currentMeeting={currentMeeting}/>
+                    <Route path={"/supervisory/addOrEditMeeting/meeting"}>
+                        <NabMeetingJs id={meetingId} currentMeeting={currentMeeting}/>
                     </Route>
-                    <Route path={"/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting"}>
-                        <MeetingMembers currentMeeting={currentMeeting}/>
+                    <Route path={"/supervisory/addOrEditMeeting/add_members"}>
+                        <MeetingMembers currentMeetingId={meetingId}/>
                     </Route>
-                    <Route path={"/supervisory/addOrEditMeeting/" + currentMeetingId + "/agenda-by-meeting"}>
-                        <MeetingAgenda currentMeeting={currentMeeting}/>
+                    <Route path={"/supervisory/addOrEditMeeting/add_agenda"}>
+                        <MeetingAgenda currentMeetingId={meetingId}/>
                     </Route>
-                    <Route path={"/supervisory/addOrEditMeeting/" + currentMeetingId + "/reestr-by-meeting"}>
+                    <Route path={"/supervisory/addOrEditMeeting/add_reestr"}>
                         <MeetingReestr currentMeeting={currentMeeting}/>
                     </Route>
-                    <Route path={"/supervisory/addOrEditMeeting/" + currentMeetingId + "/files-by-meeting"}>
+                    <Route path={"/supervisory/addOrEditMeeting/add_files"}>
                         <MeetingFiles currentMeeting={currentMeeting}/>
                     </Route>
                 </Switch>

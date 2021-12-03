@@ -12,7 +12,7 @@ import {FaPen} from "react-icons/fa";
 
 const {Option} = Select;
 
-export default function MeetingAgenda({currentMeeting}) {
+export default function MeetingAgenda({currentMeetingId}) {
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export default function MeetingAgenda({currentMeeting}) {
     const [selectStatus, setSelectStatus] = useState();
 
     useEffect(() => {
-        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeeting?.id}))
+        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
     }, [])
 
     const [inputList, setInputList] = useState([{variant: ""}]);
@@ -68,7 +68,7 @@ export default function MeetingAgenda({currentMeeting}) {
             active: selectStatus,
             speakerId: selectSpeaker,
             debateEnum: selectDebug,
-            meetingId: currentMeeting.id,
+            meetingId: currentMeetingId,
             speakTimeEnum: selectTime,
             subject: v.subject,
             typeEnum: 'MOST',
@@ -116,7 +116,7 @@ export default function MeetingAgenda({currentMeeting}) {
                     onClick: () => {
                         dispatch(meetingActions.deleteByIdAgenda({
                             currentAgendaId: currentAgendaId,
-                            currentMeetingId: currentMeeting.id
+                            currentMeetingId: currentMeetingId
                         }))
                     }
 

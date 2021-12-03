@@ -60,8 +60,6 @@ export const userMe = (payload, minusNine) => async (dispatch, getState) => {
                     currentUser: response.payload,
                 },
             });
-            localStorage.setItem(DEPOSITORY_USER, response.payload.id)
-            localStorage.getItem(DEPOSITORY_USER)
             setStateRole(response.payload.authorities, dispatch);
         } else {
             dispatch(logout());
