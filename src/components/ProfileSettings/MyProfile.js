@@ -11,6 +11,7 @@ import ActiveNab from "./components/ActiveNab";
 import {useTranslation} from "react-i18next";
 import {getUserById} from "../../redux/actions/UsersAction";
 import {List} from "../userPages/component/List";
+import {ListMeeting} from "./components/ListMeeting";
 
 export default function MyProfile() {
 
@@ -56,16 +57,16 @@ export default function MyProfile() {
     return (
         <div style={loading ? styleCursor : {}}>
             <Container>
-                <ProfileRoute lang={t} booleanComp={booleanMy}/>
+                <ProfileRoute lang={t} booleanComp={!booleanMy}/>
                 <Switch>
-                    <Route path={"/supervisory/profile/:id"}>
+                    <Route path={"/supervisory/profile/user"} exact>
                         <ProfileUser lang={t} loading={loading} currentUser={currentUser}/>
                     </Route>
-                    <Route path={"/supervisory/profile/:id/organization"}>
+                    <Route path={"/supervisory/profile/organization"}>
                         <OrganizationUser lang={t} userCompanies={userCompanies}/>
                     </Route>
-                    <Route path={"/supervisory/profile/:id/meetings"}>
-                        <List lang={t} userMeetings={userMeetings}/>
+                    <Route path={"/supervisory/profile/meetings"}>
+                        <ListMeeting lang={t} userMeetings={userMeetings}/>
                     </Route>
                 </Switch>
             </Container>

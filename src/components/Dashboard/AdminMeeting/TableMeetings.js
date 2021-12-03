@@ -1,7 +1,6 @@
 import React from "react";
 import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
 import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contants";
-import FindCity from './component/FindCity'
 import {REQUEST_CREATE_MEETING} from "../../../redux/actionTypes/MeetingActionTypes";
 import {useDispatch} from "react-redux";
 import {confirmAlert} from "react-confirm-alert";
@@ -12,6 +11,7 @@ export default function TableMeetings({meetings}) {
 
     const dispatch = useDispatch();
     const history = useHistory();
+    const language = localStorage.getItem('i18nextLng');
 
     const style = {
         textOverflow: 'ellipsis',
@@ -70,6 +70,18 @@ export default function TableMeetings({meetings}) {
         });
     };
 
+    function getCityName(city) {
+        if (language === "uz") {
+            return city.nameUz
+        }
+        if (language === "ru") {
+            return city.nameRu
+        }
+        if (language === "en") {
+            return city.nameEn
+        }
+    }
+
     return (
         <>
             {meetings?.map(element => (
@@ -89,8 +101,8 @@ export default function TableMeetings({meetings}) {
                     <td className="text-center company" style={style}>{getDate(element.startRegistration)}</td>
                     <td className="text-center company" style={style}>
                         <p style={style}>
-                            {element.address}
-                            {/*<FindCity cityId={element.cityId}/>*/}
+                            {getCityName(element.city)}
+                            {/*<FindCity city={element.city}/>*/}
                         </p>
                     </td>
                     <td className="text-center">{element.status === ACTIVE || element.status === PENDING ?

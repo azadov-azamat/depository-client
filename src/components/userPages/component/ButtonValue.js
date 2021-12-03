@@ -30,23 +30,23 @@ export default function ButtonValue({meetingId, pathname, companyId, historyPush
             {
                 memberManagerState && memberManagerState.map(element => {
                     if (element.userId === currentUserId) {
-                        if (pathname === '/supervisory/activeMeeting/currentUser/' + companyId) {
-                            return (
-                                <>
-                                    <button onClick={() => historyPushItem(element.memberTypeEnum, element.id, meetingId)}
-                                            className="create py-2 my-2 px-2">
-                                        Управлять заседаниями
-                                    </button>
-                                    <button onClick={() => {
-                                        history.push('/supervisory/addOrEditMeeting/' + meetingId)
-                                        localStorage.setItem(DEPOSITORY_CURRENT_MEETING, meetingId)
-                                    }}
-                                            className="create py-2 my-2 px-2 mx-2 mx-md-0">
-                                        Редактирование заседание
-                                    </button>
-                                </>
-                            )
-                        }
+                        // if (pathname === '/supervisory/activeMeeting/currentUser/' + companyId) {
+                        //     return (
+                        //         <>
+                        //             <button onClick={() => historyPushItem(element.memberTypeEnum, element.id, meetingId)}
+                        //                     className="create py-2 my-2 px-2">
+                        //                 Управлять заседаниями
+                        //             </button>
+                        //             <button onClick={() => {
+                        //                 history.push('/supervisory/addOrEditMeeting/' + meetingId)
+                        //                 localStorage.setItem(DEPOSITORY_CURRENT_MEETING, meetingId)
+                        //             }}
+                        //                     className="create py-2 my-2 px-2 mx-2 mx-md-0">
+                        //                 Редактирование заседание
+                        //             </button>
+                        //         </>
+                        //     )
+                        // }
                         if (element.memberTypeEnum === CHAIRMAN || element.memberTypeEnum === SECRETARY) {
                             return (
                                 <>

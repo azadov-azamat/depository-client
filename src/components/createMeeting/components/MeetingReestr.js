@@ -24,18 +24,18 @@ export default function MeetingReestr({currentMeeting}) {
         chairMan: "",
     });
 
-    useEffect(() => {
-        const array = []
-        memberManagerState && memberManagerState.forEach((element, value) => {
-            if (element.fromReestr) {
-                array.push(element)
-            }
-        })
-        setFromReestr(array)
-    }, [memberManagerState])
+    // useEffect(() => {
+    //     const array = []
+    //     memberManagerState && memberManagerState.forEach((element, value) => {
+    //         if (element.fromReestr) {
+    //             array.push(element)
+    //         }
+    //     })
+    //     setFromReestr(array)
+    // }, [memberManagerState])
 
     useEffect(() => {
-        dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeeting?.id}))
+        dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeeting?.id, fromReestr: true}))
     }, [currentMeeting?.id])
 
     const hiddenFileInput1 = React.useRef(null);
@@ -143,8 +143,8 @@ export default function MeetingReestr({currentMeeting}) {
                             </tr>
                             </thead>
                             <tbody className="navUsers border">
-                            {fromReestr.length !== 0 ?
-                                fromReestr.map((element, index) =>
+                            {memberManagerState.length !== 0 ?
+                                memberManagerState.map((element, index) =>
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{element.user.fullName}</td>

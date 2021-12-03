@@ -94,7 +94,7 @@ const NavbarIn = ({setNav}) => {
                             <NavItem className={'btn d-lg-none p-0 d-block border-0  border-02 '}>
                                 <Link onClick={infoVideoBtn}
                                       className={'border-0r text-dark text-decoration-none d-block  py-4 px-4   fs rounded-0 hover'}
-                                      to={"/supervisory/" + id}>{t("settings")}</Link>
+                                      to={"/supervisory/profile/user?ID=" + id}>{t("settings")}</Link>
                             </NavItem>
                             <NavItem className={'btn d-lg-none p-0  d-block border-0  border-02 '}>
                                 <Link onClick={infoVideoBtn2} to={"/"}
@@ -123,7 +123,7 @@ const NavbarIn = ({setNav}) => {
                                 <DropdownItem className={'ps-2'}>
                                     <Link onClick={infoVideoBtn}
                                           className={'text-dark text-decoration-none d-block     fs rounded-0  '}
-                                          to={"/supervisory/" + id}>{t("settings")}</Link>
+                                          to={"/supervisory/profile/user?ID=" + id}>{t("settings")}</Link>
                                 </DropdownItem>
                                 <DropdownItem className={'ps-2'}>
                                     <Link onClick={infoVideoBtn2}

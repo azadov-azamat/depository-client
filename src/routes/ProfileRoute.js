@@ -9,6 +9,12 @@ import {DEPOSITORY_ROLE, DEPOSITORY_USER} from "../utils/contants";
 
 const {Option} = Select;
 
+function useQuery() {
+    const {search} = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
 
     // const {id} = useParams();
@@ -19,34 +25,37 @@ export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
     const roleRoute = localStorage.getItem(DEPOSITORY_ROLE);
     const id = localStorage.getItem(DEPOSITORY_USER)
 
+    let query = useQuery();
+    const userId = query.get("ID");
+
     const routesProfile = [
         {
             text: lang("personalData"),
-            link: "/supervisory/" + id,
+            link: "/supervisory/profile/user?ID=" + userId,
             style: '14em',
             className: "nav-link m-2"
         },
         {
             text: 'Мои организации',
-            link: "/supervisory/" + id + "/organization",
+            link: "/supervisory/profile/organization?ID=" + userId,
             className: booleanComp ? 'nav-link m-2' : 'd-none',
             style: ''
         },
         {
             text: 'Активные заседание',
-            link: "/supervisory/" + id + "/meetings?type=active",
+            link: "/supervisory/profile/activeMeeting?ID=" + userId + "&type=active",
             className: booleanComp ? 'nav-link m-2' : 'd-none',
             style: ''
         },
-        {
-            text: 'Черновик',
-            link: "/supervisory/" + id + "/draft?type=draft",
-            className: booleanComp ? 'nav-link m-2' : 'd-none',
-            style: ''
-        },
+        // {
+        //     text: 'Черновик',
+        //     link: "/supervisory/profile/draft?ID=" + userId + "&type=draft",
+        //     className: booleanComp ? 'nav-link m-2' : 'd-none',
+        //     style: ''
+        // },
         {
             text: 'Архив заседание',
-            link: "/supervisory/" + id + "/meetings?type=archive",
+            link: "/supervisory/profile/archiveMeeting?ID=" + userId + "&type=archive",
             className: booleanComp ? 'nav-link m-2' : 'd-none',
             style: ''
         },

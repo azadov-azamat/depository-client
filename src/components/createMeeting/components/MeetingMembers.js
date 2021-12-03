@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Col, Label, Row, Table} from "reactstrap";
 import {AvForm} from "availity-reactstrap-validation";
 import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Select} from 'antd';
 import 'antd/dist/antd.css';
@@ -15,6 +15,12 @@ import {Pagination} from "@material-ui/lab";
 import {confirmAlert} from "react-confirm-alert";
 
 const {Option} = Select;
+
+function useQuery() {
+    const {search} = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 export default function MeetingMembers({currentMeetingId}) {
 
@@ -38,28 +44,28 @@ export default function MeetingMembers({currentMeetingId}) {
     const startIndex = (page - 1) * size;
     const lastIndex = startIndex + (membersByMeeting.length);
 
+    let query = useQuery();
+    const meetingId = query.get("meeting_id");
+
     const handleChange = (e, p) => {
         setPage(p);
         _DATA.jump(p);
     };
 
-    useEffect(() => {
-        const array = []
-        memberManagerState && memberManagerState.forEach((element, value) => {
-            if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER || element.memberTypeEnum === SECRETARY) {
-                array.push(element)
-            }
-        })
-        setMembersByMeeting(prev => [...prev, ...array])
-    }, [memberManagerState])
+    // useEffect(() => {
+    //     const array = []
+        // memberManagerState && memberManagerState.forEach(element => {
+        //     if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER || element.memberTypeEnum === SECRETARY) {
+        //         array.push(element)
+        //     }
+        // })
+        // setMembersByMeeting(array)
+    // }, [memberManagerState])
 
-    console.log(membersByMeeting)
+    console.log(memberManagerState)
+
     useEffect(() => {
-        dispatch(meetingActions.getMemberByMeetingId({
-            meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING)),
-            page,
-            size
-        }))
+        dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(meetingId), page: page, size, fromReestr: false}))
     }, [page])
 
     const submit = (currentMemberId) => {
@@ -108,7 +114,7 @@ export default function MeetingMembers({currentMeetingId}) {
             toast.error('Пожалуйста, Заполните все')
         } else {
             const data = {
-                meetingId: currentMeetingId,
+                meetingId: parseInt(meetingId),
                 memberTypeEnum: selectedRole,
                 userId: selectedUser
             }
@@ -182,8 +188,8 @@ export default function MeetingMembers({currentMeetingId}) {
                         </tr>
                         </thead>
                         <tbody>
-                        {membersByMeeting.length !== 0
-                            ? membersByMeeting.map((role, index) =>
+                        {memberManagerState.length !== 0
+                            ? memberManagerState.map((role, index) =>
                                 <tr className="text-center">
                                     <td>{index + 1}</td>
                                     <td>{role.user.fullName}</td>

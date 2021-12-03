@@ -130,6 +130,9 @@ export const getMemberByMeetingId = (payload) => async (dispatch) => {
         api: getMemberByMeetingIdApi,
         types: ["REQUEST_START_MEMBER", types.REQUEST_GET_MEMBER_LIST_SUCCESS, "REQUEST_ERROR_MEMBER"],
         data: payload
+    }).then(res=>{
+        console.log(res)
+        console.log("KELDI========================")
     });
 } // success 90%
 
@@ -148,7 +151,7 @@ export const addMemberManagers = (payload) => async (dispatch) => {
         types: ["REQUEST_START", types.REQUEST_MEMBER_MANAGERS, "REQUEST_ERROR_MEMBER",],
         data: payload.data
     }).then(res => {
-        dispatch(getMemberByMeetingId({meetingId: payload.data.meetingId, page: 1, size: 6}))
+        dispatch(getMemberByMeetingId({meetingId: payload.data.meetingId, page: 1, size: 6, fromReestr: false}))
     }).catch(err => {
     })
 } // success 95%

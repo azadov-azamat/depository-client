@@ -43,7 +43,7 @@ const App = () => {
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin"><Dashboard lang={t}/></PrivateRoute>
 
-                <PrivateRoute setNav={setInfoV} path="/supervisory/profile/:id" component={MyProfile}/>
+                <PrivateRoute setNav={setInfoV} path="/supervisory/profile" component={MyProfile}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users" component={AdminUsers}/>
 
