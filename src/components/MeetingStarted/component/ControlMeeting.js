@@ -14,6 +14,7 @@ import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import SockJsClient from "react-stomp";
+import {updateMeetingStatusAction} from "../../../redux/actions/MeetingAction";
 
 export default function ControlMeeting({meetingStatus, memberList, meetingId, currentMeeting, socketClient}) {
 
@@ -33,17 +34,10 @@ export default function ControlMeeting({meetingStatus, memberList, meetingId, cu
                     || status === PENDING ? "Meeting qoldirildi" : ""
             }
             const dataForUpdateMeetingStatus = {
-                id: meetingId,
-                companyId: currentMeeting?.companyId,
-                cityId: currentMeeting?.cityId,
-                address: currentMeeting?.address,
-                description: currentMeeting?.description,
-                startDate: currentMeeting?.startDate,
-                startRegistration: currentMeeting?.startRegistration,
-                endRegistration: currentMeeting?.endRegistration,
-                status: status,
-                typeEnum: currentMeeting?.typeEnum,
+                meetingId: meetingId,
+                statusEnum: status,
             }
+
 
             confirmAlert({
                 title: 'Не активировать',
@@ -53,7 +47,7 @@ export default function ControlMeeting({meetingStatus, memberList, meetingId, cu
                         label: 'Да',
                         onClick: () => {
                             socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
-                            dispatch(meetingActions.updateMeetingAction({data: dataForUpdateMeetingStatus}))
+                            dispatch(meetingActions.updateMeetingStatusAction({data: dataForUpdateMeetingStatus}))
                         }
                     },
                     {
@@ -61,7 +55,7 @@ export default function ControlMeeting({meetingStatus, memberList, meetingId, cu
                     }
                 ]
             });
-        } else if (quorumCount >= 60) {
+        } else if (quorumCount >= 0) {
             const dataForComment = {
                 userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
                 meetingId: meetingId,
@@ -72,17 +66,11 @@ export default function ControlMeeting({meetingStatus, memberList, meetingId, cu
                     || status === PENDING ? "Meeting qoldirildi" : ""
             }
             const dataForUpdateMeetingStatus = {
-                id: currentMeeting.id,
-                companyId: currentMeeting?.companyId,
-                cityId: currentMeeting?.cityId,
-                address: currentMeeting?.address,
-                description: currentMeeting?.description,
-                startDate: currentMeeting?.startDate,
-                startRegistration: currentMeeting?.startRegistration,
-                endRegistration: currentMeeting?.endRegistration,
-                status: status,
-                typeEnum: currentMeeting?.typeEnum,
+                meetingId: meetingId,
+                statusEnum: status,
             }
+
+            console.log(dataForUpdateMeetingStatus)
 
             confirmAlert({
                 title: 'Активировать',
@@ -92,7 +80,7 @@ export default function ControlMeeting({meetingStatus, memberList, meetingId, cu
                         label: 'Да',
                         onClick: () => {
                             socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
-                            dispatch(meetingActions.updateMeetingAction({data: dataForUpdateMeetingStatus}))
+                            dispatch(meetingActions.updateMeetingStatusAction({data: dataForUpdateMeetingStatus}))
                         }
                     },
                     {

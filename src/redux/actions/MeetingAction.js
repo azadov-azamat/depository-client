@@ -9,17 +9,17 @@ import {
     deleteMeetingFile,
     deleteMember,
     downloadByIdMeetingFilesApi,
-    editMeetingApi,
+    editMeetingApi, editMeetingStatusApi,
     getAgendaByMeetingIdApi,
     getCitiesApi,
     getCityByIdApi,
     getMeetingByCompanyIdApi,
     getMeetingByIdApi,
-    getMeetingBySorted,
+    getMeetingBySorted, getMeetingByUserIdAndCompanyIdApi,
     getMeetingFilesByMeetingIdApi,
     getMeetings,
     getMemberByIdApi,
-    getMemberByMeetingIdApi,
+    getMemberByMeetingIdApi, getMemberTypeEnumApi,
     isConfirmed,
     postMeeting
 } from "../../api/MeetingApi";
@@ -110,6 +110,20 @@ export const updateMeetingAction = (payload) => async (dispatch) => {
         payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
     }).catch(err => {
     })
+}
+export const updateMeetingStatusAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: editMeetingStatusApi,
+        types: ["REQUEST_START_UPDATE_MEETING_STATUS", "REQUEST_UPDATE_MEETING_STATUS", "REQUEST_ERROR_UPDATE_MEETING_STATUS",],
+        data: payload.data
+    }).then(res => {
+        console.log(res)
+        // const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
+        // dispatch(getMeetingByIdAction({meetingId: currentMeetingId}))
+        // payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
+    }).catch(err => {
+        console.log(err)
+    })
 } // success 95%
 
 export const deleteMeetingById = (payload) => async (dispatch) => {
@@ -129,6 +143,24 @@ export const getMemberByMeetingId = (payload) => async (dispatch) => {
     dispatch({
         api: getMemberByMeetingIdApi,
         types: ["REQUEST_START_MEMBER", types.REQUEST_GET_MEMBER_LIST_SUCCESS, "REQUEST_ERROR_MEMBER"],
+        data: payload
+    }).then(res=>{
+        console.log(res)
+        // console.log("KELDI========================")
+    });
+} // success 90%
+
+export const getMemberTypeEnumAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: getMemberTypeEnumApi,
+        types: ["REQUEST_START_MEMBER_TYPE_ENUM", "REQUEST_GET_MEMBER_TYPE_ENUM_LIST_SUCCESS", "REQUEST_ERROR_MEMBER_TYPE_ENUM"],
+        data: payload
+    })
+}
+export const getMeetingByUserIdAndCompanyIdAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: getMeetingByUserIdAndCompanyIdApi,
+        types: ["REQUEST_START_MEETING_BY_USER_AND_COMPANY", "REQUEST_SUCCESS_MEETING_BY_USER_AND_COMPANY", "REQUEST_ERROR_MEETING_BY_USER_AND_COMPANY"],
         data: payload
     }).then(res=>{
         console.log(res)

@@ -11,6 +11,8 @@ import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import * as adminMeetingAction from "../../redux/actions/MeetingAction";
 import Socket from "../MeetingStarted/Socket";
 import {subscribe, unsubscribe} from "../../redux/actions/socketActions";
+import * as companyAction from "../../redux/actions/CompanyAction";
+import {DEPOSITORY_USER} from "../../utils/contants";
 
 function useQuery() {
     const {search} = useLocation();
@@ -25,12 +27,14 @@ export const MeetingLists = () => {
     const dispatch = useDispatch()
     let query = useQuery();
     const reducers = useSelector(state => state)
-    const companyId = query.get("company_id");
+    const companyId = parseInt(query.get("company_id"));
 
     const {currentCompany} = reducers.company
-    const {meetings} = reducers.meeting;
+    const {meetings, meetingByUser} = reducers.meeting;
 
     const socketClient = useSelector((state) => state.socket.client);
+
+    const userId = parseInt(localStorage.getItem(DEPOSITORY_USER));
 
     useEffect(() => {
         dispatch(subscribe('/topic/getMember'));
@@ -40,10 +44,11 @@ export const MeetingLists = () => {
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(adminMeetingAction.getMeetingByCompanyId({companyId: parseInt(companyId)}))
-        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(companyId), history}))
-    }, [companyId])
+        dispatch(adminMeetingAction.getMeetingByUserIdAndCompanyIdAction({userId: userId, companyId: companyId}))
+        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}))
+    }, [companyId, userId])
 
+    console.log(meetingByUser)
     function setStatusOnline(memberId) {
         console.log(memberId)
         const data = {
@@ -62,7 +67,7 @@ export const MeetingLists = () => {
                     <Col md={12}>
                         <Switch>
                             <Route path={"/issuerLegal/meetings"}>
-                                <List meetings={meetings} setStatusOnlineUser={setStatusOnline}/>
+                                <List meetings={meetingByUser} setStatusOnlineUser={setStatusOnline}/>
                             </Route>
                         </Switch>
                     </Col>

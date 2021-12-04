@@ -8,7 +8,8 @@ const initialState = {
     meetings: [],
     memberManagerState: [],
     currentMeeting: [],
-    currentCity: {}
+    currentCity: {},
+    memberManagerType: {}
 };
 
 const reducers = {
@@ -126,6 +127,16 @@ const reducers = {
     },
     ['REQUEST_GET_CITIES'](state, action) {
         state.citiesList = action.payload
+    },
+
+
+    ['REQUEST_GET_MEMBER_TYPE_ENUM_LIST_SUCCESS'](state, action) {
+        console.log(action)
+        state.memberManagerType[action.requestData.meetingId] = action.payload
+    },
+    ['REQUEST_SUCCESS_MEETING_BY_USER_AND_COMPANY'](state, action) {
+        console.log(action)
+        state.meetingByUser = action.payload
     },
 
     // [types.REQUEST_DELETE_BY_ID](state, payload) {

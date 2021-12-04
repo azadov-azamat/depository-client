@@ -100,8 +100,8 @@ export default function CompaniesPage() {
                             <h3>ma`lumotlar yo`q</h3>
                         </div>
                         :
-                        companiesByUserId && companiesByUserId.map((value, index) =>
-                            <NabLists company={value} key={index}/>
+                        companiesByUserId && companiesByUserId.map(value =>
+                            <NabLists company={value}/>
                         )
                 }
             </Container>

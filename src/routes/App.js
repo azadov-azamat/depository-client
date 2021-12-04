@@ -25,6 +25,7 @@ import AddOrEditMeeting from "../components/createMeeting/AddOrEditMeeting";
 import MyProfile from "../components/ProfileSettings/MyProfile";
 import AddOrEditUser from "../components/Dashboard/AdminUsers/AddOrEditUser";
 import {MeetingLists} from "../components/userPages/MeetingLists";
+import eimzo from "../eImzo/eimzoo";
 
 const App = () => {
     const [infoV, setInfoV] = useState(true)
@@ -68,7 +69,7 @@ const App = () => {
                 <PrivateRoute setNav={setInfoV} path='/issuerLegal/meeting/:id'
                               component={ControllerMeeting}/>
 
-                {/*<Route path="/eimzo" exact component={eimzo}/>*/}
+                <Route path="/eimzo" exact component={eimzo}/>
 
                 <Route path="/test" component={Example}/>
 

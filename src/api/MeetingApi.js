@@ -18,6 +18,10 @@ export const editMeetingApi = (data) => {
     return HttpClient.doPut(api.meetingMethod, data)
 }
 
+export const editMeetingStatusApi = (data) => {
+    return HttpClient.doPatch(api.editMeetingStatus, data)
+}
+
 export const getMeetingByIdApi = (data) => {
     return HttpClient.doGet(api.meetingMethod + "/" + data)
 }
@@ -42,6 +46,15 @@ export const getMemberByIdApi = (data) => {
 export const getMemberByMeetingIdApi = (data) => {
     return HttpClient.doGet(api.memberByMeetingId + (data && data.meetingId ? "?meetingId=" + data.meetingId + "&page=" + (data.page - 1) + "&size=" + data.size + "&fromReestr=" + data.fromReestr : ''))
 }
+export const getMemberTypeEnumApi = (data) => {
+    return HttpClient.doGet(api.memberTypeEnum + (data && data.userId ? "?userId=" + data.userId + "&meetingId=" + data.meetingId : ""))
+}
+
+export const getMeetingByUserIdAndCompanyIdApi = (data) => {
+    console.log(data)
+    return HttpClient.doGet(api.meetingByUserAndCompany + (data && data.userId ? "?userId=" + data.userId + "&companyId=" + data.companyId : ""))
+}
+
 export const addMemberManagerApi = (data) => {
     return HttpClient.doPost(api.memberManager, data)
 }

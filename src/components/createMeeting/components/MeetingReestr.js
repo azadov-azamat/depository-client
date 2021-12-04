@@ -10,6 +10,7 @@ import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import {CHAIRMAN} from "../../../utils/contants";
 import Loader from "react-loader-spinner";
+import {confirmAlert} from "react-confirm-alert";
 
 export default function MeetingReestr({currentMeeting}) {
 
@@ -68,6 +69,83 @@ export default function MeetingReestr({currentMeeting}) {
         }
     }
 
+    const [myBoolean, setMyBoolean] = useState(false)
+
+    const faceReestrData = [
+        {
+            user: {
+                fullName: "Azamat",
+                pinfl: 32413521,
+                passport: "KA!@&###%",
+                phoneNumber: "63897345",
+                email: "ygfeu@gmil.com"
+            },
+            hldIt: "nimadirla",
+            position: "Yuk tashuvchi",
+            memberTypeEnum: myBoolean ? CHAIRMAN : "SPEAKER"
+        },
+        {
+            user: {
+                fullName: "Alexander",
+                pinfl: 32413521,
+                passport: "KA!@&###%",
+                phoneNumber: "63897345",
+                email: "ygfeu@gmil.com"
+            },
+            hldIt: "nimadirla",
+            position: "Yuk tashuvchi",
+            memberTypeEnum: "SIMPLE"
+        },
+        {
+            user: {
+                fullName: "Alexey",
+                pinfl: 32413521,
+                passport: "KA!@&###%",
+                phoneNumber: "63897345",
+                email: "ygfeu@gmil.com"
+            },
+            hldIt: "nimadirla",
+            position: "Yuk tashuvchi",
+            memberTypeEnum: "WATCHER"
+        },
+    ]
+
+    /*
+    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{element.user.fullName}</td>
+                                        <td>{element.user.pinfl}</td>
+                                        <td>{element.hldIt}</td>
+                                        <td>{element.user.passport}</td>
+                                        <td>{element.user.phoneNumber}</td>
+                                        <td>{element.user.email}</td>
+                                        <td>{element.position}</td>
+                                        <td>
+                                            {element.memberTypeEnum === CHAIRMAN ? <FaCheck/> : ''}
+                                        </td>
+                                    </tr>
+                                ) :
+    * */
+
+    function electChairmanForMeeting(chairmanId) {
+        confirmAlert({
+            title: 'Удалить',
+            message: 'Вы действительно хотите удалить в компанию?',
+            buttons: [
+                {
+                    label: 'Да',
+                    onClick: () => {
+                        console.log("Ochib ketdi")
+                        setMyBoolean(true)
+                    }
+
+                },
+                {
+                    label: 'Нет',
+                }
+            ]
+        });
+    }
 
     return (
         <>
@@ -143,8 +221,8 @@ export default function MeetingReestr({currentMeeting}) {
                             </tr>
                             </thead>
                             <tbody className="navUsers border">
-                            {memberManagerState.length !== 0 ?
-                                memberManagerState.map((element, index) =>
+                            {faceReestrData.length !== 0 ?
+                                faceReestrData.map((element, index) =>
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{element.user.fullName}</td>
@@ -155,7 +233,18 @@ export default function MeetingReestr({currentMeeting}) {
                                         <td>{element.user.email}</td>
                                         <td>{element.position}</td>
                                         <td>
-                                            {element.memberTypeEnum === CHAIRMAN ? <FaCheck/> : ''}
+                                            {element.memberTypeEnum === CHAIRMAN ? <FaCheck/>
+                                                :
+                                                <form>
+                                                    <input
+                                                    id={"chairman" + index}
+                                                    className={myBoolean ? "d-none" : ""}
+                                                    type="radio"
+                                                    onClick={()=> electChairmanForMeeting(element.id)}
+                                                />
+                                                </form>
+
+                                            }
                                         </td>
                                     </tr>
                                 ) :

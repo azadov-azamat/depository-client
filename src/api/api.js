@@ -5,10 +5,13 @@ export const api = {
     userFilter: '/moder/user/filter',
 
     meetingMethod: '/meeting',
+    editMeetingStatus: '/meeting/meeting-status',
     meetingByCompany: '/meeting/by-company',
+    meetingByUserAndCompany: '/meeting/by-user',
     member: '/member',
     memberManager: '/member/managers',
     memberByMeetingId: '/member/by-meeting',
+    memberTypeEnum: '/member/member-types',
     addReestrByMeetingUrl: '/reestr/parse',
     getReestrByMeetingUrl: '/reestr/download',
 

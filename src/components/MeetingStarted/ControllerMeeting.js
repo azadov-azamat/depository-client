@@ -50,7 +50,7 @@ export const ControllerMeeting = () => {
         endCallMeeting,
         passwordZoomMeeting
     } = reducers.meetingStarted
-    const {currentUser} = reducers.users
+    const {currentUser} = reducers.auth
     const {currentCompany} = reducers.company
     const {payload} = reducers.auth.totalCount
 
@@ -91,10 +91,17 @@ export const ControllerMeeting = () => {
 
     useEffect(() => {
         dispatch(userAction.getUserById({ID: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
+
         dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(companyId), history}))
+
         dispatch(meetingActions.getMeetingByIdAction({meetingId: parseInt(id)}))
+
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: parseInt(id)}))
-        dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(id)}))
+
+        dispatch(meetingActions.getMemberTypeEnumAction({meetingId: parseInt(id), userId: currentUser?.id}))
+
+        // dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(id)}))
+
         dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(id)}))
 
         setRoom(companyId + "/" + id)
@@ -160,8 +167,7 @@ export const ControllerMeeting = () => {
 
             const dataZoom = {
                 password: randomstring,
-                startCall: true,
-                endCall: false,
+                zoom: true,
                 meetingId: parseInt(id),
                 memberId: parseInt(memberId)
             }
@@ -183,8 +189,9 @@ export const ControllerMeeting = () => {
 
             const dataZoom = {
                 password: null,
-                startCall: false,
-                endCall: true
+                zoom: false,
+                meetingId: parseInt(id),
+                memberId: parseInt(memberId)
             }
             socketClient.sendMessage('/topic/start-zoom', JSON.stringify(dataZoom));
 
@@ -195,7 +202,7 @@ export const ControllerMeeting = () => {
             }
             socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
             // false
-            setCall(endCallMeeting)
+            setCall(!startCallMeeting)
         } else {
             setCall(false)
         }
@@ -280,7 +287,7 @@ export const ControllerMeeting = () => {
                                                                     onClick={StartZoomMeeting}
                                                                     type='submit'>
                                                                 {
-                                                                    startCallMeeting && !endCallMeeting ?
+                                                                    startCallMeeting ?
                                                                         "Join zoom-meeting" : "Start video-meeting"
                                                                 }
                                                             </button>
@@ -288,7 +295,7 @@ export const ControllerMeeting = () => {
                                                         :
                                                         <div>
                                                             {
-                                                                endCallMeeting && !startCallMeeting ?
+                                                                !startCallMeeting ?
                                                                     <h5>Видео конференция еще не запущено</h5>
                                                                     :
                                                                     <button className="create py-2 px-3 mt-2"

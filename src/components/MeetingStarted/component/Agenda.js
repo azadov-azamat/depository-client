@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import * as meetingStarted from "../../../redux/actions/MeetingStartedAction";
 import {confirmAlert} from "react-confirm-alert";
-import {CHAIRMAN, DEPOSITORY_CURRENT_MEETING, DEPOSITORY_CURRENT_MEMBER, SECRETARY} from "../../../utils/contants";
+import {CHAIRMAN, SECRETARY} from "../../../utils/contants";
 import {AccordionAgenda} from "./Accordions/AccordionAgenda";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import AgendaByVoting from "./AgendaByVoting";
@@ -97,14 +97,14 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
             {
                 roleMember === CHAIRMAN || roleMember === SECRETARY ?
                     agendaSubject && agendaSubject.map((element, index) =>
-                            <div key={index}
-                                 className={element.active ? 'questions p-2 mb-3 d-flex justify-content-between w-100 align-items-center shadow' : 'questions border p-2 mb-3 d-flex justify-content-between w-100 align-items-center'}
-                                 style={{height: '10vh'}}>
-                    <span
-                        className="text-me d-flex align-items-center justify-content-between"> {element.subject}</span>
-                                <button onClick={() => editStatusElement(element.id)} className='btn create py-2'
-                                        style={{width: '20vh'}}>{element.active ? "Включить" : "Отключить"}</button>
-                            </div>
+                        <div key={index}
+                             className={element.active ? 'questions p-2 mb-3 d-flex justify-content-between w-100 align-items-center shadow' : 'questions border p-2 mb-3 d-flex justify-content-between w-100 align-items-center'}
+                             style={{height: '10vh'}}>
+                            <span
+                                className="text-me d-flex align-items-center justify-content-between"> {element.subject}</span>
+                            <button onClick={() => editStatusElement(element.id)} className='btn create py-2'
+                                    style={{width: '20vh'}}>{element.active ? "Включить" : "Отключить"}</button>
+                        </div>
                     ) :
                     agendaSubject && agendaSubject.map((element, index) =>
                         element.active ?
