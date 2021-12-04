@@ -3,7 +3,7 @@ import {Button, Col, Label, Row, Table} from "reactstrap";
 import {AvForm, AvGroup, AvInput} from "availity-reactstrap-validation";
 import {FaDownload, FaEye} from "react-icons/all";
 import {FaCheck, FaTimes, FaTrash} from "react-icons/fa";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 import {useDispatch, useSelector} from "react-redux";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
@@ -13,6 +13,13 @@ import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 
 const {Option} = Select;
+
+function useQuery() {
+    const {search} = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 
 export default function MeetingFiles({currentMeeting}) {
 
@@ -27,6 +34,9 @@ export default function MeetingFiles({currentMeeting}) {
 
     const hiddenFileInput = React.useRef(null);
 
+    let query = useQuery();
+    const meetingId = query.get("meeting_id")
+
     const handleClick = event => {
         hiddenFileInput.current.click();
 
@@ -34,8 +44,12 @@ export default function MeetingFiles({currentMeeting}) {
 
 
     useEffect(() => {
-        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeeting?.id}))
-        dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: currentMeeting?.id}))
+        dispatch(meetingActions.getAgendaByMeetingId({meetingId: parseInt(meetingId)}))
+        dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: parseInt(meetingId)}))
+        dispatch({
+            type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
+            payload: []
+        })
     }, [currentMeeting])
 
 
@@ -44,7 +58,7 @@ export default function MeetingFiles({currentMeeting}) {
         const data = new FormData();
         data.append('agendaId', selectAgenda);
         data.append('file', addFile.file);
-        data.append('meetingId', currentMeeting.id);
+        data.append('meetingId', meetingId);
         dispatch(meetingActions.addAgendaAndMeetingFile({data, history}))
     }
 
@@ -173,7 +187,7 @@ export default function MeetingFiles({currentMeeting}) {
                                             </td>
                                         </tr>) :
                                     <tr className='text-center'>
-                                        <th colSpan="4">Ничего не найдена</th>
+                                        <th colSpan="5">Ничего не найдена</th>
                                     </tr>
                                 }
                                 </tbody>

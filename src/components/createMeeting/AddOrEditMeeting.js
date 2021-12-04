@@ -13,6 +13,7 @@ import MeetingMembers from "./components/MeetingMembers";
 import MeetingAgenda from "./components/MeetingAgenda";
 import MeetingReestr from "./components/MeetingReestr";
 import MeetingFiles from "./components/MeetingFiles";
+import Loader from "react-loader-spinner";
 
 const {Option} = Select;
 
@@ -29,7 +30,7 @@ export default function AddOrEditMeeting() {
     const dispatch = useDispatch();
 
     const reducers = useSelector(state => state)
-    const {currentMeeting} = reducers.meeting
+    const {currentMeeting, loadingReestr} = reducers.meeting
 
     let query = useQuery();
     const typeMeeting = query.get("type");
@@ -53,7 +54,17 @@ export default function AddOrEditMeeting() {
 
     return (
         <div className="allCss">
-            <MeetingSettingRoutes isDisabled={typeMeeting === "create"} id={meetingId}/>
+            <div style={{width: "100%", height: '100vh'}} className={loadingReestr === "loading" ?
+                "d-flex justify-content-center align-items-center position-fixed bg-light opacity-75" : "d-none"}>
+                <Loader
+                    type="ThreeDots"
+                    color="#132E85"
+                    height={80}
+                    width={80}
+                    timeout={3000}
+                />
+            </div>
+            <MeetingSettingRoutes isDisabled={typeMeeting === "create" || loadingReestr === "loading"} id={meetingId}/>
             <Container>
                 <Switch>
                     <Route path={"/supervisory/addOrEditMeeting/meeting"}>

@@ -9,7 +9,8 @@ const initialState = {
     memberManagerState: [],
     currentMeeting: [],
     currentCity: {},
-    memberManagerType: {}
+    memberManagerType: {},
+    currentAgenda: []
 };
 
 const reducers = {
@@ -86,6 +87,9 @@ const reducers = {
 
     ['REQUEST_GET_AGENDA_MY_MEETING_ID_SUCCESS'](state, action) {
         state.agendaState = action.payload;
+    },
+    ['REQUEST_GET_AGENDA_BY_ID_SUCCESS'](state, action) {
+        state.currentAgenda = action.payload;
     },
 
 

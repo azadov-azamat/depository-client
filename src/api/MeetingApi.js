@@ -73,8 +73,14 @@ export const deleteAgenda = (data) => {
 export const getAgendaByMeetingIdApi = (data) => {
     return HttpClient.doGet(api.agendaByMeetingId + (data && data.meetingId ? "?meetingId=" + data.meetingId : ''))
 }
+export const getAgendaByIdApi = (data) => {
+    return HttpClient.doGet(api.agenda + "/" + data)
+}
 export const addAgendaApi = (data) => {
     return HttpClient.doPost(api.agenda, data)
+}
+export const editAgendaApi = (data) => {
+    return HttpClient.doPut(api.agenda, data)
 }
 export const editStatusAgenda = (data) => {
     return HttpClient.doPatch(api.agenda, data)

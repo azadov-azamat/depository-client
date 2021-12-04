@@ -8,8 +8,8 @@ import {
     deleteMeeting,
     deleteMeetingFile,
     deleteMember,
-    downloadByIdMeetingFilesApi,
-    editMeetingApi, editMeetingStatusApi,
+    downloadByIdMeetingFilesApi, editAgendaApi,
+    editMeetingApi, editMeetingStatusApi, getAgendaByIdApi,
     getAgendaByMeetingIdApi,
     getCitiesApi,
     getCityByIdApi,
@@ -223,10 +223,33 @@ export const getAgendaByMeetingId = (payload) => async (dispatch) => {
     }).catch(err => {
     })
 }
+export const getAgendaById = (payload) => async (dispatch) => {
+    console.log("keldi")
+    console.log(payload)
+    dispatch({
+        api: getAgendaByIdApi,
+        types: ["REQUEST_START_AGENDA", "REQUEST_GET_AGENDA_BY_ID_SUCCESS", "REQUEST_ERROR_AGENDA"],
+        data: payload
+    })
+}
 
 export const addAgenda = (payload) => async (dispatch) => {
     dispatch({
         api: addAgendaApi,
+        types: ["REQUEST_START", "REQUEST_AGENDA_SUCCESS", "REQUEST_ERROR_AGENDA",],
+        data: payload.data
+    }).then(res => {
+        dispatch(getAgendaByMeetingId({meetingId: res.payload.meetingId}))
+    }).catch(err => {
+        if (err.response.data.errorKey === "subjectExists") {
+            toast.error('Bu kun tartibidagi masalani siz kiritgansiz!')
+        }
+    })
+}  // warning 95%
+
+export const editAgendaAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: editAgendaApi,
         types: ["REQUEST_START", "REQUEST_AGENDA_SUCCESS", "REQUEST_ERROR_AGENDA",],
         data: payload.data
     }).then(res => {
@@ -266,7 +289,7 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
     dispatch({
         api: addReestrByMeetingApi,
         types: ["REQUEST_REESTR_START", "REQUEST_REESTR_SUCCESS", "REQUEST_REESTR_ERROR"],
-        data: payload
+        data: payload.data
     }).then(res => {
         dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId}))
     }).catch(err => {
@@ -306,6 +329,16 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
             }
             if (lang === "uz") {
                 payload.toast.error("Passport allaqachon ishlatilgan!")
+            }
+            if (lang === "en") {
+                payload.toast.error(err.response.data.title)
+            }
+        } else if (errorKey === 'phonenumberexists') {
+            if (lang === "ru") {
+                payload.toast.error("Телефонный номер уже используется!")
+            }
+            if (lang === "uz") {
+                payload.toast.error("Telefon raqami allaqachon ishlatilgan!")
             }
             if (lang === "en") {
                 payload.toast.error(err.response.data.title)

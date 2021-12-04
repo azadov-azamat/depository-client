@@ -52,6 +52,10 @@ export default function NabMeetingJs({id, currentMeeting}) {
             })
             .catch(err => {
             })
+        dispatch({
+            type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
+            payload: []
+        })
     }, [])
 
     function onSearch(val) {

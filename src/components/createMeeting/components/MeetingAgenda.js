@@ -9,6 +9,7 @@ import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
 import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
+import {editAgendaAction, getAgendaById} from "../../../redux/actions/MeetingAction";
 
 const {Option} = Select;
 
@@ -18,7 +19,7 @@ export default function MeetingAgenda({currentMeetingId}) {
     const dispatch = useDispatch();
 
     const reducers = useSelector(state => state)
-    const {agendaState, memberManagerState, currentMemberManager} = reducers.meeting
+    const {agendaState, memberManagerState, currentAgenda} = reducers.meeting
 
     const [selectSpeaker, setSelectSpeaker] = useState();
     const [selectTime, setSelectTime] = useState();
@@ -53,7 +54,7 @@ export default function MeetingAgenda({currentMeetingId}) {
         setInputList([...inputList, {variant: ""}]);
     };
 
-    const setFile = (e, v) => {
+    const addAgenda = (e, v) => {
 
         const keys = Object.entries(v)
         delete keys[0];
@@ -77,6 +78,29 @@ export default function MeetingAgenda({currentMeetingId}) {
         dispatch(meetingActions.addAgenda({data, history}))
     };
 
+    function editAgenda(e, v) {
+        const keys = Object.entries(v)
+        delete keys[0];
+
+        let values = []
+
+        keys.forEach(element => {
+            values.push(element[1])
+        })
+
+        const data = {
+            id: currentAgenda?.id,
+            active: selectStatus,
+            speakerId: selectSpeaker,
+            debateEnum: selectDebug,
+            meetingId: currentMeetingId,
+            speakTimeEnum: selectTime,
+            subject: v.subject,
+            typeEnum: 'MOST',
+            variants: values
+        }
+        dispatch(meetingActions.editAgendaAction({data, history}))
+    }
     function onSearch(val) {
         let field = '';
         if (parseInt(val)) {
@@ -88,6 +112,8 @@ export default function MeetingAgenda({currentMeetingId}) {
             dispatch(meetingActions.getAgendaByMeetingId({value: val, field: field}))
         }
     }
+
+    console.log(currentAgenda)
 
     function forSpeaker(value) {
         setSelectSpeaker(value)
@@ -164,7 +190,7 @@ export default function MeetingAgenda({currentMeetingId}) {
 
     return (
         <>
-            <AvForm onValidSubmit={setFile}>
+            <AvForm onValidSubmit={currentAgenda.length !== 0 ? editAgenda : addAgenda}>
                 <Row>
                     <Col md={6}>
                         <div className="form-group">
@@ -172,6 +198,7 @@ export default function MeetingAgenda({currentMeetingId}) {
                             <AvField
                                 type="text"
                                 name="subject"
+                                value={currentAgenda?.subject}
                                 placeholder={'Ваш вопрос'}
                                 style={{backgroundColor: '#FFFFFF'}}
                                 required
@@ -187,6 +214,7 @@ export default function MeetingAgenda({currentMeetingId}) {
                                 placeholder="Выберите учетная запись"
                                 optionFilterProp="children"
                                 onChange={forSpeaker}
+                                defaultValue={currentAgenda?.speakerId}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -210,6 +238,7 @@ export default function MeetingAgenda({currentMeetingId}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите время"
                                     optionFilterProp="children"
+                                    defaultValue={currentAgenda?.speakTimeEnum}
                                     onChange={forTime}
                                 >
                                     {timer.map((element, index) =>
@@ -225,6 +254,7 @@ export default function MeetingAgenda({currentMeetingId}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите прения"
                                     optionFilterProp="children"
+                                    defaultValue={currentAgenda?.debateEnum}
                                     onChange={forDebug}
                                 >
                                     {timer.map((element, index) =>
@@ -240,6 +270,7 @@ export default function MeetingAgenda({currentMeetingId}) {
                                 <Select
                                     className="setting_input w-100"
                                     placeholder="Выберите состояние"
+                                    defaultValue={currentAgenda?.active}
                                     optionFilterProp="children"
                                     onChange={forStatus}
                                 >
@@ -290,7 +321,7 @@ export default function MeetingAgenda({currentMeetingId}) {
                                 </Row>
                             </CardBody>
                         </Card>
-                        <button className="btn py-2 px-5 create">Создать</button>
+                        <button className="btn py-2 px-5 create">{currentAgenda.length !== 0 ? "Редактировать" : "Создать"}</button>
                     </Col>
                 </Row>
             </AvForm>
@@ -318,7 +349,7 @@ export default function MeetingAgenda({currentMeetingId}) {
                                             <td>
                                                 <button
                                                     className='text-warning text-center bg-transparent border-0 m-0 p-0'>
-                                                    <FaPen/>
+                                                    <FaPen onClick={()=> dispatch(meetingActions.getAgendaById(agenda.id))}/>
                                                 </button>
                                             </td>
                                             <td>{agenda.userName}</td>

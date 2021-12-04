@@ -25,17 +25,11 @@ export default function MeetingReestr({currentMeeting}) {
         chairMan: "",
     });
 
-    // useEffect(() => {
-    //     const array = []
-    //     memberManagerState && memberManagerState.forEach((element, value) => {
-    //         if (element.fromReestr) {
-    //             array.push(element)
-    //         }
-    //     })
-    //     setFromReestr(array)
-    // }, [memberManagerState])
-
     useEffect(() => {
+        dispatch({
+            type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
+            payload: []
+        })
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeeting?.id, fromReestr: true}))
     }, [currentMeeting?.id])
 
@@ -53,7 +47,7 @@ export default function MeetingReestr({currentMeeting}) {
             const data = new FormData();
             data.append('file', v);
             data.append('meetingId', currentMeeting.id);
-            dispatch(meetingActions.addReestrByMeetingAction(data))
+            dispatch(meetingActions.addReestrByMeetingAction({data, toast}))
         }
     }
 
@@ -69,63 +63,12 @@ export default function MeetingReestr({currentMeeting}) {
         }
     }
 
+    useEffect(() => {
+        setMyBoolean(memberManagerState?.some(element => element.memberTypeEnum === CHAIRMAN));
+    }, [memberManagerState])
+
     const [myBoolean, setMyBoolean] = useState(false)
 
-    const faceReestrData = [
-        {
-            user: {
-                fullName: "Azamat",
-                pinfl: 32413521,
-                passport: "KA!@&###%",
-                phoneNumber: "63897345",
-                email: "ygfeu@gmil.com"
-            },
-            hldIt: "nimadirla",
-            position: "Yuk tashuvchi",
-            memberTypeEnum: myBoolean ? CHAIRMAN : "SPEAKER"
-        },
-        {
-            user: {
-                fullName: "Alexander",
-                pinfl: 32413521,
-                passport: "KA!@&###%",
-                phoneNumber: "63897345",
-                email: "ygfeu@gmil.com"
-            },
-            hldIt: "nimadirla",
-            position: "Yuk tashuvchi",
-            memberTypeEnum: "SIMPLE"
-        },
-        {
-            user: {
-                fullName: "Alexey",
-                pinfl: 32413521,
-                passport: "KA!@&###%",
-                phoneNumber: "63897345",
-                email: "ygfeu@gmil.com"
-            },
-            hldIt: "nimadirla",
-            position: "Yuk tashuvchi",
-            memberTypeEnum: "WATCHER"
-        },
-    ]
-
-    /*
-    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{element.user.fullName}</td>
-                                        <td>{element.user.pinfl}</td>
-                                        <td>{element.hldIt}</td>
-                                        <td>{element.user.passport}</td>
-                                        <td>{element.user.phoneNumber}</td>
-                                        <td>{element.user.email}</td>
-                                        <td>{element.position}</td>
-                                        <td>
-                                            {element.memberTypeEnum === CHAIRMAN ? <FaCheck/> : ''}
-                                        </td>
-                                    </tr>
-                                ) :
-    * */
 
     function electChairmanForMeeting(chairmanId) {
         confirmAlert({
@@ -135,7 +78,6 @@ export default function MeetingReestr({currentMeeting}) {
                 {
                     label: 'Да',
                     onClick: () => {
-                        console.log("Ochib ketdi")
                         setMyBoolean(true)
                     }
 
@@ -221,8 +163,8 @@ export default function MeetingReestr({currentMeeting}) {
                             </tr>
                             </thead>
                             <tbody className="navUsers border">
-                            {faceReestrData.length !== 0 ?
-                                faceReestrData.map((element, index) =>
+                            {memberManagerState.length !== 0 ?
+                                memberManagerState.map((element, index) =>
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{element.user.fullName}</td>
@@ -233,15 +175,16 @@ export default function MeetingReestr({currentMeeting}) {
                                         <td>{element.user.email}</td>
                                         <td>{element.position}</td>
                                         <td>
-                                            {element.memberTypeEnum === CHAIRMAN ? <FaCheck/>
+                                            {element.memberTypeEnum === CHAIRMAN ?
+                                                <FaCheck/>
                                                 :
                                                 <form>
                                                     <input
-                                                    id={"chairman" + index}
-                                                    className={myBoolean ? "d-none" : ""}
-                                                    type="radio"
-                                                    onClick={()=> electChairmanForMeeting(element.id)}
-                                                />
+                                                        id={"chairman" + index}
+                                                        className={myBoolean ? "d-none" : ""}
+                                                        type="radio"
+                                                        onClick={() => electChairmanForMeeting(element.id)}
+                                                    />
                                                 </form>
 
                                             }

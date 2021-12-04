@@ -52,19 +52,11 @@ export default function MeetingMembers({currentMeetingId}) {
         _DATA.jump(p);
     };
 
-    // useEffect(() => {
-    //     const array = []
-        // memberManagerState && memberManagerState.forEach(element => {
-        //     if (element.memberTypeEnum === SPEAKER || element.memberTypeEnum === WATCHER || element.memberTypeEnum === SECRETARY) {
-        //         array.push(element)
-        //     }
-        // })
-        // setMembersByMeeting(array)
-    // }, [memberManagerState])
-
-    console.log(memberManagerState)
-
     useEffect(() => {
+        dispatch({
+            type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
+            payload: []
+        })
         dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(meetingId), page: page, size, fromReestr: false}))
     }, [page])
 
