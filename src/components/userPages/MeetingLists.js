@@ -48,7 +48,6 @@ export const MeetingLists = () => {
         dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}))
     }, [companyId, userId])
 
-    console.log(meetingByUser)
     function setStatusOnline(memberId) {
         console.log(memberId)
         const data = {

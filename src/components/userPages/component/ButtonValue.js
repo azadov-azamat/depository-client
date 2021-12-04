@@ -176,7 +176,7 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                                     style={style}
                                     onClick={() => isConfirmed(SIMPLE, element.id,  meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
-                                    Проголосовать <br/> (Приглашенный)
+                                    Проголосовать <br/> (Обычный - Реестр)
                                 </button>
                             )
                         case WATCHER:
@@ -198,27 +198,6 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                                 </button>
                             )
                     }
-                        // if (element.memberTypeEnum === CHAIRMAN || element.memberTypeEnum === SECRETARY) {
-                        //     return (
-                        //         <>
-                        //             <button
-                        //                 onClick={() => historyPushItem(memberManagerType[meetingId],  meetingId)}
-                        //                 className="create py-2 my-2 px-2">
-                        //                 Управлять
-                        //                 заседаниями <br/> ({element.memberTypeEnum === CHAIRMAN ? "Председатель" : "Секретар"})
-                        //             </button>
-                        //         </>
-                        //     )
-                        // } else if (element.memberTypeEnum === SIMPLE || element.memberTypeEnum === WATCHER || element.memberTypeEnum === SPEAKER) {
-                        //     return (
-                        //         <button
-                        //             onClick={() => historyPushItem(memberManagerType[meetingId],  meetingId)}
-                        //             className="create py-2 my-2 px-2">
-                        //             Проголосовать
-                        //         </button>
-                        //     )
-                        // }
-                    // }
                 })
             }
         </>

@@ -48,23 +48,16 @@ export const ControllerMeeting = () => {
         questionListMemberId,
         startCallMeeting,
         endCallMeeting,
-        passwordZoomMeeting
+        passwordZoomMeeting,
+        memberManagerType
     } = reducers.meetingStarted
     const {currentUser} = reducers.auth
     const {currentCompany} = reducers.company
-    const {payload} = reducers.auth.totalCount
 
     const [room, setRoom] = useState()
 
     const username = currentUser?.fullName;
-
-    const [page, setPage] = useState(1);
-    const size = 5;
-    const count = Math.ceil(payload && payload[0] / size);
-    const _DATA = usePagination(memberManagerState && memberManagerState, size);
-
-    const startIndex = (page - 1) * size;
-    const lastIndex = startIndex + (payload && payload[1]);
+    const meetingId = parseInt(id)
 
     const [zoomEnum, setZoomEnum] = useState(PENDING);
 
@@ -84,28 +77,20 @@ export const ControllerMeeting = () => {
         console.log(link)
     }
 
-    const handleChange = (e, p) => {
-        setPage(p);
-        _DATA.jump(p);
-    };
+    useEffect(() => {
+        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(companyId), history}))
+        setRoom(companyId + "/" + meetingId)
+    }, [companyId])
 
     useEffect(() => {
-        dispatch(userAction.getUserById({ID: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
+        dispatch(meetingActions.getMemberTypeEnumAction({meetingId: meetingId, userId: currentUser?.id}))
+    }, [meetingId, currentUser])
 
-        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(companyId), history}))
-
-        dispatch(meetingActions.getMeetingByIdAction({meetingId: parseInt(id)}))
-
-        dispatch(meetingActions.getAgendaByMeetingId({meetingId: parseInt(id)}))
-
-        dispatch(meetingActions.getMemberTypeEnumAction({meetingId: parseInt(id), userId: currentUser?.id}))
-
-        // dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(id)}))
-
-        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(id)}))
-
-        setRoom(companyId + "/" + id)
-    }, [companyId, id])
+    useEffect(() => {
+        dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
+        dispatch(meetingActions.getAgendaByMeetingId({meetingId: meetingId}))
+        dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: meetingId}))
+    }, [meetingId])
 
     useEffect(() => {
         questionList && questionList.forEach(element => {
@@ -116,15 +101,8 @@ export const ControllerMeeting = () => {
     }, [questionList])
 
     useEffect(() => {
-        memberManagerState && memberManagerState.forEach(element => {
-            if (element.id === parseInt(memberId)) {
-                dispatch({
-                    type: 'CURRENT_MEMBER_TYPE',
-                    payload: element.memberTypeEnum
-                })
-            }
-        })
-    }, [memberManagerState])
+       dispatch(meetingActions.getMemberById({ID: memberId}))   // GET MEMBER TYPE
+    }, [memberId])
 
     useEffect(() => {
         dispatch(subscribe('/topic/user'));
@@ -140,7 +118,6 @@ export const ControllerMeeting = () => {
             setCall(false)
         }
     }, [startCallMeeting, endCallMeeting])
-
 
     importScript("https://meet.jit.si/external_api.js");
 
@@ -239,9 +216,7 @@ export const ControllerMeeting = () => {
                                                     socketClient={socketClient} meetingId={parseInt(id)}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/all_users_list"}>
-                                    <TableUsers page={page} startIndex={startIndex} handleChange={handleChange}
-                                                count={count} lastIndex={lastIndex}
-                                                members={memberManagerState && memberManagerState} payload={payload}/>
+                                    <TableUsers members={memberManagerState && memberManagerState}/>
                                 </Route>
 
                             </Switch>

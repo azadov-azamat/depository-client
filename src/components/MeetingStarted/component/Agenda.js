@@ -42,50 +42,7 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
         });
     }
 
-    const addBallot = ({votingId, option, agendaId}) => {
 
-        confirmAlert({
-            title: 'Проголосовать',
-            message: 'Вы действительно хотите удалить в компанию?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: () => {
-                        const data = {
-                            agendaId: agendaId,
-                            meetingId: meetingId,
-                            memberId: memberId,
-                            options: option,
-                            votingOptionId: votingId
-                        }
-
-                        dispatch(meetingStarted.addBallotAction({data}))
-                    }
-                },
-                {
-                    label: 'Нет',
-                }
-            ]
-        });
-    };
-
-    const deleteBallot = (votingId) => {
-        confirmAlert({
-            title: 'Удалить голось',
-            message: 'Вы действительно хотите удалить в голось?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: () => {
-                        dispatch(meetingStarted.deleteBallotAction({data: votingId}))
-                    }
-                },
-                {
-                    label: 'Нет',
-                }
-            ]
-        });
-    }
     return (
         <div style={{
             overflowY: 'scroll',
@@ -124,8 +81,8 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
                                                         style={{fontSize: '23px'}}>Решения:</span><br/></> : ""}
                                                     <span style={{fontWeight: 'bold'}}>{elementOption.votingText}</span>
                                                 </div>
-                                                <AgendaByVoting deleteBallot={deleteBallot} agenda={element}
-                                                                variant={elementOption} addBallot={addBallot}/>
+                                                <AgendaByVoting agenda={element} variant={elementOption}
+                                                                memberId={memberId} meetingId={meetingId}/>
                                             </>
                                         )}
                                     </AccordionAgenda.Body>

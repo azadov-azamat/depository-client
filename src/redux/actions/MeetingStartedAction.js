@@ -129,7 +129,11 @@ export const addBallotAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_ADD_BALLOT", "REQUEST_SUCCESS_ADD_BALLOT", "REQUEST_ERROR_ADD_BALLOT"],
         data: payload.data
     }).then(res => {
-        toast.success("ok")
+        const data = {
+            memberId: payload.data.memberId,
+            agendaId: payload.data.agendaId
+        }
+        dispatch(getBallotVoting(data))
     }).catch(err => {
     })
 }
@@ -199,13 +203,19 @@ export const getBallotVoting = (payload) => async (dispatch) => {
 }
 
 export const deleteBallotAction=(payload)=> async (dispatch)=>{
+
     dispatch({
         api: deleteBallot,
         types: ["REQUEST_DELETE_BALLOT_START", "REQUEST_DELETE_BALLOT_SUCCESS", "REQUEST_DELETE_BALLOT_ERROR"],
-        data: payload.data
+        data: payload.data.id
     }).then(res=>{
         console.log(res)
         console.log("success")
+        const data = {
+            memberId: payload.data.memberId,
+            agendaId: payload.data.agendaId
+        }
+        dispatch(getBallotVoting(data))
     }).catch(err=>{
         console.log(err)
         console.log("error")

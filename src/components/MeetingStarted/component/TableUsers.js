@@ -3,9 +3,7 @@ import {Table} from "reactstrap";
 import {AiOutlineSetting, BiCheckDouble} from "react-icons/all";
 import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../utils/contants";
 
-export default function TableUsers({count, page, startIndex, lastIndex, handleChange, members, payload}) {
-
-    console.log(members)
+export default function TableUsers({members}) {
 
     return (
         <div className="d-flex justify-content-center" style={{overflowY: 'scroll', height: '57vh'}}>
@@ -51,7 +49,7 @@ export default function TableUsers({count, page, startIndex, lastIndex, handleCh
                             </tr>
                         ) :
                         <tr className='text-center'>
-                            <th colSpan="5">Ничего не найдена</th>
+                            <th colSpan="6">Ничего не найдена</th>
                         </tr>
                     }
                     </tbody>

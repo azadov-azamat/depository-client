@@ -110,7 +110,6 @@ export const getUserById = (payload) => async (dispatch) => {
         types: ["",types.REQUEST_GET_USER_SUCCESS,""],
         data: payload.userId
     }).then(res => {
-        // toast.success("keldi")
         localStorage.setItem("currentEditUser", payload.userId)
     }).catch(err => {
         console.log(err.response)

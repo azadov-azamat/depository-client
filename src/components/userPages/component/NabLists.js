@@ -23,8 +23,6 @@ export default function NabLists({company}) {
         height: '32px'
     };
 
-    console.log(company)
-
     return (
         <div className={"p-3 rounded my-3 NabList"}>
             <div className="row">
