@@ -71,6 +71,7 @@ export const editStatusAgendaAction = (payload) => async (dispatch) => {
 
 
 export const getQuestionByMeetingAction = (payload) => async (dispatch) => {
+    console.log("keldi dispatch");
     dispatch({
         api: getQuestionByMeetingIdApi,
         types: ["REQUEST_START_QUESTION_LIST", "REQUEST_SUCCESS_QUESTION_LIST", "REQUEST_ERROR_QUESTION_LIST"],

@@ -57,8 +57,7 @@ export const ControllerMeeting = () => {
         questionListMemberId,
         startCallMeeting,
         endCallMeeting,
-        passwordZoomMeeting,
-        memberManagerType
+        passwordZoomMeeting
     } = reducers.meetingStarted
     const {currentUser} = reducers.auth
     const {currentCompany} = reducers.company
@@ -113,14 +112,6 @@ export const ControllerMeeting = () => {
         dispatch(meetingActions.getMemberById({ID: memberId}))   // GET MEMBER TYPE
     }, [memberId])
 
-    useEffect(()=>{
-        const data = {
-            memberId: parseInt(memberId),
-            online: true
-        }
-        socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
-    },[parseInt(memberId)])
-
     useEffect(() => {
         dispatch(subscribe('/topic/user'));
         dispatch(subscribe('/topic/get-zoom'));
@@ -152,9 +143,6 @@ export const ControllerMeeting = () => {
         setPassword(randomstring)
 
         if (endCallMeeting && !startCallMeeting) {
-            if (room && username)
-                handleStartMeeting(room, username, password, link);
-
             const data = {
                 userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
                 meetingId: parseInt(id),
@@ -168,8 +156,12 @@ export const ControllerMeeting = () => {
                 memberId: parseInt(memberId)
             }
 
-            socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
+            // socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
             socketClient.sendMessage('/topic/start-zoom', JSON.stringify(dataZoom));
+
+            if (room && username)
+                handleStartMeeting(room, username, password, link);
+
         } else if (startCallMeeting && !endCallMeeting) {
             setPassword(passwordZoomMeeting)
             if (room && username)
@@ -189,19 +181,19 @@ export const ControllerMeeting = () => {
             }
             socketClient.sendMessage('/topic/start-zoom', JSON.stringify(dataZoom));
 
-            const data = {
-                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-                meetingId: parseInt(id),
-                loggingText: "Видео конференция завершено"
-            }
-            socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
+            // const data = {
+            //     userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+            //     meetingId: parseInt(id),
+            //     loggingText: "Видео конференция завершено"
+            // }
+            // socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
             // false
             setCall(!startCallMeeting)
         } else {
             setCall(false)
         }
 
-        // history.push("/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
+        history.push("/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
     }
 
     function startMeeting({status, quorumCount}) {
@@ -276,7 +268,15 @@ export const ControllerMeeting = () => {
             toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
         }
     }
+function getMembers() {
+    console.log("keldi")
+    const data = {
+        memberId: memberId,
+        online: true
+    }
 
+    socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
+}
     return (
         <div className="container meeting">
             <div>
@@ -385,6 +385,7 @@ export const ControllerMeeting = () => {
                                          questionListMemberId={questionListMemberId && questionListMemberId}
                                          memberId={parseInt(memberId)}/>
                     </div>
+                    <button onClick={getMembers}>click me</button>
                 </div>
             </div>
             <Socket meetingId={meetingId}/>

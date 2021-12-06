@@ -30,10 +30,8 @@ export const MeetingLists = () => {
     const companyId = parseInt(query.get("company_id"));
 
     const {currentCompany} = reducers.company
-    const {meetings, meetingByUser} = reducers.meeting;
+    const {meetingByUser} = reducers.meeting;
     const {currentUser} = reducers.auth
-
-    const socketClient = useSelector((state) => state.socket.client);
 
     useEffect(() => {
         dispatch(adminMeetingAction.getMeetingByUserIdAndCompanyIdAction({
@@ -43,17 +41,6 @@ export const MeetingLists = () => {
         dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}))
     }, [companyId, currentUser])
 
-    function setStatusOnline(memberId, meetingId) {
-        dispatch(subscribe('/topic/getMember/' + meetingId));
-        console.log(memberId)
-        const data = {
-            memberId: memberId,
-            online: true
-        }
-
-        socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
-    }
-
     return (
         <div className="allCss">
             <MeetingHeading company={currentCompany}/>
@@ -62,7 +49,7 @@ export const MeetingLists = () => {
                     <Col md={12}>
                         <Switch>
                             <Route path={"/issuerLegal/meetings"}>
-                                <List meetings={meetingByUser} setStatusOnlineUser={setStatusOnline}/>
+                                <List meetings={meetingByUser}/>
                             </Route>
                         </Switch>
                     </Col>

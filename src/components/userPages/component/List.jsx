@@ -15,6 +15,7 @@ import {
 import ButtonValue from "./ButtonValue";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {useDispatch, useSelector} from "react-redux";
+import {subscribe} from "../../../redux/actions/socketActions";
 
 function useQuery() {
     const {search} = useLocation();
@@ -22,7 +23,7 @@ function useQuery() {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export const List = ({pathname, meetings, setStatusOnlineUser}) => {
+export const List = ({pathname, meetings}) => {
 
     const {id} = useParams();
     const dispatch = useDispatch();
@@ -106,8 +107,8 @@ export const List = ({pathname, meetings, setStatusOnlineUser}) => {
                                 <div className="col-md-4 d-flex justify-content-center align-items-center d-md-none">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
                                         btnValue(userMeeting.id) :
-                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={companyId}
-                                                     setStatusOnlineUser={setStatusOnlineUser}/>
+                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname}
+                                                     companyId={companyId}/>
                                     }
                                 </div>
 
@@ -123,8 +124,8 @@ export const List = ({pathname, meetings, setStatusOnlineUser}) => {
                                 <div className="col-md-4 d-md-flex justify-content-center align-items-center d-none">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
                                         btnValue(userMeeting.id) :
-                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={companyId}
-                                                     setStatusOnlineUser={setStatusOnlineUser}/>
+                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname}
+                                                     companyId={companyId}/>
                                     }
                                 </div>
                             </div>

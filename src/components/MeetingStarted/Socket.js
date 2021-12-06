@@ -39,6 +39,8 @@ export const Socket = ({meetingId}) => {
 
             onMessage={(msg, topic) => {
 
+                console.log(msg)
+                console.log(topic)
                 if (topic === '/topic/user') {
                     dispatch({
                         type: 'REQUEST_SUCCESS_LOGGING_LIST',
@@ -62,26 +64,24 @@ export const Socket = ({meetingId}) => {
                 }
 
                 if (topic === '/topic/answer') {
+                    console.log("keldi answer")
+                    console.log(msg)
                     dispatch({
                         type: 'REQUEST_SUCCESS_QUESTION_LIST',
                         payload: msg
                     })
-                    dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}));
+                    dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: meetingId}));
                 }
 
-                console.log(topic)
-
-                if (topic === "/topic/getMember/" + meetingId) {
-                    console.log(msg)
-                    debugger
+                if (topic === ("/topic/getMember/" + meetingId)) {
                     dispatch({
                         type: 'RESPONSE_GET_ONLINE_MEMBERS_LIST_SUCCESS',
                         payload: msg
                     })
+                    console.log(msg)
                 }
 
                 if (topic === '/topic/get-zoom') {
-                    console.log(msg)
                     if (msg.zoom) {
                         dispatch({
                             type: "PASSWORD_ZOOM_MEETING",

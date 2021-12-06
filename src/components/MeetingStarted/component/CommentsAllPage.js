@@ -25,8 +25,7 @@ export default function CommentsAllPage({
                                             meetingFile,
                                             questionListMemberId,
                                             currentMeetingId,
-                                            memberId,
-                                            password_id
+                                            memberId
                                         }) {
 
     const dispatch = useDispatch();
@@ -46,7 +45,7 @@ export default function CommentsAllPage({
     useEffect(() => {
         dispatch(meetingStartedAction.getLoggingAction({meetingId: currentMeetingId}))
         dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: currentMeetingId}))
-        dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: currentMeetingId}));
+        dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: memberId}));
     }, [currentMeetingId])
 
     function fileTypeIcon(type) {
@@ -73,7 +72,7 @@ export default function CommentsAllPage({
         }
     }
 
-    function addQuestion(e, v) {
+   async function getRequest(e, v) {
         const data = {
             meetingId: currentMeetingId,
             memberId: memberId,
@@ -82,6 +81,12 @@ export default function CommentsAllPage({
         socketClient.sendMessage('/topic/question', JSON.stringify(data));
     }
 
+    function addQuestion(e, v){
+        getRequest(e, v).then(res=>{
+            dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: memberId}));
+            setOpenQuestionModal(false)
+        })
+    }
 
     return (
         <>
@@ -166,9 +171,9 @@ export default function CommentsAllPage({
                         <Col md={6}>
                             <div className="accordion" id="accordionExample" style={{overflowY: 'scroll'}}>
                                 <span style={{fontWeight: 'bold'}}>Sizning savollaringiz:</span>
-                                {questionListMemberId && questionListMemberId.map((element, index) =>
+                                {questionListMemberId && questionListMemberId.map(element =>
                                     <>
-                                        <AccordionAnswersModal open={1} key={index}>
+                                        <AccordionAnswersModal open={1}>
                                             <AccordionAnswersModal.Item>
                                                 <AccordionAnswersModal.Header style={element.questionAnswer}>
                                                     {element.questionText}

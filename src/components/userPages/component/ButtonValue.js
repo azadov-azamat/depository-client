@@ -12,6 +12,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
+import {subscribe} from "../../../redux/actions/socketActions";
 
 
 export default function ButtonValue({meetingId, setStatusOnlineUser, companyId}) {
@@ -26,10 +27,9 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
         dispatch(meetingActions.getMemberTypeEnumAction({meetingId: meetingId, userId: (currentUser && currentUser.id)}))
     }, [currentUser])
 
-    console.log(memberManagerType[meetingId]);
 
     function historyPushItem(role, memberId, meetingId) {
-        setStatusOnlineUser(memberId, meetingId)
+
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
@@ -39,7 +39,7 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
     }
 
     function isConfirmed(role, memberId, meetingId) {
-        setStatusOnlineUser(memberId, meetingId)
+
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
         dispatch({
