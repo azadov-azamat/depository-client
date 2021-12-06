@@ -65,7 +65,8 @@ export default function TableMeetings({meetings}) {
             if (language === "en"){
                 return 'Canceled (archived)'
             }
-        } else if (status === DISABLED) {
+        }
+        else if (status === DISABLED) {
             if (language === "ru"){
                 return 'Неактивно'
             }
@@ -82,7 +83,11 @@ export default function TableMeetings({meetings}) {
         let date = new Date(currentDate);
         return (
             <>
-                {(date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" + (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes()) + " " + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()}
+                {
+                    (date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" +
+                    (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes()) + " " +
+                    (date.getDate().toString().length === 1 ? ("0" + date.getDate()) : date.getDate()) + "/" +
+                    (date.getMonth().toString().length === 1 ? ("0" + date.getMonth()) : date.getMonth()) + "/" + date.getFullYear()}
             </>
         )
     }

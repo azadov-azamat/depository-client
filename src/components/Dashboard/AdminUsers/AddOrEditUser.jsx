@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {
-    ACTIVE,
+    ACTIVE, ANY,
     CANCELED,
     DISABLED,
     ENTITY,
@@ -57,10 +57,10 @@ export default function AddOrEditUser() {
     const [phoneNumber, setPhoneNumber] = useState();
     const [myBoolean, setMyBoolean] = useState(false);
 
-    const [selectStatusResident, setSelectStatusResident] = useState(currentForUser.resident);
-    const [selectStatus, setSelectStatus] = useState(currentForUser.activated);
-    const [selectGroupEnum, setSelectGroupEnum] = useState(currentForUser.groupEnum);
-    const [selectLoginType, setSelectLoginType] = useState(currentForUser.authTypeEnum);
+    const [selectStatusResident, setSelectStatusResident] = useState(currentForUser.length !== 0 ? currentForUser.resident : null);
+    const [selectStatus, setSelectStatus] = useState(currentForUser.length !== 0 ? currentForUser.activated : null);
+    const [selectGroupEnum, setSelectGroupEnum] = useState(currentForUser.length !== 0 ? currentForUser.groupEnum : null);
+    const [selectLoginType, setSelectLoginType] = useState(currentForUser.length !== 0 ? currentForUser.authTypeEnum : null);
 
     useEffect(() => {
         setPhoneNumber(currentForUser?.phoneNumber)
@@ -193,16 +193,19 @@ export default function AddOrEditUser() {
     }
 
     function selectStatusResidentUser(value) {
-      setSelectStatusResident(value)
+        setSelectStatusResident(value)
     }
+
     function selectStatusUser(value) {
-      setSelectStatus(value)
+        setSelectStatus(value)
     }
+
     function selectGroupEnumUser(value) {
-      setSelectGroupEnum(value)
+        setSelectGroupEnum(value)
     }
+
     function selectLoginTypeUser(value) {
-      setSelectLoginType(value)
+        setSelectLoginType(value)
     }
 
     const statusText = [
@@ -212,9 +215,11 @@ export default function AddOrEditUser() {
     ];
 
     const statusLogin = [
-        {value: ERI, text: t("user.etp")},
+        {value: ANY, text: t("user.etp")},
         {value: INPASS, text: t("user.loginetp")},
     ];
+
+    console.log(currentForUser)
 
     return (
         <div className="settings p-3">
@@ -253,11 +258,11 @@ export default function AddOrEditUser() {
                                             className="setting_input w-100"
                                             placeholder="Выберите статус"
                                             optionFilterProp="children"
-                                            defaultValue={selectGroupEnum}
+                                            defaultValue={currentForUser.length !== 0 ? currentForUser.groupEnum : ""}
                                             onChange={selectGroupEnumUser}
                                         >
-                                            {statusText && statusText.map((value, index) =>
-                                                <Option value={value.value} key={index}>{value.text}</Option>
+                                            {statusText && statusText.map(value =>
+                                                <Option value={value.value}>{value.text}</Option>
                                             )}
                                         </Select>
                                     </Col>
@@ -268,11 +273,11 @@ export default function AddOrEditUser() {
                                                 className="setting_input w-100"
                                                 placeholder="Выберите статус"
                                                 optionFilterProp="children"
-                                                defaultValue={selectStatusResident}
+                                                defaultValue={currentForUser.length !== 0 ? currentForUser.resident : null}
                                                 onChange={selectStatusResidentUser}
                                             >
-                                                    <Option value={true}>{t("user.rezident")}</Option>
-                                                    <Option value={false}>{t("user.nerezident")}</Option>
+                                                <Option value={true}>{t("user.rezident")}</Option>
+                                                <Option value={false}>{t("user.nerezident")}</Option>
                                             </Select>
                                         </div>
                                     </Col>
@@ -293,7 +298,7 @@ export default function AddOrEditUser() {
                                             className="setting_input w-100"
                                             placeholder="Выберите статус"
                                             optionFilterProp="children"
-                                            defaultValue={selectStatus}
+                                            defaultValue={currentForUser.length !== 0 ? currentForUser.activated : null}
                                             onChange={selectStatusUser}
                                         >
                                             <Option value={true}>{t("user.aktiv")}</Option>
@@ -377,18 +382,18 @@ export default function AddOrEditUser() {
                             <Row>
                                 <Col md={6}>
                                     <div className="form-group">
-                                    <Label>{t("user.registr")}</Label>
-                                    <Select
-                                        className="setting_input w-100"
-                                        placeholder="Выберите статус"
-                                        optionFilterProp="children"
-                                        defaultValue={selectLoginType}
-                                        onChange={selectLoginTypeUser}
-                                    >
-                                        {statusLogin && statusLogin.map((value, index) =>
-                                            <Option value={value.value} key={index}>{value.text}</Option>
-                                        )}
-                                    </Select>
+                                        <Label>{t("user.registr")}</Label>
+                                        <Select
+                                            className="setting_input w-100"
+                                            placeholder="Выберите статус"
+                                            optionFilterProp="children"
+                                            defaultValue={currentForUser.length !== 0 ? currentForUser.authTypeEnum : null}
+                                            onChange={selectLoginTypeUser}
+                                        >
+                                            {statusLogin && statusLogin.map((value, index) =>
+                                                <Option value={value.value} key={index}>{value.text}</Option>
+                                            )}
+                                        </Select>
                                     </div>
                                 </Col>
                                 <Col md={6}>
