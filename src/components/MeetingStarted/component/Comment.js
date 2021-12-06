@@ -18,7 +18,7 @@ export default function Comment({loading, socketClient, meetingId}) {
         socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
     }
 
-    function commentLogging(e, v) {
+    function commentLogging() {
         postComment().then(res =>
             setLogging("")
         )

@@ -388,7 +388,7 @@ function getMembers() {
                     <button onClick={getMembers}>click me</button>
                 </div>
             </div>
-            <Socket meetingId={meetingId}/>
+            <Socket meetingId={meetingId} memberId={memberId}/>
         </div>
     )
 }

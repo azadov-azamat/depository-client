@@ -5,7 +5,7 @@ import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_ZOOM_MEETING_PASSWORD, TOKEN} fro
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
 
-export const Socket = ({meetingId}) => {
+export const Socket = ({meetingId, memberId}) => {
     const dispatch = useDispatch();
     const clientRef = useRef(null);
     const topics = useSelector(state => state.socket.topics);
@@ -71,6 +71,7 @@ export const Socket = ({meetingId}) => {
                         payload: msg
                     })
                     dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: meetingId}));
+                    dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: memberId}));
                 }
 
                 if (topic === ("/topic/getMember/" + meetingId)) {

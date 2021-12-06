@@ -9,7 +9,9 @@ import usePagination from "../../Dashboard/Pagination";
 import {subscribe, unsubscribe} from "../../../redux/actions/socketActions";
 
 export default function Question({list}) {
+
     const dispatch = useDispatch();
+    const [logging, setLogging] = useState();
 
     const socketClient = useSelector((state) => state.socket.client);
 
@@ -20,10 +22,10 @@ export default function Question({list}) {
         }
     }, [dispatch])
 
-    function editQuestion(e, v) {
+   async function responseQuestion(e, v) {
         const data = {
             id: v.currentId,
-            questionAnswer: v.questionAnswer,
+            questionAnswer: logging,
             userId: parseInt(localStorage.getItem(DEPOSITORY_USER))
         }
         socketClient.sendMessage('/topic/question', JSON.stringify(data));
@@ -31,6 +33,12 @@ export default function Question({list}) {
         if (v.checkbox) {
             dispatch(meetingStartedAction.editStatusQuestionAction({questionId: v.currentId}))
         }
+    }
+
+    function editQuestion(e, v){
+        responseQuestion(e, v).then(res=>{
+            setLogging("")
+        })
     }
 
     return (
@@ -56,6 +64,8 @@ export default function Question({list}) {
                                     type="text"
                                     name="questionAnswer"
                                     className="border"
+                                    value={logging}
+                                    onChange={(e) => setLogging(e.target.value)}
                                     placeholder={'Sizning javobibgiz'}
                                     style={{backgroundColor: '#FFFFFF'}}
                                 />
