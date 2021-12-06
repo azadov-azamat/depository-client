@@ -32,6 +32,7 @@ export default function MyProfile() {
     const {meetings, meetingByUser} = reducers.meeting;
 
     const [booleanMy, setBooleanMy] = useState(false);
+    const [userMeetings] = useState([]);
 
     const companyId = parseInt(query.get("company_id"));
     const userId = parseInt(localStorage.getItem(DEPOSITORY_USER));
@@ -43,7 +44,7 @@ export default function MyProfile() {
     useEffect(() => {
         setBooleanMy(
             companiesByUserId?.some(element => element.chairmanId === currentUser.id || element.secretaryId === currentUser.id));
-    }, [booleanMy, companiesByUserId])
+         }, [booleanMy, companiesByUserId])
 
     // companiesByUserId && companiesByUserId.forEach(element => {
     //     if (element.chairmanId === currentUser.id || element.secretaryId === currentUser.id) {
@@ -62,7 +63,7 @@ export default function MyProfile() {
     return (
         <div style={loading ? styleCursor : {}}>
             <Container>
-                <ProfileRoute lang={t} booleanComp={!booleanMy}/>
+                <ProfileRoute lang={t} booleanComp={booleanMy}/>
                 <Switch>
                     <Route path={"/supervisory/profile/user"} exact>
                         <ProfileUser lang={t} loading={loading} currentUser={currentUser}/>

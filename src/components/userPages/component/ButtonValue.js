@@ -18,12 +18,13 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
     const dispatch = useDispatch();
     const history = useHistory();
     const reducers = useSelector(state => state)
-    const {memberManagerState, memberManagerType} = reducers.meeting
+    const {memberManagerType} = reducers.meeting
     const {currentUser} = reducers.auth
+    // const userId = parseInt(localStorage.getItem(DEPOSITORY_USER))
 
     useEffect(() => {
-        dispatch(meetingActions.getMemberTypeEnumAction({meetingId: meetingId, userId: currentUser?.id}))
-    }, [meetingId])
+        dispatch(meetingActions.getMemberTypeEnumAction({meetingId: meetingId, userId: (currentUser && currentUser.id)}))
+    }, [currentUser])
 
     console.log(memberManagerType[meetingId]);
 
@@ -55,7 +56,7 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
         // width: '13em',
         height: '65px',
     }
-
+    console.log(memberManagerType)
     return (
         <>
             {

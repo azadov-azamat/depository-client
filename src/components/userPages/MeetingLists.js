@@ -31,15 +31,17 @@ export const MeetingLists = () => {
 
     const {currentCompany} = reducers.company
     const {meetings, meetingByUser} = reducers.meeting;
+    const {currentUser} = reducers.auth
 
     const socketClient = useSelector((state) => state.socket.client);
 
-    const userId = parseInt(localStorage.getItem(DEPOSITORY_USER));
-
     useEffect(() => {
-        dispatch(adminMeetingAction.getMeetingByUserIdAndCompanyIdAction({userId: userId, companyId: companyId}))
+        dispatch(adminMeetingAction.getMeetingByUserIdAndCompanyIdAction({
+            userId: (currentUser && currentUser.id),
+            companyId: companyId
+        }))
         dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}))
-    }, [companyId, userId])
+    }, [companyId, currentUser])
 
     function setStatusOnline(memberId, meetingId) {
         dispatch(subscribe('/topic/getMember/' + meetingId));
@@ -66,7 +68,7 @@ export const MeetingLists = () => {
                     </Col>
                 </Row>
             </div>
-            <Socket />
+            <Socket/>
         </div>
     )
 }

@@ -86,27 +86,6 @@ export const List = ({pathname, meetings, setStatusOnlineUser}) => {
         )
     }
 
-    function historyPushItem(role, memberId, meetingId) {
-        setStatusOnlineUser(memberId)
-        dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
-        dispatch({
-            type: "CURRENT_MEMBER_TYPE",
-            payload: role
-        });
-        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
-    }
-
-    function isConfirmed(memberId, role, meetingId) {
-        setStatusOnlineUser(memberId)
-        dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
-        dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
-        dispatch({
-            type: "CURRENT_MEMBER_TYPE",
-            payload: role
-        });
-        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId);
-    }
-
     return (
         <>
             {meetings && meetings.map(userMeeting => {

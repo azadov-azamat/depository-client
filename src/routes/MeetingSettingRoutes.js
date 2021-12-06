@@ -89,11 +89,11 @@ export default function MeetingSettingRoutes({isDisabled, id}) {
     function clientRoutes() {
         return (
             <div className="d-inline-flex align-items-center" style={{marginTop: '6em'}}>
-                <Link to="/issuerLegal" className="nav-link text-dark"><FaArrowLeft/></Link>
+                <Link to="/issuerLegal/companies" className="nav-link text-dark"><FaArrowLeft/></Link>
                 <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
                     голосование</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link to={'/issuerLegal'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Акционерное
+                <Link to={'/issuerLegal/companies'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Акционерное
                     общества</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'#'}

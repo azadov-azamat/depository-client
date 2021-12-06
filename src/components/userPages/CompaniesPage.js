@@ -29,7 +29,7 @@ export default function CompaniesPage() {
     }, [booleanMy, companiesByUserId])
 
     useEffect(() => {
-        dispatch(companyAction.getCompanyByUserId({currentUserId: parseInt(localStorage.getItem(DEPOSITORY_USER))}))
+        dispatch(companyAction.getCompanyByUserId({currentUserId: (currentUser && currentUser.id)}))
         dispatch({
             type: 'REQUEST_GET_MEETING_SUCCESS',
             payload: []
@@ -38,12 +38,9 @@ export default function CompaniesPage() {
             type: 'REQUEST_GET_MEETING_BY_COMPANY_ID',
             payload: []
         });
-        localStorage.removeItem(DEPOSITORY_CURRENT_MEETING)
-        localStorage.removeItem(DEPOSITORY_CURRENT_COMPANY)
-        localStorage.removeItem(DEPOSITORY_CURRENT_MEMBER)
         localStorage.removeItem(DEPOSITORY_MEMBER_TYPE_USER)
 
-    }, [localStorage.getItem(DEPOSITORY_USER)])
+    }, [currentUser])
 
     return (
         <div className="allCss">
@@ -63,7 +60,7 @@ export default function CompaniesPage() {
                                         <div
                                             className="btnAdd border d-flex justify-content-center text-center">
                                             <button className="btn"
-                                                    onClick={() => history.push("/admin/addOrEditMeeting/create")}>
+                                                    onClick={() => history.push("/supervisory/addOrEditMeeting/meeting?type=create")}>
                                                 <BsBookmarkPlus style={{fontSize: '25px'}}/>
                                             </button>
                                         </div>
@@ -79,7 +76,7 @@ export default function CompaniesPage() {
                                     <span>Создать заседание</span>
                                     <div className="btnAdd border mx-3 d-flex justify-content-center text-center">
                                         <button className="btn"
-                                                onClick={() => history.push("/supervisory/addOrEditMeeting/create")}>
+                                                onClick={() => history.push("/supervisory/addOrEditMeeting/meeting?type=create")}>
                                             <BsBookmarkPlus style={{fontSize: '25px'}}/>
                                         </button>
                                     </div>

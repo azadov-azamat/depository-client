@@ -139,7 +139,6 @@ const reducers = {
 
 
     ['REQUEST_GET_MEMBER_TYPE_ENUM_LIST_SUCCESS'](state, action) {
-        console.log(action)
         state.memberManagerType[action.requestData.meetingId] = action.payload
     },
     ['REQUEST_SUCCESS_MEETING_BY_USER_AND_COMPANY'](state, action) {
