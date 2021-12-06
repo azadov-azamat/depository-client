@@ -29,7 +29,7 @@ export default function MeetingSettingRoutes({isDisabled, id}) {
                 :
                ("/supervisory/addOrEditMeeting/meeting?type=create"),
             text: 'Общее',
-            className: ''
+            className: isDisabled ? 'disabled' : ''
         },
         {
             id: 2,

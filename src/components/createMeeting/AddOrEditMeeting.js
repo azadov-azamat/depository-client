@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {Container} from "reactstrap";
 import './AzamatGlobal.scss';
 import {Route, Switch, useHistory, useLocation, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {DEPOSITORY_CURRENT_MEETING} from "../../utils/contants";
 import {Select} from 'antd';
 import 'antd/dist/antd.css';
 import * as meetingActions from '../../redux/actions/MeetingAction';
@@ -47,22 +46,30 @@ export default function AddOrEditMeeting() {
         }
     }, [typeMeeting])
 
-    useEffect(()=>{
+    useEffect(() => {
 
-    },[])
+    }, [])
 
 
     return (
         <div className="allCss">
             <div style={{width: "100%", height: '100vh'}} className={loadingReestr === "loading" ?
-                "d-flex justify-content-center align-items-center position-fixed bg-light opacity-75" : "d-none"}>
-                <Loader
-                    type="ThreeDots"
-                    color="#132E85"
-                    height={80}
-                    width={80}
-                    timeout={3000}
-                />
+                "d-flex justify-content-center align-items-center position-fixed bg-light opacity-75" : 'd-none'}>
+                {loadingReestr === "loading"
+                    ?
+                    <>
+                        <Loader
+                            type="ThreeDots"
+                            color="#132E85"
+                            height={100}
+                            width={100}
+                            timeout={13000}
+                        />
+                    </> :
+                    <>
+
+                    </>
+                }
             </div>
             <MeetingSettingRoutes isDisabled={typeMeeting === "create" || loadingReestr === "loading"} id={meetingId}/>
             <Container>
