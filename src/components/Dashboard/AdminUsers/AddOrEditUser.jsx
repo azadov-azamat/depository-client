@@ -56,9 +56,11 @@ export default function AddOrEditUser() {
     const [savedInn, setSavedInn] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
     const [myBoolean, setMyBoolean] = useState(false);
+
     const [selectStatusResident, setSelectStatusResident] = useState(currentForUser.resident);
     const [selectStatus, setSelectStatus] = useState(currentForUser.activated);
     const [selectGroupEnum, setSelectGroupEnum] = useState(currentForUser.groupEnum);
+    const [selectLoginType, setSelectLoginType] = useState(currentForUser.authTypeEnum);
 
     useEffect(() => {
         setPhoneNumber(currentForUser?.phoneNumber)
@@ -89,7 +91,7 @@ export default function AddOrEditUser() {
             const data = {
                 fullName: v.fullName,
                 activated: selectStatus,
-                authTypeEnum: v.authTypeEnum,
+                authTypeEnum: selectLoginType,
                 authorities: authority,
                 email: v.email,
                 groupEnum: selectGroupEnum,
@@ -122,7 +124,7 @@ export default function AddOrEditUser() {
                 id: current,
                 fullName: v.fullName,
                 activated: selectStatus,
-                authTypeEnum: v.authTypeEnum,
+                authTypeEnum: selectLoginType,
                 authorities: authority,
                 email: v.email,
                 groupEnum: selectGroupEnum,
@@ -199,10 +201,19 @@ export default function AddOrEditUser() {
     function selectGroupEnumUser(value) {
       setSelectGroupEnum(value)
     }
+    function selectLoginTypeUser(value) {
+      setSelectLoginType(value)
+    }
+
     const statusText = [
         {value: INDIVIDUAL, text: t("user.jismoniy")},
         {value: ENTITY, text: t("user.yuridik")},
         {value: FOREIGNER, text: t("user.chetel")},
+    ];
+
+    const statusLogin = [
+        {value: ERI, text: t("user.etp")},
+        {value: INPASS, text: t("user.loginetp")},
     ];
 
     return (
@@ -249,18 +260,6 @@ export default function AddOrEditUser() {
                                                 <Option value={value.value} key={index}>{value.text}</Option>
                                             )}
                                         </Select>
-                                        {/*<AvField*/}
-                                        {/*    type="select"*/}
-                                        {/*    label={t("AdminUser.group")}*/}
-                                        {/*    style={{backgroundColor: "#ffffff"}}*/}
-                                        {/*    className="setting_input border  p-2 w-100" name="groupEnum"*/}
-                                        {/*     id="groupEnum"*/}
-                                        {/*    defaultValue={id ? currentForUser.groupEnum : INDIVIDUAL}*/}
-                                        {/*>*/}
-                                        {/*    <option value={INDIVIDUAL}>{t("user.jismoniy")}</option>*/}
-                                        {/*    <option value={ENTITY}>{t("user.yuridik")}</option>*/}
-                                        {/*    <option value={FOREIGNER}>{t("user.chetel")}</option>*/}
-                                        {/*</AvField>*/}
                                     </Col>
                                     <Col md={6}>
                                         <div className="form-group">
@@ -276,17 +275,6 @@ export default function AddOrEditUser() {
                                                     <Option value={false}>{t("user.nerezident")}</Option>
                                             </Select>
                                         </div>
-                                        {/*<AvField*/}
-                                        {/*    className="setting_input border "*/}
-                                        {/*    label={t("user.grajdan")}*/}
-                                        {/*    type="select" name="resident"*/}
-                                        {/*    style={{backgroundColor: "#ffffff"}}*/}
-
-                                        {/*    defaultValue={id ? currentForUser.resident : true}*/}
-                                        {/*>*/}
-                                        {/*    <option value={true}>{t("user.rezident")}</option>*/}
-                                        {/*    <option value={false}>{t("user.nerezident")}</option>*/}
-                                        {/*</AvField>*/}
                                     </Col>
                                 </Row>
                                 <div className="row">
@@ -311,16 +299,6 @@ export default function AddOrEditUser() {
                                             <Option value={true}>{t("user.aktiv")}</Option>
                                             <Option value={false}>{t("user.neaktiv")}</Option>
                                         </Select>
-                                        {/*<AvField*/}
-                                        {/*    type="select"*/}
-                                        {/*    label={t("user.status")}*/}
-                                        {/*   style={{backgroundColor: "#ffffff"}}*/}
-                                        {/*    className="setting_input border  p-2 w-100" name="activated"*/}
-                                        {/*    id="activated"*/}
-                                        {/*    defaultValue={id ? currentForUser.activated : true}>*/}
-                                        {/*    <option value={true}>{t("user.aktiv")}</option>*/}
-                                        {/*    <option value={false}>{t("user.neaktiv")}</option>*/}
-                                        {/*</AvField>*/}
                                     </Col>
                                 </div>
                                 <Row className="d-none d-md-flex">
@@ -355,23 +333,7 @@ export default function AddOrEditUser() {
                                             className="setting_input border"
                                         />
                                     </div>
-
                                 </Col>
-                                {/*<Col md={6}>*/}
-                                {/*    <div className="form-group d-flex flex-column">*/}
-                                {/*        <Label className='required_fields'>{t("user.inn")}</Label>*/}
-                                {/*        <AvField*/}
-                                {/*            // ref={ref}*/}
-                                {/*            style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}*/}
-                                {/*            name="inn"*/}
-                                {/*            value={savedInn}*/}
-                                {/*            onChange={(e) => setSavedInn(e.target.value)}*/}
-                                {/*            minLength={9} maxLength={9}*/}
-                                {/*            className="setting_input border"*/}
-                                {/*            required*/}
-                                {/*        />*/}
-                                {/*    </div>*/}
-                                {/*</Col>*/}
                             </Row>
                             <Row>
                                 <Col md={6}>
@@ -414,15 +376,20 @@ export default function AddOrEditUser() {
                             </Row>
                             <Row>
                                 <Col md={6}>
-                                    <AvField type="select"
-                                             label={t("user.registr")}
-                                             style={{backgroundColor: "#ffffff"}}
-                                             className="setting_input border" name="authTypeEnum"
-                                             defaultValue={id ? currentForUser.authTypeEnum : ERI}
+                                    <div className="form-group">
+                                    <Label>{t("user.registr")}</Label>
+                                    <Select
+                                        className="setting_input w-100"
+                                        placeholder="Выберите статус"
+                                        optionFilterProp="children"
+                                        defaultValue={selectLoginType}
+                                        onChange={selectLoginTypeUser}
                                     >
-                                        <option value={ERI}>{t("user.etp")}</option>
-                                        <option value={INPASS}>{t("user.loginetp")}</option>
-                                    </AvField>
+                                        {statusLogin && statusLogin.map((value, index) =>
+                                            <Option value={value.value} key={index}>{value.text}</Option>
+                                        )}
+                                    </Select>
+                                    </div>
                                 </Col>
                                 <Col md={6}>
                                     <AvField
