@@ -94,7 +94,7 @@ export default function MeetingSettingRoutes({isDisabled, id, lang}) {
                       style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'/issuerLegal/companies'} className="nav-link"
-                      style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.clientPage.clientPage")}</Link>
+                      style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.controlPage.clientPage")}</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'#'}
                       className="nav-link h4 disabled text-dark">{typeMeeting === "create" ? lang("routes.addOrEditPage.addMeeting") : lang("routes.addOrEditPage.editMeeting")}</Link>
