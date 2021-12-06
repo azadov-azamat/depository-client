@@ -13,7 +13,7 @@ import {editAgendaAction, getAgendaById} from "../../../redux/actions/MeetingAct
 
 const {Option} = Select;
 
-export default function MeetingAgenda({currentMeetingId}) {
+export default function MeetingAgenda({currentMeetingId, lang}) {
 
     const history = useHistory();
     const dispatch = useDispatch();

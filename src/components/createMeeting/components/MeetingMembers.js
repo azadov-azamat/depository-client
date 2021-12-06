@@ -22,7 +22,7 @@ function useQuery() {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export default function MeetingMembers({currentMeetingId}) {
+export default function MeetingMembers({currentMeetingId, lang}) {
 
     const history = useHistory();
     const dispatch = useDispatch();

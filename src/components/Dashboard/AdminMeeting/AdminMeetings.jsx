@@ -99,7 +99,7 @@ function AdminMeetings() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <FormForMeeting getName={getName}/>
+                                <FormForMeeting getName={getName} lang={t}/>
                                 <TableMeetings meetings={meetings}/>
                                 </tbody>
                             </Table>

@@ -27,7 +27,7 @@ import {REQUEST_API_SUCCESS} from "../../../redux/actionTypes/CompanyActionTypes
 
 const {Option} = Select;
 
-export default function NabMeetingJs({id, currentMeeting}) {
+export default function NabMeetingJs({id, currentMeeting, lang}) {
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -91,23 +91,23 @@ export default function NabMeetingJs({id, currentMeeting}) {
     }
 
     const statusText = [
-        {value: PENDING, text: 'Ожидает запуска'},
-        {value: ACTIVE, text: 'Активно по расписанию'},
-        {value: FINISH, text: 'Завершено (в архиве)'},
-        {value: CANCELED, text: 'Отменено (в архиве)'},
-        {value: DISABLED, text: 'Неактивно'}
+        {value: PENDING, text: lang("meetingCreated.meetingStatus.pending")},
+        {value: ACTIVE, text: lang("meetingCreated.meetingStatus.active")},
+        {value: FINISH, text: lang("meetingCreated.meetingStatus.finish")},
+        {value: CANCELED, text: lang("meetingCreated.meetingStatus.canceled")},
+        {value: DISABLED, text: lang("meetingCreated.meetingStatus.disabled")}
     ];
 
     const typeEnumText = [
-        {value: EXTRAORDINARY, text: 'Плановое заседание наблюдательного совета'},
-        {value: ORDINARY, text: 'Внеплановое заседание наблюдательного совета'},
+        {value: EXTRAORDINARY, text: lang("meetingCreated.meetingStatus.extraordinary")},
+        {value: ORDINARY, text: lang("meetingCreated.meetingStatus.ordinary")},
     ];
 
     function CreateMeeting(e, v) {
         e.preventDefault();
         console.log("keldi create")
         if (!selectCompany && !selectStatus && !selectCountry && !selectTypeEnum) {
-            toast.warning("Пожалуйста, Заполните все")
+            toast.warning(lang("toast.warning"))
         } else {
             const data = {
                 companyId: selectCompany,
@@ -151,7 +151,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
             <Row>
                 <Col md={3}>
                     <div className="form-group">
-                        <Label className='required_fields'>Наименование организации</Label>
+                        <Label className='required_fields'>{lang("pages.company.nameCompany")}</Label>
                         <Select
                             className="setting_input w-100"
                             showSearch
@@ -183,7 +183,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 </Col>
                 <Col md={3}>
                     <div className="form-group">
-                        <Label className='required_fields'>Статус заседание</Label>
+                        <Label className='required_fields'>{lang("meetingsList.statusMeeting")}</Label>
                         <Select
                             className="setting_input w-100"
                             placeholder="Выберите статус"
@@ -200,7 +200,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
 
                 <Col md={3}>
                     <div className="form-group">
-                        <Label className='required_fields'>Город | Область</Label>
+                        <Label className='required_fields'>{lang("meetingsList.city")}</Label>
                         <Select
                             className="setting_input w-100"
                             placeholder="Выберите область"
@@ -221,7 +221,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 </Col>
                 <Col md={3}>
                     <div className="form-group">
-                        <Label className='required_fields'>Адрес</Label>
+                        <Label className='required_fields'>{lang("meetingsList.address")}</Label>
                         <AvField
                             name="address"
                             label=""
@@ -237,7 +237,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
             <Row>
                 <Col md={6}>
                     <div className="form-group">
-                        <Label className='required_fields'>Тип заседание</Label>
+                        <Label className='required_fields'>{lang("meetingsList.typeMeeting")}</Label>
                         <Select
                             className="setting_input w-100"
                             placeholder="Выберите тип заседание"
@@ -253,7 +253,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 </Col>
                 <Col md={3} sm={6} xs={6}>
                     <div className="form-group">
-                        <Label className='required_fields'>Начало регистрации</Label>
+                        <Label className='required_fields'>{lang("meetingsList.startRegister")}</Label>
                         <AvField
                             type="datetime-local"
                             defaultValue={currentMeeting.length !== 0 ? currentMeeting.startRegistration.substr((currentMeeting?.startRegistration) - 1, 16) : ""}
@@ -267,7 +267,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 </Col>
                 <Col md={3} sm={6} xs={6}>
                     <div className="form-group">
-                        <Label className='required_fields'>Окончание регистрации</Label>
+                        <Label className='required_fields'>{lang("meetingsList.finishRegister")}</Label>
                         <AvField
                             type="datetime-local"
                             defaultValue={currentMeeting.length !== 0 ? currentMeeting.endRegistration.substr((currentMeeting?.endRegistration) - 1, 16) : ""}
@@ -283,7 +283,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
             <Row>
                 <Col md={6} className='d-none flex-column d-md-flex'>
                     <AvGroup>
-                        <Label className='required_fields'>Описания заседание</Label>
+                        <Label className='required_fields'>{lang("meetingsList.commentMeeting")}</Label>
                         <AvInput
                             type="textarea"
                             name="description"
@@ -296,7 +296,7 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 </Col>
                 <Col md={3}>
                     <div className="form-group">
-                        <Label className='required_fields'>Начало засидание</Label>
+                        <Label className='required_fields'>{lang("meetingsList.startMeeting")}</Label>
                         <AvField
                             type="datetime-local"
                             defaultValue={currentMeeting.length !== 0 ? currentMeeting.startDate.substr((currentMeeting?.startDate) - 1, 16) : ""}
@@ -311,16 +311,15 @@ export default function NabMeetingJs({id, currentMeeting}) {
                 <Col md={3}>
                     <div className="d-none d-md-flex justify-content-center" style={{marginTop: '25px'}}>
                         <button type={"submit"}
-                            className="btn btnAll m-2 create">{currentMeeting.length !== 0 ? 'Редактировать' : 'Создать'}
+                            className="btn btnAll m-2 create">{currentMeeting.length !== 0 ? lang("user.redaktorovat") : lang("user.sozdat")}
                         </button>
                         <button className="btn btnAll m-2 cancel"
-                                onClick={() => history.push("/admin/meetings")}>Отмена
-                        </button>
+                                onClick={() => history.push("/admin/meetings")}>{lang("user.otmena")}</button>
                     </div>
                 </Col>
                 <Col md={6} className='d-md-none flex-column d-md-flex'>
                     <AvGroup>
-                        <Label className='required_fields'>Описания заседание</Label>
+                        <Label className='required_fields'>{lang("meetingsList.commentMeeting")}</Label>
                         <AvInput
                             type="textarea"
                             name="description2"
@@ -331,12 +330,11 @@ export default function NabMeetingJs({id, currentMeeting}) {
                         />
                     </AvGroup>
                     <div className="d-md-none d-flex justify-content-center mt-3 mb-3">
-                        <button
-                            className="btn btnAll m-2 create">{currentMeeting.length !== 0 ? 'Редактировать' : 'Создать'}
+                        <button type={"submit"}
+                                className="btn btnAll m-2 create">{currentMeeting.length !== 0 ? lang("user.redaktorovat") : lang("user.sozdat")}
                         </button>
                         <button className="btn btnAll m-2 cancel"
-                                onClick={() => history.push("/admin/meetings")}>Отмена
-                        </button>
+                                onClick={() => history.push("/admin/meetings")}>{lang("user.otmena")}</button>
                     </div>
                 </Col>
             </Row>

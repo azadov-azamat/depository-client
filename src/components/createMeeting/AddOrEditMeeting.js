@@ -13,6 +13,7 @@ import MeetingAgenda from "./components/MeetingAgenda";
 import MeetingReestr from "./components/MeetingReestr";
 import MeetingFiles from "./components/MeetingFiles";
 import Loader from "react-loader-spinner";
+import {useTranslation} from "react-i18next";
 
 const {Option} = Select;
 
@@ -26,6 +27,7 @@ export default function AddOrEditMeeting() {
 
     const {id} = useParams();
     const history = useHistory();
+    const {t} = useTranslation();
     const dispatch = useDispatch();
 
     const reducers = useSelector(state => state)
@@ -71,23 +73,23 @@ export default function AddOrEditMeeting() {
                     </>
                 }
             </div>
-            <MeetingSettingRoutes isDisabled={typeMeeting === "create" || loadingReestr === "loading"} id={meetingId}/>
+            <MeetingSettingRoutes lang={t} isDisabled={typeMeeting === "create" || loadingReestr === "loading"} id={meetingId}/>
             <Container>
                 <Switch>
                     <Route path={"/supervisory/addOrEditMeeting/meeting"}>
-                        <NabMeetingJs id={meetingId} currentMeeting={currentMeeting}/>
+                        <NabMeetingJs lang={t} id={meetingId} currentMeeting={currentMeeting}/>
                     </Route>
                     <Route path={"/supervisory/addOrEditMeeting/add_members"}>
-                        <MeetingMembers currentMeetingId={meetingId}/>
+                        <MeetingMembers lang={t} currentMeetingId={meetingId}/>
                     </Route>
                     <Route path={"/supervisory/addOrEditMeeting/add_agenda"}>
-                        <MeetingAgenda currentMeetingId={meetingId}/>
+                        <MeetingAgenda lang={t} currentMeetingId={meetingId}/>
                     </Route>
                     <Route path={"/supervisory/addOrEditMeeting/add_reestr"}>
-                        <MeetingReestr currentMeeting={currentMeeting}/>
+                        <MeetingReestr lang={t} currentMeeting={currentMeeting}/>
                     </Route>
                     <Route path={"/supervisory/addOrEditMeeting/add_files"}>
-                        <MeetingFiles currentMeeting={currentMeeting}/>
+                        <MeetingFiles lang={t} currentMeeting={currentMeeting}/>
                     </Route>
                 </Switch>
             </Container>

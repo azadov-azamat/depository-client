@@ -9,7 +9,7 @@ import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import "react-datetime/css/react-datetime.css";
 
-export default function FormForMeeting({getName}) {
+export default function FormForMeeting({getName, lang}) {
 
     const [country, setCountry] = useState([]);
     const language = localStorage.getItem('i18nextLng');
@@ -27,43 +27,6 @@ export default function FormForMeeting({getName}) {
         getName(name, index)
     };
 
-    function getStatus() {
-        if (language === "uz"){
-            return(
-                <Input className="input text-center input-group-sm" type="select" name="status" id="name">
-                    <option value={'ALL'}>Hammasi</option>
-                    <option value={PENDING}>Ishga tushirish kutilmoqda</option>
-                    <option value={ACTIVE}>Jadval bo'yicha faol</option>
-                    <option value={FINISH}>Tugallangan (arxivlangan)</option>
-                    <option value={CANCELED}>Bekor qilingan (arxivlangan)</option>
-                    <option value={DISABLED}>Faol emas</option>
-                </Input>
-            )
-        }else if (language === "ru"){
-            return (
-                <Input className="input text-center input-group-sm" type="select" name="status" id="name">
-                    <option value={'ALL'}>Всё</option>
-                    <option value={PENDING}>Ожидает запуска</option>
-                    <option value={ACTIVE}>Активно по расписанию</option>
-                    <option value={FINISH}>Завершено (в архиве)</option>
-                    <option value={CANCELED}>Отменено (в архиве)</option>
-                    <option value={DISABLED}>Неактивно</option>
-                </Input>
-            )
-        }else if (language === "en"){
-            return (
-                <Input className="input text-center input-group-sm" type="select" name="status" id="name">
-                    <option value={'ALL'}>All</option>
-                    <option value={PENDING}>Awaiting launch</option>
-                    <option value={ACTIVE}>Active on schedule</option>
-                    <option value={FINISH}>Completed (archived)</option>
-                    <option value={CANCELED}>Canceled (archived)</option>
-                    <option value={DISABLED}>Not active</option>
-                </Input>
-            )
-        }
-    }
-
     return (
         <>
             <tr>
@@ -73,7 +36,18 @@ export default function FormForMeeting({getName}) {
                 <td style={{width: '170px'}}><Input className="input input-group-sm" type="text" name="company"
                                                     onChange={e => Name(e.target.value, 0)}/></td>
                 <td style={{width: '140px'}}>
-                    {getStatus()}
+                    <Input className="input text-center input-group-sm" type="select" name="status" id="name">
+                        <option value={'ALL'}>{
+                            language === 'uz' ? "Hammasi" : ""
+                            || language === 'en' ? "All" : ""
+                            || language === "ru" ? "Всё" : ""
+                        }</option>
+                        <option value={PENDING}>{lang("meetingCreated.meetingStatus.pending")}</option>
+                        <option value={ACTIVE}>{lang("meetingCreated.meetingStatus.active")}</option>
+                        <option value={FINISH}>{lang("meetingCreated.meetingStatus.finish")}</option>
+                        <option value={CANCELED}>{lang("meetingCreated.meetingStatus.canceled")}</option>
+                        <option value={DISABLED}>{lang("meetingCreated.meetingStatus.disabled")}</option>
+                    </Input>
                 </td>
                 <td style={{width: '135px'}}>
                     <Datetime/>

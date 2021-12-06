@@ -21,7 +21,7 @@ function useQuery() {
 }
 
 
-export default function MeetingFiles({currentMeeting}) {
+export default function MeetingFiles({currentMeeting, lang}) {
 
     const history = useHistory();
     const dispatch = useDispatch();

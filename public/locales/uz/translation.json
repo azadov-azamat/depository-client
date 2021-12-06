@@ -38,6 +38,7 @@
   "companyManagement": "Kompaniyalar",
   "signInONEID": "ЭЦП bilan kiring",
   "personalData": "Ijroiya organi rahbarining shaxsiy ma'lumotlari",
+
   "text": {
     "headerText": "Bu qulay universal ovoz berish vositasi bo'lib, kuzatuv kengashiga yig'ilishlarda ro'yxatdan o'tish va veb -saytdagi elektron byulletenni to'ldirish orqali ovoz berish imkonini beradi.",
     "aboutText": "Elektron ovoz berish xizmati - bu aktsiyadorlarga / kuzatuv kengashi a'zolariga yig'ilishlarda / yig'ilishlarda ro'yxatdan o'tishga va veb -saytdagi elektron byulletenni to'ldirib ovoz berish, yig'ilish / yig'ilish veb -translyatsiyasini ko'rish, tanishish imkonini beradigan qulay universal ovoz berish vositasi. yig'ilish / yig'ilishning kun tartibi va materiallari, davlat xizmatlari portalida (ESIA) tasdiqlangan hisob yordamida yagona interfeys va masofadan identifikatsiya yordamida emitent bilan onlayn aloqani saqlab turish. Elektron ovoz berishga kirish uchun maxsus texnik vositalar talab qilinmaydi; Internetga ulanish sharti bilan platformaga dunyoning istalgan nuqtasidan ulanish mumkin.",
@@ -64,6 +65,7 @@
     "tabOpenModal2": "Kirish va parolni olish uchun quyidagi telefon raqamiga murojaat qiling",
     "tabOpenModal21": "Biz bilan bog'lanish"
   },
+
   "AdminUser": {
     "fullName": "F.I.O",
     "email": "E-mail",
@@ -71,12 +73,14 @@
     "group": "Gurux",
     "pinfl": "PINFL"
   },
+
   "UsersHeading": {
     "sound": "Elektron ovoz berish",
     "user": "Foydalanuvchilar boshqaruvi",
     "save": "Foydalanuvchi yaratish",
     "update": "Foydalanuvchilarni tahrirlash"
   },
+
   "user": {
     "all": "Hammasi",
     "jismoniy": "Jismoniy shaxs",
@@ -105,11 +109,14 @@
     "update": "Foydalanuvchi o'zgartirildi",
     "create": "Foydalanuvchi yaratildi"
   },
+
   "toast": {
     "creat": "Foydalanuvhi yaratildi",
     "update": "Foydalanuvhi o'zgartirildi",
-    "error": "Bu foydalanuvchi kompaniya yoki meetingda mavjud"
+    "error": "Bu foydalanuvchi kompaniya yoki meetingda mavjud",
+    "warning": "Iltimos, Barcha ma`lumotlarni to`liq kiriting"
   },
+
   "createButton": "Yozuv yaratish | ",
   "companiesList": {
     "nameCompany": "Ism",
@@ -126,12 +133,35 @@
     "statusMeeting": "Uchrashuv holati",
     "startRegister":"Ro'yxatdan o'tish boshlanishi",
     "startMeeting": "Uchrashuv boshlanishi",
-    "city": "Shahar/Viloyat"
+    "city": "Shahar/Viloyat",
+    "address": "Manzil",
+    "typeMeeting": "Uchrashuv turi",
+    "finishRegister":"Ro`yxatdan o`tishning tugash vaqti",
+    "commentMeeting": "Uchrashuv tavsiflari"
+  },
+
+  "meetingCreated": {
+    "general": "General",
+    "addedMember": "Tizim foydalanuvchilari",
+    "addedAgenda" : "Kun tartibidagi masalalar",
+    "addedReestr": "Kuzatuv kengashi a'zolari ro'yxati",
+    "addedFiles": "Uchrashuv fayllari",
+
+    "meetingStatus": {
+      "pending": "Ishga tushirish kutilmoqda",
+      "active": "Jadval bo'yicha faol",
+      "finish": "Tugallangan (arxivlangan)",
+      "canceled": "Bekor qilingan (arxivlangan)",
+      "disabled": "Faol emas",
+      "extraordinary": "Kuzatuv kengashining rejalashtirilgan majlisi",
+      "ordinary": "Kuzatuv kengashining rejadan tashqari yig'ilishi"
+    }
   },
 
   "routes": {
     "menu": "Asosiy menyu",
     "electronVoting": "Elektron ovoz berish",
+
     "controlPage": {
       "company": "kompaniyalar",
       "meeting": "uchrashuvlar",
@@ -139,6 +169,7 @@
       "control": "Boshqaruv ",
       "clientPage": "Aksiyadorlik jamiyati"
     },
+
     "addOrEditPage": {
       "addCompany": "KOMPANIYA QO'SHISH",
       "editCompany": "KOMPANIYANI TAHRIRLASH",
@@ -150,6 +181,7 @@
       "editMeeting": "Uchrashuvni tahrirlash"
     }
   },
+
   "pages": {
     "company": {
       "nameCompany": "Kompaniya nomi",

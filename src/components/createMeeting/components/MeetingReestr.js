@@ -12,7 +12,7 @@ import {CHAIRMAN} from "../../../utils/contants";
 import Loader from "react-loader-spinner";
 import {confirmAlert} from "react-confirm-alert";
 
-export default function MeetingReestr({currentMeeting}) {
+export default function MeetingReestr({currentMeeting, lang}) {
 
     const dispatch = useDispatch()
     const reducers = useSelector(state => state)
