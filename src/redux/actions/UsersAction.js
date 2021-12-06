@@ -122,7 +122,8 @@ export const editUserAction = (payload) => async (dispatch) => {
         types: [REQUEST_API_START_USERS, '', REQUEST_API_ERROR_USERS],
         data: payload.data
     }).then(res => {
-        toast.success("keldi")
+        // toast.success("keldi")
+        payload.history.push('/admin/users')
     }).catch(err => {
         console.log(err.response)
     })

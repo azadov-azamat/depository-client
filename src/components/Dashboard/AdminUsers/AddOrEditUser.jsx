@@ -7,7 +7,18 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import {DEPOSITORY_USER, ENTITY, ERI, FOREIGNER, INDIVIDUAL, INPASS} from "../../../utils/contants";
+import {
+    ACTIVE,
+    CANCELED,
+    DISABLED,
+    ENTITY,
+    ERI,
+    FINISH,
+    FOREIGNER,
+    INDIVIDUAL,
+    INPASS,
+    PENDING
+} from "../../../utils/contants";
 import RouteByDashboard from "../RouteByDashboard";
 import {useTranslation} from "react-i18next";
 import PhoneInput from "react-phone-number-input";
@@ -16,6 +27,9 @@ import axios from "axios";
 import {BASE_URL} from "../../../utils/config";
 import {toast} from "react-toastify";
 import * as adminUsersAction from '../../../redux/actions/UsersAction';
+import {Select} from "antd";
+
+const {Option} = Select;
 
 export default function AddOrEditUser() {
 
@@ -41,24 +55,26 @@ export default function AddOrEditUser() {
     const [savedPinfl, setSavedPinfl] = useState();
     const [savedInn, setSavedInn] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
-    const currentUserId = parseInt(localStorage.getItem("currentEditUser"));
     const [myBoolean, setMyBoolean] = useState(false);
+    const [selectStatusResident, setSelectStatusResident] = useState(currentForUser.resident);
+    const [selectStatus, setSelectStatus] = useState(currentForUser.activated);
+    const [selectGroupEnum, setSelectGroupEnum] = useState(currentForUser.groupEnum);
 
     useEffect(() => {
-            setPhoneNumber(currentForUser?.phoneNumber)
-            setSavedPinfl(currentForUser?.pinfl)
-            setSavedInn(currentForUser?.inn)
-            setGenerateLogin(currentForUser?.login)
-            const auth = currentForUser.authorities
-            if ({...auth} === "ROLE_MODERATOR"){
-                setMyBoolean(true)
+        setPhoneNumber(currentForUser?.phoneNumber)
+        setSavedPinfl(currentForUser?.pinfl)
+        setSavedInn(currentForUser?.inn)
+        setGenerateLogin(currentForUser?.login)
+        const auth = currentForUser.authorities
+        if ({...auth} === "ROLE_MODERATOR") {
+            setMyBoolean(true)
         }
     }, [currentForUser])
 
-    useEffect(()=>{
+    useEffect(() => {
         const current = parseInt(id);
         dispatch(adminUsersAction.getUserById({userId: current, history}))
-    },[id])
+    }, [id])
 
     const addUser = (e, v) => {
 
@@ -72,17 +88,17 @@ export default function AddOrEditUser() {
         if (savedPinfl && authority && generateLogin) {
             const data = {
                 fullName: v.fullName,
-                activated: v.activated,
+                activated: selectStatus,
                 authTypeEnum: v.authTypeEnum,
                 authorities: authority,
                 email: v.email,
-                groupEnum: v.groupEnum,
+                groupEnum: selectGroupEnum,
                 inn: savedInn,
                 login: generateLogin,
                 password: v.password,
                 passport: v.passport,
                 pinfl: savedPinfl,
-                resident: v.resident,
+                resident: selectStatusResident,
                 phoneNumber: phoneNumber
             }
             console.log(data)
@@ -105,17 +121,17 @@ export default function AddOrEditUser() {
             const data = {
                 id: current,
                 fullName: v.fullName,
-                activated: v.activated,
+                activated: selectStatus,
                 authTypeEnum: v.authTypeEnum,
                 authorities: authority,
                 email: v.email,
-                groupEnum: v.groupEnum,
+                groupEnum: selectGroupEnum,
                 inn: savedInn,
                 login: generateLogin,
                 password: v.password,
                 passport: v.passport,
                 pinfl: savedPinfl,
-                resident: v.resident,
+                resident: selectStatusResident,
                 phoneNumber: phoneNumber
             }
             console.log(data)
@@ -174,6 +190,21 @@ export default function AddOrEditUser() {
         setPassword({...password, generatePassword: randomstring})
     }
 
+    function selectStatusResidentUser(value) {
+      setSelectStatusResident(value)
+    }
+    function selectStatusUser(value) {
+      setSelectStatus(value)
+    }
+    function selectGroupEnumUser(value) {
+      setSelectGroupEnum(value)
+    }
+    const statusText = [
+        {value: INDIVIDUAL, text: t("user.jismoniy")},
+        {value: ENTITY, text: t("user.yuridik")},
+        {value: FOREIGNER, text: t("user.chetel")},
+    ];
+
     return (
         <div className="settings p-3">
             <div className="container-fluid" style={{marginTop: '12vh'}}>
@@ -206,31 +237,56 @@ export default function AddOrEditUser() {
                                 />
                                 <Row>
                                     <Col md={6}>
-                                        <AvField
-                                            type="select"
-                                            label={t("AdminUser.group")}
-                                            style={{backgroundColor: "#ffffff"}}
-                                            className="setting_input border  p-2 w-100" name="groupEnum"
-                                            /* GROUP_ENUM */ id="groupEnum"
-                                            defaultValue={id ? currentForUser.groupEnum : INDIVIDUAL}
+                                        <Label>{t("AdminUser.group")}</Label>
+                                        <Select
+                                            className="setting_input w-100"
+                                            placeholder="Выберите статус"
+                                            optionFilterProp="children"
+                                            defaultValue={selectGroupEnum}
+                                            onChange={selectGroupEnumUser}
                                         >
-                                            <option value={INDIVIDUAL}>{t("user.jismoniy")}</option>
-                                            <option value={ENTITY}>{t("user.yuridik")}</option>
-                                            <option value={FOREIGNER}>{t("user.chetel")}</option>
-                                        </AvField>
+                                            {statusText && statusText.map((value, index) =>
+                                                <Option value={value.value} key={index}>{value.text}</Option>
+                                            )}
+                                        </Select>
+                                        {/*<AvField*/}
+                                        {/*    type="select"*/}
+                                        {/*    label={t("AdminUser.group")}*/}
+                                        {/*    style={{backgroundColor: "#ffffff"}}*/}
+                                        {/*    className="setting_input border  p-2 w-100" name="groupEnum"*/}
+                                        {/*     id="groupEnum"*/}
+                                        {/*    defaultValue={id ? currentForUser.groupEnum : INDIVIDUAL}*/}
+                                        {/*>*/}
+                                        {/*    <option value={INDIVIDUAL}>{t("user.jismoniy")}</option>*/}
+                                        {/*    <option value={ENTITY}>{t("user.yuridik")}</option>*/}
+                                        {/*    <option value={FOREIGNER}>{t("user.chetel")}</option>*/}
+                                        {/*</AvField>*/}
                                     </Col>
                                     <Col md={6}>
-                                        <AvField
-                                            className="setting_input border "
-                                            label={t("user.grajdan")}
-                                            type="select" name="resident"
-                                            style={{backgroundColor: "#ffffff"}}
-                                            /* RESIDENT */
-                                            defaultValue={id ? currentForUser.resident : true}
-                                        >
-                                            <option value={true}>{t("user.rezident")}</option>
-                                            <option value={false}>{t("user.nerezident")}</option>
-                                        </AvField>
+                                        <div className="form-group">
+                                            <Label>{t("user.grajdan")}</Label>
+                                            <Select
+                                                className="setting_input w-100"
+                                                placeholder="Выберите статус"
+                                                optionFilterProp="children"
+                                                defaultValue={selectStatusResident}
+                                                onChange={selectStatusResidentUser}
+                                            >
+                                                    <Option value={true}>{t("user.rezident")}</Option>
+                                                    <Option value={false}>{t("user.nerezident")}</Option>
+                                            </Select>
+                                        </div>
+                                        {/*<AvField*/}
+                                        {/*    className="setting_input border "*/}
+                                        {/*    label={t("user.grajdan")}*/}
+                                        {/*    type="select" name="resident"*/}
+                                        {/*    style={{backgroundColor: "#ffffff"}}*/}
+
+                                        {/*    defaultValue={id ? currentForUser.resident : true}*/}
+                                        {/*>*/}
+                                        {/*    <option value={true}>{t("user.rezident")}</option>*/}
+                                        {/*    <option value={false}>{t("user.nerezident")}</option>*/}
+                                        {/*</AvField>*/}
                                     </Col>
                                 </Row>
                                 <div className="row">
@@ -244,16 +300,27 @@ export default function AddOrEditUser() {
                                         </div>
                                     </Col>
                                     <Col md={6}>
-                                        <AvField
-                                            type="select"
-                                            label={t("user.status")}
-                                            /* ACTIVATED */ style={{backgroundColor: "#ffffff"}}
-                                            className="setting_input border  p-2 w-100" name="activated"
-                                            id="activated"
-                                            defaultValue={id ? currentForUser.activated : true}>
-                                            <option value={true}>{t("user.aktiv")}</option>
-                                            <option value={false}>{t("user.neaktiv")}</option>
-                                        </AvField>
+                                        <Label>{t("user.status")}</Label>
+                                        <Select
+                                            className="setting_input w-100"
+                                            placeholder="Выберите статус"
+                                            optionFilterProp="children"
+                                            defaultValue={selectStatus}
+                                            onChange={selectStatusUser}
+                                        >
+                                            <Option value={true}>{t("user.aktiv")}</Option>
+                                            <Option value={false}>{t("user.neaktiv")}</Option>
+                                        </Select>
+                                        {/*<AvField*/}
+                                        {/*    type="select"*/}
+                                        {/*    label={t("user.status")}*/}
+                                        {/*   style={{backgroundColor: "#ffffff"}}*/}
+                                        {/*    className="setting_input border  p-2 w-100" name="activated"*/}
+                                        {/*    id="activated"*/}
+                                        {/*    defaultValue={id ? currentForUser.activated : true}>*/}
+                                        {/*    <option value={true}>{t("user.aktiv")}</option>*/}
+                                        {/*    <option value={false}>{t("user.neaktiv")}</option>*/}
+                                        {/*</AvField>*/}
                                     </Col>
                                 </div>
                                 <Row className="d-none d-md-flex">
