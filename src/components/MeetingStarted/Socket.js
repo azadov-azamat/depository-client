@@ -5,7 +5,7 @@ import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_ZOOM_MEETING_PASSWORD, TOKEN} fro
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
 
-export const Socket = () => {
+export const Socket = ({meetingId}) => {
     const dispatch = useDispatch();
     const clientRef = useRef(null);
     const topics = useSelector(state => state.socket.topics);
@@ -17,6 +17,8 @@ export const Socket = () => {
         const s = authToken.substr(7, authToken.length - 1);
         url += '?access_token=' + s;
     }
+
+    console.log(meetingId)
 
     useEffect(() => {
         dispatch(setClient(clientRef.current));
@@ -34,6 +36,7 @@ export const Socket = () => {
             onDisconnect={() => {
                 console.log("Disconnected")
             }}
+
             onMessage={(msg, topic) => {
 
                 if (topic === '/topic/user') {
@@ -66,10 +69,13 @@ export const Socket = () => {
                     dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING))}));
                 }
 
-                if (topic === "/topic/getMember") {
-                    console.log("RESPONSE FROM QUESTION", msg)
+                console.log(topic)
+
+                if (topic === "/topic/getMember/" + meetingId) {
+                    console.log(msg)
+                    debugger
                     dispatch({
-                        type: 'REQUEST_GET_MEMBER_LIST_SUCCESS',
+                        type: 'RESPONSE_GET_ONLINE_MEMBERS_LIST_SUCCESS',
                         payload: msg
                     })
                 }

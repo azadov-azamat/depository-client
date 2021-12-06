@@ -11,6 +11,7 @@ import {useHistory} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import RouteByDashboard from "../RouteByDashboard";
 import PaginationDashboard from "../PaginationDashboard";
+import {getCompanySpecFilterAction} from "../../../redux/actions/CompanyAction";
 
 function AdminCompany() {
 
@@ -77,6 +78,20 @@ function AdminCompany() {
             dispatch(adminCompanyAction.getCompanyFilter({value, field}));
         }
     }
+    const SearchCompanySpecFilter = (value, index) => {
+
+        const data = {
+            name: index === 0 ? value : '',
+            email: index === 1 ? value : '',
+            phoneNumber: index === 2 ? value : '',
+            webPage: index === 3 ? value : '',
+            inn: index === 4 ? value : '',
+        }
+
+        if (value.length >= 3) {
+            dispatch(adminCompanyAction.getCompanySpecFilterAction(data));
+        }
+    }
 
     const submit = (id) => {
         confirmAlert({
@@ -128,7 +143,7 @@ function AdminCompany() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <FormForCompany getName={getName}/>
+                                <FormForCompany getName={SearchCompanySpecFilter}/>
                                 {
                                     companies && companies.map((company, i) =>
                                         <TableCompany deleteById={submit} company={company} key={i}

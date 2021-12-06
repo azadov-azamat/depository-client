@@ -115,7 +115,7 @@ export const updateMeetingStatusAction = (payload) => async (dispatch) => {
     dispatch({
         api: editMeetingStatusApi,
         types: ["REQUEST_START_UPDATE_MEETING_STATUS", "REQUEST_UPDATE_MEETING_STATUS", "REQUEST_ERROR_UPDATE_MEETING_STATUS",],
-        data: payload.data
+        data: payload
     }).then(res => {
         console.log(res)
         // const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
@@ -291,7 +291,7 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_REESTR_START", "REQUEST_REESTR_SUCCESS", "REQUEST_REESTR_ERROR"],
         data: payload.data
     }).then(res => {
-        dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId}))
+        dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId, fromReestr: true}))
     }).catch(err => {
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title} = err.response.data;

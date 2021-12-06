@@ -10,7 +10,8 @@ const initialState = {
     currentMeeting: [],
     currentCity: {},
     memberManagerType: {},
-    currentAgenda: []
+    currentAgenda: [],
+    onlineMemberManager: []
 };
 
 const reducers = {
@@ -79,6 +80,9 @@ const reducers = {
     },
     [types.REQUEST_GET_MEMBER_LIST_SUCCESS](state, action) {
         state.memberManagerState = action.payload;
+    },
+    ["RESPONSE_GET_ONLINE_MEMBERS_LIST_SUCCESS"](state, action) {
+        state.onlineMemberManager = action.payload;
     },
     ["REQUEST_GET_MEMBER_BY_ID_SUCCESS"](state, action) {
         state.currentMemberManager = action.payload;

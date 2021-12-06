@@ -6,7 +6,7 @@ import {
     getCompanies,
     getCompanyByIdApi,
     getCompanyBySorted,
-    getCompanyByUserIdApi,
+    getCompanyByUserIdApi, getCompanySpecFilterApi,
     getLogoCompanyByCompanyIDApi,
     updateCompanyApi
 } from "../../api/CompanyApi";
@@ -128,6 +128,23 @@ export const getCompanyFilter = (payload) => async (dispatch) => {
         return true;
     } catch (err) {
         if (err.response) {
+        }
+    }
+}
+export const getCompanySpecFilterAction = (payload) => async (dispatch) => {
+    try {
+        const res = await dispatch({
+            api: getCompanySpecFilterApi,
+            types: [types.REQUEST_API_START, types.REQUEST_GET_ADMIN_LIST_SUCCESS, types.REQUEST_API_ERROR],
+            data: payload
+        });
+        if (res.success) {
+            console.log(res.success)
+        }
+        return true;
+    } catch (err) {
+        if (err.response) {
+            console.log(err.response)
         }
     }
 }

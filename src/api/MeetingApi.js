@@ -19,7 +19,8 @@ export const editMeetingApi = (data) => {
 }
 
 export const editMeetingStatusApi = (data) => {
-    return HttpClient.doPatch(api.editMeetingStatus, data)
+    console.log(data)
+    return HttpClient.doPatch(api.editMeetingStatus + "?meetingId=" + data.meetingId + "&statusEnum=" + data.statusEnum)
 }
 
 export const getMeetingByIdApi = (data) => {

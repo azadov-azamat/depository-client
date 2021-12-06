@@ -7,7 +7,7 @@ import CommentsAllPage from "./component/CommentsAllPage";
 import * as meetingActions from "../../redux/actions/MeetingAction";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
-import {CHAIRMAN, DEPOSITORY_USER, PENDING, SECRETARY} from "../../utils/contants";
+import {ACTIVE, CANCELED, CHAIRMAN, DEPOSITORY_USER, FINISH, PENDING, SECRETARY} from "../../utils/contants";
 import Question from "./component/Question";
 import Comment from "./component/Comment";
 import ControlMeeting from "./component/ControlMeeting";
@@ -20,6 +20,8 @@ import {Col, Container, Row} from "reactstrap";
 import {Jutsu} from 'react-jutsu';
 import Socket from "./Socket";
 import {subscribe, unsubscribe} from "../../redux/actions/socketActions";
+import {confirmAlert} from "react-confirm-alert";
+import {toast} from "react-toastify";
 
 function useQuery() {
     const {search} = useLocation();
@@ -40,7 +42,14 @@ export const ControllerMeeting = () => {
 
     const {pathname} = location
     const reducers = useSelector(state => state)
-    const {agendaState, currentMeeting, userMemberType, memberManagerState, meetingFile} = reducers.meeting
+    const {
+        agendaState,
+        currentMeeting,
+        onlineMemberManager,
+        userMemberType,
+        memberManagerState,
+        meetingFile
+    } = reducers.meeting
     const {
         loadingLogging,
         questionList,
@@ -101,15 +110,25 @@ export const ControllerMeeting = () => {
     }, [questionList])
 
     useEffect(() => {
-       dispatch(meetingActions.getMemberById({ID: memberId}))   // GET MEMBER TYPE
+        dispatch(meetingActions.getMemberById({ID: memberId}))   // GET MEMBER TYPE
     }, [memberId])
+
+    useEffect(()=>{
+        const data = {
+            memberId: parseInt(memberId),
+            online: true
+        }
+        socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
+    },[parseInt(memberId)])
 
     useEffect(() => {
         dispatch(subscribe('/topic/user'));
         dispatch(subscribe('/topic/get-zoom'));
+        dispatch(subscribe('/topic/getMember/' + meetingId));
         return () => {
             dispatch(unsubscribe('/topic/user'));
             dispatch(unsubscribe('/topic/get-zoom'));
+            dispatch(unsubscribe('/topic/getMember/' + meetingId));
         }
     }, [dispatch])
 
@@ -118,7 +137,7 @@ export const ControllerMeeting = () => {
             setCall(false)
         }
     }, [startCallMeeting, endCallMeeting])
-
+    //setStatus
     importScript("https://meet.jit.si/external_api.js");
 
     const StartZoomMeeting = event => {
@@ -151,9 +170,7 @@ export const ControllerMeeting = () => {
 
             socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
             socketClient.sendMessage('/topic/start-zoom', JSON.stringify(dataZoom));
-        }
-
-        else if (startCallMeeting && !endCallMeeting) {
+        } else if (startCallMeeting && !endCallMeeting) {
             setPassword(passwordZoomMeeting)
             if (room && username)
                 handleStartMeeting(room, username, password, link);
@@ -187,6 +204,79 @@ export const ControllerMeeting = () => {
         // history.push("/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
     }
 
+    function startMeeting({status, quorumCount}) {
+        if (status === CANCELED || status === PENDING) {
+            const dataForComment = {
+                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+                meetingId: meetingId,
+                loggingText:
+                    status === ACTIVE ? 'Заседание начато' : ''
+                    || status === FINISH ? 'Заседание начато' : ''
+                    || status === CANCELED ? 'OTMEN KAROCHE' : ''
+                    || status === PENDING ? "Meeting qoldirildi" : ""
+            }
+            console.log(dataForComment)
+
+            const dataForUpdateMeetingStatus = {
+                meetingId: meetingId,
+                statusEnum: status,
+            }
+            console.log(dataForUpdateMeetingStatus)
+
+            confirmAlert({
+                title: 'Не активировать',
+                message: 'Вы действительно хотите начать заседанию?',
+                buttons: [
+                    {
+                        label: 'Да',
+                        onClick: () => {
+                            socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
+                            dispatch(meetingActions.updateMeetingStatusAction(dataForUpdateMeetingStatus))
+                        }
+                    },
+                    {
+                        label: 'Нет',
+                    }
+                ]
+            });
+        } else if (quorumCount >= 0) {
+            const dataForComment = {
+                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+                meetingId: meetingId,
+                loggingText:
+                    status === ACTIVE ? 'Заседание начато' : ''
+                    || status === FINISH ? 'Заседание начато' : ''
+                    || status === CANCELED ? 'OTMEN KAROCHE' : ''
+                    || status === PENDING ? "Meeting qoldirildi" : ""
+            }
+            const dataForUpdateMeetingStatus = {
+                meetingId: meetingId,
+                statusEnum: status,
+            }
+
+            console.log(dataForUpdateMeetingStatus)
+
+            confirmAlert({
+                title: 'Активировать',
+                message: 'Вы действительно хотите начать заседанию?',
+                buttons: [
+                    {
+                        label: 'Да',
+                        onClick: () => {
+                            socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
+                            dispatch(meetingActions.updateMeetingStatusAction(dataForUpdateMeetingStatus))
+                        }
+                    },
+                    {
+                        label: 'Нет',
+                    }
+                ]
+            });
+        } else {
+            toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
+        }
+    }
+
     return (
         <div className="container meeting">
             <div>
@@ -211,12 +301,11 @@ export const ControllerMeeting = () => {
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
                                     <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}
-                                                    currentMeeting={currentMeeting}
-                                                    memberList={memberManagerState && memberManagerState}
-                                                    socketClient={socketClient} meetingId={parseInt(id)}/>
+                                                    startMeeting={startMeeting}
+                                                   meetingId={parseInt(id)}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/all_users_list"}>
-                                    <TableUsers members={memberManagerState && memberManagerState}/>
+                                    <TableUsers members={onlineMemberManager && onlineMemberManager}/>
                                 </Route>
 
                             </Switch>
@@ -298,7 +387,7 @@ export const ControllerMeeting = () => {
                     </div>
                 </div>
             </div>
-            <Socket/>
+            <Socket meetingId={meetingId}/>
         </div>
     )
 }

@@ -16,7 +16,7 @@ export default function MeetingReestr({currentMeeting}) {
 
     const dispatch = useDispatch()
     const reducers = useSelector(state => state)
-    const {loadingReestr, currentReestr, memberManagerState} = reducers.meeting
+        const {loadingReestr, currentReestr, memberManagerState} = reducers.meeting
     const [fromReestr, setFromReestr] = useState([])
     const [excelFile, setExcelFile] = useState({
         fileName: "",

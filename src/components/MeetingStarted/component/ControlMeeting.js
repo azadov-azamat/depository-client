@@ -12,86 +12,20 @@ import {confirmAlert} from "react-confirm-alert";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {toast} from "react-toastify";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
 import {updateMeetingStatusAction} from "../../../redux/actions/MeetingAction";
 
-export default function ControlMeeting({meetingStatus, memberList, meetingId, currentMeeting, socketClient}) {
+export default function ControlMeeting({meetingStatus, meetingId, startMeeting}) {
 
     const dispatch = useDispatch();
     const [count, setCount] = useState(0);
+    const reducers = useSelector(state => state)
+    const {memberManagerState} = reducers.meeting
 
-
-    function startMeeting({status, quorumCount}) {
-        if (status === CANCELED || status === PENDING) {
-            const dataForComment = {
-                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-                meetingId: meetingId,
-                loggingText:
-                    status === ACTIVE ? 'Заседание начато' : ''
-                    || status === FINISH ? 'Заседание начато' : ''
-                    || status === CANCELED ? 'OTMEN KAROCHE' : ''
-                    || status === PENDING ? "Meeting qoldirildi" : ""
-            }
-            const dataForUpdateMeetingStatus = {
-                meetingId: meetingId,
-                statusEnum: status,
-            }
-
-
-            confirmAlert({
-                title: 'Не активировать',
-                message: 'Вы действительно хотите начать заседанию?',
-                buttons: [
-                    {
-                        label: 'Да',
-                        onClick: () => {
-                            socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
-                            dispatch(meetingActions.updateMeetingStatusAction({data: dataForUpdateMeetingStatus}))
-                        }
-                    },
-                    {
-                        label: 'Нет',
-                    }
-                ]
-            });
-        } else if (quorumCount >= 0) {
-            const dataForComment = {
-                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
-                meetingId: meetingId,
-                loggingText:
-                    status === ACTIVE ? 'Заседание начато' : ''
-                    || status === FINISH ? 'Заседание начато' : ''
-                    || status === CANCELED ? 'OTMEN KAROCHE' : ''
-                    || status === PENDING ? "Meeting qoldirildi" : ""
-            }
-            const dataForUpdateMeetingStatus = {
-                meetingId: meetingId,
-                statusEnum: status,
-            }
-
-            console.log(dataForUpdateMeetingStatus)
-
-            confirmAlert({
-                title: 'Активировать',
-                message: 'Вы действительно хотите начать заседанию?',
-                buttons: [
-                    {
-                        label: 'Да',
-                        onClick: () => {
-                            socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
-                            dispatch(meetingActions.updateMeetingStatusAction({data: dataForUpdateMeetingStatus}))
-                        }
-                    },
-                    {
-                        label: 'Нет',
-                    }
-                ]
-            });
-        } else {
-            toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
-        }
-    }
+    useEffect(() => {
+        dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
+    }, [meetingId])
 
     function status(status) {
         if (status === ACTIVE) {
@@ -107,16 +41,16 @@ export default function ControlMeeting({meetingStatus, memberList, meetingId, cu
         }
     }
 
-
+    console.log(memberManagerState)
     useEffect(() => {
-        memberList.forEach(element => {
+        memberManagerState?.forEach(element => {
             if (element.isConfirmed === true) {
                 setCount(prevState => prevState + 1)
             }
         })
     }, [])
 
-    const percentQuorum = parseInt((count / memberList.length) * 100)
+    const percentQuorum = (count / memberManagerState.length) * 100
 
     return (
         <>

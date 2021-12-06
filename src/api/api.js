@@ -26,6 +26,7 @@ export const api = {
 
     companyMethod: '/company',
     companyFilter: '/company/filter',
+    companySpecFilter: '/company/spec-filter',
     addLogoCompany: '/file/upload/logo',
     getLogoByCompanyId: '/file/logo',
     companyUserById: '/company/user',

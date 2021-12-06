@@ -1,11 +1,11 @@
 import HttpClient from "../utils/HttpClient";
 import {api} from "./api";
 
-export const getCompanyByIdApi =(data)=>{
+export const getCompanyByIdApi = (data) => {
     return HttpClient.doGet(api.companyMethod + "/" + data)
 }
 
-export const getLogoCompanyByCompanyIDApi =(data)=>{
+export const getLogoCompanyByCompanyIDApi = (data) => {
     return HttpClient.doGet(api.getLogoByCompanyId + "/" + data)
 }
 
@@ -29,6 +29,10 @@ export const getCompanyBySorted = (data) => {
             : ""))
 }
 
+export const getCompanySpecFilterApi = (data) => {
+    return HttpClient.doPost(api.companySpecFilter, data)
+}
+
 export const getCompanies = (data) => {
     return HttpClient.doGet(api.companyMethod + (data && data.page && data.size ? "?page=" + (data.page - 1) + "&size=" + data.size : ""))
 }
@@ -37,6 +41,6 @@ export const deleteCompany = (data) => {
     return HttpClient.doDelete(api.companyMethod + "/" + data)
 }
 
-export const getCompanyByUserIdApi=(data)=>{
+export const getCompanyByUserIdApi = (data) => {
     return HttpClient.doGet(api.companyUserById + (data && data ? '/' + data.currentUserId : ''))
 }

@@ -1,9 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Table} from "reactstrap";
 import {AiOutlineSetting, BiCheckDouble} from "react-icons/all";
 import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../utils/contants";
 
 export default function TableUsers({members}) {
+
+    useEffect(()=>{
+        // socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
+    },[])
 
     return (
         <div className="d-flex justify-content-center" style={{overflowY: 'scroll', height: '57vh'}}>

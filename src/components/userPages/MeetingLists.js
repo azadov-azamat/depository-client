@@ -37,18 +37,12 @@ export const MeetingLists = () => {
     const userId = parseInt(localStorage.getItem(DEPOSITORY_USER));
 
     useEffect(() => {
-        dispatch(subscribe('/topic/getMember'));
-        return () => {
-            dispatch(unsubscribe('/topic/getMember'));
-        }
-    }, [dispatch])
-
-    useEffect(() => {
         dispatch(adminMeetingAction.getMeetingByUserIdAndCompanyIdAction({userId: userId, companyId: companyId}))
         dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}))
     }, [companyId, userId])
 
-    function setStatusOnline(memberId) {
+    function setStatusOnline(memberId, meetingId) {
+        dispatch(subscribe('/topic/getMember/' + meetingId));
         console.log(memberId)
         const data = {
             memberId: memberId,
