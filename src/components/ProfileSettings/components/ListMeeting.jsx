@@ -12,7 +12,7 @@ import {
     ORDINARY,
     PENDING
 } from "../../../utils/contants";
-import ButtonValue from "../../userPages/component/ButtonValue";
+import ButtonValue from "./ButtonValue";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -32,6 +32,7 @@ export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
 
     let query = useQuery();
 
+    console.log(meetings)
     const companyId = query.get("company_id");
 
     useEffect(() => {
@@ -127,8 +128,8 @@ export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
                                 <div className="col-md-4 d-flex justify-content-center align-items-center d-md-none">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
                                         btnValue(userMeeting.id) :
-                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} id={id}
-                                                     isConfirmed={isConfirmed} historyPushItem={historyPushItem}/>
+                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={companyId}
+                                                     setStatusOnlineUser={setStatusOnlineUser}/>
                                     }
                                 </div>
 
@@ -141,12 +142,11 @@ export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
                                     </text>
                                 </div>
 
-                                <div
-                                    className="col-md-4 d-flex justify-content-end align-items-center d-none d-md-grid">
+                                <div className="col-md-4 d-md-flex justify-content-center align-items-center d-none">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
                                         btnValue(userMeeting.id) :
-                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={id}
-                                                     isConfirmed={isConfirmed} historyPushItem={historyPushItem}/>
+                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={companyId}
+                                                     setStatusOnlineUser={setStatusOnlineUser}/>
                                     }
                                 </div>
                             </div>

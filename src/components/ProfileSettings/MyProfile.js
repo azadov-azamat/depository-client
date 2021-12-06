@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Container} from "reactstrap";
 import ProfileRoute from "../../routes/ProfileRoute";
-import {Route, Switch, useParams} from "react-router-dom";
+import {Route, Switch, useLocation, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import * as companyAction from "../../redux/actions/CompanyAction";
 import {DEPOSITORY_USER} from "../../utils/contants";
@@ -12,28 +12,33 @@ import {useTranslation} from "react-i18next";
 import {getUserById} from "../../redux/actions/UsersAction";
 import {List} from "../userPages/component/List";
 import {ListMeeting} from "./components/ListMeeting";
+import * as adminMeetingAction from "../../redux/actions/MeetingAction";
+
+function useQuery() {
+    const {search} = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 export default function MyProfile() {
 
     const {id} = useParams();
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    let query = useQuery();
     const reducers = useSelector(state => state)
     const {currentUser, loading} = reducers.users
     const {companiesByUserId} = reducers.company
+    const {meetings, meetingByUser} = reducers.meeting;
 
     const [booleanMy, setBooleanMy] = useState(false);
-    // const ID = parseInt(localStorage.getItem(DEPOSITORY_USER))
 
-    console.log(currentUser)
+    const companyId = parseInt(query.get("company_id"));
+    const userId = parseInt(localStorage.getItem(DEPOSITORY_USER));
 
     useEffect(() => {
-        // dispatch(companyAction.getCompanyByUserId({currentUserId: ID}))
-        // dispatch(getUserById({ID: ID}))
+        dispatch(adminMeetingAction.getMeetingByUserIdAndCompanyIdAction({userId: userId, companyId: companyId}))
     }, [id])
-
-    const userCompanies = [];
-    const userMeetings = [];
 
     useEffect(() => {
         setBooleanMy(
@@ -63,10 +68,10 @@ export default function MyProfile() {
                         <ProfileUser lang={t} loading={loading} currentUser={currentUser}/>
                     </Route>
                     <Route path={"/supervisory/profile/organization"}>
-                        <OrganizationUser lang={t} userCompanies={userCompanies}/>
+                        <OrganizationUser lang={t} ID={userId}/>
                     </Route>
                     <Route path={"/supervisory/profile/meetings"}>
-                        <ListMeeting lang={t} userMeetings={userMeetings}/>
+                        <ListMeeting lang={t} meetings={meetingByUser}/>
                     </Route>
                 </Switch>
             </Container>

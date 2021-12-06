@@ -66,8 +66,8 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                         case CHAIRMAN:
                             return (
                                 <button style={style}
-                                    onClick={() => historyPushItem(CHAIRMAN, element.id, meetingId)}
-                                    className="create py-2 my-2 px-2 mx-2">
+                                        onClick={() => historyPushItem(CHAIRMAN, element.id, meetingId)}
+                                        className="create py-2 my-2 px-2 mx-2">
                                     Управлять заседаниями <br/> (Председатель)
                                 </button>
                             )

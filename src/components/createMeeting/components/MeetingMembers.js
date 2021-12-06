@@ -9,7 +9,7 @@ import 'antd/dist/antd.css';
 import * as adminUsersAction from "../../../redux/actions/UsersAction";
 import * as meetingActions from '../../../redux/actions/MeetingAction';
 import {toast} from "react-toastify";
-import {CHAIR_MAN, DEPOSITORY_CURRENT_MEETING, SECRETARY, SPEAKER, WATCHER} from "../../../utils/contants";
+import {SECRETARY, SPEAKER, WATCHER} from "../../../utils/contants";
 import usePagination from "../../Dashboard/Pagination";
 import {Pagination} from "@material-ui/lab";
 import {confirmAlert} from "react-confirm-alert";
@@ -57,7 +57,12 @@ export default function MeetingMembers({currentMeetingId}) {
             type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
             payload: []
         })
-        dispatch(meetingActions.getMemberByMeetingId({meetingId: parseInt(meetingId), page: page, size, fromReestr: false}))
+        dispatch(meetingActions.getMemberByMeetingId({
+            meetingId: parseInt(meetingId),
+            page: page,
+            size,
+            fromReestr: false
+        }))
     }, [page])
 
     const submit = (currentMemberId) => {
