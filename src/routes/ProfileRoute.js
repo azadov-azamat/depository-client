@@ -75,13 +75,11 @@ export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
         return (
             <div className="d-lg-inline-flex align-items-center d-none">
                 <Link to="/admin" className="nav-link text-dark"><FaArrowLeft/></Link>
-                <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
-                    голосование</Link>
+                <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
                 <Link className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link to={'/admin'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Главное
-                    меню</Link>
+                <Link to={'/admin'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.menu")}</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link className="nav-link h4 disabled" style={{color: "#3D5398"}}>Мой профиль</Link>
+                <Link className="nav-link h4 disabled" style={{color: "#3D5398"}}>{lang("routes.profile")}</Link>
             </div>
         )
     }
@@ -90,13 +88,12 @@ export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
         return (
             <div className="d-lg-inline-flex align-items-center d-none">
                 <Link to="/admin" className="nav-link text-dark"><FaArrowLeft/></Link>
-                <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
-                    голосование</Link>
+                <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
                 <Link className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'/issuerLegal/companies'} className="nav-link"
-                      style={{color: "rgba(155,153,150,0.98)"}}>Акционерное общества</Link>
+                      style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.clientPage.clientPage")}</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
-                <Link className="nav-link h4 disabled" style={{color: "#3D5398"}}>Мой профиль</Link>
+                <Link className="nav-link h4 disabled" style={{color: "#3D5398"}}>{lang("routes.profile")}</Link>
             </div>
         )
     }

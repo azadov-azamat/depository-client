@@ -163,6 +163,7 @@
   "routes" : {
     "menu" : "Main menu",
     "electronVoting": "Electronic voting",
+    "profile": "My profile",
 
     "controlPage" : {
       "company": "companies",

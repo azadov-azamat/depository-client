@@ -161,6 +161,7 @@
   "routes": {
     "menu": "Asosiy menyu",
     "electronVoting": "Elektron ovoz berish",
+    "profile": "Mening profilim",
 
     "controlPage": {
       "company": "kompaniyalar",

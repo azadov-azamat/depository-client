@@ -162,6 +162,7 @@
   "routes" : {
     "menu" : "Главное меню",
     "electronVoting": "Электронное голосование",
+    "profile": "Мой профиль",
 
     "controlPage" : {
       "company": "компаниями",
