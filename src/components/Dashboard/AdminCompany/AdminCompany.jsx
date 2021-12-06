@@ -31,7 +31,7 @@ function AdminCompany() {
     const count = Math.ceil(payload && payload[0] / 6);
     const _DATA = usePagination(companies && companies, size);
 
-    const startIndex = (page - 1) * 6;
+    const startIndex = (page - 1) * size;
     const lastIndex = startIndex + (payload && payload[1]);
 
     const handleChange = (e, p) => {

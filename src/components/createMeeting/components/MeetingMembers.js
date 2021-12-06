@@ -30,19 +30,19 @@ export default function MeetingMembers({currentMeetingId}) {
     const reducers = useSelector(state => state)
     const {users} = reducers.users
     const {memberManagerState} = reducers.meeting
+    const {payload} = reducers.auth.totalCount
 
-    const [membersByMeeting, setMembersByMeeting] = useState([]);
     const [selectedUser, setSelectedUser] = useState();
     const [selectedRole, setSelectedRole] = useState();
 
     const [page, setPage] = useState(1);
-    const size = 6;
+    const size = 5;
 
-    const count = Math.ceil(membersByMeeting.length / size);
-    const _DATA = usePagination(membersByMeeting && membersByMeeting, size);
+    const count = Math.ceil(payload && payload[0] / size);
+    const _DATA = usePagination(memberManagerState && memberManagerState, size);
 
     const startIndex = (page - 1) * size;
-    const lastIndex = startIndex + (membersByMeeting.length);
+    const lastIndex = startIndex + (payload && payload[1]);
 
     let query = useQuery();
     const meetingId = query.get("meeting_id");
@@ -210,9 +210,9 @@ export default function MeetingMembers({currentMeetingId}) {
                 <div className="d-none d-md-flex justify-content-md-between position-fixed align-items-center"
                      style={{width: '60%', bottom: '4px'}}>
                     <p className="d-md-flex align-items-center mt-2" style={{fontWeight: 'bold'}}>
-                        {membersByMeeting.length === 0 ?
+                        {(payload && payload[0]) === 0 ?
                             "Учётний запись - 0" :
-                            "Учётний запись " + (startIndex + 1) + " - " + lastIndex + " из " + (membersByMeeting.length)
+                            "Учётний запись " + (startIndex + 1) + " - " + lastIndex + " из " + ((payload && payload[0]))
                         }
                     </p>
                     <Pagination
@@ -228,9 +228,9 @@ export default function MeetingMembers({currentMeetingId}) {
                 </div>
                 <div className="d-md-none d-flex justify-content-between mb-3">
                     <p className="d-flex align-items-center mt-2" style={{fontWeight: 'bold'}}>
-                        {membersByMeeting.length === 0 ?
+                        {(payload && payload[0]) === 0 ?
                             "Учётний запись - 0" :
-                            "Учётний запись " + (startIndex + 1) + " - " + lastIndex + " из " + (membersByMeeting.length)
+                            "Учётний запись " + (startIndex + 1) + " - " + lastIndex + " из " + ((payload && payload[0]))
                         }
                     </p>
                     <Pagination
