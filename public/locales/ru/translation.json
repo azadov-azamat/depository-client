@@ -123,6 +123,14 @@
     "from": "из"
   },
 
+  "meetingsList": {
+    "nameCompany": "Компания",
+    "statusMeeting": "Статус заседание",
+    "startRegister":"Начало регистрации",
+    "startMeeting": "Начало засидание",
+    "city": "Город/область"
+  },
+
   "routes" : {
     "menu" : "Главное меню",
     "electronVoting": "Электронное голосование",

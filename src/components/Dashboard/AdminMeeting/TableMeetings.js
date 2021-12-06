@@ -23,15 +23,58 @@ export default function TableMeetings({meetings}) {
 
     function status(status) {
         if (status === ACTIVE) {
-            return 'Активно по распиванию'
-        } else if (status === PENDING) {
-            return "Ожидает запуска"
-        } else if (status === FINISH) {
-            return 'Завершено (в архиве)'
-        } else if (status === CANCELED) {
-            return 'Отменено (в архиве)'
+            if (language === "ru"){
+                return 'Активно по распиванию'
+            }
+            if (language === "uz"){
+                return 'Jadval bo\'yicha faol'
+            }
+            if (language === "en"){
+                return 'Active on schedule'
+            }
+        }
+        else if (status === PENDING) {
+            if (language === "ru"){
+                return "Ожидает запуска"
+            }
+            if (language === "uz"){
+                return 'Ishga tushirish kutilmoqda'
+            }
+            if (language === "en"){
+                return 'Awaiting launch'
+            }
+        }
+        else if (status === FINISH) {
+            if (language === "ru"){
+                return 'Завершено (в архиве)'
+            }
+            if (language === "uz"){
+                return 'Tugallangan (arxivlangan)'
+            }
+            if (language === "en"){
+                return 'Completed (archived)'
+            }
+        }
+        else if (status === CANCELED) {
+            if (language === "ru"){
+                return 'Отменено (в архиве)'
+            }
+            if (language === "uz"){
+                return 'Bekor qilingan (arxivlangan)'
+            }
+            if (language === "en"){
+                return 'Canceled (archived)'
+            }
         } else if (status === DISABLED) {
-            return 'Неактивно'
+            if (language === "ru"){
+                return 'Неактивно'
+            }
+            if (language === "uz"){
+                return 'Faol emas'
+            }
+            if (language === "en"){
+                return 'No active'
+            }
         }
     }
 

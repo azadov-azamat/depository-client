@@ -120,6 +120,15 @@
     "accountCount": "Hisob",
     "from": "dan"
   },
+
+  "meetingsList": {
+    "nameCompany": "Kompaniya",
+    "statusMeeting": "Uchrashuv holati",
+    "startRegister":"Ro'yxatdan o'tish boshlanishi",
+    "startMeeting": "Uchrashuv boshlanishi",
+    "city": "Shahar/Viloyat"
+  },
+
   "routes": {
     "menu": "Asosiy menyu",
     "electronVoting": "Elektron ovoz berish",

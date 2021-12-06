@@ -17,13 +17,12 @@ import {useTranslation} from "react-i18next";
 function AdminMeetings() {
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const {t} = useTranslation();
 
     const reducers = useSelector(state => state);
 
     const {payload} = reducers.auth.totalCount
-    const {meetings, citiesList} = reducers.meeting
+    const {meetings} = reducers.meeting
 
     const [name, setName] = useState('');
 
@@ -77,20 +76,6 @@ function AdminMeetings() {
         }
     }
 
-    // useEffect(() => {
-    //     dispatch(adminMeetingAction.getCitiesAction());
-    // }, [])
-
-    const updateMeeting = (currentMeeting) => {
-        dispatch({
-            type: REQUEST_CREATE_MEETING,
-            payload: currentMeeting
-        })
-        history.push("/supervisory/addOrEditMeeting/meeting?type=update&meeting_id=" + currentMeeting.id)
-    }
-
-    console.log(citiesList)
-
     return (
         <div className="dashboard p-3">
             <div className="container-fluid">
@@ -104,11 +89,11 @@ function AdminMeetings() {
                                 <thead>
                                 <tr>
                                     <th style={{width: '15px'}}/>
-                                    <th style={{width: '170px'}} className='text-center '>Компания</th>
-                                    <th style={{width: '140px'}} className='text-center '>Статус заседание</th>
-                                    <th style={{width: '135px'}} className='text-center '>Начало регистрации</th>
-                                    <th style={{width: '123px'}} className='text-center '>Начало засидание</th>
-                                    <th style={{width: '135px'}} className='text-center  '>Город/область</th>
+                                    <th style={{width: '170px'}} className='text-center '>{t("meetingsList.nameCompany")}</th>
+                                    <th style={{width: '140px'}} className='text-center '>{t("meetingsList.statusMeeting")}</th>
+                                    <th style={{width: '135px'}} className='text-center '>{t("meetingsList.startRegister")}</th>
+                                    <th style={{width: '123px'}} className='text-center '>{t("meetingsList.startMeeting")}</th>
+                                    <th style={{width: '135px'}} className='text-center  '>{t("meetingsList.city")}</th>
                                     <th style={{width: '15px'}}/>
                                     <th style={{width: '15px'}}/>
                                 </tr>

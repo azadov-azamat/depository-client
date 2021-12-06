@@ -137,7 +137,7 @@ export const ControllerMeeting = () => {
             setCall(false)
         }
     }, [startCallMeeting, endCallMeeting])
-    //setStatus
+
     importScript("https://meet.jit.si/external_api.js");
 
     const StartZoomMeeting = event => {

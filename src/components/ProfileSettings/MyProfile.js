@@ -46,16 +46,6 @@ export default function MyProfile() {
             companiesByUserId?.some(element => element.chairmanId === currentUser.id || element.secretaryId === currentUser.id));
          }, [booleanMy, companiesByUserId])
 
-    // companiesByUserId && companiesByUserId.forEach(element => {
-    //     if (element.chairmanId === currentUser.id || element.secretaryId === currentUser.id) {
-    //         userCompanies.push(element)
-    //         setBooleanMy(true)
-    //         element.meetings.forEach(meet => {
-    //             userMeetings.push(meet)
-    //         })
-    //     }
-    // })
-
     const styleCursor = {
         cursor: 'wait'
     }

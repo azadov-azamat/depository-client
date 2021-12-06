@@ -123,6 +123,13 @@
     "accountCount" : "Account",
     "from": "from"
   },
+  "meetingsList": {
+    "nameCompany": "Company",
+    "statusMeeting": "Meeting status",
+    "startRegister":"Registration start",
+    "startMeeting": "Beginning sitting up",
+    "city": "City/region"
+  },
   "routes" : {
     "menu" : "Main menu",
     "electronVoting": "Electronic voting",
