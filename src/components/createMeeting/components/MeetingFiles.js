@@ -171,8 +171,8 @@ export default function MeetingFiles({currentMeeting, lang}) {
                                     meetingFile && meetingFile.map((element, index) =>
                                         <tr key={index}>
                                             <td>{index + 1}</td>
-                                            <td>{element.agendaSubject}</td>
                                             <td>{element.originalFileName}</td>
+                                            <td>{element.agendaSubject}</td>
                                             <td style={{width: '0'}}>
                                                 <a href={BASE_URL + api.downloadFile + element.id} download
                                                    className='text-dark'><FaEye/></a>

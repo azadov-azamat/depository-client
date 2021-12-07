@@ -88,9 +88,9 @@ export default function MeetingMembers({currentMeetingId, lang}) {
     };
 
     const roleUser = [
-        {value: SECRETARY, text: 'Секретарь'},
-        {value: SPEAKER, text: 'Доклатчик'},
-        {value: WATCHER, text: 'Приглашенный'},
+        {value: SECRETARY, text: lang("meetingCreated.roles.secretary")},
+        {value: SPEAKER, text: lang("meetingCreated.roles.speaker")},
+        {value: WATCHER, text: lang("meetingCreated.roles.watcher")},
         // {value: CHAIR_MAN, text: 'Председатель'}
     ];
 
@@ -108,7 +108,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
 
     function addedUsers() {
         if (!selectedUser && !selectedRole) {
-            toast.error('Пожалуйста, Заполните все')
+            toast.error(lang("toast.warning"))
         } else {
             const data = {
                 meetingId: parseInt(meetingId),
@@ -133,7 +133,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
             <Col md={3} className="">
                 <AvForm onValidSubmit={addedUsers}>
                     <div className="form-group mt-2">
-                        <Label for="companySecretary" className='required_fields'>Учетная запись</Label>
+                        <Label for="companySecretary" className='required_fields'>{lang("companiesList.accountCount")}</Label>
                         <Select
                             className="setting_input w-100"
                             showSearch
@@ -152,7 +152,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                         </Select>
                     </div>
                     <div className="form-group mt-2">
-                        <Label>Добавите Роль</Label>
+                        <Label>{lang("meetingCreated.roles.addRole")}</Label>
                         <Select
                             className="setting_input w-100"
                             placeholder="Select a role"
@@ -165,8 +165,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                         </Select>
                     </div>
                     <div className="d-flex justify-content-center mt-4 mb-md-0 mb-3">
-                        <button className="btn py-3 px-4 mx-2 create " type="submit">Добавить пользователя
-                        </button>
+                        <button className="btn py-3 px-4 mx-2 create " type="submit">{lang("meetingCreated.roles.addMember")}</button>
                     </div>
                 </AvForm>
             </Col>
@@ -176,9 +175,9 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                         <thead className="navUsers">
                         <tr>
                             <th scope="col" style={{width: '0'}}>#</th>
-                            <th scope="col" className='w-25'>ФИО</th>
-                            <th scope="col" className='w-25'>ПНФЛ</th>
-                            <th scope="col" className='w-25'>Роль</th>
+                            <th scope="col" className='w-25'>{lang("AdminUser.fullName")}</th>
+                            <th scope="col" className='w-25'>{lang("AdminUser.pinfl")}</th>
+                            <th scope="col" className='w-25'>{lang("AdminUser.role")}</th>
                             <th scope="col" style={{width: '0'}}>
                                 <BiCheckDouble fontSize={25} color={"green"}/>
                             </th>
@@ -192,9 +191,9 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                                     <td>{role.user.fullName}</td>
                                     <td>{role.user.pinfl} </td>
                                     <td>{
-                                        role.memberTypeEnum === SPEAKER ? 'Доклатчик' : '' ||
-                                        role.memberTypeEnum === WATCHER ? 'Приглашенный' : '' ||
-                                        role.memberTypeEnum === SECRETARY ? 'Секретар' : ''
+                                        role.memberTypeEnum === SPEAKER ? lang("meetingCreated.roles.speaker") : '' ||
+                                        role.memberTypeEnum === WATCHER ? lang("meetingCreated.roles.watcher") : '' ||
+                                        role.memberTypeEnum === SECRETARY ? lang("meetingCreated.roles.secretary") : ''
                                     }</td>
                                     <td>
                                         <button className="btn btn-link"
@@ -206,7 +205,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                                 </tr>
                             ) :
                             <tr className='text-center'>
-                                <th colSpan="5">Ничего не найдена</th>
+                                <th colSpan="5">{lang("meetingCreated.emptyList")}</th>
                             </tr>
                         }
                         </tbody>
@@ -216,8 +215,8 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                      style={{width: '60%', bottom: '4px'}}>
                     <p className="d-md-flex align-items-center mt-2" style={{fontWeight: 'bold'}}>
                         {(payload && payload[0]) === 0 ?
-                            "Учётний запись - 0" :
-                            "Учётний запись " + (startIndex + 1) + " - " + lastIndex + " из " + ((payload && payload[0]))
+                            (lang("companiesList.accountCount") +" - 0") :
+                            lang("companiesList.accountCount") + " " + (startIndex + 1) + " - " + lastIndex + " " + (lang("companiesList.from")) + " " + ((payload && payload[0]))
                         }
                     </p>
                     <Pagination
@@ -234,8 +233,8 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                 <div className="d-md-none d-flex justify-content-between mb-3">
                     <p className="d-flex align-items-center mt-2" style={{fontWeight: 'bold'}}>
                         {(payload && payload[0]) === 0 ?
-                            "Учётний запись - 0" :
-                            "Учётний запись " + (startIndex + 1) + " - " + lastIndex + " из " + ((payload && payload[0]))
+                            (lang("companiesList.accountCount") +" - 0") :
+                            lang("companiesList.accountCount") + " " + (startIndex + 1) + " - " + lastIndex + " " + (lang("companiesList.from")) + " " + ((payload && payload[0]))
                         }
                     </p>
                     <Pagination

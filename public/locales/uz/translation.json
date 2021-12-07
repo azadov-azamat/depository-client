@@ -71,7 +71,8 @@
     "email": "E-mail",
     "number": "Telefon raqam",
     "group": "Gurux",
-    "pinfl": "PINFL"
+    "pinfl": "PINFL",
+    "role": "Rol"
   },
 
   "UsersHeading": {
@@ -155,7 +156,17 @@
       "disabled": "Faol emas",
       "extraordinary": "Kuzatuv kengashining rejalashtirilgan majlisi",
       "ordinary": "Kuzatuv kengashining rejadan tashqari yig'ilishi"
-    }
+    },
+    "roles": {
+      "secretary": "Kotib",
+      "speaker": "Spiker",
+      "watcher": "Taklif qilingan",
+      "chairman": "Rais",
+      "simple": "",
+      "addRole": "Rol qo'shish",
+      "addMember": "Foydalanuvchi qo'shish"
+    },
+    "emptyList": "Hech narsa topilmadi"
   },
 
   "routes": {

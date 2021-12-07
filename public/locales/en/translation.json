@@ -71,7 +71,8 @@
     "email": "E-mail",
     "number": "Phone number",
     "group": "Group",
-    "pinfl": "PINFL"
+    "pinfl": "PINFL",
+    "role": "Role"
   },
 
   "UsersHeading": {
@@ -157,7 +158,17 @@
       "disabled": "Not active",
       "extraordinary": "Scheduled meeting of the supervisory board",
       "ordinary": "Unscheduled meeting of the supervisory board"
-    }
+    },
+    "roles": {
+      "secretary": "Secretary",
+      "speaker": "Speaker",
+      "watcher": "Watcher",
+      "chairman": "Chairman",
+      "simple": "",
+      "addRole": "Add Role",
+      "addMember": "Add Member"
+    },
+    "emptyList": "Nothing found"
   },
 
   "routes" : {
