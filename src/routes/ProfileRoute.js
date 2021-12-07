@@ -91,7 +91,7 @@ export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
                 <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
                 <Link className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link to={'/issuerLegal/companies'} className="nav-link"
-                      style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.clientPage.clientPage")}</Link>
+                      style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.controlPage.clientPage")}</Link>
                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                 <Link className="nav-link h4 disabled" style={{color: "#3D5398"}}>{lang("routes.profile")}</Link>
             </div>
