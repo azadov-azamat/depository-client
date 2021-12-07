@@ -49,6 +49,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
             data.append('file', v);
             data.append('meetingId', currentMeeting.id);
             dispatch(meetingActions.addReestrByMeetingAction({data, toast}))
+            setChecked(false)
         }
     }
 
