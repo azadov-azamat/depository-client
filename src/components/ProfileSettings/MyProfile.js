@@ -53,7 +53,7 @@ export default function MyProfile() {
     return (
         <div style={loading ? styleCursor : {}}>
             <Container>
-                <ProfileRoute lang={t} booleanComp={booleanMy}/>
+                <ProfileRoute lang={t} booleanComp={!booleanMy}/>
                 <Switch>
                     <Route path={"/supervisory/profile/user"} exact>
                         <ProfileUser lang={t} loading={loading} currentUser={currentUser}/>

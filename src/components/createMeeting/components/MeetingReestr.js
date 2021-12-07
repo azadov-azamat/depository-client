@@ -11,12 +11,13 @@ import {api} from "../../../api/api";
 import {CHAIRMAN} from "../../../utils/contants";
 import Loader from "react-loader-spinner";
 import {confirmAlert} from "react-confirm-alert";
+import {addedChairmanFromReestrPageAction} from "../../../redux/actions/MeetingAction";
 
 export default function MeetingReestr({currentMeeting, lang}) {
 
     const dispatch = useDispatch()
     const reducers = useSelector(state => state)
-        const {loadingReestr, currentReestr, memberManagerState} = reducers.meeting
+    const {loadingReestr, currentReestr, memberManagerState} = reducers.meeting
     const [fromReestr, setFromReestr] = useState([])
     const [excelFile, setExcelFile] = useState({
         fileName: "",
@@ -60,30 +61,35 @@ export default function MeetingReestr({currentMeeting, lang}) {
             return (<p>xatolik yuz berdi, Iltimos tekshiring</p>)
         } else if (!currentReestr) {
             return (<p>file yuklang</p>)
+        }else if (myBoolean){
+            return (<a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>file yuklang</a>)
         }
     }
 
-    useEffect(() => {
-        setMyBoolean(memberManagerState?.some(element => element.memberTypeEnum === CHAIRMAN));
-    }, [memberManagerState])
-
     const [myBoolean, setMyBoolean] = useState(false)
 
+    useEffect(() => {
+        setMyBoolean(memberManagerState && memberManagerState.some(element => element.memberTypeEnum === CHAIRMAN));
+    }, [memberManagerState])
 
-    function electChairmanForMeeting(chairmanId) {
+
+    function electChairmanForMeeting(memberId) {
         confirmAlert({
-            title: 'Удалить',
-            message: 'Вы действительно хотите удалить в компанию?',
+            title: 'Выбор председатель',
+            message: 'Вы действительно хотите избрать этого Член наблюдательного совета?',
             buttons: [
                 {
                     label: 'Да',
                     onClick: () => {
-                        setMyBoolean(true)
+                        dispatch(meetingActions.addedChairmanFromReestrPageAction({memberId, setMyBoolean}))
                     }
 
                 },
                 {
                     label: 'Нет',
+                    onClick: () => {
+                        dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeeting?.id, fromReestr: true}))
+                    }
                 }
             ]
         });

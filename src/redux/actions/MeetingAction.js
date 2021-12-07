@@ -1,6 +1,6 @@
 import {
     addAgendaAndMeetingFileApi,
-    addAgendaApi,
+    addAgendaApi, addedChairmanFromReestrPageApi,
     addMemberManagerApi,
     addReestrByMeetingApi,
     addVotingMeetingApi,
@@ -156,7 +156,19 @@ export const getMemberByMeetingId = (payload) => async (dispatch) => {
         data: payload
     }).then(res=>{
         console.log(res)
-        // console.log("KELDI========================")
+        console.log("KELDI========================")
+    });
+} // success 90%
+
+export const addedChairmanFromReestrPageAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: addedChairmanFromReestrPageApi,
+        types: ["REQUEST_START_MEMBER", "REQUEST_ADDED_CHAIRMAN_FROM_REESTR_PAGE_SUCCESS", "REQUEST_ERROR_MEMBER"],
+        data: payload.memberId
+    }).then(res=>{
+        console.log(res)
+        dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId, fromReestr: true}))
+        console.log("KELDI========================")
     });
 } // success 90%
 

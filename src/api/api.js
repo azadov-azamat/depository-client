@@ -1,3 +1,5 @@
+import {addedChairmanFromReestrPageApi} from "./MeetingApi";
+
 export const api = {
     login: '/authenticate',
     userMe: '/account',
@@ -9,6 +11,7 @@ export const api = {
     meetingByCompany: '/meeting/by-company',
     meetingByUserAndCompany: '/meeting/by-user',
     member: '/member',
+    addedChairmanFromReestrPage: '/member/elect-chairmen/',
     memberManager: '/member/managers',
     memberByMeetingId: '/member/by-meeting',
     memberTypeEnum: '/member/member-types',

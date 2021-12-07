@@ -44,6 +44,9 @@ export const getMeetingByCompanyIdApi = (data) => {
 export const getMemberByIdApi = (data) => {
     return HttpClient.doGet(api.member + "/" + (data && data))
 }
+export const addedChairmanFromReestrPageApi = (data) => {
+    return HttpClient.doPost(api.addedChairmanFromReestrPage + (data && data))
+}
 export const getMemberByMeetingIdApi = (data) => {
     return HttpClient.doGet(api.memberByMeetingId + (data && data.meetingId ? "?meetingId=" + data.meetingId + "&page=" + (data.page - 1) + "&size=" + data.size + "&fromReestr=" + data.fromReestr : ''))
 }
