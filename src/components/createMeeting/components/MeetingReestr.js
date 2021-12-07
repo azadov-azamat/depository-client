@@ -61,12 +61,13 @@ export default function MeetingReestr({currentMeeting, lang}) {
             return (<p>xatolik yuz berdi, Iltimos tekshiring</p>)
         } else if (!currentReestr) {
             return (<p>file yuklang</p>)
-        }else if (myBoolean){
+        } else if (myBoolean) {
             return (<a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>file yuklang</a>)
         }
     }
 
     const [myBoolean, setMyBoolean] = useState(false)
+    const [checked, setChecked] = useState(false)
 
     useEffect(() => {
         setMyBoolean(memberManagerState && memberManagerState.some(element => element.memberTypeEnum === CHAIRMAN));
@@ -74,6 +75,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
 
 
     function electChairmanForMeeting(memberId) {
+
         confirmAlert({
             title: 'Выбор председатель',
             message: 'Вы действительно хотите избрать этого Член наблюдательного совета?',
@@ -81,6 +83,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
                 {
                     label: 'Да',
                     onClick: () => {
+                        setChecked(true)
                         dispatch(meetingActions.addedChairmanFromReestrPageAction({memberId, setMyBoolean}))
                     }
 
@@ -88,7 +91,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
                 {
                     label: 'Нет',
                     onClick: () => {
-                        dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeeting?.id, fromReestr: true}))
+                        setChecked(false)
                     }
                 }
             ]
@@ -184,14 +187,13 @@ export default function MeetingReestr({currentMeeting, lang}) {
                                             {element.memberTypeEnum === CHAIRMAN ?
                                                 <FaCheck/>
                                                 :
-                                                <form>
+                                                <div>
                                                     <input
-                                                        id={"chairman" + index}
+                                                        type="radio" id="huey" name="drone" value="huey"
                                                         className={myBoolean ? "d-none" : ""}
-                                                        type="radio"
                                                         onClick={() => electChairmanForMeeting(element.id)}
-                                                    />
-                                                </form>
+                                                        checked={checked}/>
+                                                </div>
 
                                             }
                                         </td>

@@ -53,13 +53,14 @@ export default function MeetingFiles({currentMeeting, lang}) {
     }, [currentMeeting])
 
 
-    function downloadSetFile(e, v) {
+    function downloadSetFile() {
 
         const data = new FormData();
         data.append('agendaId', selectAgenda);
         data.append('file', addFile.file);
         data.append('meetingId', meetingId);
         dispatch(meetingActions.addAgendaAndMeetingFile({data, history}))
+
     }
 
     const deleteUser = (id) => {
@@ -80,10 +81,6 @@ export default function MeetingFiles({currentMeeting, lang}) {
             ]
         });
     };
-
-    const download = (id) => {
-        dispatch(meetingActions.downloadByIdMeetingFiles(id))
-    }
 
     function forAgenda(value) {
         setSelectAgenda(value)
