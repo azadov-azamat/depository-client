@@ -268,15 +268,16 @@ export const ControllerMeeting = () => {
             toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
         }
     }
-function getMembers() {
-    console.log("keldi")
-    const data = {
-        memberId: memberId,
-        online: true
+
+    function getMembers() {
+        const data = {
+            memberId: memberId,
+            online: true
+        }
+
+        socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
     }
 
-    socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
-}
     return (
         <div className="container meeting">
             <div>
@@ -302,7 +303,7 @@ function getMembers() {
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
                                     <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}
                                                     startMeeting={startMeeting}
-                                                   meetingId={parseInt(id)}/>
+                                                    meetingId={parseInt(id)}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/all_users_list"}>
                                     <TableUsers members={onlineMemberManager && onlineMemberManager}/>

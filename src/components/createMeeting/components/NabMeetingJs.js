@@ -37,10 +37,10 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     const {currentUser} = reducers.auth
 
     const [country, setCountry] = useState([]);
-    const [selectCompany, setSelectCompany] = useState();
-    const [selectStatus, setSelectStatus] = useState();
-    const [selectCountry, setSelectCountry] = useState();
-    const [selectTypeEnum, setSelectTypeEnum] = useState();
+    const [selectCompany, setSelectCompany] = useState(currentMeeting.length !== 0 ? currentMeeting.companyId : "");
+    const [selectStatus, setSelectStatus] = useState(currentMeeting.length !== 0 ? currentMeeting.status : "");
+    const [selectCountry, setSelectCountry] = useState(currentMeeting.length !== 0 ? currentMeeting.cityId : "");
+    const [selectTypeEnum, setSelectTypeEnum] = useState(currentMeeting.length !== 0 ? currentMeeting.typeEnum : "");
 
     const language = localStorage.getItem('i18nextLng');
     const role = localStorage.getItem(DEPOSITORY_ROLE);
@@ -127,11 +127,24 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
 
     function editMeeting(e, v) {
         e.preventDefault();
+        const data2 = {
+            id: parseInt(id),
+            companyId: selectCompany,
+            cityId: parseInt(selectCountry),
+            address: v.address,
+            description: v.description,
+            startDate: v.startDate + ':22.981Z',
+            startRegistration: v.startRegistration + ':22.981Z',
+            endRegistration: v.endRegistration + ':22.981Z',
+            status: selectStatus,
+            typeEnum: selectTypeEnum,
+        }
+        console.log(data2)
         if (!selectCompany && !selectStatus && !selectCountry && !selectTypeEnum) {
             toast.warning("Пожалуйста, Заполните все")
         } else {
             const data = {
-                id: currentMeeting.id,
+                id: parseInt(id),
                 companyId: selectCompany,
                 cityId: parseInt(selectCountry),
                 address: v.address,

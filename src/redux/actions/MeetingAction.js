@@ -81,8 +81,7 @@ export const createMeeting = (payload) => async (dispatch) => {
     }).then(res => {
         console.log(res)
         const currentMeetingId = res.payload.id;
-        localStorage.setItem(DEPOSITORY_CURRENT_MEETING, currentMeetingId)
-        payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
+        payload.history.push("/supervisory/addOrEditMeeting/add_members?type=update&meeting_id=" + currentMeetingId)
     }).catch(err => {
         console.log(err.response.data)
         if (err.response.data.detail === "Company must have Chairmen or Secretary") {
@@ -105,10 +104,10 @@ export const updateMeetingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_UPDATE_MEETING", "REQUEST_UPDATE_MEETING", "REQUEST_ERROR_UPDATE_MEETING",],
         data: payload.data
     }).then(res => {
-        const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
-        dispatch(getMeetingByIdAction({meetingId: currentMeetingId}))
-        payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
+        const currentMeetingId = res.payload.id;
+        payload.history.push("/supervisory/addOrEditMeeting/add_members?type=update&meeting_id=" + currentMeetingId)
     }).catch(err => {
+        console.log(err)
     })
 }
 export const updateMeetingStatusAction = (payload) => async (dispatch) => {
@@ -134,7 +133,18 @@ export const deleteMeetingById = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch(getMeetingList({page: 1, size: 6}))
     }).catch(err => {
-        toast.error('Извини, ты ошибся')
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title} = err.response.data;
+        console.log(err.response.data)
+        if (errorKey === "ReestrExist") {
+            if (lang === "uz") {
+                toast.error("Bu uchrashuvda allaqachon Reestr ochilgan!");
+            } else if (lang === "ru") {
+                toast.error("К этому собранию уже есть Реестр!")
+            } else {
+                toast.error(title)
+            }
+        }
     })
 } // warning 60%
 
