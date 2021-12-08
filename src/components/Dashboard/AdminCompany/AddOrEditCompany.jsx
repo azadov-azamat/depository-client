@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Link, useHistory, useParams} from 'react-router-dom'
-import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
 import {ImCancelCircle} from "react-icons/all";
 import {useDispatch, useSelector} from 'react-redux';
 import {Col, Label, Row} from "reactstrap";
@@ -104,21 +104,22 @@ export default function AddOrEditCompany() {
     }
 
     const addCompany = (e, v) => {
-        if (selectUsers && phoneNumber && inn) {
+        if (phoneNumber && inn) {
             const data = {
-                active: selectUsers.active,
+                active: selectUsers.active ? selectUsers.active : true,
                 chairmanId: selectUsers.chairman,
                 secretaryId: selectUsers.secretary,
                 imageUrl: file ? "yes" : 'no',
                 image: file,
                 phoneNumber: phoneNumber,
                 inn: inn,
+                webPage: ("https://" + v.webPage),
                 ...v
             }
             console.log(data)
             dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
         } else {
-            toast.warning("Пожалуйста, Заполните все")
+            toast.warning(t("toast.warning"))
         }
     }
 
@@ -132,6 +133,7 @@ export default function AddOrEditCompany() {
             image: file,
             phoneNumber: phoneNumber,
             inn: inn,
+            webPage: ("https://" + v.webPage),
             ...v
         }
         dispatch(adminCompanyAction.updateCompany({data, history}))
@@ -167,7 +169,6 @@ export default function AddOrEditCompany() {
         }
     }
 
-    console.log(currentCompany)
     return (
         <div className="settings p-3">
             <div className="container-fluid" style={{marginTop: '12vh'}}>
@@ -194,9 +195,9 @@ export default function AddOrEditCompany() {
                                             <label htmlFor="file"
                                                    onChange={_handleImageChange}
                                                    className={`app-custom-label`}>
-                                                <div className="app-custom-info">
-                                                    <strong>Логотип!</strong>
-                                                </div>
+                                                {/*<div className="app-custom-info">*/}
+                                                {/*    <strong>Логотип!</strong>*/}
+                                                {/*</div>*/}
                                             </label>
                                         </form>
 
@@ -249,7 +250,7 @@ export default function AddOrEditCompany() {
                                             value={inn}
                                             minLength={9} maxLength={9}
                                             onChange={(e) => setInn(e.target.value)}
-                                            className="setting_input border "
+                                            className="setting_input border w-100"
                                             required
                                         />
                                     </div>
@@ -356,14 +357,18 @@ export default function AddOrEditCompany() {
                                     className="setting_input border "
                                     required/>
                             </div>
+
                             <AvField
                                 type="text"
-                                placeholder={"Введите веб сайт "}
+                                placeholder={"Введите веб сайт"}
                                 label={t("companiesList.webSite")}
                                 name="webPage"
                                 value={currentCompany?.webPage}
-                                style={{backgroundColor: "#ffffff"}}
-                                className="setting_input border "
+                                style={{
+                                    backgroundColor: "#ffffff",
+                                    borderLeft: "1px",
+                                }}
+                                className="setting_input border"
                             />
                         </Col>
                         <Col md={6}>
