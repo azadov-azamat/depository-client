@@ -25,6 +25,10 @@ export default function FormForMeeting({getName, lang}) {
 
     const Name = (name, index) => {
         getName(name, index)
+       // if (index === 2){
+       //     let date = new Date(name);
+       //     console.log(date)
+       // }
     };
 
     return (
@@ -33,10 +37,14 @@ export default function FormForMeeting({getName, lang}) {
                 <th scope="row" className="text-center"><RiUserSearchLine className='mt-2'
                                                                           style={{width: '15px', color: '#132E85'}}/>
                 </th>
-                <td style={{width: '170px'}}><Input className="input input-group-sm" type="text" name="company"
-                                                    onChange={e => Name(e.target.value, 0)}/></td>
+                <td style={{width: '170px'}}>
+                    <Input className="input input-group-sm" type="text" name="company"
+                           onChange={e => Name(e.target.value, 0)}/>
+                </td>
                 <td style={{width: '140px'}}>
-                    <Input className="input text-center input-group-sm" type="select" name="status" id="name">
+                    <Input className="input text-center input-group-sm" type="select" name="status" id="name"
+                           onChange={e => Name(e.target.value, 1)}
+                    >
                         <option value={'ALL'}>{
                             language === 'uz' ? "Hammasi" : ""
                             || language === 'en' ? "All" : ""
@@ -50,20 +58,22 @@ export default function FormForMeeting({getName, lang}) {
                     </Input>
                 </td>
                 <td style={{width: '135px'}}>
-                    <Datetime/>
+                    <Datetime onChange={(e) => Name(e["_d"], 2)}/>
                 </td>
                 <td style={{width: '123px'}}>
-                    <Datetime/>
+                    <Datetime onChange={(e) => Name(e["_d"], 3)}/>
                 </td>
                 <td style={{width: '135px'}}>
-                    <Input className="input text-center input-group-sm" type="select" name="status" id="name">
+                    <Input className="input text-center input-group-sm" type="select" name="status" id="name"
+                           onChange={(e) => Name(e.target.value, 4)}
+                    >
                         <option value={'ALL'}>{
                             language === 'uz' ? "Hammasi" : ""
                             || language === 'en' ? "All" : ""
                             || language === "ru" ? "Всё" : ""
                         }</option>
-                        {country && country.map((value, index) =>
-                            <option key={index} value={value.id}>{
+                        {country && country.map(value =>
+                            <option value={value.id}>{
                                 language === 'uz' ? value.nameUz : ""
                                 || language === 'en' ? value.nameEn : ""
                                 || language === "ru" ? value.nameRu : ""

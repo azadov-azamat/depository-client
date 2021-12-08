@@ -52,32 +52,12 @@ function AdminCompany() {
                 createCompanyLoading: false
             }
         });
+        dispatch({
+            type: "REQUEST_API_SUCCESS_USERS",
+            payload: []
+        })
     }, [page, name])
 
-    const getName = (value, index) => {
-        setName(value)
-        const NAME = 'NAME'
-        const EMAIL = 'EMAIL'
-        const INN = 'INN'
-        const PHONE_NUMBER = 'PHONE_NUMBER'
-        const WEB_PAGE = 'WEB_PAGE'
-        let field = ''
-
-        if (index === 0) {
-            field = NAME
-        } else if (index === 1) {
-            field = EMAIL
-        } else if (index === 2) {
-            field = PHONE_NUMBER
-        } else if (index === 3) {
-            field = WEB_PAGE
-        } else if (index === 4) {
-            field = INN
-        }
-        if (value.length >= 3) {
-            dispatch(adminCompanyAction.getCompanyFilter({value, field}));
-        }
-    }
     const SearchCompanySpecFilter = (value, index) => {
 
         const data = {

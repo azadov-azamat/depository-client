@@ -9,7 +9,9 @@ export const getMeetingBySorted = (data) => {
             "?value=" + data.value + "&field=" + data.field
             : ""))
 }
-
+export const getMeetingSpecFilterApi = (data) => {
+    return HttpClient.doPost(api.meetingSpecFilter, data)
+}
 export const postMeeting = (data) => {
     return HttpClient.doPost(api.meetingMethod, data)
 }

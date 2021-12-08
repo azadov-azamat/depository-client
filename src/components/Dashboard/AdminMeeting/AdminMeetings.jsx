@@ -13,6 +13,7 @@ import RouteByDashboard from "../RouteByDashboard";
 import PaginationDashboard from "../PaginationDashboard";
 import {DEPOSITORY_CURRENT_MEETING} from "../../../utils/contants";
 import {useTranslation} from "react-i18next";
+import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 
 function AdminMeetings() {
 
@@ -76,6 +77,21 @@ function AdminMeetings() {
         }
     }
 
+    const SearchMeetingSpecFilter = (value, index) => {
+
+        const data = {
+            companyId: index === 0 ? value : null,
+            status: index === 1 ? value : '',
+            typeEnum: index === 2 ? value : '',
+            startDate: index === 3 ? value : '',
+            cityId: index === 4 ? value : null,
+        }
+
+        // if (value.length >= 3) {
+            dispatch(adminMeetingAction.getMeetingSpecFilterAction(data));
+        // }
+    }
+
     return (
         <div className="dashboard p-3">
             <div className="container-fluid">
@@ -99,7 +115,7 @@ function AdminMeetings() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <FormForMeeting getName={getName} lang={t}/>
+                                <FormForMeeting getName={SearchMeetingSpecFilter} lang={t}/>
                                 <TableMeetings meetings={meetings}/>
                                 </tbody>
                             </Table>

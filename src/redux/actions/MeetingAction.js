@@ -17,7 +17,7 @@ import {
     getMeetingByIdApi,
     getMeetingBySorted, getMeetingByUserIdAndCompanyIdApi,
     getMeetingFilesByMeetingIdApi,
-    getMeetings,
+    getMeetings, getMeetingSpecFilterApi,
     getMemberByIdApi,
     getMemberByMeetingIdApi, getMemberTypeEnumApi,
     isConfirmed,
@@ -26,6 +26,7 @@ import {
 import * as types from "../actionTypes/MeetingActionTypes";
 import {toast} from "react-toastify";
 import {DEPOSITORY_CURRENT_MEETING} from "../../utils/contants";
+import {getCompanySpecFilterApi} from "../../api/CompanyApi";
 
 export const getMeetingByIdAction = (payload) => async (dispatch) => {
     dispatch({
@@ -71,6 +72,23 @@ export const getMeetingFilter = (payload) => async (dispatch) => {
         }
     }
 } // checking !!!
+
+export const getMeetingSpecFilterAction = (payload) => async (dispatch) => {
+    try {
+        const res = await dispatch({
+            api: getMeetingSpecFilterApi,
+            types: ["REQUEST_API_START", types.REQUEST_GET_MEETING_LIST_SUCCESS, "REQUEST_API_ERROR"],
+            data: payload
+        });
+        if (res.success) {
+            console.log(res.success)
+        }
+    } catch (err) {
+        if (err.response) {
+            console.log(err.response)
+        }
+    }
+}
 
 export const createMeeting = (payload) => async (dispatch) => {
     const lang = localStorage.getItem("i18nextLng")

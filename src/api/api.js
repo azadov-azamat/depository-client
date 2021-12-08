@@ -10,6 +10,7 @@ export const api = {
     editMeetingStatus: '/meeting/meeting-status',
     meetingByCompany: '/meeting/by-company',
     meetingByUserAndCompany: '/meeting/by-user',
+    meetingSpecFilter: "/meeting/spec-filter",
     member: '/member',
     addedChairmanFromReestrPage: '/member/elect-chairmen/',
     memberManager: '/member/managers',

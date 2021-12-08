@@ -275,7 +275,6 @@ export default function AddOrEditCompany() {
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
                                 >
-                                    <Option value={null}>пока никто</Option>
                                     {users && users.map((value, index) =>
                                         <Option value={value.id} key={index}>{value.fullName}</Option>
                                     )}
@@ -309,7 +308,6 @@ export default function AddOrEditCompany() {
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                         }
                                     >
-                                        <Option value={null}>пока никто</Option>
                                         {users && users.map((value, index) =>
                                             <Option value={value.id} key={index}>{value.fullName}</Option>
                                         )}
