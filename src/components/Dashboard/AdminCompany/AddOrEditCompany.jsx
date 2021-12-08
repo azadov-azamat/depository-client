@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Link, useHistory, useParams} from 'react-router-dom'
-import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {ImCancelCircle} from "react-icons/all";
 import {useDispatch, useSelector} from 'react-redux';
 import {Col, Label, Row} from "reactstrap";
