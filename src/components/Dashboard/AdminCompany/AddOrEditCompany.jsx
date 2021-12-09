@@ -35,9 +35,12 @@ export default function AddOrEditCompany() {
     const {ref, maskRef} = useIMask(opts);
     const [file, setFile] = useState('');
     const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-    const [selectUsers, setSelectUsers] = useState({secretary: '', chairman: '', active: false})
-    const [isOpen, setIsOpen] = useState(false)
-    const [selectSecretary, setSelectSecretary] = useState();
+    const [selectUsers, setSelectUsers] = useState({
+        secretary: null,
+        chairman: null,
+        active: null
+    })
+
     const [phoneNumber, setPhoneNumber] = useState()
     const [inn, setInn] = useState();
 
@@ -61,14 +64,23 @@ export default function AddOrEditCompany() {
         const current = parseInt(id);
         if (!isNaN(current)) {
             dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(id), history}))
-            dispatch(actionUser.getUsersList())
-            // setSelectSecretary(currentCompany?.secretaryId)//
         }
     }, [id])
 
     useEffect(() => {
+        dispatch(actionUser.getUsersList())
+    }, [])
+
+
+    useEffect(() => {
         setInn(currentCompany?.inn)
         setPhoneNumber(currentCompany?.phoneNumber)
+        setSelectUsers({
+            ...selectUsers,
+            secretary: currentCompany.secretaryId,
+            chairman: currentCompany.chairmanId,
+            active: currentCompany.active
+        })
     }, [currentCompany])
 
     function onSearch(val) {
@@ -93,10 +105,7 @@ export default function AddOrEditCompany() {
 
     function forSecretary(value) {
         setSelectUsers({...selectUsers, secretary: value})
-        // dispatch({
-        //     type: "REQUEST_API_SUCCESS_USERS",
-        //     payload: []
-        // })
+        console.log(value)
     }
 
     function forStatus(value) {
@@ -106,7 +115,7 @@ export default function AddOrEditCompany() {
     const addCompany = (e, v) => {
         if (phoneNumber && inn) {
             const data = {
-                active: selectUsers.active ? selectUsers.active : true,
+                active: selectUsers.active,
                 chairmanId: selectUsers.chairman,
                 secretaryId: selectUsers.secretary,
                 imageUrl: file ? "yes" : 'no',
@@ -160,14 +169,14 @@ export default function AddOrEditCompany() {
         setImagePreviewUrl('');
     }
 
-    function onChange(val) {
-        const NAME = "FULL_NAME";
-        if (val.length >= 3) {
-            dispatch(actionUser.getUserFilter({value: val, field: NAME}));
-        } else {
-            dispatch({type: types.REQUEST_GET_USERS_LIST_SUCCESS, payload: ''})
-        }
-    }
+    // function onChange(val) {
+    //     const NAME = "FULL_NAME";
+    //     if (val.length >= 3) {
+    //         dispatch(actionUser.getUserFilter({value: val, field: NAME}));
+    //     } else {
+    //         dispatch({type: types.REQUEST_GET_USERS_LIST_SUCCESS, payload: []})
+    //     }
+    // }
 
     return (
         <div className="settings p-3">
@@ -195,9 +204,9 @@ export default function AddOrEditCompany() {
                                             <label htmlFor="file"
                                                    onChange={_handleImageChange}
                                                    className={`app-custom-label`}>
-                                                {/*<div className="app-custom-info">*/}
-                                                {/*    <strong>Логотип!</strong>*/}
-                                                {/*</div>*/}
+                                                <div className="app-custom-info">
+                                                    <strong>LOGO</strong>
+                                                </div>
                                             </label>
                                         </form>
 
@@ -232,7 +241,8 @@ export default function AddOrEditCompany() {
                                             onChange={forStatus}
                                             onFocus={onFocus}
                                             onBlur={onBlur}
-                                            defaultValue={!currentCompany?.active}
+                                            defaultValue={currentCompany?.active}
+                                            value={selectUsers.active}
                                         >
                                             <Option value={true}>Активно</Option>
                                             <Option value={false}>Неактивно</Option>
@@ -268,16 +278,16 @@ export default function AddOrEditCompany() {
                                     allowClear={true}
                                     placeholder="Выберите пользвателя"
                                     optionFilterProp="children"
-                                    defaultValue={currentCompany.length !== 0 ? currentCompany?.secretaryId : null}
+                                    defaultValue={currentCompany?.secretaryId}
+                                    value={selectUsers.secretary}
                                     onChange={forSecretary}
                                     onSearch={onSearch}
-                                    // value={selectUsers.secretary}
                                     filterOption={(input, option) =>
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
                                 >
-                                    {users && users.map((value, index) =>
-                                        <Option value={value.id} key={index}>{value.fullName}</Option>
+                                    {users?.map(value =>
+                                        <Option value={value.id} key={value.id}>{value.fullName}</Option>
                                     )}
                                 </Select>
                             </div>
@@ -300,16 +310,18 @@ export default function AddOrEditCompany() {
                                     <Select
                                         className="setting_input w-100"
                                         showSearch
+                                        allowClear={true}
                                         placeholder="Выберите пользвателя"
                                         optionFilterProp="children"
-                                        defaultValue={currentCompany.length !== 0 ? currentCompany?.chairmanId : null}
+                                        defaultValue={currentCompany?.chairmanId}
+                                        value={selectUsers.chairman}
                                         onChange={forChairMan}
                                         onSearch={onSearch}
                                         filterOption={(input, option) =>
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                         }
                                     >
-                                        {users && users.map((value, index) =>
+                                        {users?.map((value, index) =>
                                             <Option value={value.id} key={index}>{value.fullName}</Option>
                                         )}
                                     </Select>

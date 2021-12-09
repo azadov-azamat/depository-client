@@ -178,7 +178,8 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             }
                         >
 
-                            {role === "user" ?
+                            {
+                                role === "user" ?
                                 companiesByUserId && companiesByUserId.map((element, index) =>
                                     element.chairmanId === currentUser.id || element.secretaryId === currentUser.id ?
                                         <Option value={element.id} key={index}>

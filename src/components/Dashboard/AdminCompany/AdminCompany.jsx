@@ -68,7 +68,12 @@ function AdminCompany() {
             inn: index === 4 ? value : '',
         }
 
+        console.log(data)
+
         if (value.length >= 3) {
+            dispatch(adminCompanyAction.getCompanySpecFilterAction(data));
+        }
+        if (value.length <= 3) {
             dispatch(adminCompanyAction.getCompanySpecFilterAction(data));
         }
     }
