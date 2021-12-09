@@ -43,6 +43,7 @@ function AdminMeetings() {
     })
 
     useEffect(() => {
+
         dispatch({
             type: 'updateState',
             payload: {
@@ -50,6 +51,7 @@ function AdminMeetings() {
                 currentMeeting: ''
             }
         });
+
         dispatch({
             type: 'REQUEST_GET_MEETING_SUCCESS',
             payload: []
@@ -66,13 +68,10 @@ function AdminMeetings() {
     },[objectData, page])
 
     const SearchMeetingSpecFilter = (value, fieldName) => {
-        console.log(value, fieldName)
-        // if (value.length >= 3 || value.length === 0){
             setObjectData(prev => ({
                 ...prev,
                 [fieldName]: value
             }))
-        // }
     }
 
     return (

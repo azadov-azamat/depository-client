@@ -55,7 +55,6 @@ export const MeetingLists = () => {
                     </Col>
                 </Row>
             </div>
-            <Socket/>
         </div>
     )
 }

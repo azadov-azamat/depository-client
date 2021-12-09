@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {RiUserSearchLine} from "react-icons/all";
-import {Col, Input, Label, Row} from "reactstrap";
 import {FaCheck, FaTrash} from "react-icons/fa";
 import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contants";
 import Datetime from "react-datetime";
@@ -9,14 +8,13 @@ import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import "react-datetime/css/react-datetime.css";
 import {Select} from "antd";
-import * as actionUser from "../../../redux/actions/UsersAction";
 import '../../createMeeting/AzamatGlobal.scss'
 import {useDispatch, useSelector} from "react-redux";
 import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 
 const {Option} = Select;
 
-export default function FormForMeeting({getName, lang, meetings}) {
+export default function FormForMeeting({getName, lang}) {
 
     const dispatch = useDispatch();
     const reducers = useSelector(state => state);
@@ -32,15 +30,17 @@ export default function FormForMeeting({getName, lang, meetings}) {
                 setCountry(res.data)
             })
             .catch(err => {
+
             })
     }, []);
 
     function onSearch(val) {
         console.log(val)
     }
+
     function onSearchCompany(val) {
         if (val.length >= 3)
-        dispatch(adminCompanyAction.getCompanySearchNameAction({name: val}))
+            dispatch(adminCompanyAction.getCompanySearchNameAction({name: val}))
     }
 
     return (
@@ -88,7 +88,9 @@ export default function FormForMeeting({getName, lang, meetings}) {
                     </div>
                 </td>
                 <td style={{width: '135px'}}>
-                    <Datetime onChange={(e) => getName(e["_d"], "startRegistration")}/>
+                    <Datetime
+                        onChange={(e) => getName(e["_d"], "startRegistration")}
+                    />
                 </td>
                 <td style={{width: '123px'}}>
                     <Datetime onChange={(e) => getName(e["_d"], "startDate")}/>

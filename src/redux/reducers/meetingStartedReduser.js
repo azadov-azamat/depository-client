@@ -9,7 +9,8 @@ const initialState = {
 
     startCallMeeting: false,
     endCallMeeting: true,
-    passwordZoomMeeting: null
+    passwordZoomMeeting: null,
+    connected: false,
 };
 
 const reducers = {
@@ -94,6 +95,9 @@ const reducers = {
     },
 
 
+    ["RESPONSE_CONNECT_SUCCESS"](state) {
+        state.connected = true
+    },
     ["REQUEST_SUCCESS_GET_BALLOT_VOTING"](state, action) {
         state.currentBallotVotingList[action.requestData.agendaId] = action.payload
     },

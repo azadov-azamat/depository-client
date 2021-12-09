@@ -57,7 +57,8 @@ export const ControllerMeeting = () => {
         questionListMemberId,
         startCallMeeting,
         endCallMeeting,
-        passwordZoomMeeting
+        passwordZoomMeeting,
+        connected
     } = reducers.meetingStarted
     const {currentUser} = reducers.auth
     const {currentCompany} = reducers.company
@@ -101,6 +102,17 @@ export const ControllerMeeting = () => {
     }, [meetingId])
 
     useEffect(() => {
+        if (connected) {
+            const data = {
+                memberId: parseInt(memberId),
+                online: true
+            }
+
+            socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
+        }
+    }, [connected])
+
+    useEffect(() => {
         questionList && questionList.forEach(element => {
             if (!element.questionAnswer) {
                 setBadgeCount(prevState => prevState + 1)
@@ -109,19 +121,21 @@ export const ControllerMeeting = () => {
     }, [questionList])
 
     useEffect(() => {
-        dispatch(meetingActions.getMemberById({ID: memberId}))   // GET MEMBER TYPE
+        dispatch(meetingActions.getMemberById({ID: memberId}))
     }, [memberId])
 
     useEffect(() => {
+
         dispatch(subscribe('/topic/user'));
         dispatch(subscribe('/topic/get-zoom'));
         dispatch(subscribe('/topic/getMember/' + meetingId));
-        getMembers();
+
         return () => {
             dispatch(unsubscribe('/topic/user'));
             dispatch(unsubscribe('/topic/get-zoom'));
             dispatch(unsubscribe('/topic/getMember/' + meetingId));
         }
+
     }, [dispatch])
 
     useEffect(() => {
@@ -270,14 +284,6 @@ export const ControllerMeeting = () => {
         }
     }
 
-    function getMembers() {
-        const data = {
-            memberId: parseInt(memberId),
-            online: true
-        }
-        socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
-    }
-
     return (
         <div className="container meeting">
             <div>
@@ -386,7 +392,6 @@ export const ControllerMeeting = () => {
                                          questionListMemberId={questionListMemberId && questionListMemberId}
                                          memberId={parseInt(memberId)}/>
                     </div>
-                    <button onClick={getMembers}>click me</button>
                 </div>
             </div>
             <Socket meetingId={meetingId} memberId={memberId}/>

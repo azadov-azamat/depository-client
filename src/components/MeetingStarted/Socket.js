@@ -18,8 +18,6 @@ export const Socket = ({meetingId, memberId}) => {
         url += '?access_token=' + s;
     }
 
-    console.log(meetingId)
-
     useEffect(() => {
         dispatch(setClient(clientRef.current));
         return () => {
@@ -32,12 +30,21 @@ export const Socket = ({meetingId, memberId}) => {
             ref={clientRef}
             url={url}
             topics={topics}
+
             onConnect={() => {
-                console.log("connect");
-            }
-            }
+                console.log("CONNECT==================");
+                dispatch({
+                    type: "RESPONSE_CONNECT_SUCCESS",
+                    payload: true
+                })
+            }}
+
             onDisconnect={() => {
-                console.log("Disconnected")
+                console.log("DISCONNECTED=======================")
+                dispatch({
+                    type: "RESPONSE_CONNECT_SUCCESS",
+                    payload: false
+                })
             }}
 
             onMessage={(msg, topic) => {

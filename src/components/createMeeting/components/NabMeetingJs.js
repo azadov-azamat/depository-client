@@ -270,7 +270,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                         <Label className='required_fields'>{lang("meetingsList.startRegister")}</Label>
                         <AvField
                             type="datetime-local"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.startRegistration.substr((currentMeeting?.startRegistration) - 1, 16) : ""}
+                            defaultValue={currentMeeting.length !== 0 ? currentMeeting?.startRegistration.substr((currentMeeting?.startRegistration) - 1, 16) : ""}
                             name="startRegistration"
                             label="" helpMessage=""
                             className="border  text-center timer"
@@ -284,7 +284,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                         <Label className='required_fields'>{lang("meetingsList.finishRegister")}</Label>
                         <AvField
                             type="datetime-local"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.endRegistration.substr((currentMeeting?.endRegistration) - 1, 16) : ""}
+                            defaultValue={currentMeeting.length !== 0 ? currentMeeting?.startRegistration.substr((currentMeeting?.startRegistration) - 1, 16) : ""}
                             name="endRegistration"
                             label="" helpMessage=""
                             className="border  text-center timer"

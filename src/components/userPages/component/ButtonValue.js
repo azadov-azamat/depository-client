@@ -1,4 +1,3 @@
-
 import React, {useEffect} from "react";
 import {
     CHAIRMAN,
@@ -13,6 +12,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {subscribe} from "../../../redux/actions/socketActions";
+import {getCompanySearchNameApi, getCompanySpecFilterApi} from "../../../api/CompanyApi";
+import * as types from "../../../redux/actionTypes/CompanyActionTypes";
 
 
 export default function ButtonValue({meetingId, setStatusOnlineUser, companyId}) {
@@ -21,15 +22,15 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
     const reducers = useSelector(state => state)
     const {memberManagerType} = reducers.meeting
     const {currentUser} = reducers.auth
-    // const userId = parseInt(localStorage.getItem(DEPOSITORY_USER))
 
     useEffect(() => {
-        dispatch(meetingActions.getMemberTypeEnumAction({meetingId: meetingId, userId: (currentUser && currentUser.id)}))
+        dispatch(meetingActions.getMemberTypeEnumAction({
+            meetingId: meetingId,
+            userId: (currentUser && currentUser.id)
+        }))
     }, [currentUser])
 
-
     function historyPushItem(role, memberId, meetingId) {
-
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
@@ -63,12 +64,12 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                 memberManagerType[meetingId] && memberManagerType[meetingId].map(element => {
                     console.log(element)
                     // if (element.userId === currentUser?.id) {
-                    switch (element.memberTypeEnum){
+                    switch (element.memberTypeEnum) {
                         case CHAIRMAN:
                             return (
                                 <button style={style}
-                                    onClick={() => historyPushItem(CHAIRMAN, element.id, meetingId)}
-                                    className="create py-2 my-2 px-2 mx-2">
+                                        onClick={() => historyPushItem(CHAIRMAN, element.id, meetingId)}
+                                        className="create py-2 my-2 px-2 mx-2">
                                     Управлять заседаниями <br/> (Председатель)
                                 </button>
                             )
@@ -85,7 +86,7 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                             return (
                                 <button
                                     style={style}
-                                    onClick={() => isConfirmed(SIMPLE, element.id,  meetingId)}
+                                    onClick={() => isConfirmed(SIMPLE, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     Проголосовать <br/> (Обычный - Реестр)
                                 </button>

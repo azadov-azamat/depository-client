@@ -15,7 +15,7 @@
 }
 
 .users .minWidth {
-  overflow-x: scroll;
+  /*overflow-x: scroll;*/
 }
 
 .users .heading_section .heading_text {

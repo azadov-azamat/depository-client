@@ -11,6 +11,7 @@ export default function TableMeetings({meetings}) {
 
     const dispatch = useDispatch();
     const history = useHistory();
+
     const language = localStorage.getItem('i18nextLng');
 
     const style = {
@@ -150,7 +151,6 @@ export default function TableMeetings({meetings}) {
                     <td className="text-center company" style={style}>
                         <p style={style}>
                             {getCityName(element.city)}
-                            {/*<FindCity city={element.city}/>*/}
                         </p>
                     </td>
                     <td className="text-center">{element.status === ACTIVE || element.status === PENDING ?
