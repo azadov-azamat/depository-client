@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {RiUserSearchLine} from "react-icons/all";
-import {Input} from "reactstrap";
+import {Col, Input, Label, Row} from "reactstrap";
 import {FaCheck, FaTrash} from "react-icons/fa";
 import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contants";
 import Datetime from "react-datetime";
@@ -8,8 +8,20 @@ import axios from "axios";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import "react-datetime/css/react-datetime.css";
+import {Select} from "antd";
+import * as actionUser from "../../../redux/actions/UsersAction";
+import '../../createMeeting/AzamatGlobal.scss'
+import {useDispatch, useSelector} from "react-redux";
+import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 
-export default function FormForMeeting({getName, lang}) {
+const {Option} = Select;
+
+export default function FormForMeeting({getName, lang, meetings}) {
+
+    const dispatch = useDispatch();
+    const reducers = useSelector(state => state);
+
+    const {searchNameCompany} = reducers.meeting
 
     const [country, setCountry] = useState([]);
     const language = localStorage.getItem('i18nextLng');
@@ -23,63 +35,88 @@ export default function FormForMeeting({getName, lang}) {
             })
     }, []);
 
-    const Name = (name, index) => {
-        getName(name, index)
-       // if (index === 2){
-       //     let date = new Date(name);
-       //     console.log(date)
-       // }
-    };
+    function onSearch(val) {
+        console.log(val)
+    }
+    function onSearchCompany(val) {
+        if (val.length >= 3)
+        dispatch(adminCompanyAction.getCompanySearchNameAction({name: val}))
+    }
 
     return (
         <>
             <tr>
-                <th scope="row" className="text-center"><RiUserSearchLine className='mt-2'
-                                                                          style={{width: '15px', color: '#132E85'}}/>
+                <th scope="row" className="text-center">
+                    <RiUserSearchLine className='mt-2' style={{width: '15px', color: '#132E85'}}/>
                 </th>
                 <td style={{width: '170px'}}>
-                    <Input className="input input-group-sm" type="text" name="company"
-                           onChange={e => Name(e.target.value, 0)}/>
+                    <div className="form-group">
+                        <Select
+                            className="setting_input w-100"
+                            showSearch
+                            allowClear={true}
+                            optionFilterProp="children"
+                            onChange={(value) => getName(value, "companyId")}
+                            onSearch={onSearchCompany}
+                            filterOption={(input, option) =>
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                        >
+                            {searchNameCompany?.map(value =>
+                                <Option value={value.id} key={value.companyId}>{value.name}</Option>
+                            )}
+                        </Select>
+                    </div>
                 </td>
                 <td style={{width: '140px'}}>
-                    <Input className="input text-center input-group-sm" type="select" name="status" id="name"
-                           onChange={e => Name(e.target.value, 1)}
-                    >
-                        <option value={'ALL'}>{
-                            language === 'uz' ? "Hammasi" : ""
-                            || language === 'en' ? "All" : ""
-                            || language === "ru" ? "Всё" : ""
-                        }</option>
-                        <option value={PENDING}>{lang("meetingCreated.meetingStatus.pending")}</option>
-                        <option value={ACTIVE}>{lang("meetingCreated.meetingStatus.active")}</option>
-                        <option value={FINISH}>{lang("meetingCreated.meetingStatus.finish")}</option>
-                        <option value={CANCELED}>{lang("meetingCreated.meetingStatus.canceled")}</option>
-                        <option value={DISABLED}>{lang("meetingCreated.meetingStatus.disabled")}</option>
-                    </Input>
+                    <div className="form-group">
+                        <Select
+                            className="setting_input w-100"
+                            allowClear={true}
+                            optionFilterProp="children"
+                            onChange={(value) => getName(value, "status")}
+                            filterOption={(input, option) =>
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                        >
+                            <Option value={PENDING}>{lang("meetingCreated.meetingStatus.pending")}</Option>
+                            <Option value={ACTIVE}>{lang("meetingCreated.meetingStatus.active")}</Option>
+                            <Option value={FINISH}>{lang("meetingCreated.meetingStatus.finish")}</Option>
+                            <Option value={CANCELED}>{lang("meetingCreated.meetingStatus.canceled")}</Option>
+                            <Option value={DISABLED}>{lang("meetingCreated.meetingStatus.disabled")}</Option>
+                        </Select>
+                    </div>
                 </td>
                 <td style={{width: '135px'}}>
-                    <Datetime onChange={(e) => Name(e["_d"], 2)}/>
+                    <Datetime onChange={(e) => getName(e["_d"], "startRegistration")}/>
                 </td>
                 <td style={{width: '123px'}}>
-                    <Datetime onChange={(e) => Name(e["_d"], 3)}/>
+                    <Datetime onChange={(e) => getName(e["_d"], "startDate")}/>
                 </td>
                 <td style={{width: '135px'}}>
-                    <Input className="input text-center input-group-sm" type="select" name="status" id="name"
-                           onChange={(e) => Name(e.target.value, 4)}
-                    >
-                        <option value={'ALL'}>{
-                            language === 'uz' ? "Hammasi" : ""
-                            || language === 'en' ? "All" : ""
-                            || language === "ru" ? "Всё" : ""
-                        }</option>
-                        {country && country.map(value =>
-                            <option value={value.id}>{
-                                language === 'uz' ? value.nameUz : ""
-                                || language === 'en' ? value.nameEn : ""
-                                || language === "ru" ? value.nameRu : ""
-                            }</option>
-                        )}
-                    </Input>
+                    <div className="form-group">
+                        <Select
+                            className="setting_input w-100"
+                            showSearch
+                            allowClear={true}
+                            optionFilterProp="children"
+                            onChange={(value) => getName(value, "cityId")}
+                            onSearch={onSearch}
+                            filterOption={(input, option) =>
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                        >
+                            {country?.map(value =>
+                                <Option value={value.id} key={value.id}>
+                                    {
+                                        language === 'uz' ? value.nameUz : ""
+                                        || language === 'en' ? value.nameEn : ""
+                                        || language === "ru" ? value.nameRu : ""
+                                    }
+                                </Option>
+                            )}
+                        </Select>
+                    </div>
                 </td>
                 <td className="text-center"><FaCheck className="mt-2" style={{width: '15px', color: '#132E85'}}/></td>
                 <td className="text-center"><FaTrash className="mt-2" style={{width: '15px', color: '#132E85'}}/></td>

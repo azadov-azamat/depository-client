@@ -33,16 +33,22 @@ function AdminCompany() {
 
     const startIndex = (page - 1) * size;
     const lastIndex = startIndex + (payload && payload[1]);
-
+    const [dataFilter, setDataFilter] = useState({
+        name:  null,
+        email: null,
+        phoneNumber:  null,
+        webPage: null,
+        inn: null,
+    })
     const handleChange = (e, p) => {
         setPage(p);
         _DATA.jump(p);
     };
 
     useEffect(() => {
-        if (!name) {
-            dispatch(adminCompanyAction.getCompanyList({page, size}));
-        }
+        // if (!name) {
+        //     dispatch(adminCompanyAction.getCompanyList({page, size}));
+        // }
         dispatch({
             type: 'updateState',
             payload: {
@@ -56,27 +62,21 @@ function AdminCompany() {
             type: "REQUEST_API_SUCCESS_USERS",
             payload: []
         })
-    }, [page, name])
+    }, [])
 
-    const SearchCompanySpecFilter = (value, index) => {
-
-        const data = {
-            name: index === 0 ? value : '',
-            email: index === 1 ? value : '',
-            phoneNumber: index === 2 ? value : '',
-            webPage: index === 3 ? value : '',
-            inn: index === 4 ? value : '',
-        }
-
-        console.log(data)
-
-        if (value.length >= 3) {
-            dispatch(adminCompanyAction.getCompanySpecFilterAction(data));
-        }
-        if (value.length <= 3) {
-            dispatch(adminCompanyAction.getCompanySpecFilterAction(data));
+    const SearchCompanySpecFilter = (value, fieldName) => {
+        console.log(value)
+        if (value.length >= 3 || value.length === 0){
+            setDataFilter(prev => ({
+                ...prev,
+                [fieldName]: value
+            }))
         }
     }
+
+    useEffect(()=>{
+        dispatch(adminCompanyAction.getCompanySpecFilterAction({dataFilter, page, size}));
+    },[dataFilter, page])
 
     const submit = (id) => {
         confirmAlert({

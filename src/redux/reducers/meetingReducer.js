@@ -11,7 +11,8 @@ const initialState = {
     currentCity: {},
     memberManagerType: {},
     currentAgenda: [],
-    onlineMemberManager: []
+    onlineMemberManager: [],
+    searchNameCompany: []
 };
 
 const reducers = {
@@ -32,6 +33,9 @@ const reducers = {
     },
 
 
+    ["REQUEST_SUCCESS_COMPANY_SEARCH_NAME"](state, action) {
+        state.searchNameCompany = action.payload;
+    },
     ["REQUEST_GET_MEETING_START"](state) {
         state.loading = true;
     },

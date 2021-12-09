@@ -29,8 +29,13 @@ export const getCompanyBySorted = (data) => {
             : ""))
 }
 
+export const getCompanySearchNameApi = (data) => {
+    return HttpClient.doGet(api.companySearchName + (data && data.name ? "?name=" + data.name : ""))
+}
+
 export const getCompanySpecFilterApi = (data) => {
-    return HttpClient.doPost(api.companySpecFilter, data)
+    return HttpClient.doPost(api.companySpecFilter + (data && data.page && data.size ?
+        "?page=" + (data.page - 1) + "&size=" + data.size : ""), data.dataFilter)
 }
 
 export const getCompanies = (data) => {

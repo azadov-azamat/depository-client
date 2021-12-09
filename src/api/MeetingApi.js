@@ -10,7 +10,8 @@ export const getMeetingBySorted = (data) => {
             : ""))
 }
 export const getMeetingSpecFilterApi = (data) => {
-    return HttpClient.doPost(api.meetingSpecFilter, data)
+    return HttpClient.doPost(api.meetingSpecFilter + (data && data.page && data.size ?
+        "?page=" + (data.page - 1) + "&size=" + data.size : ""), data.objectData)
 }
 export const postMeeting = (data) => {
     return HttpClient.doPost(api.meetingMethod, data)

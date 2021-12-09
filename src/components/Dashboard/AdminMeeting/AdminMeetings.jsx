@@ -25,8 +25,6 @@ function AdminMeetings() {
     const {payload} = reducers.auth.totalCount
     const {meetings} = reducers.meeting
 
-    const [name, setName] = useState('');
-
     const [page, setPage] = useState(1);
     const size = 6;
 
@@ -36,11 +34,15 @@ function AdminMeetings() {
     const startIndex = (page - 1) * size;
     const lastIndex = startIndex + (payload && payload[1]);
 
-    useEffect(() => {
-        if (!name) {
-            dispatch(adminMeetingAction.getMeetingList({page: page, size: size}));
-        }
+    const [objectData, setObjectData] = useState({
+        companyId: null,
+        status: null,
+        startRegistration: null,
+        startDate: null,
+        cityId: null
+    })
 
+    useEffect(() => {
         dispatch({
             type: 'updateState',
             payload: {
@@ -52,43 +54,24 @@ function AdminMeetings() {
             type: 'REQUEST_GET_MEETING_SUCCESS',
             payload: []
         });
-    }, [page, name])
+    }, [page])
 
     const handleChange = (e, p) => {
         setPage(p);
         _DATA.jump(p);
     };
 
-    const getName = (value, index) => {
-        setName(value)
-        let field = ''
-        if (index === 0) {
-            field = 'COMPANY'
-        } else if (index === 1) {
-            field = 'STATUS'
-        } else if (index === 2) {
-            field = 'START_DATE'
-        }
+    useEffect(()=>{
+        dispatch(adminMeetingAction.getMeetingSpecFilterAction({objectData, page, size}));
+    },[objectData, page])
 
-        if (value.length >= 3) {
-            dispatch(adminMeetingAction.getMeetingFilter({value, field}));
-        } else if (index === 1) {
-            dispatch(adminMeetingAction.getMeetingFilter({value, field}));
-        }
-    }
-
-    const SearchMeetingSpecFilter = (value, index) => {
-
-        const data = {
-            companyId: index === 0 ? value : null,
-            status: index === 1 ? value : '',
-            typeEnum: index === 2 ? value : '',
-            startDate: index === 3 ? value : '',
-            cityId: index === 4 ? value : null,
-        }
-
-        // if (value.length >= 3) {
-            dispatch(adminMeetingAction.getMeetingSpecFilterAction(data));
+    const SearchMeetingSpecFilter = (value, fieldName) => {
+        console.log(value, fieldName)
+        // if (value.length >= 3 || value.length === 0){
+            setObjectData(prev => ({
+                ...prev,
+                [fieldName]: value
+            }))
         // }
     }
 
@@ -105,17 +88,21 @@ function AdminMeetings() {
                                 <thead>
                                 <tr>
                                     <th style={{width: '15px'}}/>
-                                    <th style={{width: '170px'}} className='text-center '>{t("meetingsList.nameCompany")}</th>
-                                    <th style={{width: '140px'}} className='text-center '>{t("meetingsList.statusMeeting")}</th>
-                                    <th style={{width: '135px'}} className='text-center '>{t("meetingsList.startRegister")}</th>
-                                    <th style={{width: '123px'}} className='text-center '>{t("meetingsList.startMeeting")}</th>
+                                    <th style={{width: '170px'}}
+                                        className='text-center '>{t("meetingsList.nameCompany")}</th>
+                                    <th style={{width: '140px'}}
+                                        className='text-center '>{t("meetingsList.statusMeeting")}</th>
+                                    <th style={{width: '135px'}}
+                                        className='text-center '>{t("meetingsList.startRegister")}</th>
+                                    <th style={{width: '123px'}}
+                                        className='text-center '>{t("meetingsList.startMeeting")}</th>
                                     <th style={{width: '135px'}} className='text-center  '>{t("meetingsList.city")}</th>
                                     <th style={{width: '15px'}}/>
                                     <th style={{width: '15px'}}/>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <FormForMeeting getName={SearchMeetingSpecFilter} lang={t}/>
+                                <FormForMeeting meetings={meetings} getName={SearchMeetingSpecFilter} lang={t}/>
                                 <TableMeetings meetings={meetings}/>
                                 </tbody>
                             </Table>

@@ -1,7 +1,13 @@
 .users .list_wrapper {
   width: 1200px;
 }
-
+.users .list_wrapper .table .form-group .ant-select-selector{
+  height: 38px;
+  border-radius: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
 @media screen and (min-width: 1280px) {
   .users .list_wrapper {
     width: 98%;

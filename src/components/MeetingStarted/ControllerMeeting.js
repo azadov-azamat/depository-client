@@ -116,7 +116,7 @@ export const ControllerMeeting = () => {
         dispatch(subscribe('/topic/user'));
         dispatch(subscribe('/topic/get-zoom'));
         dispatch(subscribe('/topic/getMember/' + meetingId));
-        // getMembers();
+        getMembers();
         return () => {
             dispatch(unsubscribe('/topic/user'));
             dispatch(unsubscribe('/topic/get-zoom'));
@@ -275,7 +275,6 @@ export const ControllerMeeting = () => {
             memberId: parseInt(memberId),
             online: true
         }
-
         socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
     }
 
