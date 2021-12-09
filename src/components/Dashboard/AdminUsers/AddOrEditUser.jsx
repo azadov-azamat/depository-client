@@ -57,7 +57,6 @@ export default function AddOrEditUser() {
     const [userInfo, setUserInfo] = useState({
         isAdmin: null,
         pinfl: null,
-        inn: null,
         generateLogin: null,
 
         booleanAdmin: null,
@@ -69,11 +68,12 @@ export default function AddOrEditUser() {
         generatePassword: ''
     })
 
+    console.log(currentForUser)
+
     useEffect(() => {
         setUserInfo({
             ...userInfo,
             pinfl: currentForUser.pinfl,
-            inn: currentForUser.inn,
             generateLogin: currentForUser.login,
 
             resident: currentForUser.resident,
@@ -102,24 +102,25 @@ export default function AddOrEditUser() {
         } else if (v.isAdmin === false) {
             authority.push("ROLE_USER")
         }
-        if (userInfo.pinfl && authority && userInfo.generateLogin) {
-            const data = {
-                fullName: v.fullName,
-                activated: userInfo.activated,
-                authTypeEnum: userInfo.authTypeEnum,
-                authorities: authority,
-                email: v.email,
-                groupEnum: userInfo.groupEnum,
-                inn: userInfo.inn,
-                login: userInfo.generateLogin,
-                password: v.password,
-                passport: v.passport,
-                pinfl: userInfo.pinfl,
-                resident: userInfo.resident,
-                phoneNumber: phoneNumber
-            }
-            console.log(data)
-            dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
+        console.log(v);
+        if (userInfo.pinfl && userInfo.generateLogin) {
+        const data = {
+            fullName: v.fullName,
+            activated: userInfo.activated,
+            authTypeEnum: userInfo.authTypeEnum,
+            authorities: authority,
+            email: v.email,
+            groupEnum: userInfo.groupEnum,
+            inn: null,
+            login: userInfo.generateLogin,
+            password: v.password,
+            passport: v.passport,
+            pinfl: userInfo.pinfl,
+            resident: userInfo.resident,
+            phoneNumber: phoneNumber
+        }
+        console.log(data)
+        dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
             toast.warning(t("toast.warning"))
         }
@@ -143,7 +144,7 @@ export default function AddOrEditUser() {
                 authorities: authority,
                 email: v.email,
                 groupEnum: userInfo.groupEnum,
-                inn: userInfo.inn,
+                inn: null,
                 login: userInfo.generateLogin,
                 password: v.password,
                 passport: v.passport,
@@ -159,17 +160,22 @@ export default function AddOrEditUser() {
     }
 
     const savePinfl = (e) => {
+        setUserInfo({...userInfo, pinfl: e})
         if (e.toString().length === 14) {
             axios.post(BASE_URL + "/moder/user/generate-login/" + e)
                 .then((res) => {
-                    console.log(res)
-                    setUserInfo({...userInfo, generateLogin: res.data})
-                    setUserInfo({...userInfo, pinfl: e})
-                    generate();
+                    let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                    let string_length = 8;
+                    let randomstring = '';
+                    for (let i = 0; i < string_length; i++) {
+                        let rnum = Math.floor(Math.random() * chars.length);
+                        randomstring += chars.substring(rnum, rnum + 1);
+                    }
+                    setUserInfo({...userInfo, generateLogin: res.data, generatePassword: randomstring})
                 })
                 .catch((error) => {
                     console.log(error.response)
-                   setUserInfo({...userInfo, pinfl: null})
+                    setUserInfo({...userInfo, pinfl: null})
                     if (lang === "ru") {
                         toast.error("Пинфл уже использовался!")
                     }
@@ -181,6 +187,17 @@ export default function AddOrEditUser() {
                     }
                 })
         }
+    }
+
+    function generate(pinfl, login) {
+        let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let string_length = 8;
+        let randomstring = '';
+        for (let i = 0; i < string_length; i++) {
+            let rnum = Math.floor(Math.random() * chars.length);
+            randomstring += chars.substring(rnum, rnum + 1);
+        }
+        setUserInfo({...userInfo, generateLogin: login, pinfl: pinfl, generatePassword: randomstring})
     }
 
     const handleClickShowPassword = () => {
@@ -195,30 +212,23 @@ export default function AddOrEditUser() {
         setPassword({...password, [prop]: event.target.value});
     };
 
-    function generate() {
-        let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        let string_length = 8;
-        let randomstring = '';
-        for (let i = 0; i < string_length; i++) {
-            let rnum = Math.floor(Math.random() * chars.length);
-            randomstring += chars.substring(rnum, rnum + 1);
-        }
-        setUserInfo({...userInfo, generatePassword: randomstring})
-    }
-
     function selectStatusResidentUser(value) {
+        console.log(value)
         setUserInfo({...userInfo, resident: value})
     }
 
     function selectStatusUser(value) {
+        console.log(value);
         setUserInfo({...userInfo, activated: value})
     }
 
     function selectGroupEnumUser(value) {
+        console.log(value);
         setUserInfo({...userInfo, groupEnum: value})
     }
 
     function selectLoginTypeUser(value) {
+        console.log(value);
         setUserInfo({...userInfo, authTypeEnum: value})
     }
 
