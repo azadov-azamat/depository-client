@@ -51,23 +51,39 @@ export default function AddOrEditUser() {
         generatePassword: "",
     })
 
-    const [generateLogin, setGenerateLogin] = useState();
-    const [savedPinfl, setSavedPinfl] = useState();
-    const [savedInn, setSavedInn] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
     const [myBoolean, setMyBoolean] = useState(false);
 
-    const [selectStatusResident, setSelectStatusResident] = useState(currentForUser.length !== 0 ? currentForUser.resident : null);
-    const [selectStatus, setSelectStatus] = useState(currentForUser.length !== 0 ? currentForUser.activated : null);
-    const [selectGroupEnum, setSelectGroupEnum] = useState(currentForUser.length !== 0 ? currentForUser.groupEnum : null);
-    const [selectLoginType, setSelectLoginType] = useState(currentForUser.length !== 0 ? currentForUser.authTypeEnum : null);
+    const [userInfo, setUserInfo] = useState({
+        isAdmin: null,
+        pinfl: null,
+        inn: null,
+        generateLogin: null,
+
+        booleanAdmin: null,
+        resident: null,
+        activated: null,
+        groupEnum: null,
+
+        authTypeEnum: null,
+        generatePassword: ''
+    })
 
     useEffect(() => {
-        setPhoneNumber(currentForUser?.phoneNumber)
-        setSavedPinfl(currentForUser?.pinfl)
-        setSavedInn(currentForUser?.inn)
-        setGenerateLogin(currentForUser?.login)
+        setUserInfo({
+            ...userInfo,
+            pinfl: currentForUser.pinfl,
+            inn: currentForUser.inn,
+            generateLogin: currentForUser.login,
+
+            resident: currentForUser.resident,
+            activated: currentForUser.activated,
+            groupEnum: currentForUser.groupEnum,
+            authTypeEnum: currentForUser.authTypeEnum,
+        })
+        setPhoneNumber(currentForUser.phoneNumber)
         const auth = currentForUser.authorities
+        console.log(auth)
         if ({...auth} === "ROLE_MODERATOR") {
             setMyBoolean(true)
         }
@@ -80,33 +96,32 @@ export default function AddOrEditUser() {
 
     const addUser = (e, v) => {
 
-        console.log(v)
         const authority = [];
         if (v.isAdmin === true) {
             authority.push("ROLE_MODERATOR")
         } else if (v.isAdmin === false) {
             authority.push("ROLE_USER")
         }
-        if (savedPinfl && authority && generateLogin) {
+        if (userInfo.pinfl && authority && userInfo.generateLogin) {
             const data = {
                 fullName: v.fullName,
-                activated: selectStatus,
-                authTypeEnum: selectLoginType,
+                activated: userInfo.activated,
+                authTypeEnum: userInfo.authTypeEnum,
                 authorities: authority,
                 email: v.email,
-                groupEnum: selectGroupEnum,
-                inn: savedInn,
-                login: generateLogin,
+                groupEnum: userInfo.groupEnum,
+                inn: userInfo.inn,
+                login: userInfo.generateLogin,
                 password: v.password,
                 passport: v.passport,
-                pinfl: savedPinfl,
-                resident: selectStatusResident,
+                pinfl: userInfo.pinfl,
+                resident: userInfo.resident,
                 phoneNumber: phoneNumber
             }
             console.log(data)
             dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
-            toast.warning("Iltimos kerakli hamma malumotlarni to`ldiring")
+            toast.warning(t("toast.warning"))
         }
     }
 
@@ -119,21 +134,21 @@ export default function AddOrEditUser() {
             authority.push("ROLE_USER")
         }
         const current = parseInt(id);
-        if (savedPinfl && authority && generateLogin) {
+        if (userInfo.pinfl && authority && userInfo.generateLogin) {
             const data = {
                 id: current,
                 fullName: v.fullName,
-                activated: selectStatus,
-                authTypeEnum: selectLoginType,
+                activated: userInfo.activated,
+                authTypeEnum: userInfo.authTypeEnum,
                 authorities: authority,
                 email: v.email,
-                groupEnum: selectGroupEnum,
-                inn: savedInn,
-                login: generateLogin,
+                groupEnum: userInfo.groupEnum,
+                inn: userInfo.inn,
+                login: userInfo.generateLogin,
                 password: v.password,
                 passport: v.passport,
-                pinfl: savedPinfl,
-                resident: selectStatusResident,
+                pinfl: userInfo.pinfl,
+                resident: userInfo.resident,
                 phoneNumber: phoneNumber
             }
             console.log(data)
@@ -144,18 +159,17 @@ export default function AddOrEditUser() {
     }
 
     const savePinfl = (e) => {
-        setSavedPinfl(e)
         if (e.toString().length === 14) {
             axios.post(BASE_URL + "/moder/user/generate-login/" + e)
                 .then((res) => {
                     console.log(res)
-                    setGenerateLogin(res.data)
-                    setSavedPinfl(e)
+                    setUserInfo({...userInfo, generateLogin: res.data})
+                    setUserInfo({...userInfo, pinfl: e})
                     generate();
                 })
                 .catch((error) => {
                     console.log(error.response)
-                    setSavedPinfl('')
+                   setUserInfo({...userInfo, pinfl: null})
                     if (lang === "ru") {
                         toast.error("Пинфл уже использовался!")
                     }
@@ -189,23 +203,23 @@ export default function AddOrEditUser() {
             let rnum = Math.floor(Math.random() * chars.length);
             randomstring += chars.substring(rnum, rnum + 1);
         }
-        setPassword({...password, generatePassword: randomstring})
+        setUserInfo({...userInfo, generatePassword: randomstring})
     }
 
     function selectStatusResidentUser(value) {
-        setSelectStatusResident(value)
+        setUserInfo({...userInfo, resident: value})
     }
 
     function selectStatusUser(value) {
-        setSelectStatus(value)
+        setUserInfo({...userInfo, activated: value})
     }
 
     function selectGroupEnumUser(value) {
-        setSelectGroupEnum(value)
+        setUserInfo({...userInfo, groupEnum: value})
     }
 
     function selectLoginTypeUser(value) {
-        setSelectLoginType(value)
+        setUserInfo({...userInfo, authTypeEnum: value})
     }
 
     const statusText = [
@@ -258,7 +272,8 @@ export default function AddOrEditUser() {
                                             className="setting_input w-100"
                                             placeholder="Выберите статус"
                                             optionFilterProp="children"
-                                            defaultValue={currentForUser.length !== 0 ? currentForUser.groupEnum : ""}
+                                            defaultValue={currentForUser?.groupEnum}
+                                            value={userInfo.groupEnum}
                                             onChange={selectGroupEnumUser}
                                         >
                                             {statusText && statusText.map(value =>
@@ -273,7 +288,8 @@ export default function AddOrEditUser() {
                                                 className="setting_input w-100"
                                                 placeholder="Выберите статус"
                                                 optionFilterProp="children"
-                                                defaultValue={currentForUser.length !== 0 ? currentForUser.resident : null}
+                                                defaultValue={currentForUser?.resident}
+                                                value={userInfo.resident}
                                                 onChange={selectStatusResidentUser}
                                             >
                                                 <Option value={true}>{t("user.rezident")}</Option>
@@ -288,7 +304,7 @@ export default function AddOrEditUser() {
                                         <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                             <PhoneInput
                                                 placeholder="Enter phone number"
-                                                /* PHONE_NUMBER */ value={phoneNumber}
+                                                value={phoneNumber}
                                                 onChange={setPhoneNumber}/>
                                         </div>
                                     </Col>
@@ -298,7 +314,8 @@ export default function AddOrEditUser() {
                                             className="setting_input w-100"
                                             placeholder="Выберите статус"
                                             optionFilterProp="children"
-                                            defaultValue={currentForUser.length !== 0 ? currentForUser.activated : null}
+                                            defaultValue={currentForUser?.activated}
+                                            value={userInfo.activated}
                                             onChange={selectStatusUser}
                                         >
                                             <Option value={true}>{t("user.aktiv")}</Option>
@@ -332,7 +349,7 @@ export default function AddOrEditUser() {
                                             ref={ref}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="pinfl"
-                                            value={savedPinfl}
+                                            value={userInfo.pinfl}
                                             minLength={14} maxLength={14}
                                             onChange={(event) => savePinfl(event.target.value)}
                                             className="setting_input border"
@@ -346,7 +363,7 @@ export default function AddOrEditUser() {
                                         <Label className='required_fields'>{t("user.login")}</Label>
                                         <AvField
                                             className="setting_input border"
-                                            value={generateLogin}
+                                            value={userInfo.generateLogin}
                                             type="text"
                                             name="username"
                                             style={{backgroundColor: "#ffffff"}}
@@ -358,7 +375,7 @@ export default function AddOrEditUser() {
                                     <AvField
                                         name="password"
                                         label={t("user.parol")}
-                                        value={password.generatePassword}
+                                        value={userInfo.generatePassword}
                                         className="setting_input border"
                                         style={{backgroundColor: "#ffffff"}}
                                         onChange={handlePasswordChange("password")}
@@ -387,7 +404,8 @@ export default function AddOrEditUser() {
                                             className="setting_input w-100"
                                             placeholder="Выберите статус"
                                             optionFilterProp="children"
-                                            defaultValue={currentForUser.length !== 0 ? currentForUser.authTypeEnum : null}
+                                            defaultValue={currentForUser?.authTypeEnum}
+                                            value={currentForUser.authTypeEnum}
                                             onChange={selectLoginTypeUser}
                                         >
                                             {statusLogin && statusLogin.map((value, index) =>

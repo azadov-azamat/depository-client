@@ -13,7 +13,6 @@ import {useTranslation} from "react-i18next";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import RouteByDashboard from "../RouteByDashboard";
-import * as types from "../../../redux/actionTypes/UsersActionTypes";
 import PhoneInput from "react-phone-number-input";
 import {useIMask} from 'react-imask';
 import {toast} from "react-toastify";

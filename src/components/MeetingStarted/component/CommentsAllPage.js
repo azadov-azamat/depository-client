@@ -72,7 +72,7 @@ export default function CommentsAllPage({
         }
     }
 
-   async function getRequest(e, v) {
+   async function getRequest (e, v) {
         const data = {
             meetingId: currentMeetingId,
             memberId: memberId,

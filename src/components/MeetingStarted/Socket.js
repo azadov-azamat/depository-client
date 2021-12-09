@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
-import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_ZOOM_MEETING_PASSWORD, TOKEN} from "../../utils/contants";
+import {DEPOSITORY_ZOOM_MEETING_PASSWORD, TOKEN} from "../../utils/contants";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
 
@@ -32,15 +32,16 @@ export const Socket = ({meetingId, memberId}) => {
             ref={clientRef}
             url={url}
             topics={topics}
-            onConnect={() => console.log("Connected")}
+            onConnect={() => {
+                console.log("connect");
+            }
+            }
             onDisconnect={() => {
                 console.log("Disconnected")
             }}
 
             onMessage={(msg, topic) => {
 
-                console.log(msg)
-                console.log(topic)
                 if (topic === '/topic/user') {
                     dispatch({
                         type: 'REQUEST_SUCCESS_LOGGING_LIST',
@@ -79,7 +80,6 @@ export const Socket = ({meetingId, memberId}) => {
                         type: 'RESPONSE_GET_ONLINE_MEMBERS_LIST_SUCCESS',
                         payload: msg
                     })
-                    console.log(msg)
                 }
 
                 if (topic === '/topic/get-zoom') {
