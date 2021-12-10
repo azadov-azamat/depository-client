@@ -39,6 +39,21 @@ export const createUserForAdmin = (payload) => async (dispatch) => {
                     payload.toast.error(err.response.data.title)
                 }
             }
+            if (err.response.data.title === 'Method argument not valid') {
+                err.response.data.fieldErrors.forEach(element=>{
+                    if (element.field === "pinfl"){
+                        if (lang === "ru") {
+                            payload.toast.error("PINFL Длина должна быть 14 символов!")
+                        }
+                        if (lang === "uz") {
+                            payload.toast.error("PINFL uzunligi 14 belgidan iborat bo'lishi kerak!")
+                        }
+                        if (lang === "en") {
+                            payload.toast.error(element.message)
+                        }
+                    }
+                })
+            }
             if (err.response.data.errorKey === 'phonenumberexists') {
                 if (lang === "ru") {
                     payload.toast.error("Телефонный номер уже используется!")

@@ -251,7 +251,7 @@ export const deleteMemberById = (payload) => async (dispatch) => {
         types: types.REQUEST_DELETE_BY_ID,
         data: payload.currentMemberId
     }).then(res => {
-        dispatch(getMemberByMeetingId({meetingId: payload.currentMeetingId, page: 1, size: 6}))
+        dispatch(getMemberByMeetingId({meetingId: payload.currentMeetingId, page: 1, size: 6, fromReestr: false}))
     }).catch(err => {
         toast.error('Извини, ты ошибся')
     })

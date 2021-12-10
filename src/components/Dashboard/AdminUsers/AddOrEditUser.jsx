@@ -7,18 +7,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import {
-    ACTIVE, ANY,
-    CANCELED,
-    DISABLED,
-    ENTITY,
-    ERI,
-    FINISH,
-    FOREIGNER,
-    INDIVIDUAL,
-    INPASS,
-    PENDING
-} from "../../../utils/contants";
+import {ANY, ENTITY, FOREIGNER, INDIVIDUAL, INPASS} from "../../../utils/contants";
 import RouteByDashboard from "../RouteByDashboard";
 import {useTranslation} from "react-i18next";
 import PhoneInput from "react-phone-number-input";
@@ -52,6 +41,7 @@ export default function AddOrEditUser() {
     })
 
     const [phoneNumber, setPhoneNumber] = useState();
+    const [pinfl, setPinfl] = useState();
     const [myBoolean, setMyBoolean] = useState(false);
 
     const [userInfo, setUserInfo] = useState({
@@ -81,6 +71,7 @@ export default function AddOrEditUser() {
             groupEnum: currentForUser.groupEnum,
             authTypeEnum: currentForUser.authTypeEnum,
         })
+        setPinfl(currentForUser.pinfl)
         setPhoneNumber(currentForUser.phoneNumber)
         const auth = currentForUser.authorities
         console.log(auth)
@@ -103,24 +94,24 @@ export default function AddOrEditUser() {
             authority.push("ROLE_USER")
         }
         console.log(v);
-        if (userInfo.pinfl && userInfo.generateLogin) {
-        const data = {
-            fullName: v.fullName,
-            activated: userInfo.activated,
-            authTypeEnum: userInfo.authTypeEnum,
-            authorities: authority,
-            email: v.email,
-            groupEnum: userInfo.groupEnum,
-            inn: null,
-            login: userInfo.generateLogin,
-            password: v.password,
-            passport: v.passport,
-            pinfl: userInfo.pinfl,
-            resident: userInfo.resident,
-            phoneNumber: phoneNumber
-        }
-        console.log(data)
-        dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
+        if (pinfl && userInfo.generateLogin) {
+            const data = {
+                fullName: v.fullName,
+                activated: userInfo.activated,
+                authTypeEnum: userInfo.authTypeEnum,
+                authorities: authority,
+                email: v.email,
+                groupEnum: userInfo.groupEnum,
+                inn: null,
+                login: userInfo.generateLogin,
+                password: v.password,
+                passport: v.passport,
+                pinfl: pinfl,
+                resident: userInfo.resident,
+                phoneNumber: phoneNumber
+            }
+            console.log(data)
+            dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
             toast.warning(t("toast.warning"))
         }
@@ -135,7 +126,7 @@ export default function AddOrEditUser() {
             authority.push("ROLE_USER")
         }
         const current = parseInt(id);
-        if (userInfo.pinfl && authority && userInfo.generateLogin) {
+        if (pinfl && authority && userInfo.generateLogin) {
             const data = {
                 id: current,
                 fullName: v.fullName,
@@ -148,7 +139,7 @@ export default function AddOrEditUser() {
                 login: userInfo.generateLogin,
                 password: v.password,
                 passport: v.passport,
-                pinfl: userInfo.pinfl,
+                pinfl: pinfl,
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber
             }
@@ -159,10 +150,9 @@ export default function AddOrEditUser() {
         }
     }
 
-    const savePinfl = (e) => {
-        setUserInfo({...userInfo, pinfl: e})
-        if (e.toString().length === 14) {
-            axios.post(BASE_URL + "/moder/user/generate-login/" + e)
+    const savePinfl = (value) => {
+        if (value.length === 14) {
+            axios.post(BASE_URL + "/moder/user/generate-login/" + value)
                 .then((res) => {
                     let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
                     let string_length = 8;
@@ -359,9 +349,13 @@ export default function AddOrEditUser() {
                                             ref={ref}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="pinfl"
-                                            value={userInfo.pinfl}
-                                            minLength={14} maxLength={14}
-                                            onChange={(event) => savePinfl(event.target.value)}
+                                            value={pinfl}
+                                            maxLength={14}
+                                            onChange={(event) => {
+                                                const value = event.target.value;
+                                                setPinfl(value)
+                                                savePinfl(value)
+                                            }}
                                             className="setting_input border"
                                         />
                                     </div>

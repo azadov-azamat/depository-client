@@ -89,8 +89,8 @@ export const Socket = ({meetingId, memberId}) => {
                     })
                 }
 
-                if (topic === '/topic/get-zoom') {
-                    if (msg.zoom) {
+                if (topic === '/topic/get-zoom/' + meetingId) {
+                    if (msg.zoom && msg.password !== null) {
                         dispatch({
                             type: "PASSWORD_ZOOM_MEETING",
                             payload: {
