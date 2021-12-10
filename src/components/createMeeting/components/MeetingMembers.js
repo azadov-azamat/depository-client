@@ -9,7 +9,7 @@ import 'antd/dist/antd.css';
 import * as adminUsersAction from "../../../redux/actions/UsersAction";
 import * as meetingActions from '../../../redux/actions/MeetingAction';
 import {toast} from "react-toastify";
-import {SECRETARY, SPEAKER, WATCHER} from "../../../utils/contants";
+import {CHAIRMAN, SECRETARY, SPEAKER, WATCHER} from "../../../utils/contants";
 import usePagination from "../../Dashboard/Pagination";
 import {Pagination} from "@material-ui/lab";
 import {confirmAlert} from "react-confirm-alert";
@@ -193,7 +193,8 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                                     <td>{
                                         role.memberTypeEnum === SPEAKER ? lang("meetingCreated.roles.speaker") : '' ||
                                         role.memberTypeEnum === WATCHER ? lang("meetingCreated.roles.watcher") : '' ||
-                                        role.memberTypeEnum === SECRETARY ? lang("meetingCreated.roles.secretary") : ''
+                                        role.memberTypeEnum === SECRETARY ? lang("meetingCreated.roles.secretary") : '' ||
+                                        role.memberTypeEnum === CHAIRMAN ? lang("meetingCreated.roles.chairman") : ''
                                     }</td>
                                     <td>
                                         <button className="btn btn-link"

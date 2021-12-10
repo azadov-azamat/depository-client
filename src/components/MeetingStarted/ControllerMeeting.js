@@ -237,7 +237,7 @@ export const ControllerMeeting = () => {
                     {
                         label: 'Да',
                         onClick: () => {
-                            socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
+                            // socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
                             dispatch(meetingActions.updateMeetingStatusAction(dataForUpdateMeetingStatus))
                         }
                     },
@@ -270,7 +270,7 @@ export const ControllerMeeting = () => {
                     {
                         label: 'Да',
                         onClick: () => {
-                            socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
+                            // socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
                             dispatch(meetingActions.updateMeetingStatusAction(dataForUpdateMeetingStatus))
                         }
                     },

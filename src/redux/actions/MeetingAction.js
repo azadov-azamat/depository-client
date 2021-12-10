@@ -119,7 +119,7 @@ export const createMeeting = (payload) => async (dispatch) => {
 export const updateMeetingAction = (payload) => async (dispatch) => {
     dispatch({
         api: editMeetingApi,
-        types: ["REQUEST_START_UPDATE_MEETING", "REQUEST_UPDATE_MEETING", "REQUEST_ERROR_UPDATE_MEETING",],
+        types: ["REQUEST_START_UPDATE_MEETING", "REQUEST_GET_MEETING_SUCCESS", "REQUEST_ERROR_UPDATE_MEETING",],
         data: payload.data
     }).then(res => {
         const currentMeetingId = res.payload.id;

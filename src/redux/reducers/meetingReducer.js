@@ -51,6 +51,10 @@ const reducers = {
       state.meetings = action.payload
     },
 
+    ["REQUEST_UPDATE_MEETING_STATUS"](state, action){
+      state.currentMeeting = action.payload
+    },
+
     [types.REQUEST_GET_MEETING_LIST_START](state) {
         state.loading = true;
     },
