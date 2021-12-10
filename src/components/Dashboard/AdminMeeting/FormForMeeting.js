@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {RiUserSearchLine} from "react-icons/all";
 import {FaCheck, FaTrash} from "react-icons/fa";
 import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contants";
-import Datetime from "react-datetime";
 import axios from "axios";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
@@ -11,7 +10,8 @@ import {Select} from "antd";
 import '../../createMeeting/AzamatGlobal.scss'
 import {useDispatch, useSelector} from "react-redux";
 import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
-import {AvField} from "availity-reactstrap-validation";
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const {Option} = Select;
 
@@ -24,6 +24,7 @@ export default function FormForMeeting({getName, lang}) {
 
     const [country, setCountry] = useState([]);
     const language = localStorage.getItem('i18nextLng');
+    const [startDate, setStartDate] = useState(new Date());
 
     useEffect(() => {
         axios.get(BASE_URL + api.getCountry)
@@ -39,6 +40,27 @@ export default function FormForMeeting({getName, lang}) {
     function onSearchCompany(val) {
         if (val.length >= 3)
             dispatch(adminCompanyAction.getCompanySearchNameAction({name: val}))
+    }
+
+    function dateSearchItem() {
+        const ExampleCustomTimeInput = ({date, value, onChange}) => (
+            <input
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                style={{border: "solid 1px pink"}}
+            />
+        );
+
+        return (
+            <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                showTimeInput
+                customTimeInput={<ExampleCustomTimeInput/>}
+                showDisabledMonthNavigation
+            />
+        );
+
     }
 
     return (
@@ -91,11 +113,14 @@ export default function FormForMeeting({getName, lang}) {
                         name="startRegistration"
                         className="text-center form-control"
                         style={{backgroundColor: '#FFFFFF'}}
-                        required
+                        onBlur={(event) => {
+                            if (event.target.value !== "") {
+                                getName((event.target.value + ":00.000Z"), "startRegistration")
+                            }else {
+                                getName("", "startRegistration")
+                            }
+                        }}
                     />
-                    {/*<Datetime*/}
-                    {/*    onChange={(e) => getName(e["_d"], "startRegistration")}*/}
-                    {/*/>*/}
                 </td>
                 <td style={{width: '123px'}}>
                     <input
@@ -103,9 +128,14 @@ export default function FormForMeeting({getName, lang}) {
                         name="startDate"
                         className="border text-center timer form-control"
                         style={{backgroundColor: '#FFFFFF'}}
-                        required
+                        onBlur={(event) => {
+                            if (event.target.value !== "") {
+                                getName((event.target.value + ":00.000Z"), "startDate")
+                            }else {
+                                getName("", "startDate")
+                            }
+                        }}
                     />
-                    {/*<Datetime onChange={(e) => getName(e["_d"], "startDate")}/>*/}
                 </td>
                 <td style={{width: '135px'}}>
                     <div className="form-group">

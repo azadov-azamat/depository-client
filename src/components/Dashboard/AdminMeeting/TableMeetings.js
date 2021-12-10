@@ -57,16 +57,22 @@ export default function TableMeetings({meetings, lang}) {
     }
 
     function getDate(currentDate) {
-        let date = new Date(currentDate);
+
         return (
             <>
-                {
-                    (date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" +
-                    (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes()) + " " +
-                    (date.getDate().toString().length === 1 ? ("0" + date.getDate()) : date.getDate()) + "/" +
-                    (date.getMonth().toString().length === 1 ? ("0" + date.getMonth()) : date.getMonth()) + "/" + date.getFullYear()}
+                {currentDate.substr((currentDate) - 1, 10)}{"  "}{currentDate.substr(11, 5)}
             </>
         )
+        // let date = new Date(currentDate);
+        // return (
+        //     <>
+        //         {
+        //             (date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" +
+        //             (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes()) + " " +
+        //             (date.getDate().toString().length === 1 ? ("0" + date.getDate()) : date.getDate()) + "/" +
+        //             (date.getMonth().toString().length === 1 ? ("0" + date.getMonth()) : date.getMonth()) + "/" + date.getFullYear()}
+        //     </>
+        // )
     }
 
     const updateMeeting = (currentMeeting) => {
@@ -107,6 +113,8 @@ export default function TableMeetings({meetings, lang}) {
         }
     }
 
+    console.log(meetings)
+
     return (
         <>
             {meetings?.map(element => (
@@ -123,8 +131,8 @@ export default function TableMeetings({meetings, lang}) {
                     <td className="text-center company" style={style}>
                         {status(element.status)}
                     </td>
-                    <td className="text-center company" style={style}>{getDate(element.startDate)}</td>
                     <td className="text-center company" style={style}>{getDate(element.startRegistration)}</td>
+                    <td className="text-center company" style={style}>{getDate(element.startDate)}</td>
                     <td className="text-center company" style={style}>
                             {getCityName(element.city)}
                     </td>
