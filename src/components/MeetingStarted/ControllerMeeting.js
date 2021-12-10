@@ -237,7 +237,7 @@ export const ControllerMeeting = () => {
                     {
                         label: 'Да',
                         onClick: () => {
-                            // socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
+                            socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
                             dispatch(meetingActions.updateMeetingStatusAction(dataForUpdateMeetingStatus))
                         }
                     },
@@ -246,7 +246,7 @@ export const ControllerMeeting = () => {
                     }
                 ]
             });
-        } else if (quorumCount >= 0) {
+        } else if (quorumCount >= 75) {
             const dataForComment = {
                 userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
                 meetingId: meetingId,
@@ -270,7 +270,7 @@ export const ControllerMeeting = () => {
                     {
                         label: 'Да',
                         onClick: () => {
-                            // socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
+                            socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
                             dispatch(meetingActions.updateMeetingStatusAction(dataForUpdateMeetingStatus))
                         }
                     },
