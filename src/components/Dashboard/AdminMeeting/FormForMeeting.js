@@ -11,6 +11,7 @@ import {Select} from "antd";
 import '../../createMeeting/AzamatGlobal.scss'
 import {useDispatch, useSelector} from "react-redux";
 import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
+import {AvField} from "availity-reactstrap-validation";
 
 const {Option} = Select;
 
@@ -85,12 +86,26 @@ export default function FormForMeeting({getName, lang}) {
                     </div>
                 </td>
                 <td style={{width: '135px'}}>
-                    <Datetime
-                        onChange={(e) => getName(e["_d"], "startRegistration")}
+                    <input
+                        type="datetime-local"
+                        name="startRegistration"
+                        className="text-center form-control"
+                        style={{backgroundColor: '#FFFFFF'}}
+                        required
                     />
+                    {/*<Datetime*/}
+                    {/*    onChange={(e) => getName(e["_d"], "startRegistration")}*/}
+                    {/*/>*/}
                 </td>
                 <td style={{width: '123px'}}>
-                    <Datetime onChange={(e) => getName(e["_d"], "startDate")}/>
+                    <input
+                        type="datetime-local"
+                        name="startDate"
+                        className="border text-center timer form-control"
+                        style={{backgroundColor: '#FFFFFF'}}
+                        required
+                    />
+                    {/*<Datetime onChange={(e) => getName(e["_d"], "startDate")}/>*/}
                 </td>
                 <td style={{width: '135px'}}>
                     <div className="form-group">

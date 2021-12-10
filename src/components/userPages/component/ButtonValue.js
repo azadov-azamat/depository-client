@@ -1,23 +1,13 @@
 import React, {useEffect} from "react";
-import {
-    CHAIRMAN,
-    DEPOSITORY_CURRENT_MEETING,
-    DEPOSITORY_USER,
-    SECRETARY,
-    SIMPLE,
-    SPEAKER,
-    WATCHER
-} from "../../../utils/contants";
+import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../utils/contants";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
-import {subscribe} from "../../../redux/actions/socketActions";
-import {getCompanySearchNameApi, getCompanySpecFilterApi} from "../../../api/CompanyApi";
-import * as types from "../../../redux/actionTypes/CompanyActionTypes";
 import {useTranslation} from "react-i18next";
 
 
 export default function ButtonValue({meetingId, companyId}) {
+
     const dispatch = useDispatch();
     const history = useHistory();
     const {t} = useTranslation();
@@ -67,7 +57,7 @@ export default function ButtonValue({meetingId, companyId}) {
                     switch (element.memberTypeEnum) {
                         case CHAIRMAN:
                             return (
-                                <button style={style}
+                                <button style={style} key={element?.id}
                                         onClick={() => historyPushItem(CHAIRMAN, element.id, meetingId)}
                                         className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.controlMeeting")} <br/> ({t("meetingCreated.roles.chairman")})
@@ -76,7 +66,7 @@ export default function ButtonValue({meetingId, companyId}) {
                         case SECRETARY:
                             return (
                                 <button
-                                    style={style}
+                                    style={style} key={element?.id}
                                     onClick={() => historyPushItem(SECRETARY, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.controlMeeting")} <br/> ({t("meetingCreated.roles.secretary")})
@@ -85,7 +75,7 @@ export default function ButtonValue({meetingId, companyId}) {
                         case SIMPLE:
                             return (
                                 <button
-                                    style={style}
+                                    style={style} key={element?.id}
                                     onClick={() => isConfirmed(SIMPLE, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.simple")})
@@ -94,7 +84,7 @@ export default function ButtonValue({meetingId, companyId}) {
                         case WATCHER:
                             return (
                                 <button
-                                    style={style}
+                                    style={style} key={element?.id}
                                     onClick={() => isConfirmed(WATCHER, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.watcher")})
@@ -103,7 +93,7 @@ export default function ButtonValue({meetingId, companyId}) {
                         case SPEAKER:
                             return (
                                 <button
-                                    style={style}
+                                    style={style} key={element?.id}
                                     onClick={() => isConfirmed(SPEAKER, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.speaker")})

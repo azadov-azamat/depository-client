@@ -1,6 +1,5 @@
 import HttpClient from "../utils/HttpClient";
 import {api} from "./api";
-import {TOTAL_COUNT_MEETING} from "../redux/actionTypes/MeetingActionTypes";
 
 export const getMeetingBySorted = (data) => {
     return HttpClient.doGet(api.companyFilter +
@@ -58,7 +57,6 @@ export const getMemberTypeEnumApi = (data) => {
 }
 
 export const getMeetingByUserIdAndCompanyIdApi = (data) => {
-    console.log(data)
     return HttpClient.doGet(api.meetingByUserAndCompany + (data && data.userId ? "?userId=" + data.userId + "&companyId=" + data.companyId : ""))
 }
 

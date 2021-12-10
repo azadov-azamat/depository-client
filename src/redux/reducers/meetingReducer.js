@@ -150,7 +150,6 @@ const reducers = {
         state.memberManagerType[action.requestData.meetingId] = action.payload
     },
     ['REQUEST_SUCCESS_MEETING_BY_USER_AND_COMPANY'](state, action) {
-        console.log(action)
         state.meetingByUser = action.payload
     },
 

@@ -97,7 +97,7 @@ function AdminMeetings() {
                                 </thead>
                                 <tbody>
                                 <FormForMeeting getName={SearchMeetingSpecFilter} lang={t}/>
-                                <TableMeetings meetings={meetings}/>
+                                <TableMeetings meetings={meetings} lang={t}/>
                                 </tbody>
                             </Table>
                         </div>

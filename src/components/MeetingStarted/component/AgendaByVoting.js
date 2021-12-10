@@ -6,6 +6,7 @@ import {Button} from "reactstrap";
 import {element} from "prop-types";
 import {confirmAlert} from "react-confirm-alert";
 import * as meetingStarted from "../../../redux/actions/MeetingStartedAction";
+import {toast} from "react-toastify";
 
 export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
 
@@ -34,7 +35,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
         const data = {
             memberId: parseInt(memberId),
             agendaId: agenda.id,
-            id: votingId // ballot ID
+            id: 32103 // ballot ID
         }
 
         confirmAlert({
@@ -44,7 +45,8 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
                 {
                     label: 'Да',
                     onClick: () => {
-                        dispatch(meetingStarted.deleteBallotAction({data}))
+                        toast.warning("Jarayonda...")
+                        // dispatch(meetingStarted.deleteBallotAction({data}))
                     }
                 },
                 {

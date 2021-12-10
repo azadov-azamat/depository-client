@@ -7,7 +7,7 @@ import {confirmAlert} from "react-confirm-alert";
 import * as adminMeetingAction from "../../../redux/actions/MeetingAction";
 import {useHistory} from "react-router-dom";
 
-export default function TableMeetings({meetings}) {
+export default function TableMeetings({meetings, lang}) {
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -24,55 +24,35 @@ export default function TableMeetings({meetings}) {
 
     function status(status) {
         if (status === ACTIVE) {
-            if (language === "ru") {
-                return 'Активно по распиванию'
-            }
-            if (language === "uz") {
-                return 'Jadval bo\'yicha faol'
-            }
-            if (language === "en") {
-                return 'Active on schedule'
-            }
+            return (
+                <text style={style}>
+                    {lang("meetingCreated.meetingStatus.active")}
+                </text>
+            )
         } else if (status === PENDING) {
-            if (language === "ru") {
-                return "Ожидает запуска"
-            }
-            if (language === "uz") {
-                return 'Ishga tushirish kutilmoqda'
-            }
-            if (language === "en") {
-                return 'Awaiting launch'
-            }
+            return (
+                <text style={style}>
+                    {lang("meetingCreated.meetingStatus.pending")}
+                </text>
+            )
         } else if (status === FINISH) {
-            if (language === "ru") {
-                return 'Завершено (в архиве)'
-            }
-            if (language === "uz") {
-                return 'Tugallangan (arxivlangan)'
-            }
-            if (language === "en") {
-                return 'Completed (archived)'
-            }
+            return (
+                <text style={style}>
+                    {lang("meetingCreated.meetingStatus.finish")}
+                </text>
+            )
         } else if (status === CANCELED) {
-            if (language === "ru") {
-                return 'Отменено (в архиве)'
-            }
-            if (language === "uz") {
-                return 'Bekor qilingan (arxivlangan)'
-            }
-            if (language === "en") {
-                return 'Canceled (archived)'
-            }
+            return (
+                <text style={style}>
+                    {lang("meetingCreated.meetingStatus.canceled")}
+                </text>
+            )
         } else if (status === DISABLED) {
-            if (language === "ru") {
-                return 'Неактивно'
-            }
-            if (language === "uz") {
-                return 'Faol emas'
-            }
-            if (language === "en") {
-                return 'No active'
-            }
+            return (
+                <text style={style}>
+                    {lang("meetingCreated.meetingStatus.disabled")}
+                </text>
+            )
         }
     }
 
@@ -138,16 +118,15 @@ export default function TableMeetings({meetings}) {
                         </button>
                     </th>
                     <td className="text-center company" style={style}>
-                        <p style={style}>
                             {element.companyName}
-                        </p></td>
-                    <td className="text-center company" style={style}>{status(element.status)}</td>
+                    </td>
+                    <td className="text-center company" style={style}>
+                        {status(element.status)}
+                    </td>
                     <td className="text-center company" style={style}>{getDate(element.startDate)}</td>
                     <td className="text-center company" style={style}>{getDate(element.startRegistration)}</td>
                     <td className="text-center company" style={style}>
-                        <p style={style}>
                             {getCityName(element.city)}
-                        </p>
                     </td>
                     <td className="text-center">{element.status === ACTIVE || element.status === PENDING ?
                         <span className="text-success  m-0 p-0"> <FaCheck/></span> :

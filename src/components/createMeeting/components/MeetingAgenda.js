@@ -21,14 +21,23 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const reducers = useSelector(state => state)
     const {agendaState, memberManagerState, currentAgenda} = reducers.meeting
 
-    const [selectSpeaker, setSelectSpeaker] = useState();
-    const [selectTime, setSelectTime] = useState();
-    const [selectDebug, setSelectDebug] = useState();
-    const [selectStatus, setSelectStatus] = useState();
+    const [selectSpeaker, setSelectSpeaker] = useState(null);
+    const [selectTime, setSelectTime] = useState(null);
+    const [selectDebug, setSelectDebug] = useState(null);
+    const [selectStatus, setSelectStatus] = useState(null);
 
     useEffect(() => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
-    }, [])
+        dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId, fromReestr: false}))
+    }, [agendaState])
+
+    useEffect(()=>{
+        setSelectSpeaker(currentAgenda?.speakerId);
+        setSelectTime(currentAgenda?.speakTimeEnum);
+        setSelectDebug(currentAgenda?.debateEnum);
+        setSelectStatus(currentAgenda?.active)
+
+    },[currentAgenda])
 
     const [inputList, setInputList] = useState([{variant: ""}]);
 
@@ -102,15 +111,15 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         dispatch(meetingActions.editAgendaAction({data, history}))
     }
     function onSearch(val) {
-        let field = '';
-        if (parseInt(val)) {
-            field = 'PINFL';
-        } else {
-            field = 'FULL_NAME'
-        }
-        if (val.length >= 3) {
-            dispatch(meetingActions.getAgendaByMeetingId({value: val, field: field}))
-        }
+        // let field = '';
+        // if (parseInt(val)) {
+        //     field = 'PINFL';
+        // } else {
+        //     field = 'FULL_NAME'
+        // }
+        // if (val.length >= 3) {
+        //     dispatch(meetingActions.getMemberByMeetingId({value: val, field: field}))
+        // }
     }
 
     console.log(currentAgenda)
@@ -188,6 +197,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         )
     }
 
+    console.log(currentAgenda)
+
     return (
         <>
             <AvForm onValidSubmit={currentAgenda.length !== 0 ? editAgenda : addAgenda}>
@@ -211,10 +222,12 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                             <Select
                                 className="setting_input w-100"
                                 showSearch
+                                allowClear={true}
                                 placeholder="Выберите учетная запись"
                                 optionFilterProp="children"
                                 onChange={forSpeaker}
                                 defaultValue={currentAgenda?.speakerId}
+                                value={selectSpeaker}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -239,6 +252,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     placeholder="Выберите время"
                                     optionFilterProp="children"
                                     defaultValue={currentAgenda?.speakTimeEnum}
+                                    value={selectTime}
                                     onChange={forTime}
                                 >
                                     {timer.map((element, index) =>
@@ -255,6 +269,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     placeholder="Выберите прения"
                                     optionFilterProp="children"
                                     defaultValue={currentAgenda?.debateEnum}
+                                    value={selectDebug}
                                     onChange={forDebug}
                                 >
                                     {timer.map((element, index) =>
@@ -271,6 +286,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите состояние"
                                     defaultValue={currentAgenda?.active}
+                                    value={selectStatus}
                                     optionFilterProp="children"
                                     onChange={forStatus}
                                 >

@@ -203,8 +203,7 @@ export const getMeetingByUserIdAndCompanyIdAction = (payload) => async (dispatch
         types: ["REQUEST_START_MEETING_BY_USER_AND_COMPANY", "REQUEST_SUCCESS_MEETING_BY_USER_AND_COMPANY", "REQUEST_ERROR_MEETING_BY_USER_AND_COMPANY"],
         data: payload
     }).then(res=>{
-        console.log(res)
-        console.log("KELDI========================")
+
     });
 } // success 90%
 

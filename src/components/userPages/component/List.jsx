@@ -80,7 +80,7 @@ export const List = ({meetings, type, companyId, lang}) => {
             {meetings?.map(userMeeting => {
                 return (
                     userMeeting.status === statusMeet.success || userMeeting.status === statusMeet.cancel || userMeeting.status === statusMeet.active ? " " :
-                        <div className="shadow p-3 my-3" key={userMeeting.id}>
+                        <div className="shadow p-3 my-3" key={userMeeting?.id}>
                             <div className="row">
                                 <div className="col-12 d-block d-md-none text-center">
                                     <p style={{fontSize: '18px'}}><b>{status(userMeeting.typeEnum)}</b></p>

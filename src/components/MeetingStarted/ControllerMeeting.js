@@ -107,13 +107,12 @@ export const ControllerMeeting = () => {
                 memberId: parseInt(memberId),
                 online: true
             }
-
             socketClient.sendMessage('/topic/setStatus', JSON.stringify(data));
         }
     }, [connected])
 
     useEffect(() => {
-        questionList && questionList.forEach(element => {
+        questionList?.forEach(element => {
             if (!element.questionAnswer) {
                 setBadgeCount(prevState => prevState + 1)
             }
