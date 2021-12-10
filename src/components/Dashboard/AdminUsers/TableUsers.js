@@ -3,7 +3,7 @@ import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
 import {Link} from "react-router-dom";
 import {ENTITY, FOREIGNER, INDIVIDUAL} from "../../../utils/contants";
 
-export default function TableUsers({user, t, updateUser, deleteById}) {
+export default function TableUsers({user, t, deleteById}) {
 
     const editUser = () => {
 
@@ -35,7 +35,7 @@ export default function TableUsers({user, t, updateUser, deleteById}) {
         <>
             <tr className=''>
                 <th scope="row" className=' text-center'>
-                    <Link to={`/admin/users/${user.id}`} onClick={() => updateUser(user.id)}
+                    <Link to={`/admin/users/${user.id}`}
                           className='text-warning'><FaPen/></Link>
                 </th>
                 <td onClick={editUser} className='text-center'>

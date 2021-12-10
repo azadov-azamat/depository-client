@@ -229,6 +229,20 @@ export const addMemberManagers = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch(getMemberByMeetingId({meetingId: payload.data.meetingId, page: 1, size: 6, fromReestr: false}))
     }).catch(err => {
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title} = err.response.data;
+        console.log(err.response.data)
+        if (errorKey === "memberExistByType"){
+            if (lang === "uz"){
+                payload.toast.error("Bu foydalanuvchi, shu rol bilan allaqachon tizimga kiritilgan")
+            }
+            if (lang === "ru"){
+                payload.toast.error("Участник уже имеет от этого MemberTypeEnum")
+            }
+            if (lang === "en"){
+                payload.toast.error(title)
+            }
+        }
     })
 } // success 95%
 

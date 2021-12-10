@@ -11,7 +11,6 @@ import RouteByDashboard from "../RouteByDashboard";
 import PaginationDashboard from "../PaginationDashboard";
 import * as adminUserAction from "../../../redux/actions/UsersAction";
 import TableUsers from "./TableUsers";
-import {DEPOSITORY_USER} from "../../../utils/contants";
 import * as types from "../../../redux/actionTypes/UsersActionTypes";
 
 
@@ -37,16 +36,24 @@ export default function AdminUsers() {
     const startIndex = (page - 1) * size;
     const lastIndex = startIndex + (payload && payload[1]);
 
+    const [dataFilter, setDataFilter] = useState({
+        fullName: null,
+        email: null,
+        groupEnum: null,
+        phoneNumber: null,
+        pinfl: null,
+    })
+
     const handleChange = (e, p) => {
         setPage(p);
         _DATA.jump(p);
     };
 
     useEffect(() => {
-        if (!name) {
-            dispatch(adminUserAction.getUsersList({page, size}));
-        }
-        localStorage.removeItem("currentEditUser")
+        dispatch(adminUserAction.getUserSpecFilterAction({dataFilter, page, size}));
+    }, [dataFilter, page])
+
+    useEffect(() => {
         dispatch({
             type: types.REQUEST_GET_USER_SUCCESS,
             payload: []
@@ -71,36 +78,20 @@ export default function AdminUsers() {
         });
     }
 
-    const getName = (value, index) => {
-        setName(value)
-        const NAME = 'FULL_NAME'
-        const EMAIL = 'EMAIL'
-        const PHONE_NUMBER = 'PHONE_NUMBER'
-        const GROUP = 'GROUP'
-        const PINFL = 'PINFL'
-        let field = ''
-
-        if (index === 0) {
-            field = NAME
-        } else if (index === 1) {
-            field = EMAIL
-        } else if (index === 2) {
-            field = PHONE_NUMBER
-        } else if (index === 3) {
-            field = GROUP
-        } else if (index === 4) {
-            field = PINFL
+    const SearchUserSpecFilter = (value, fieldName) => {
+        if (fieldName !== "groupEnum") {
+            if (value.length >= 3 || value.length === 0) {
+                setDataFilter(prev => ({
+                    ...prev,
+                    [fieldName]: value
+                }))
+            }
+        } else {
+            setDataFilter(prev => ({
+                ...prev,
+                [fieldName]: value
+            }))
         }
-        if (value === "ALL") {
-            dispatch(adminUserAction.getUsersList({page, size}));
-        }
-        if (value.length >= 3) {
-            dispatch(adminUserAction.getUserFilter({value, field}));
-        }
-    }
-
-    const updateUser = (userId) => {
-        dispatch(adminUserAction.getUserById({userId: userId, history}))
     }
 
     return (
@@ -115,9 +106,11 @@ export default function AdminUsers() {
                                 <thead>
                                 <tr>
                                     <th style={{width: '15px'}}/>
-                                    <th style={{width: '170px'}} className='text-center'>{t('AdminUser.fullName')}</th>
+                                    <th style={{width: '170px'}}
+                                        className='text-center'>{t('AdminUser.fullName')}</th>
                                     <th style={{width: '140px'}} className='text-center'>{t('AdminUser.email')}</th>
-                                    <th style={{width: '135px'}} className='text-center'>{t('AdminUser.number')}</th>
+                                    <th style={{width: '135px'}}
+                                        className='text-center'>{t('AdminUser.number')}</th>
                                     <th style={{width: '123px'}} className='text-center'>{t('AdminUser.group')}</th>
                                     <th style={{width: '135px'}} className='text-center'>{t('AdminUser.pinfl')}</th>
                                     <th style={{width: '15px'}}/>
@@ -125,12 +118,10 @@ export default function AdminUsers() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <FormForUser getName={getName} t={t}/>
+                                <FormForUser getName={SearchUserSpecFilter} t={t}/>
                                 {
                                     users && users.map((user, i) =>
-                                        // user.authorities[0] === "ROLE_ADMIN" ? "" :
-                                            <TableUsers deleteById={del} user={user} key={i}
-                                                        updateUser={updateUser} t={t}/>
+                                        <TableUsers deleteById={del} user={user} key={i} t={t}/>
                                     )
                                 }
                                 </tbody>

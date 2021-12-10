@@ -148,6 +148,7 @@ export const getCompanySpecFilterAction = (payload) => async (dispatch) => {
         }
     }
 }
+
 export const getCompanySearchNameAction = (payload) => async (dispatch) => {
     try {
         const res = await dispatch({

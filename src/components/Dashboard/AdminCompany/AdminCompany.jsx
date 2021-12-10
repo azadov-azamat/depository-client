@@ -46,9 +46,6 @@ function AdminCompany() {
     };
 
     useEffect(() => {
-        // if (!name) {
-        //     dispatch(adminCompanyAction.getCompanyList({page, size}));
-        // }
         dispatch({
             type: 'updateState',
             payload: {

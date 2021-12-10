@@ -115,7 +115,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                 memberTypeEnum: selectedRole,
                 userId: selectedUser
             }
-            dispatch(meetingActions.addMemberManagers({data, history}))
+            dispatch(meetingActions.addMemberManagers({data, history, toast}))
         }
     }
 

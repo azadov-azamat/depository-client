@@ -1,4 +1,12 @@
-import {createUser, deleteUserApi, editUserApi, getById, getFilterUser, getUsers} from "../../api/UsersApi";
+import {
+    createUser,
+    deleteUserApi,
+    editUserApi,
+    getById,
+    getFilterUser,
+    getUsers,
+    getUserSpecFilterApi
+} from "../../api/UsersApi";
 import * as types from "../actionTypes/UsersActionTypes";
 import {
     REQUEST_API_ERROR_USERS,
@@ -83,6 +91,23 @@ export const getUsersList = (payload) => async (dispatch) => {
     })
 }
 
+export const getUserSpecFilterAction = (payload) => async (dispatch) => {
+    try {
+        const res = await dispatch({
+            api: getUserSpecFilterApi,
+            types: [types.REQUEST_API_START_USERS, types.REQUEST_API_SUCCESS_USERS, types.REQUEST_API_ERROR_USERS],
+            data: payload
+        });
+        if (res.success) {
+            console.log(res.success)
+        }
+    } catch (err) {
+        if (err.response) {
+            console.log(err.response)
+        }
+    }
+}
+
 export const getUserFilter = (payload) => async (dispatch) => {
     try {
         const res = await dispatch({
@@ -109,10 +134,6 @@ export const getUserById = (payload) => async (dispatch) => {
         api: getById,
         types: ["",types.REQUEST_GET_USER_SUCCESS,""],
         data: payload.userId
-    }).then(res => {
-        localStorage.setItem("currentEditUser", payload.userId)
-    }).catch(err => {
-        console.log(err.response)
     })
 }
 

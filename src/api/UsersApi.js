@@ -16,6 +16,11 @@ export const getFilterUser = (data) => {
         : ""))
 }
 
+export const getUserSpecFilterApi = (data) => {
+    return HttpClient.doPost(api.userSpecFilter + (data && data.page && data.size
+        ? "?page=" + (data.page - 1) + "&size=" + data.size : ""), data.dataFilter)
+}
+
 export const getById =(data)=>{
     return HttpClient.doGet(api.userMethods + "/"+ data)
 }
