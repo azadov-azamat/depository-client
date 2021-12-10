@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link, useLocation} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 function useQuery() {
     const {search} = useLocation();
@@ -10,15 +11,16 @@ export const NavbarMeeting = () => {
 
     let query = useQuery();
     const companyId = query.get("company_id");
+    const {t} = useTranslation();
 
     const link = [
         {
-            text: 'Общее заседание',
+            text: t("clientPage.allActiveMeetings"),
             link: '/issuerLegal/meetings?company_id=' + companyId + "&type=active",
             type: 'active'
         },
         {
-            text: 'Архив заседание',
+            text: t("clientPage.allArchiveMeetings"),
             link: '/issuerLegal/meetings?company_id=' + companyId + "&type=archive",
             type: 'archive'
         },

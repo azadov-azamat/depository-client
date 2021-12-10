@@ -73,7 +73,8 @@ export default function AddOrEditMeeting() {
                     </>
                 }
             </div>
-            <MeetingSettingRoutes lang={t} isDisabled={typeMeeting === "create" || loadingReestr === "loading"} id={meetingId}/>
+            <MeetingSettingRoutes lang={t} isDisabled={typeMeeting === "create" || loadingReestr === "loading"}
+                                  id={meetingId}/>
             <Container>
                 <Switch>
                     <Route path={"/supervisory/addOrEditMeeting/meeting"}>

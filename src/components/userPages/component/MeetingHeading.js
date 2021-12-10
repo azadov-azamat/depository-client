@@ -8,25 +8,9 @@ import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import * as adminCompanyAction from '../../../redux/actions/CompanyAction';
 
-function useQuery() {
-    const {search} = useLocation();
+export default function MeetingHeading({company, lang}) {
 
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-}
-
-export default function MeetingHeading({company}) {
-
-    const history = useHistory();
-    const dispatch = useDispatch()
-    const reducers = useSelector(state => state)
-    const {currentCompany} = reducers.company;
-
-    let query = useQuery();
-    const companyId = query.get("company_id");
-
-    useEffect(() => {
-        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(companyId), history}))
-    }, [companyId])
+    const imgLink = BASE_URL + api.getLogoByCompanyId + company?.id;
 
     const style = {
         textOverflow: 'ellipsis',
@@ -47,11 +31,10 @@ export default function MeetingHeading({company}) {
                                 <div className="d-flex">
                                     <Link to="/issuerLegal/companies"
                                           className="nav-link text-dark"><FaArrowLeft/></Link>
-                                    <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
-                                        голосование</Link>
+                                    <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
                                     <Link className="nav-link disabled"><AiOutlineRight/></Link>
                                     <Link to={'/issuerLegal/companies'} className="nav-link"
-                                          style={{color: "rgba(155,153,150,0.98)"}}>Акционерное общества</Link>
+                                          style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.controlPage.clientPage")}</Link>
                                     <Link className="nav-link disabled"><AiOutlineRight/></Link>
                                     <Link className="nav-link h5 disabled text-dark">{company?.name}</Link>
                                 </div>
@@ -60,9 +43,9 @@ export default function MeetingHeading({company}) {
                                 </div>
                             </div>
                             <div className="d-flex flex-column align-items-center">
-                                {currentCompany && currentCompany.imageUrl === "yes" ?
+                                {company?.imageUrl === "yes" ?
                                     <span>
-                                        <img src={BASE_URL + api.getLogoByCompanyId + currentCompany.id} alt="bu rasm"
+                                        <img src={imgLink} alt="bu rasm"
                                              style={{borderRadius: "50%", width: "4em", height: "4em"}}/>
                                     </span>
                                     :
@@ -89,9 +72,9 @@ export default function MeetingHeading({company}) {
                             className="h3"/></Link>
                         <div className="d-flex align-items-center float-end">
                             <span style={style} className='h4 d-flex justify-content-end'>{company?.name} - </span>
-                            {currentCompany && currentCompany.imageUrl === "yes" ?
+                            {company?.imageUrl === "yes" ?
                                 <span>
-                                        <img src={BASE_URL + api.getLogoByCompanyId + currentCompany.id} alt="bu rasm"
+                                        <img src={imgLink} alt="bu rasm"
                                              style={{borderRadius: "50%", width: "8vh", height: "8vh"}}/>
                                     </span>
                                 :
@@ -112,7 +95,7 @@ export default function MeetingHeading({company}) {
             <Row className="d-md-none">
                 <Col md={12}>
                     <div className="d-flex flex-column align-items-center">
-                        <NavbarMeeting companyId={company}/>
+                        <NavbarMeeting/>
                     </div>
                 </Col>
             </Row>

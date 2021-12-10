@@ -14,11 +14,13 @@ import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {subscribe} from "../../../redux/actions/socketActions";
 import {getCompanySearchNameApi, getCompanySpecFilterApi} from "../../../api/CompanyApi";
 import * as types from "../../../redux/actionTypes/CompanyActionTypes";
+import {useTranslation} from "react-i18next";
 
 
-export default function ButtonValue({meetingId, setStatusOnlineUser, companyId}) {
+export default function ButtonValue({meetingId, companyId}) {
     const dispatch = useDispatch();
     const history = useHistory();
+    const {t} = useTranslation();
     const reducers = useSelector(state => state)
     const {memberManagerType} = reducers.meeting
     const {currentUser} = reducers.auth
@@ -31,46 +33,44 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
     }, [currentUser])
 
     function historyPushItem(role, memberId, meetingId) {
+        const linkPushItem = "/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId;
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
             payload: role
         });
-        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
+        history.push(linkPushItem)
     }
 
     function isConfirmed(role, memberId, meetingId) {
-
+        const linkPushItem = "/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
             payload: role
         });
-        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId);
+        history.push(linkPushItem);
     }
 
     const style = {
         textOverflow: 'ellipsis',
         overflow: 'hidden',
         whitespace: 'nowrap',
-        // width: '13em',
         height: '65px',
     }
-    console.log(memberManagerType)
+
     return (
         <>
             {
                 memberManagerType[meetingId] && memberManagerType[meetingId].map(element => {
-                    console.log(element)
-                    // if (element.userId === currentUser?.id) {
                     switch (element.memberTypeEnum) {
                         case CHAIRMAN:
                             return (
                                 <button style={style}
                                         onClick={() => historyPushItem(CHAIRMAN, element.id, meetingId)}
                                         className="create py-2 my-2 px-2 mx-2">
-                                    Управлять заседаниями <br/> (Председатель)
+                                    {t("clientPage.controlMeeting")} <br/> ({t("meetingCreated.roles.chairman")})
                                 </button>
                             )
                         case SECRETARY:
@@ -79,7 +79,7 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                                     style={style}
                                     onClick={() => historyPushItem(SECRETARY, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
-                                    Управлять заседаниями <br/> (Секретар)
+                                    {t("clientPage.controlMeeting")} <br/> ({t("meetingCreated.roles.secretary")})
                                 </button>
                             )
                         case SIMPLE:
@@ -88,7 +88,7 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                                     style={style}
                                     onClick={() => isConfirmed(SIMPLE, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
-                                    Проголосовать <br/> (Обычный - Реестр)
+                                    {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.simple")})
                                 </button>
                             )
                         case WATCHER:
@@ -97,7 +97,7 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                                     style={style}
                                     onClick={() => isConfirmed(WATCHER, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
-                                    Проголосовать <br/> (Приглашенный)
+                                    {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.watcher")})
                                 </button>
                             )
                         case SPEAKER:
@@ -106,7 +106,7 @@ export default function ButtonValue({meetingId, setStatusOnlineUser, companyId})
                                     style={style}
                                     onClick={() => isConfirmed(SPEAKER, element.id, meetingId)}
                                     className="create py-2 my-2 px-2 mx-2">
-                                    Проголосовать <br/> (Доклатчик)
+                                    {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.speaker")})
                                 </button>
                             )
                     }

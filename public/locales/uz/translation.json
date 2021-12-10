@@ -162,7 +162,7 @@
       "speaker": "Spiker",
       "watcher": "Taklif qilingan",
       "chairman": "Rais",
-      "simple": "",
+      "simple": "Oddiy - Reestr",
       "addRole": "Rol qo'shish",
       "addMember": "Foydalanuvchi qo'shish"
     },
@@ -207,5 +207,15 @@
       "comment": "Tashkilot tavsifi",
       "addCompany": "Kompaniya yarating"
     }
+  },
+
+  "clientPage": {
+    "countMeeting": "Jami uchrashuvlar",
+    "allActiveMeetings": "Umumiy yig'ilish",
+    "allArchiveMeetings": "Arxiv uchrashuvi",
+    "statusNameMeeting": "Yig`ilish holati",
+    "infoStartMeeting": "Uchrashuvda ishtirok etish uchun ro'yxatga olish boshlanadi",
+    "controlMeeting": "Uchrashuvlarni boshqarish",
+    "toVote": "Ovoz berish uchun"
   }
 }

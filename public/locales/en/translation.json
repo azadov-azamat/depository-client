@@ -164,7 +164,7 @@
       "speaker": "Speaker",
       "watcher": "Watcher",
       "chairman": "Chairman",
-      "simple": "",
+      "simple": "Regular - Registry",
       "addRole": "Add Role",
       "addMember": "Add Member"
     },
@@ -208,5 +208,15 @@
       "comment": "Description of the organization",
       "addCompany": "Create a company"
     }
+  },
+
+  "clientPage": {
+    "countMeeting": "Total meetings",
+    "allActiveMeetings": "General meeting",
+    "allArchiveMeetings": "Archive meeting",
+    "statusNameMeeting": "State meeting",
+    "infoStartMeeting": "Registration for participation in the meeting begins",
+    "controlMeeting": "Manage meetings",
+    "toVote": "To vote"
   }
 }

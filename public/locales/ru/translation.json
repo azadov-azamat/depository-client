@@ -164,7 +164,7 @@
       "speaker": "Доклатчик",
       "watcher": "Приглашенный",
       "chairman": "Председатель",
-      "simple": "",
+      "simple": "Обычный - Реестр",
       "addRole": "Добавите Роль",
       "addMember": "Добавить пользователя"
     },
@@ -209,5 +209,15 @@
       "comment": "Описание организации",
       "addCompany": "Создать компанию"
     }
+  },
+
+  "clientPage": {
+    "countMeeting": "Всего заседаний",
+    "allActiveMeetings": "Общее заседание",
+    "allArchiveMeetings": "Архив заседание",
+    "statusNameMeeting": "Состояние заседание",
+    "infoStartMeeting": "Начало регистрации на участие в заседании",
+    "controlMeeting": "Управлять заседаниями",
+    "toVote": "Проголосовать"
   }
 }

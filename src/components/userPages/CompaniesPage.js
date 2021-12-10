@@ -6,13 +6,8 @@ import {useDispatch, useSelector} from "react-redux";
 import NabLists from "./component/NabLists";
 import * as companyAction from "../../redux/actions/CompanyAction";
 import {useTranslation} from "react-i18next";
-import {
-    DEPOSITORY_CURRENT_COMPANY,
-    DEPOSITORY_CURRENT_MEETING,
-    DEPOSITORY_CURRENT_MEMBER,
-    DEPOSITORY_MEMBER_TYPE_USER,
-    DEPOSITORY_USER
-} from "../../utils/contants";
+import {DEPOSITORY_MEMBER_TYPE_USER} from "../../utils/contants";
+import Loader from "react-loader-spinner";
 
 export default function CompaniesPage() {
 
@@ -51,7 +46,7 @@ export default function CompaniesPage() {
                              style={{marginTop: '5em'}}>
                             <div
                                 className="nav-link   nabLists d-flex justify-content-center align-items-center">
-                                <span>Акционерное общества</span>
+                                <span>{t("routes.controlPage.clientPage")}</span>
                             </div>
                             {booleanMy ?
                                 <div className="d-md-none">
@@ -87,18 +82,27 @@ export default function CompaniesPage() {
                     }
                 </Row>
                 {loading ?
-                    "WAITING" :
+                    <div style={{width: "100%", height: '60vh'}} className="d-flex justify-content-center align-items-center">
+                        <Loader
+                            type="ThreeDots"
+                            color="#132E85"
+                            height={100}
+                            width={100}
+                            timeout={13000}
+                        />
+                    </div>
+                    :
                     companiesByUserId && companiesByUserId.length === 0 ?
                         <div className='d-flex flex-column justify-content-center align-items-center' style={{
                             width: '100%',
-                            height: '70vh'
+                            height: '60vh'
                         }}>
                             <h2 className="mt-3">{t('electronVoice')}</h2>
-                            <h3>ma`lumotlar yo`q</h3>
+                            <h3>{t("meetingCreated.emptyList")}</h3>
                         </div>
                         :
                         companiesByUserId && companiesByUserId.map(value =>
-                            <NabLists company={value}/>
+                            <NabLists company={value} lang={t} key={value.id}/>
                         )
                 }
             </Container>

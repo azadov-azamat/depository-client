@@ -25,9 +25,11 @@ export const MeetingLists = () => {
     const {t} = useTranslation();
     const history = useHistory();
     const dispatch = useDispatch()
+
     let query = useQuery();
     const reducers = useSelector(state => state)
     const companyId = parseInt(query.get("company_id"));
+    const status = query.get("type");
 
     const {currentCompany} = reducers.company
     const {meetingByUser} = reducers.meeting;
@@ -38,18 +40,21 @@ export const MeetingLists = () => {
             userId: (currentUser && currentUser.id),
             companyId: companyId
         }))
-        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}))
     }, [companyId, currentUser])
+
+    useEffect(() => {
+        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}))
+    }, [companyId])
 
     return (
         <div className="allCss">
-            <MeetingHeading company={currentCompany}/>
+            <MeetingHeading company={currentCompany} lang={t}/>
             <div className="container">
                 <Row>
                     <Col md={12}>
                         <Switch>
                             <Route path={"/issuerLegal/meetings"}>
-                                <List meetings={meetingByUser}/>
+                                <List meetings={meetingByUser} companyId={companyId} type={status} lang={t}/>
                             </Route>
                         </Switch>
                     </Col>
