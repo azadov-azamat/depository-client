@@ -14,13 +14,11 @@ import {toast} from "react-toastify";
 import React from "react";
 
 export const getCompanyByIdAction = (payload) => async (dispatch) => {
-    console.log("keldi action")
     dispatch({
         api: getCompanyByIdApi,
         types: ["REQUEST_GET_COMPANY_START", "REQUEST_GET_COMPANY_BY_ID", "REQUEST_ERROR"],
         data: payload.companyId
     }).then(res => {
-        console.log(res)
         if (res.payload.imageUrl !== "no") {
             dispatch(getLogoCompanyByCompanyIDAction({companyId: payload.companyId}))
         }

@@ -24,6 +24,7 @@ import {api} from "../../../api/api";
 import {toast} from "react-toastify";
 import * as meetingActions from '../../../redux/actions/MeetingAction';
 import {REQUEST_API_SUCCESS} from "../../../redux/actionTypes/CompanyActionTypes";
+import {getCompanyByIdForMeeting} from "../../../redux/actions/CompanyAction";
 
 const {Option} = Select;
 
@@ -37,20 +38,27 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     const {currentUser} = reducers.auth
 
     const [country, setCountry] = useState([]);
-    const [selectCompany, setSelectCompany] = useState(currentMeeting.length !== 0 ? currentMeeting.companyId : "");
-    const [selectStatus, setSelectStatus] = useState(currentMeeting.length !== 0 ? currentMeeting.status : "");
-    const [selectCountry, setSelectCountry] = useState(currentMeeting.length !== 0 ? currentMeeting.cityId : "");
-    const [selectTypeEnum, setSelectTypeEnum] = useState(currentMeeting.length !== 0 ? currentMeeting.typeEnum : "");
+    const [selectCompany, setSelectCompany] = useState(null);
+    const [selectStatus, setSelectStatus] = useState(null);
+    const [selectCountry, setSelectCountry] = useState(null);
+    const [selectTypeEnum, setSelectTypeEnum] = useState(null);
+    const [descriptionMeeting, setDescriptionMeeting] = useState(null);
 
     const language = localStorage.getItem('i18nextLng');
     const role = localStorage.getItem(DEPOSITORY_ROLE);
+
+    useEffect(()=>{
+        setSelectCompany(currentMeeting?.companyId);
+        setSelectStatus(currentMeeting?.status);
+        setSelectCountry(currentMeeting?.cityId);
+        setSelectTypeEnum(currentMeeting?.typeEnum);
+        setDescriptionMeeting(currentMeeting?.description)
+    },[currentMeeting])
 
     useEffect(() => {
         axios.get(BASE_URL + api.getCountry)
             .then(res => {
                 setCountry(res.data)
-            })
-            .catch(err => {
             })
         dispatch({
             type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
@@ -111,12 +119,12 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
         } else {
             const data = {
                 companyId: selectCompany,
-                cityId: parseInt(selectCountry),
+                cityId: selectCountry,
                 address: v.address,
-                description: v.description ? v.description : v.description2,
-                startDate: v.startDate + ':22.981Z',
-                startRegistration: v.startRegistration + ':22.981Z',
-                endRegistration: v.endRegistration + ':22.981Z',
+                description: v.description,
+                startDate: v.startDate + ':00.000Z',
+                startRegistration: v.startRegistration + ':00.000Z',
+                endRegistration: v.endRegistration + ':00.000Z',
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
@@ -130,28 +138,28 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
         const data2 = {
             id: parseInt(id),
             companyId: selectCompany,
-            cityId: parseInt(selectCountry),
+            cityId: selectCountry,
             address: v.address,
             description: v.description,
-            startDate: v.startDate + ':22.981Z',
-            startRegistration: v.startRegistration + ':22.981Z',
-            endRegistration: v.endRegistration + ':22.981Z',
+            startDate: v.startDate + ':00.000Z',
+            startRegistration: v.startRegistration + ':00.000Z',
+            endRegistration: v.endRegistration + ':00.000Z',
             status: selectStatus,
             typeEnum: selectTypeEnum,
         }
         console.log(data2)
         if (!selectCompany && !selectStatus && !selectCountry && !selectTypeEnum) {
-            toast.warning("Пожалуйста, Заполните все")
+            toast.warning(lang("toast.warning"))
         } else {
             const data = {
                 id: parseInt(id),
                 companyId: selectCompany,
-                cityId: parseInt(selectCountry),
+                cityId: selectCountry,
                 address: v.address,
                 description: v.description,
-                startDate: v.startDate + ':22.981Z',
-                startRegistration: v.startRegistration + ':22.981Z',
-                endRegistration: v.endRegistration + ':22.981Z',
+                startDate: v.startDate + ':00.000Z',
+                startRegistration: v.startRegistration + ':00.000Z',
+                endRegistration: v.endRegistration + ':00.000Z',
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
@@ -168,11 +176,13 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                         <Select
                             className="setting_input w-100"
                             showSearch
+                            allowClear={true}
                             placeholder="Выберите организацию"
                             optionFilterProp="children"
                             onChange={selectCompanyForMeeting}
                             onSearch={onSearch}
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.companyId : ""}
+                            defaultValue={currentMeeting?.companyId}
+                            value={selectCompany}
                             filterOption={(input, option) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
@@ -202,7 +212,8 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             className="setting_input w-100"
                             placeholder="Выберите статус"
                             optionFilterProp="children"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.status : ""}
+                            defaultValue={currentMeeting?.status}
+                            value={selectStatus}
                             onChange={selectStatusMeeting}
                         >
                             {statusText && statusText.map((value, index) =>
@@ -216,11 +227,13 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                     <div className="form-group">
                         <Label className='required_fields'>{lang("meetingsList.city")}</Label>
                         <Select
+                            allowClear={true}
                             className="setting_input w-100"
                             placeholder="Выберите область"
                             optionFilterProp="children"
                             onChange={selectCountryMeeting}
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.cityId : ""}
+                            defaultValue={currentMeeting?.cityId}
+                            value={selectCountry}
                         >
                             {country && country.map((value, index) => (
                                 <Option value={value.id} key={index}>
@@ -238,9 +251,9 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                         <Label className='required_fields'>{lang("meetingsList.address")}</Label>
                         <AvField
                             name="address"
-                            label=""
                             type="text"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.address : ""}
+                            value={currentMeeting?.address}
+                            placeholder={"введите свой адрес"}
                             className="border "
                             style={{backgroundColor: '#FFFFFF'}}
                             required
@@ -256,7 +269,8 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             className="setting_input w-100"
                             placeholder="Выберите тип заседание"
                             optionFilterProp="children"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.typeEnum : ""}
+                            defaultValue={currentMeeting?.typeEnum}
+                            value={selectTypeEnum}
                             onChange={selectType}
                         >
                             {typeEnumText && typeEnumText.map((value, index) =>
@@ -272,8 +286,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             type="datetime-local"
                             defaultValue={currentMeeting.length !== 0 ? currentMeeting?.startRegistration.substr((currentMeeting?.startRegistration) - 1, 16) : ""}
                             name="startRegistration"
-                            label="" helpMessage=""
-                            className="border  text-center timer"
+                            className="border text-center timer"
                             style={{backgroundColor: '#FFFFFF'}}
                             required
                         />
@@ -286,7 +299,6 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             type="datetime-local"
                             defaultValue={currentMeeting.length !== 0 ? currentMeeting?.startRegistration.substr((currentMeeting?.startRegistration) - 1, 16) : ""}
                             name="endRegistration"
-                            label="" helpMessage=""
                             className="border  text-center timer"
                             style={{backgroundColor: '#FFFFFF'}}
                             required
@@ -296,17 +308,20 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
             </Row>
             <Row>
                 <Col md={6} className='d-none flex-column d-md-flex'>
-                    <AvGroup>
+                    <div className="form-group">
                         <Label className='required_fields'>{lang("meetingsList.commentMeeting")}</Label>
-                        <AvInput
+                        <AvField
                             type="textarea"
                             name="description"
-                            label="Описания заседание"
                             className="border"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.description : ""}
+                            placeholder={"Краткая информация"}
+                            defaultValue={currentMeeting?.description}
+                            value={descriptionMeeting}
+                            onChange={(e)=> setDescriptionMeeting(e.target.value)}
                             style={{backgroundColor: '#FFFFFF', resize: 'none', height: '24vh'}}
+                            required
                         />
-                    </AvGroup>
+                    </div>
                 </Col>
                 <Col md={3}>
                     <div className="form-group">
@@ -315,7 +330,6 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             type="datetime-local"
                             defaultValue={currentMeeting.length !== 0 ? currentMeeting.startDate.substr((currentMeeting?.startDate) - 1, 16) : ""}
                             name="startDate"
-                            label="" helpMessage=""
                             className="border  text-center timer"
                             style={{backgroundColor: '#FFFFFF'}}
                             required
@@ -332,17 +346,20 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                     </div>
                 </Col>
                 <Col md={6} className='d-md-none flex-column d-md-flex'>
-                    <AvGroup>
+                    <div className="form-group">
                         <Label className='required_fields'>{lang("meetingsList.commentMeeting")}</Label>
-                        <AvInput
+                        <AvField
                             type="textarea"
-                            name="description2"
-                            label="Описания заседание"
+                            name="description"
+                            placeholder={"Краткая информация"}
                             className="border"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.description : ""}
+                            defaultValue={currentMeeting?.description}
+                            value={descriptionMeeting}
+                            onChange={(e)=> setDescriptionMeeting(e.target.value)}
                             style={{backgroundColor: '#FFFFFF', resize: 'none', height: '24vh'}}
+                            required
                         />
-                    </AvGroup>
+                    </div>
                     <div className="d-md-none d-flex justify-content-center mt-3 mb-3">
                         <button type={"submit"}
                                 className="btn btnAll m-2 create">{currentMeeting.length !== 0 ? lang("user.redaktorovat") : lang("user.sozdat")}

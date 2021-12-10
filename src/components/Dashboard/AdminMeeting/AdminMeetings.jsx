@@ -3,17 +3,12 @@ import {useDispatch, useSelector} from 'react-redux'
 import '../styles/users.css'
 import {Table} from "reactstrap";
 import * as adminMeetingAction from "../../../redux/actions/MeetingAction";
-import {confirmAlert} from "react-confirm-alert";
 import TableMeetings from "./TableMeetings";
 import usePagination from "../Pagination";
 import FormForMeeting from "./FormForMeeting";
-import {useHistory} from "react-router-dom";
-import {REQUEST_CREATE_MEETING} from "../../../redux/actionTypes/MeetingActionTypes";
 import RouteByDashboard from "../RouteByDashboard";
 import PaginationDashboard from "../PaginationDashboard";
-import {DEPOSITORY_CURRENT_MEETING} from "../../../utils/contants";
 import {useTranslation} from "react-i18next";
-import * as adminCompanyAction from "../../../redux/actions/CompanyAction";
 
 function AdminMeetings() {
 
@@ -63,15 +58,15 @@ function AdminMeetings() {
         _DATA.jump(p);
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(adminMeetingAction.getMeetingSpecFilterAction({objectData, page, size}));
-    },[objectData, page])
+    }, [objectData, page])
 
     const SearchMeetingSpecFilter = (value, fieldName) => {
-            setObjectData(prev => ({
-                ...prev,
-                [fieldName]: value
-            }))
+        setObjectData(prev => ({
+            ...prev,
+            [fieldName]: value
+        }))
     }
 
     return (
@@ -101,7 +96,7 @@ function AdminMeetings() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <FormForMeeting meetings={meetings} getName={SearchMeetingSpecFilter} lang={t}/>
+                                <FormForMeeting getName={SearchMeetingSpecFilter} lang={t}/>
                                 <TableMeetings meetings={meetings}/>
                                 </tbody>
                             </Table>

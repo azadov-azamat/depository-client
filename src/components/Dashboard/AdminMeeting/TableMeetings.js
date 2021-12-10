@@ -24,57 +24,53 @@ export default function TableMeetings({meetings}) {
 
     function status(status) {
         if (status === ACTIVE) {
-            if (language === "ru"){
+            if (language === "ru") {
                 return 'Активно по распиванию'
             }
-            if (language === "uz"){
+            if (language === "uz") {
                 return 'Jadval bo\'yicha faol'
             }
-            if (language === "en"){
+            if (language === "en") {
                 return 'Active on schedule'
             }
-        }
-        else if (status === PENDING) {
-            if (language === "ru"){
+        } else if (status === PENDING) {
+            if (language === "ru") {
                 return "Ожидает запуска"
             }
-            if (language === "uz"){
+            if (language === "uz") {
                 return 'Ishga tushirish kutilmoqda'
             }
-            if (language === "en"){
+            if (language === "en") {
                 return 'Awaiting launch'
             }
-        }
-        else if (status === FINISH) {
-            if (language === "ru"){
+        } else if (status === FINISH) {
+            if (language === "ru") {
                 return 'Завершено (в архиве)'
             }
-            if (language === "uz"){
+            if (language === "uz") {
                 return 'Tugallangan (arxivlangan)'
             }
-            if (language === "en"){
+            if (language === "en") {
                 return 'Completed (archived)'
             }
-        }
-        else if (status === CANCELED) {
-            if (language === "ru"){
+        } else if (status === CANCELED) {
+            if (language === "ru") {
                 return 'Отменено (в архиве)'
             }
-            if (language === "uz"){
+            if (language === "uz") {
                 return 'Bekor qilingan (arxivlangan)'
             }
-            if (language === "en"){
+            if (language === "en") {
                 return 'Canceled (archived)'
             }
-        }
-        else if (status === DISABLED) {
-            if (language === "ru"){
+        } else if (status === DISABLED) {
+            if (language === "ru") {
                 return 'Неактивно'
             }
-            if (language === "uz"){
+            if (language === "uz") {
                 return 'Faol emas'
             }
-            if (language === "en"){
+            if (language === "en") {
                 return 'No active'
             }
         }

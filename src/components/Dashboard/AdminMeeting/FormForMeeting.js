@@ -29,9 +29,6 @@ export default function FormForMeeting({getName, lang}) {
             .then(res => {
                 setCountry(res.data)
             })
-            .catch(err => {
-
-            })
     }, []);
 
     function onSearch(val) {
