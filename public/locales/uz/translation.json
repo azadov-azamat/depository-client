@@ -115,7 +115,8 @@
     "creat": "Foydalanuvhi yaratildi",
     "update": "Foydalanuvhi o'zgartirildi",
     "error": "Bu foydalanuvchi kompaniya yoki meetingda mavjud",
-    "warning": "Iltimos, Barcha ma`lumotlarni to`liq kiriting"
+    "warning": "Iltimos, Barcha ma`lumotlarni to`liq kiriting",
+    "errorPhoneNumberLength": "Telefon raqami formatini moslashtiring!"
   },
 
   "createButton": "Yozuv yaratish | ",

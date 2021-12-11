@@ -112,6 +112,9 @@ export default function AddOrEditCompany() {
     }
 
     const addCompany = (e, v) => {
+        if(phoneNumber.toString().length !== 13){
+            return toast.error(t("toast.errorPhoneNumberLength"))
+        }
         if (phoneNumber && inn) {
             const data = {
                 active: selectUsers.active,
@@ -296,7 +299,8 @@ export default function AddOrEditCompany() {
                                     <PhoneInput
                                         placeholder="Введите номер телефона"
                                         value={phoneNumber}
-                                        onChange={setPhoneNumber}/>
+                                        onChange={setPhoneNumber}
+                                    />
                                 </div>
                             </div>
                         </Col>

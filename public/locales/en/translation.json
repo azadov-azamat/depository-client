@@ -115,7 +115,8 @@
     "creat": "User create",
     "update": "User update",
     "error": "This user is present at the company or meeting",
-    "warning": "Please Fill All"
+    "warning": "Please Fill All",
+    "errorPhoneNumberLength": "Customize the format of the phone number!"
   },
 
   "createButton": "Create record | ",
