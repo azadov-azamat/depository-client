@@ -9,7 +9,6 @@ import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
 import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
-import {editAgendaAction, getAgendaById} from "../../../redux/actions/MeetingAction";
 
 const {Option} = Select;
 
@@ -27,17 +26,20 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const [selectStatus, setSelectStatus] = useState(null);
 
     useEffect(() => {
-        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId, fromReestr: false}))
     }, [agendaState])
 
     useEffect(()=>{
+        dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
+    },[currentMeetingId])
+
+    useEffect(() => {
         setSelectSpeaker(currentAgenda?.speakerId);
         setSelectTime(currentAgenda?.speakTimeEnum);
         setSelectDebug(currentAgenda?.debateEnum);
         setSelectStatus(currentAgenda?.active)
 
-    },[currentAgenda])
+    }, [currentAgenda])
 
     const [inputList, setInputList] = useState([{variant: ""}]);
 
@@ -110,6 +112,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         }
         dispatch(meetingActions.editAgendaAction({data, history}))
     }
+
     function onSearch(val) {
         // let field = '';
         // if (parseInt(val)) {
@@ -337,7 +340,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 </Row>
                             </CardBody>
                         </Card>
-                        <button className="btn py-2 px-5 create">{currentAgenda.length !== 0 ? "Редактировать" : "Создать"}</button>
+                        <button
+                            className="btn py-2 px-5 create">{currentAgenda.length !== 0 ? "Редактировать" : "Создать"}</button>
                     </Col>
                 </Row>
             </AvForm>
@@ -365,7 +369,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             <td>
                                                 <button
                                                     className='text-warning text-center bg-transparent border-0 m-0 p-0'>
-                                                    <FaPen onClick={()=> dispatch(meetingActions.getAgendaById(agenda.id))}/>
+                                                    <FaPen
+                                                        onClick={() => dispatch(meetingActions.getAgendaById(agenda.id))}/>
                                                 </button>
                                             </td>
                                             <td>{agenda.userName}</td>

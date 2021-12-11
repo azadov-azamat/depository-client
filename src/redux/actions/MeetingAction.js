@@ -242,6 +242,18 @@ export const addMemberManagers = (payload) => async (dispatch) => {
                 payload.toast.error(title)
             }
         }
+        if (errorKey === "memberExistByTypeSecretary"){
+            if (lang === "uz"){
+                payload.toast.error("A'zolar ro`yxati allaqachon bu Role ga ega: KOTIB")
+            }
+            if (lang === "ru"){
+                payload.toast.error("Участник уже имеет от этого Роль: SECRETARY")
+            }
+            if (lang === "en"){
+                payload.toast.error(title)
+            }
+        }
+        dispatch(getMemberByMeetingId({meetingId: payload.data.meetingId, page: 1, size: 6, fromReestr: false}))
     })
 } // success 95%
 
