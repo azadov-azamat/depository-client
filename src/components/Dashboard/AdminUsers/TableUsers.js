@@ -5,14 +5,6 @@ import {ENTITY, FOREIGNER, INDIVIDUAL} from "../../../utils/contants";
 
 export default function TableUsers({user, t, deleteById}) {
 
-    const editUser = () => {
-
-    }
-
-    const submit = () => {
-
-    }
-
     function status(status) {
         if (status === INDIVIDUAL) {
             return t("user.jismoniy")
@@ -31,6 +23,12 @@ export default function TableUsers({user, t, deleteById}) {
         height: '20px'
     }
 
+    const styleBtn = {
+        // background: "#FFFFFF",
+        cursor: 'pointer',
+        zIndex: '1000'
+    }
+
     return (
         <>
             <tr className=''>
@@ -38,34 +36,29 @@ export default function TableUsers({user, t, deleteById}) {
                     <Link to={`/admin/users/${user.id}`}
                           className='text-warning'><FaPen/></Link>
                 </th>
-                <td onClick={editUser} className='text-center'>
-                    <p style={style}>
-                        {user.fullName}
-                    </p></td>
-                <td onClick={editUser} className='text-center'>
-                    <p style={style}>
-                        {user.email}
-                    </p></td>
-                <td onClick={editUser} className='text-center'>
-                    <p style={style}>
-                        {user.phoneNumber}
-                    </p></td>
-                <td onClick={editUser} className='text-center'>
-                    <p style={style}>
-                        {status(user.groupEnum)}
-                    </p></td>
-                <td onClick={editUser} className='text-center'>
-                    <p style={style}>
-                        {user.pinfl}
-                    </p></td>
-                <td onClick={editUser} className='text-center'>
+                <td className='text-center' style={style}>
+                    {user.fullName}
+                </td>
+                <td className='text-center' style={style}>
+                    {user.email}
+                </td>
+                <td className='text-center' style={style}>
+                    {user.phoneNumber}
+                </td>
+                <td className='text-center' style={style}>
+                    {status(user.groupEnum)}
+                </td>
+                <td className='text-center' style={style}>
+                    {user.pinfl}
+                </td>
+                <td className='text-center'>
                     {user.activated ? <span className="text-success">
                                 <FaCheck/></span> :
                         <span className="text-danger"><FaTimes/></span>}
                 </td>
                 <td className='text-center'>
-                    <button className="btn text-danger d-flex"
-                            onClick={() => deleteById(user.id)}><FaTrash/></button>
+                    <text className="text-danger" style={styleBtn}
+                          onClick={() => deleteById(user.id)}><FaTrash/></text>
                 </td>
             </tr>
         </>

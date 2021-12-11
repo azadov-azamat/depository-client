@@ -28,7 +28,7 @@ export default function AdminUsers() {
     const [name, setName] = useState('');
     const [page, setPage] = useState(1);
 
-    const size = 6;
+    const size = 8;
 
     const count = Math.ceil(payload && payload[0] / size);
     const _DATA = usePagination(users && users, size);
