@@ -35,9 +35,9 @@ export default function AddOrEditUser() {
     const {ref, maskRef} = useIMask(opts);
 
     const [password, setPassword] = useState({
-        password: "",
+        password: null,
         showPassword: false,
-        generatePassword: "",
+        generatePassword: null,
     })
 
     const [phoneNumber, setPhoneNumber] = useState();
@@ -55,10 +55,8 @@ export default function AddOrEditUser() {
         groupEnum: null,
 
         authTypeEnum: null,
-        generatePassword: ''
+        generatePassword: null
     })
-
-    console.log(currentForUser)
 
     useEffect(() => {
         setUserInfo({
@@ -104,7 +102,7 @@ export default function AddOrEditUser() {
                 groupEnum: userInfo.groupEnum,
                 inn: null,
                 login: userInfo.generateLogin,
-                password: v.password,
+                password: userInfo.generatePassword,
                 passport: v.passport,
                 pinfl: pinfl,
                 resident: userInfo.resident,
@@ -137,7 +135,7 @@ export default function AddOrEditUser() {
                 groupEnum: userInfo.groupEnum,
                 inn: null,
                 login: userInfo.generateLogin,
-                password: v.password,
+                password: userInfo.generatePassword,
                 passport: v.passport,
                 pinfl: pinfl,
                 resident: userInfo.resident,
@@ -382,11 +380,13 @@ export default function AddOrEditUser() {
                                         value={userInfo.generatePassword}
                                         className="setting_input border"
                                         style={{backgroundColor: "#ffffff"}}
-                                        onChange={handlePasswordChange("password")}
+                                        onChange={(e)=>{
+                                            setUserInfo({...userInfo, generatePassword: e.target.value})
+                                            handlePasswordChange("password")
+                                        }}
                                         type={password.showPassword ? "text" : "password"}
                                         maxLength={16}
                                         minLength={4}
-                                        required
                                     />
                                     <div className="float-end">
                                         <InputAdornment style={{marginTop: "-19px"}} color={"dark"} position={"end"}>

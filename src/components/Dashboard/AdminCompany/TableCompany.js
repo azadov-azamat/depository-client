@@ -12,6 +12,12 @@ export default function TableCompany({company, deleteById, updateCompany}) {
         height: '20px'
     }
 
+    const styleBtn = {
+        // background: "#FFFFFF",
+        cursor: 'pointer',
+        zIndex: '1000'
+    }
+
     return (
         <tr>
             <th scope="row" className=' text-center'>
@@ -19,31 +25,26 @@ export default function TableCompany({company, deleteById, updateCompany}) {
                       className='text-warning'><FaPen/>
                 </Link>
             </th>
-            <td className="text-center">
-                <p style={style}>
+            <td className="text-center" style={style}>
                     {company.name}
-                </p>
             </td>
-            <td className="text-center">
-                <p style={style}>
+            <td className="text-center" style={style}>
                     {company.email}
-                </p>
             </td>
-            <td className="text-center">{company.phoneNumber}</td>
-            <td className="text-center">
-                <p style={style}>
-                    <a style={style} href={company.webPage} target='_blank'
-                       className='text-dark'><b>{company.webPage}</b></a>
-                </p>
+            <td className="text-center" style={style}>
+                {company.phoneNumber}
+            </td>
+            <td className="text-center" style={style}>
+                    <b>{company.webPage}</b>
             </td>
             <td className="text-center" style={style}>{company.inn}</td>
             <td className="text-center">{company?.active ? <span className="text-success"> <FaCheck/></span> :
                 <span className="text-danger"><FaTimes/></span>}</td>
             <td className="text-center">
-
-                <div style={{marginTop: '-10px'}} className="btn user_inner text-danger"
-                     onClick={() => deleteById(company.id)}><FaTrash style={{marginTop: '10px'}}/>
-                </div>
+                <text style={styleBtn} className="text-danger"
+                     onClick={() => deleteById(company.id)}>
+                    <FaTrash/>
+                </text>
             </td>
         </tr>
     )

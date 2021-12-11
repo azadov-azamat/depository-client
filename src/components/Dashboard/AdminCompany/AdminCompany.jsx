@@ -26,7 +26,7 @@ function AdminCompany() {
     const [name, setName] = useState('');
     const [page, setPage] = useState(1);
 
-    const size = 6;
+    const size = 8;
 
     const count = Math.ceil(payload && payload[0] / 6);
     const _DATA = usePagination(companies && companies, size);
