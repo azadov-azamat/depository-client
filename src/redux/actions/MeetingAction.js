@@ -294,12 +294,12 @@ export const getAgendaByMeetingId = (payload) => async (dispatch) => {
     })
 }
 export const getAgendaById = (payload) => async (dispatch) => {
-    console.log("keldi")
-    console.log(payload)
     dispatch({
         api: getAgendaByIdApi,
         types: ["REQUEST_START_AGENDA", "REQUEST_GET_AGENDA_BY_ID_SUCCESS", "REQUEST_ERROR_AGENDA"],
-        data: payload
+        data: payload.agendaId
+    }).then(res=>{
+        payload.modalStatus(true)
     })
 }
 
@@ -323,8 +323,10 @@ export const editAgendaAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START", "REQUEST_AGENDA_SUCCESS", "REQUEST_ERROR_AGENDA",],
         data: payload.data
     }).then(res => {
+        payload.setOpenModal(false)
         dispatch(getAgendaByMeetingId({meetingId: res.payload.meetingId}))
     }).catch(err => {
+        payload.setOpenModal(false)
         if (err.response.data.errorKey === "subjectExists") {
             toast.error('Bu kun tartibidagi masalani siz kiritgansiz!')
         }

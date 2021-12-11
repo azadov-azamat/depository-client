@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, CardBody, CardHeader, Col, Label, Row} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Label, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -9,6 +9,7 @@ import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
 import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
+import {AccordionAnswersModal} from "../../MeetingStarted/component/Accordions/AccordionAnswersModal";
 
 const {Option} = Select;
 
@@ -24,14 +25,15 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const [selectTime, setSelectTime] = useState(null);
     const [selectDebug, setSelectDebug] = useState(null);
     const [selectStatus, setSelectStatus] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId, fromReestr: false}))
     }, [agendaState])
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
-    },[currentMeetingId])
+    }, [currentMeetingId])
 
     useEffect(() => {
         setSelectSpeaker(currentAgenda?.speakerId);
@@ -86,7 +88,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             typeEnum: 'MOST',
             variants: values
         }
-        dispatch(meetingActions.addAgenda({data, history}))
+        // dispatch(meetingActions.addAgenda({data, history}))
     };
 
     function editAgenda(e, v) {
@@ -110,7 +112,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             typeEnum: 'MOST',
             variants: values
         }
-        dispatch(meetingActions.editAgendaAction({data, history}))
+        dispatch(meetingActions.editAgendaAction({data, history, setOpenModal}))
     }
 
     function onSearch(val) {
@@ -204,7 +206,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     return (
         <>
-            <AvForm onValidSubmit={currentAgenda.length !== 0 ? editAgenda : addAgenda}>
+            <AvForm onValidSubmit={addAgenda}>
                 <Row>
                     <Col md={6}>
                         <div className="form-group">
@@ -212,7 +214,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                             <AvField
                                 type="text"
                                 name="subject"
-                                value={currentAgenda?.subject}
                                 placeholder={'Ваш вопрос'}
                                 style={{backgroundColor: '#FFFFFF'}}
                                 required
@@ -229,8 +230,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 placeholder="Выберите учетная запись"
                                 optionFilterProp="children"
                                 onChange={forSpeaker}
-                                defaultValue={currentAgenda?.speakerId}
-                                value={selectSpeaker}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -254,8 +253,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите время"
                                     optionFilterProp="children"
-                                    defaultValue={currentAgenda?.speakTimeEnum}
-                                    value={selectTime}
                                     onChange={forTime}
                                 >
                                     {timer.map((element, index) =>
@@ -271,8 +268,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите прения"
                                     optionFilterProp="children"
-                                    defaultValue={currentAgenda?.debateEnum}
-                                    value={selectDebug}
                                     onChange={forDebug}
                                 >
                                     {timer.map((element, index) =>
@@ -288,8 +283,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 <Select
                                     className="setting_input w-100"
                                     placeholder="Выберите состояние"
-                                    defaultValue={currentAgenda?.active}
-                                    value={selectStatus}
                                     optionFilterProp="children"
                                     onChange={forStatus}
                                 >
@@ -363,14 +356,19 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody className="navUsers">
+                                <tbody className="">
                                 {agendaState && agendaState.length !== 0 ? agendaState.map((agenda, index) => (
                                         <tr key={index}>
-                                            <td>
+                                            <td className={"text-center"}>
                                                 <button
                                                     className='text-warning text-center bg-transparent border-0 m-0 p-0'>
                                                     <FaPen
-                                                        onClick={() => dispatch(meetingActions.getAgendaById(agenda.id))}/>
+                                                        onClick={() => {
+                                                            dispatch(meetingActions.getAgendaById({
+                                                                agendaId: agenda.id,
+                                                                modalStatus: setOpenModal
+                                                            }))
+                                                        }}/>
                                                 </button>
                                             </td>
                                             <td>{agenda.userName}</td>
@@ -401,6 +399,155 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                     </div>
                 </Col>
             </Row>
+            <Modal isOpen={openModal} className="modal-dialog modal-lg">
+                {/*<ModalHeader toggle={() => setOpenModal(!openModal)}/>*/}
+                <ModalBody>
+                    <AvForm onValidSubmit={editAgenda}>
+                        <Row>
+                            <Col md={6}>
+                                <div className="form-group">
+                                    <Label className='required_fields'>Вопрос</Label>
+                                    <AvField
+                                        type="text"
+                                        name="subject"
+                                        value={currentAgenda?.subject}
+                                        placeholder={'Ваш вопрос'}
+                                        style={{backgroundColor: '#FFFFFF'}}
+                                        required
+                                    />
+                                </div>
+                            </Col>
+                            <Col md={6}>
+                                <div className="form-group">
+                                    <Label for="companySecretary">Учетная запись</Label>
+                                    <Select
+                                        className="setting_input w-100"
+                                        showSearch
+                                        allowClear={true}
+                                        placeholder="Выберите учетная запись"
+                                        optionFilterProp="children"
+                                        onChange={forSpeaker}
+                                        defaultValue={currentAgenda?.speakerId}
+                                        value={selectSpeaker}
+                                        onSearch={onSearch}
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
+                                        {memberManagerState && memberManagerState.map((username, index) =>
+                                            username.memberTypeEnum === SPEAKER ?
+                                                <Option key={index}
+                                                        value={username.id}>{username.user.fullName + " - " + username.user.pinfl}</Option> : ''
+                                        )}
+                                    </Select>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={12} className="d-md-inline-flex d-flex">
+                                <div className=" col-4">
+                                    <div className="form-group">
+                                        <Label className='required_fields'>Время</Label>
+                                        <Select
+                                            className="setting_input w-100"
+                                            placeholder="Выберите время"
+                                            optionFilterProp="children"
+                                            defaultValue={currentAgenda?.speakTimeEnum}
+                                            value={selectTime}
+                                            onChange={forTime}
+                                        >
+                                            {timer.map((element, index) =>
+                                                <Option key={index} value={element.value}>{element.text}</Option>
+                                            )}
+                                        </Select>
+                                    </div>
+                                </div>
+                                <div className="col-4  px-3">
+                                    <div className="form-group">
+                                        <Label className='required_fields'>Прения</Label>
+                                        <Select
+                                            className="setting_input w-100"
+                                            placeholder="Выберите прения"
+                                            optionFilterProp="children"
+                                            defaultValue={currentAgenda?.debateEnum}
+                                            value={selectDebug}
+                                            onChange={forDebug}
+                                        >
+                                            {timer.map((element, index) =>
+                                                <Option key={index} value={element.value}>{element.text}</Option>
+                                            )}
+                                        </Select>
+                                    </div>
+                                </div>
+
+                                <div className="col-4">
+                                    <div className="form-group">
+                                        <Label className='required_fields'>Состояние</Label>
+                                        <Select
+                                            className="setting_input w-100"
+                                            placeholder="Выберите состояние"
+                                            defaultValue={currentAgenda?.active}
+                                            value={selectStatus}
+                                            optionFilterProp="children"
+                                            onChange={forStatus}
+                                        >
+                                            <Option value={true}>Aктивно</Option>
+                                            <Option value={false}>Неактивно</Option>
+                                        </Select>
+                                    </div>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={12} sm={12} className="mt-3">
+                                <Card>
+                                    <CardHeader>
+                                        <div className="form-group">
+                                            <Label className='required_fields'>Варианты голосования</Label>
+                                        </div>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <Row className="d-flex align-items-center">
+                                            {inputList.map((x, i) =>
+                                                <>
+                                                    <Col md={8} className=''>
+                                                        <AvField
+                                                            name={"variant/" + i}
+                                                            label={i + 1 + " - Вариант"}
+                                                            value={x.variant}
+                                                            onInput={toInputUppercase}
+                                                            onChange={
+                                                                e => handleInputChange(e, i)}
+                                                            className="variantAddedInput border border"
+                                                            style={{backgroundColor: '#FFFFFF', fontWeight: "bold"}}
+                                                            required
+                                                        />
+                                                    </Col>
+                                                    <Col md={4} className=''>
+                                                        <div className="float-end mt-4">
+                                                            {inputList.length - 1 === i &&
+                                                            <Button type="button" onClick={handleAddClick}
+                                                                    className="btn create">+</Button>}
+                                                            {inputList.length !== 1 &&
+                                                            <button type="button" onClick={() => handleRemoveClick(i)}
+                                                                    className="btn cancel mx-2">-</button>}
+                                                        </div>
+                                                    </Col>
+                                                </>
+                                            )}
+                                        </Row>
+                                    </CardBody>
+                                </Card>
+                                <button type={"submit"}
+                                        className="btn py-2 px-5 create">Редактировать
+                                </button>
+                                <button className="btn btnAll m-2 cancel" type={"button"}
+                                        onClick={() => setOpenModal(false)}>{lang("user.otmena")}</button>
+                            </Col>
+                        </Row>
+                    </AvForm>
+                </ModalBody>
+            </Modal>
         </>
     )
 }
