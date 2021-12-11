@@ -11,19 +11,15 @@ import {api} from "../../../api/api";
 import {CHAIRMAN} from "../../../utils/contants";
 import Loader from "react-loader-spinner";
 import {confirmAlert} from "react-confirm-alert";
-import {addedChairmanFromReestrPageAction} from "../../../redux/actions/MeetingAction";
 
 export default function MeetingReestr({currentMeeting, lang}) {
 
     const dispatch = useDispatch()
     const reducers = useSelector(state => state)
     const {loadingReestr, currentReestr, memberManagerState} = reducers.meeting
-    const [fromReestr, setFromReestr] = useState([])
     const [excelFile, setExcelFile] = useState({
-        fileName: "",
-        excelFiles: [0],
-        fileForMap: [],
-        chairMan: "",
+        currentFileName: null,
+        currentFile: [],
     });
 
     useEffect(() => {
@@ -42,13 +38,13 @@ export default function MeetingReestr({currentMeeting, lang}) {
 
 
     function downloadSetFile(v) {
-        if (excelFile.fileName === "") {
+        if (excelFile.currentFileName === "") {
             toast.dark("Iltimos faylni tanlang")
         } else {
             const data = new FormData();
             data.append('file', v);
             data.append('meetingId', currentMeeting.id);
-            dispatch(meetingActions.addReestrByMeetingAction({data, toast}))
+            dispatch(meetingActions.addReestrByMeetingAction({data, toast, meetingId: currentMeeting.id}))
             setChecked(false)
         }
     }
@@ -57,13 +53,12 @@ export default function MeetingReestr({currentMeeting, lang}) {
         if (loadingReestr === 'loading') {
             return (<p>Yuklanmoqda...</p>)
         } else if (loadingReestr === 'download') {
-            return (<a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>file yuklang</a>)
+            return (
+                <a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>{excelFile.currentFileName ? excelFile.currentFileName : "file yuklang"}</a>)
         } else if (loadingReestr === 'error') {
             return (<p>xatolik yuz berdi, Iltimos tekshiring</p>)
         } else if (!currentReestr) {
             return (<p>file yuklang</p>)
-        } else if (myBoolean) {
-            return (<a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>file yuklang</a>)
         }
     }
 
@@ -101,14 +96,14 @@ export default function MeetingReestr({currentMeeting, lang}) {
 
     return (
         <>
-            <AvForm onValidSubmit={() => downloadSetFile(excelFile.excelFiles)}>
+            <AvForm onValidSubmit={() => downloadSetFile(excelFile.currentFile)}>
                 <Row className='d-flex align-items-center justify-content-center'>
                     <Col md={4} sm={6}>
                         <AvGroup>
                             <Label for={"fileInput"} className='required_fields'>Загрузить cписок членов наб.
                                 совета</Label>
                             <AvInput id={"fileInput"}
-                                     type="text" value={excelFile.fileName}
+                                     type="text" value={excelFile.currentFileName}
                                      name={"fileName1"}
                                      onClick={handleClick1}
                                      style={{backgroundColor: '#FFFFFF'}}
@@ -121,10 +116,13 @@ export default function MeetingReestr({currentMeeting, lang}) {
                                     <FaDownload/>
                                 </Button>
                                 <input type="file" className="custom-file-input file-chosen"
-                                       onChange={(e) => {
-                                           const file = e.target.files[0];
-                                           setExcelFile({...excelFile, fileName: file.name, excelFiles: file});
-                                       }}
+                                       onChange={(e) =>
+                                           setExcelFile({
+                                               ...excelFile,
+                                               currentFileName: e.target.files[0].name,
+                                               currentFile: e.target.files[0]
+                                           })
+                                       }
                                        id="inputGroupFile04"
                                        ref={hiddenFileInput1}
                                        name="file"

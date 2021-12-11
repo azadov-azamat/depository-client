@@ -25,7 +25,7 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
         }
 
         confirmAlert({
-            title: 'Удалить',
+            title: 'Изменить статус',
             message: 'Вы действительно хотите?',
             buttons: [
                 {
@@ -41,7 +41,6 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
             ]
         });
     }
-
 
     return (
         <div style={{
@@ -60,7 +59,7 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
                             <span
                                 className="text-me d-flex align-items-center justify-content-between"> {element.subject}</span>
                             <button onClick={() => editStatusElement(element.id)} className='btn create py-2'
-                                    style={{width: '20vh'}}>{element.active ? "Включить" : "Отключить"}</button>
+                                    style={{width: '20vh'}}>{element.active ? "Отключить" : "Включить"}</button>
                         </div>
                     ) :
                     agendaSubject && agendaSubject.map((element, index) =>

@@ -1,6 +1,7 @@
 import {
     addAgendaAndMeetingFileApi,
-    addAgendaApi, addedChairmanFromReestrPageApi,
+    addAgendaApi,
+    addedChairmanFromReestrPageApi,
     addMemberManagerApi,
     addReestrByMeetingApi,
     addVotingMeetingApi,
@@ -8,25 +9,29 @@ import {
     deleteMeeting,
     deleteMeetingFile,
     deleteMember,
-    downloadByIdMeetingFilesApi, editAgendaApi,
-    editMeetingApi, editMeetingStatusApi, getAgendaByIdApi,
+    downloadByIdMeetingFilesApi,
+    editAgendaApi,
+    editMeetingApi,
+    editMeetingStatusApi,
+    getAgendaByIdApi,
     getAgendaByMeetingIdApi,
     getCitiesApi,
     getCityByIdApi,
     getMeetingByCompanyIdApi,
     getMeetingByIdApi,
-    getMeetingBySorted, getMeetingByUserIdAndCompanyIdApi,
+    getMeetingBySorted,
+    getMeetingByUserIdAndCompanyIdApi,
     getMeetingFilesByMeetingIdApi,
-    getMeetings, getMeetingSpecFilterApi,
+    getMeetings,
+    getMeetingSpecFilterApi,
     getMemberByIdApi,
-    getMemberByMeetingIdApi, getMemberTypeEnumApi,
+    getMemberByMeetingIdApi,
+    getMemberTypeEnumApi,
     isConfirmed,
     postMeeting
 } from "../../api/MeetingApi";
 import * as types from "../actionTypes/MeetingActionTypes";
 import {toast} from "react-toastify";
-import {DEPOSITORY_CURRENT_MEETING} from "../../utils/contants";
-import {getCompanySpecFilterApi} from "../../api/CompanyApi";
 
 export const getMeetingByIdAction = (payload) => async (dispatch) => {
     dispatch({
@@ -50,9 +55,9 @@ export const getMeetingList = (payload) => async (dispatch) => {
             types.REQUEST_GET_MEETING_LIST_ERROR
         ],
         data: payload
-    }).then(res=>{
+    }).then(res => {
         // console.log(res)
-    }).catch(err=>{
+    }).catch(err => {
 
     })
 } //success 90%
@@ -172,7 +177,7 @@ export const getMemberByMeetingId = (payload) => async (dispatch) => {
         api: getMemberByMeetingIdApi,
         types: ["REQUEST_START_MEMBER", types.REQUEST_GET_MEMBER_LIST_SUCCESS, "REQUEST_ERROR_MEMBER"],
         data: payload
-    }).then(res=>{
+    }).then(res => {
         console.log(res)
         console.log("KELDI========================")
     });
@@ -183,7 +188,7 @@ export const addedChairmanFromReestrPageAction = (payload) => async (dispatch) =
         api: addedChairmanFromReestrPageApi,
         types: ["REQUEST_START_MEMBER", "REQUEST_ADDED_CHAIRMAN_FROM_REESTR_PAGE_SUCCESS", "REQUEST_ERROR_MEMBER"],
         data: payload.memberId
-    }).then(res=>{
+    }).then(res => {
         console.log(res)
         dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId, fromReestr: true}))
         console.log("KELDI========================")
@@ -202,7 +207,7 @@ export const getMeetingByUserIdAndCompanyIdAction = (payload) => async (dispatch
         api: getMeetingByUserIdAndCompanyIdApi,
         types: ["REQUEST_START_MEETING_BY_USER_AND_COMPANY", "REQUEST_SUCCESS_MEETING_BY_USER_AND_COMPANY", "REQUEST_ERROR_MEETING_BY_USER_AND_COMPANY"],
         data: payload
-    }).then(res=>{
+    }).then(res => {
 
     });
 } // success 90%
@@ -231,25 +236,25 @@ export const addMemberManagers = (payload) => async (dispatch) => {
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title} = err.response.data;
         console.log(err.response.data)
-        if (errorKey === "memberExistByType"){
-            if (lang === "uz"){
+        if (errorKey === "memberExistByType") {
+            if (lang === "uz") {
                 payload.toast.error("Bu foydalanuvchi, shu rol bilan allaqachon tizimga kiritilgan")
             }
-            if (lang === "ru"){
+            if (lang === "ru") {
                 payload.toast.error("Участник уже имеет от этого MemberTypeEnum")
             }
-            if (lang === "en"){
+            if (lang === "en") {
                 payload.toast.error(title)
             }
         }
-        if (errorKey === "memberExistByTypeSecretary"){
-            if (lang === "uz"){
+        if (errorKey === "memberExistByTypeSecretary") {
+            if (lang === "uz") {
                 payload.toast.error("A'zolar ro`yxati allaqachon bu Role ga ega: KOTIB")
             }
-            if (lang === "ru"){
+            if (lang === "ru") {
                 payload.toast.error("Участник уже имеет от этого Роль: SECRETARY")
             }
-            if (lang === "en"){
+            if (lang === "en") {
                 payload.toast.error(title)
             }
         }
@@ -360,7 +365,6 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
     }).catch(err => {
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title} = err.response.data;
-        console.log(err.response.data)
         if (errorKey === "chairmenError") {
             if (lang === "uz") {
                 toast.error("Ushbu reestr uchun Rais topilmadi!");
@@ -369,7 +373,8 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
             } else {
                 toast.error(title)
             }
-        } else if (errorKey === "NullPointer") {
+        }
+        if (errorKey === "NullPointer") {
             if (lang === "uz") {
                 toast.error("Hujayra null bo'lmasligi kerak");
             } else if (lang === "ru") {
@@ -377,7 +382,8 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
             } else {
                 toast.error(title)
             }
-        } else if (errorKey === "emailexists") {
+        }
+        if (errorKey === "emailexists") {
             if (lang === "uz") {
                 toast.error("Email allaqachon ishlatilmoqda!");
             } else if (lang === "ru") {
@@ -385,10 +391,11 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
             } else {
                 toast.error(title)
             }
-        } else if (detail === "Required request part 'file' is not present") {
+        }
+        if (detail === "Required request part 'file' is not present") {
             toast.error("\"Fayl\" so'rovining kerakli qismi mavjud emas! iltimos tekshiring")
         }
-       else if (errorKey === 'userexists') {
+        if (errorKey === 'userexists') {
             if (lang === "ru") {
                 payload.toast.error("Паспорт уже использовался!")
             }
@@ -398,7 +405,8 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
             if (lang === "en") {
                 payload.toast.error(err.response.data.title)
             }
-        } else if (errorKey === 'phonenumberexists') {
+        }
+        if (errorKey === 'phonenumberexists') {
             if (lang === "ru") {
                 payload.toast.error("Телефонный номер уже используется!")
             }
@@ -409,6 +417,8 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
                 payload.toast.error(err.response.data.title)
             }
         }
+
+        dispatch(getMemberByMeetingId({meetingId: payload.meetingId, fromReestr: true}))
     })
 }
 
@@ -475,7 +485,7 @@ export const getCityByIdAction = (payload) => async (dispatch) => {
 export const getCitiesAction = (payload) => async (dispatch) => {
     dispatch({
         api: getCitiesApi,
-        types: ["","REQUEST_GET_CITIES",""],
+        types: ["", "REQUEST_GET_CITIES", ""],
         data: payload
     })
 }
