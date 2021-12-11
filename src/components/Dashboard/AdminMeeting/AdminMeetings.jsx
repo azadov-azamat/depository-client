@@ -21,7 +21,7 @@ function AdminMeetings() {
     const {meetings} = reducers.meeting
 
     const [page, setPage] = useState(1);
-    const size = 7;
+    const size = 8;
 
     const count = Math.ceil(payload && payload[0] / size);
     const _DATA = usePagination(meetings && meetings, size);

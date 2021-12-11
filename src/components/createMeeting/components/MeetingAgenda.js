@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, CardBody, CardHeader, Col, Label, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Label, Modal, ModalBody, Row} from "reactstrap";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -9,7 +9,6 @@ import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
 import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
-import {AccordionAnswersModal} from "../../MeetingStarted/component/Accordions/AccordionAnswersModal";
 
 const {Option} = Select;
 
@@ -202,7 +201,11 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         )
     }
 
-    console.log(currentAgenda)
+    const style = {
+        // background: "#FFFFFF",
+        cursor: 'pointer',
+        zIndex: '1000'
+    }
 
     return (
         <>
@@ -360,8 +363,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 {agendaState && agendaState.length !== 0 ? agendaState.map((agenda, index) => (
                                         <tr key={index}>
                                             <td className={"text-center"}>
-                                                <button
-                                                    className='text-warning text-center bg-transparent border-0 m-0 p-0'>
+                                                <text style={style}
+                                                    className='text-warning text-center'>
                                                     <FaPen
                                                         onClick={() => {
                                                             dispatch(meetingActions.getAgendaById({
@@ -369,22 +372,22 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                                 modalStatus: setOpenModal
                                                             }))
                                                         }}/>
-                                                </button>
+                                                </text>
                                             </td>
-                                            <td>{agenda.userName}</td>
-                                            <td>{time(agenda.speakTimeEnum)}</td>
-                                            <td>{time(agenda.debateEnum)}</td>
+                                            <td className="text-center">{agenda.userName}</td>
+                                            <td className="text-center">{time(agenda.speakTimeEnum)}</td>
+                                            <td className="text-center">{time(agenda.debateEnum)}</td>
                                             <td>{agendaSubjectAndVoting({
                                                 subject: agenda.subject,
                                                 votingLit: agenda.votingOptions
                                             })}</td>
-                                            <td>{agenda.active === true ? 'Aктивно' : 'Неактивно'}</td>
-                                            <td>
-                                                <button className="btn btn-link"
+                                            <td className="text-center">{agenda.active === true ? 'Aктивно' : 'Неактивно'}</td>
+                                            <td className="text-center">
+                                                <text style={style}
                                                         onClick={() => submit(agenda.id)}
                                                 >
-                                                    <RiDeleteBinLine color={"red"}/>
-                                                </button>
+                                                    <RiDeleteBinLine color={"red"} fontSize={20}/>
+                                                </text>
                                             </td>
                                         </tr>
                                     ))

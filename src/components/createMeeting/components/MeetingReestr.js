@@ -156,7 +156,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
                 <Col md={12} sm={12}>
                     {/*<h3 className="">Список членов наб совета</h3>*/}
                     <div className="d-flex justify-content-center mb-5">
-                        <Table hover>
+                        <Table hover className="table-bordered">
                             <thead className="navUsers">
                             <tr>
                                 <th scope="col">#</th>
@@ -170,19 +170,19 @@ export default function MeetingReestr({currentMeeting, lang}) {
                                 <th scope="col">Председатель</th>
                             </tr>
                             </thead>
-                            <tbody className="navUsers border">
+                            <tbody className="">
                             {memberManagerState.length !== 0 ?
                                 memberManagerState.map((element, index) =>
                                     <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{element.user.fullName}</td>
-                                        <td>{element.user.pinfl}</td>
-                                        <td>{element.hldIt}</td>
-                                        <td>{element.user.passport}</td>
-                                        <td>{element.user.phoneNumber}</td>
-                                        <td>{element.user.email}</td>
-                                        <td>{element.position}</td>
-                                        <td>
+                                        <td className="text-center">{index + 1}</td>
+                                        <td className="text-center">{element.user.fullName}</td>
+                                        <td className="text-center">{element.user.pinfl}</td>
+                                        <td className="text-center">{element.hldIt}</td>
+                                        <td className="text-center">{element.user.passport}</td>
+                                        <td className="text-center">{element.user.phoneNumber}</td>
+                                        <td className="text-center">{element.user.email}</td>
+                                        <td className="text-center">{element.position}</td>
+                                        <td className="text-center">
                                             {element.memberTypeEnum === CHAIRMAN ?
                                                 <FaCheck/>
                                                 :

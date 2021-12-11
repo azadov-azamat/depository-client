@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Label, Row, Table} from "reactstrap";
 import {AvForm, AvGroup, AvInput} from "availity-reactstrap-validation";
-import {FaDownload, FaEye} from "react-icons/all";
+import {FaDownload, FaEye, FiDownload} from "react-icons/all";
 import {FaCheck, FaTimes, FaTrash} from "react-icons/fa";
 import {useHistory, useLocation} from "react-router-dom";
 
@@ -86,6 +86,12 @@ export default function MeetingFiles({currentMeeting, lang}) {
         setSelectAgenda(value)
     }
 
+    const style = {
+        // background: "#FFFFFF",
+        cursor: 'pointer',
+        zIndex: '1000'
+    }
+
     return (
         <>
             <AvForm onValidSubmit={downloadSetFile}>
@@ -155,32 +161,32 @@ export default function MeetingFiles({currentMeeting, lang}) {
             <Row>
                 <Col md={12} sm={12}>
                     <div className="d-flex justify-content-center ">
-                        <Table hover>
+                        <Table hover className="table-bordered">
                             <>
                                 <thead className="navUsers">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Имя файля</th>
                                     <th scope="col">Связанное голосование</th>
-                                    <th scope="col"><FaCheck/></th>
+                                    <th scope="col"><FaEye fontSize={20}/></th>
                                     <th scope="col"><FaTimes/></th>
                                 </tr>
                                 </thead>
-                                <tbody className="navUsers">
+                                <tbody>
                                 {meetingFile && meetingFile.length !== 0 ?
                                     meetingFile && meetingFile.map((element, index) =>
                                         <tr key={index}>
-                                            <td>{index + 1}</td>
+                                            <td className="text-center">{index + 1}</td>
                                             <td>{element.originalFileName}</td>
                                             <td>{element.agendaSubject}</td>
                                             <td style={{width: '0'}}>
                                                 <a href={BASE_URL + api.downloadFile + element.id} download
-                                                   className='text-dark'><FaEye/></a>
+                                                   className='text-dark'><FiDownload fontSize={20}/></a>
                                             </td>
                                             <td style={{width: '0'}}>
-                                                <button className='btn' onClick={() => deleteUser(element.id)}>
+                                                <text style={style} onClick={() => deleteUser(element.id)}>
                                                     <FaTrash className='text-danger'/>
-                                                </button>
+                                                </text>
                                             </td>
                                         </tr>) :
                                     <tr className='text-center'>

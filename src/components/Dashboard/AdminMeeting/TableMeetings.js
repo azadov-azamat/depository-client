@@ -22,6 +22,12 @@ export default function TableMeetings({meetings, lang}) {
         height: '20px'
     }
 
+    const styleBtn = {
+        // background: "#FFFFFF",
+        cursor: 'pointer',
+        zIndex: '1000'
+    }
+
     function status(status) {
         if (status === ACTIVE) {
             return (
@@ -63,16 +69,6 @@ export default function TableMeetings({meetings, lang}) {
                 {currentDate.substr((currentDate) - 1, 10)}{"  "}{currentDate.substr(11, 5)}
             </>
         )
-        // let date = new Date(currentDate);
-        // return (
-        //     <>
-        //         {
-        //             (date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" +
-        //             (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes()) + " " +
-        //             (date.getDate().toString().length === 1 ? ("0" + date.getDate()) : date.getDate()) + "/" +
-        //             (date.getMonth().toString().length === 1 ? ("0" + date.getMonth()) : date.getMonth()) + "/" + date.getFullYear()}
-        //     </>
-        // )
     }
 
     const updateMeeting = (currentMeeting) => {
@@ -113,17 +109,14 @@ export default function TableMeetings({meetings, lang}) {
         }
     }
 
-    console.log(meetings)
-
     return (
         <>
             {meetings?.map(element => (
                 <tr key={element.id}>
                     <th scope="row" className=' text-center'>
-                        <button onClick={() => updateMeeting(element)}
-                                className='text-warning bg-transparent border-0 m-0 p-0'>
+                        <text onClick={() => updateMeeting(element)} style={styleBtn} className='text-warning'>
                             <FaPen/>
-                        </button>
+                        </text>
                     </th>
                     <td className="text-center company" style={style}>
                             {element.companyName}
@@ -141,9 +134,9 @@ export default function TableMeetings({meetings, lang}) {
                         <span className="text-danger  m-0 p-0"><FaTimes/></span>}
                     </td>
                     <td className="text-center">
-                        <div style={{marginTop: '-10px'}} className="btn text-danger  m-0 p-0"
+                        <text style={styleBtn} className="text-danger"
                              onClick={() => deleteById(element.id)}>
-                            <FaTrash style={{marginTop: '4px'}}/></div>
+                            <FaTrash /></text>
                     </td>
                 </tr>
             ))}

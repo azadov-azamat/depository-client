@@ -36,7 +36,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
     const [selectedRole, setSelectedRole] = useState();
 
     const [page, setPage] = useState(1);
-    const size = 5;
+    const size = 7;
 
     const count = Math.ceil(payload && payload[0] / size);
     const _DATA = usePagination(memberManagerState && memberManagerState, size);
@@ -127,6 +127,11 @@ export default function MeetingMembers({currentMeetingId, lang}) {
         setSelectedRole(value)
     }
 
+    const style = {
+        // background: "#FFFFFF",
+        cursor: 'pointer',
+        zIndex: '1000'
+    }
 
     return (
         <Row>
@@ -196,12 +201,10 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                                         role.memberTypeEnum === SECRETARY ? lang("meetingCreated.roles.secretary") : '' ||
                                         role.memberTypeEnum === CHAIRMAN ? lang("meetingCreated.roles.chairman") : ''
                                     }</td>
-                                    <td>
-                                        <button className="btn btn-link"
-                                                onClick={() => submit(role.id)}
-                                        >
-                                            <RiDeleteBinLine color={"red"}/>
-                                        </button>
+                                    <td className="text-center">
+                                        <text style={style} onClick={() => submit(role.id)}>
+                                            <RiDeleteBinLine color={"red"} fontSize={20}/>
+                                        </text>
                                     </td>
                                 </tr>
                             ) :
