@@ -88,7 +88,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             typeEnum: 'MOST',
             variants: values
         }
-        // dispatch(meetingActions.addAgenda({data, history}))
+        dispatch(meetingActions.addAgenda({data, history}))
     };
 
     function editAgenda(e, v) {
