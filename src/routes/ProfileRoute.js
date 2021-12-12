@@ -15,7 +15,7 @@ function useQuery() {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
+export default function ProfileRoute({lang, booleanComp}) {
 
     // const {id} = useParams();
     const history = useHistory();
@@ -23,7 +23,6 @@ export default function ProfileRoute({lang, booleanComp, user, pagePath}) {
     const {pathname} = location;
 
     const roleRoute = localStorage.getItem(DEPOSITORY_ROLE);
-    const id = localStorage.getItem(DEPOSITORY_USER)
 
     let query = useQuery();
     const userId = query.get("ID");

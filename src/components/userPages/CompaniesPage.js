@@ -18,21 +18,28 @@ export default function CompaniesPage() {
     const {currentUser} = reducers.auth
     const {companiesByUserId, loading} = reducers.company
     const [booleanMy, setBooleanMy] = useState(false);
+    console.log(reducers)
 
     useEffect(() => {
         setBooleanMy(companiesByUserId && companiesByUserId.some(element => element.chairmanId === currentUser.id || element.secretaryId === currentUser.id));
     }, [booleanMy, companiesByUserId])
 
     useEffect(() => {
-        dispatch(companyAction.getCompanyByUserId({currentUserId: (currentUser && currentUser.id)}))
+
+        if (currentUser.id) {
+            dispatch(companyAction.getCompanyByUserId({currentUserId: currentUser?.id}))
+        }
+
         dispatch({
             type: 'REQUEST_GET_MEETING_SUCCESS',
             payload: []
         });
+
         dispatch({
             type: 'REQUEST_GET_MEETING_BY_COMPANY_ID',
             payload: []
         });
+
         localStorage.removeItem(DEPOSITORY_MEMBER_TYPE_USER)
 
     }, [currentUser])
@@ -82,7 +89,8 @@ export default function CompaniesPage() {
                     }
                 </Row>
                 {loading ?
-                    <div style={{width: "100%", height: '60vh'}} className="d-flex justify-content-center align-items-center">
+                    <div style={{width: "100%", height: '60vh'}}
+                         className="d-flex justify-content-center align-items-center">
                         <Loader
                             type="ThreeDots"
                             color="#132E85"

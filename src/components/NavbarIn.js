@@ -16,7 +16,6 @@ import {HiUserCircle} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {logout, networkAction} from "../redux/actions/AuthActions";
-import {DEPOSITORY_USER} from "../utils/contants";
 
 
 const NavbarIn = ({setNav}) => {
@@ -25,8 +24,6 @@ const NavbarIn = ({setNav}) => {
     const reducers = useSelector(state => state)
     const {currentUser} = reducers.auth
     const language = localStorage.getItem('i18nextLng');
-
-    const id = localStorage.getItem(DEPOSITORY_USER)
 
     useEffect(() => {
         setNav(false)
@@ -41,7 +38,6 @@ const NavbarIn = ({setNav}) => {
 
     function infoVideoBtn() {
         setNav(false)
-        localStorage.setItem(DEPOSITORY_USER, currentUser.id)
     }
 
     function infoVideoBtn2() {
@@ -51,23 +47,16 @@ const NavbarIn = ({setNav}) => {
 
     const {t, i18n} = useTranslation();
 
-    const style = {
-        textOverflow: 'ellipsis',
-        overflow: 'hidden',
-        whitespace: 'nowrap',
-        width: '10em',
-    }
-
     const textLanguage = [
-        {value: 'en', text: 'EN'},
-        {value: 'ru', text: 'RU'},
-        {value: 'uz', text: 'UZ'},
+        {id: 1, value: 'en', text: 'EN'},
+        {id: 2, value: 'ru', text: 'RU'},
+        {id: 3, value: 'uz', text: 'UZ'},
     ]
 
-    const btnLanguage = ({value, text}) => (
-        <button
-            onClick={() => i18n.changeLanguage(value)}
-            className={language === value ? `btn btn-link nav-link border px-2 active` : `btn btn-link nav-link border px-2`}>{text}
+    const btnLanguage = ({value, text, id}) => (
+        <button key={id}
+                onClick={() => i18n.changeLanguage(value)}
+                className={language === value ? `btn btn-link nav-link border px-2 active` : `btn btn-link nav-link border px-2`}>{text}
         </button>
     )
     return (
@@ -94,7 +83,7 @@ const NavbarIn = ({setNav}) => {
                             <NavItem className={'btn d-lg-none p-0 d-block border-0  border-02 '}>
                                 <Link onClick={infoVideoBtn}
                                       className={'border-0r text-dark text-decoration-none d-block  py-4 px-4   fs rounded-0 hover'}
-                                      to={"/supervisory/profile/user?ID=" + id}>{t("settings")}</Link>
+                                      to={"/supervisory/profile/user?ID=" + currentUser?.id}>{t("settings")}</Link>
                             </NavItem>
                             <NavItem className={'btn d-lg-none p-0  d-block border-0  border-02 '}>
                                 <Link onClick={infoVideoBtn2} to={"/"}
@@ -115,7 +104,7 @@ const NavbarIn = ({setNav}) => {
                                 <div className="d-inline-flex align-items-center text-dark">
                                     <HiUserCircle className="img-fluid user-logo"/>
                                     <div className="d-none d-md-flex">
-                                        {currentUser && currentUser ? currentUser.fullName : 'Профиль'}
+                                        {currentUser?.fullName}
                                     </div>
                                 </div>
                             </DropdownToggle>
@@ -123,7 +112,7 @@ const NavbarIn = ({setNav}) => {
                                 <DropdownItem className={'ps-2'}>
                                     <Link onClick={infoVideoBtn}
                                           className={'text-dark text-decoration-none d-block     fs rounded-0  '}
-                                          to={"/supervisory/profile/user?ID=" + id}>{t("settings")}</Link>
+                                          to={"/supervisory/profile/user?ID=" + currentUser?.id}>{t("settings")}</Link>
                                 </DropdownItem>
                                 <DropdownItem className={'ps-2'}>
                                     <Link onClick={infoVideoBtn2}

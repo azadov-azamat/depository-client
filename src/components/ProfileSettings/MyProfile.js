@@ -27,7 +27,8 @@ export default function MyProfile() {
     const dispatch = useDispatch();
     let query = useQuery();
     const reducers = useSelector(state => state)
-    const {currentUser, loading} = reducers.users
+    const {currentUser} = reducers.auth
+    const {loading} = reducers.users
     const {companiesByUserId} = reducers.company
     const {meetings, meetingByUser} = reducers.meeting;
 
@@ -35,7 +36,7 @@ export default function MyProfile() {
     const [userMeetings] = useState([]);
 
     const companyId = parseInt(query.get("company_id"));
-    const userId = parseInt(localStorage.getItem(DEPOSITORY_USER));
+    const userId = currentUser.id;
 
     useEffect(() => {
         dispatch(adminMeetingAction.getMeetingByUserIdAndCompanyIdAction({userId: userId, companyId: companyId}))

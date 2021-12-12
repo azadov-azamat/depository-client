@@ -22,7 +22,7 @@ const middleWares = [thunkMiddleware, apiMiddleware, routeMiddleware].filter(
 
 const store = createStore(
     combineReducers({
-        user : usersReducer,
+        user: usersReducer,
         users: userReducer,
         company: companyReducer,
         file: FileReducer,

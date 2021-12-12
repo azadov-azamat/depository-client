@@ -16,9 +16,7 @@ export default function TabOpen2({lang}) {
     const {loading} = authReducer;
 
     function login(e, v) {
-        e.persist();
-        e.preventDefault();
-        dispatch(authActions.login({v, history}))
+        dispatch(authActions.login({data: v, history}))
     }
 
     const style = {

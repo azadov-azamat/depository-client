@@ -7,7 +7,10 @@ import {toast} from "react-toastify";
 
 
 const PrivateRoute = ({dispatch, auth, path, history, setNav, location, component: Component, ...rest}) => {
-    dispatch(userMe())
+
+    useEffect(()=>{
+        dispatch(userMe())
+    },[])
 
     const reducers = useSelector(state => state)
     const {networkState} = reducers.auth

@@ -12,6 +12,8 @@ const initState = {
     loading: false,
     totalCount: [],
     networkState: true,
+    currentUser: '',
+    sentUserMe: false,
 };
 
 const reducers = {
@@ -44,7 +46,7 @@ const reducers = {
         state.currentUser = action.payload;
     },
     [types.AUTH_GET_CURRENT_USER_ERROR](state) {
-        state.currentUser = "";
+        state.currentUser = {};
     },
 
     updateState(state, {payload}) {

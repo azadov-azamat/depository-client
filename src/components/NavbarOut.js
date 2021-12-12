@@ -81,10 +81,6 @@ function NavbarOut({setNav}) {
         }
     }, [location])
 
-    const [uz, setUz] = useState("");
-    const [ru, setRu] = useState("");
-    const [en, setEn] = useState("");
-
     const {t, i18n} = useTranslation();
 
     const style = {
@@ -95,13 +91,13 @@ function NavbarOut({setNav}) {
 
 
     const textLanguage = [
-        {value: 'en', text: 'EN'},
-        {value: 'ru', text: 'RU'},
-        {value: 'uz', text: 'UZ'},
+        {id: 1, value: 'en', text: 'EN'},
+        {id: 2, value: 'ru', text: 'RU'},
+        {id: 3, value: 'uz', text: 'UZ'},
     ]
 
-    const btnLanguage = ({value, text}) => (
-        <button
+    const btnLanguage = ({value, text, id}) => (
+        <button key={id}
             onClick={() => i18n.changeLanguage(value)}
             className={language === value ? `btn btn-link nav-link border px-2 active` : `btn btn-link nav-link border px-2`}>{text}
         </button>

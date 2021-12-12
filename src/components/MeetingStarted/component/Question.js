@@ -8,7 +8,7 @@ import {Pagination} from "@material-ui/lab";
 import usePagination from "../../Dashboard/Pagination";
 import {subscribe, unsubscribe} from "../../../redux/actions/socketActions";
 
-export default function Question({list}) {
+export default function Question({list, userId}) {
 
     const dispatch = useDispatch();
     const [logging, setLogging] = useState();
@@ -26,7 +26,7 @@ export default function Question({list}) {
         const data = {
             id: v.currentId,
             questionAnswer: logging,
-            userId: parseInt(localStorage.getItem(DEPOSITORY_USER))
+            userId: userId
         }
         socketClient.sendMessage('/topic/question', JSON.stringify(data));
 

@@ -5,13 +5,13 @@ import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, TOKEN} from "../../../utils
 import {useDispatch} from "react-redux";
 import SockJsClient from "react-stomp";
 
-export default function Comment({loading, socketClient, meetingId}) {
+export default function Comment({loading, socketClient, meetingId, userId}) {
 
     const [logging, setLogging] = useState();
 
     async function postComment() {
         const data = {
-            userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+            userId: userId,
             meetingId: meetingId,
             loggingText: logging
         }

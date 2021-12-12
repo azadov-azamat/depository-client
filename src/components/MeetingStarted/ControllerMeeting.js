@@ -158,7 +158,7 @@ export const ControllerMeeting = () => {
 
         if (endCallMeeting && !startCallMeeting) {
             const data = {
-                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+                userId: currentUser.id,
                 meetingId: parseInt(id),
                 loggingText: "Видео конференция запущено, прошу присоединиться."
             }
@@ -196,7 +196,7 @@ export const ControllerMeeting = () => {
             socketClient.sendMessage('/topic/start-zoom', JSON.stringify(dataZoom));
 
             // const data = {
-            //     userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+            //     userId: currentUser.id,
             //     meetingId: parseInt(id),
             //     loggingText: "Видео конференция завершено"
             // }
@@ -213,7 +213,7 @@ export const ControllerMeeting = () => {
     function startMeeting({status, quorumCount}) {
         if (status === CANCELED || status === PENDING) {
             const dataForComment = {
-                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+                userId: currentUser.id,
                 meetingId: meetingId,
                 loggingText:
                     status === ACTIVE ? 'Заседание начато' : ''
@@ -247,7 +247,7 @@ export const ControllerMeeting = () => {
             });
         } else if (quorumCount >= 75) {
             const dataForComment = {
-                userId: parseInt(localStorage.getItem(DEPOSITORY_USER)),
+                userId: currentUser.id,
                 meetingId: meetingId,
                 loggingText:
                     status === ACTIVE ? 'Заседание начато' : ''
@@ -299,11 +299,11 @@ export const ControllerMeeting = () => {
                                             meetingId={parseInt(id)} memberId={parseInt(memberId)}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/question"}>
-                                    <Question list={questionList}/>
+                                    <Question list={questionList} userId={currentUser.id}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/addComment"}>
                                     <Comment loading={loadingLogging} socketClient={socketClient}
-                                             meetingId={parseInt(id)}/>
+                                             meetingId={parseInt(id)} userId={currentUser.id}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
                                     <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}

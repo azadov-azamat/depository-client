@@ -8,8 +8,8 @@ export const login = (payload) => async (dispatch) => {
     try {
         const res = await dispatch({
             api: loginUser,
-            types: [types.REQUEST_START, "", types.REQUEST_API_ERROR],
-            data: payload.v,
+            types: [types.REQUEST_START, "REQUEST_API_LOGIN_SUCCESS", types.REQUEST_API_ERROR],
+            data: payload.data,
         });
         if (res.success) {
             let token = res.payload;
@@ -17,11 +17,12 @@ export const login = (payload) => async (dispatch) => {
             let app = parsedToken.auth;
             const sentence = app.replace(/\s+/g, ' ').trim()
             let arr = sentence.split(',');
+
             setTimeout(() => {
                 setStateRole(arr, dispatch);
-                // pushHisPage(app, payload.history);
             }, 1000);
             localStorage.setItem(TOKEN, BEARER + token.id_token);
+
             payload.history.push('/')
         }
         return true;
@@ -42,7 +43,6 @@ export const login = (payload) => async (dispatch) => {
 };
 
 export const userMe = (payload, minusNine) => async (dispatch, getState) => {
-
     const {
         auth: {currentUser, sentUserMe},
     } = getState();
@@ -51,23 +51,61 @@ export const userMe = (payload, minusNine) => async (dispatch, getState) => {
     try {
         const response = await dispatch({
             api: me,
-            types: types.AUTH_GET_USER_TOKEN_SUCCESS,
+            types: [
+                types.AUTH_GET_CURRENT_USER_REQUEST,
+                types.AUTH_GET_USER_TOKEN_SUCCESS,
+                types.AUTH_GET_CURRENT_USER_ERROR,
+            ],
         });
         if (response.success) {
+            if (payload) {
+                dispatch({
+                    type: "updateState",
+                    payload: {currentUser: response.payload},
+                });
+            }
             dispatch({
-                type: "updateState",
-                payload: {
-                    currentUser: response.payload,
-                },
+                type: types.AUTH_GET_USER_TOKEN_SUCCESS,
+                payload: response.payload,
             });
             setStateRole(response.payload.authorities, dispatch);
         } else {
-            dispatch(logout());
+            dispatch({
+                type: types.AUTH_LOGOUT,
+            });
         }
     } catch (e) {
-        dispatch(logout());
+        dispatch({
+            type: types.AUTH_LOGOUT,
+        });
     }
 };
+
+// export const userMe = (payload, minusNine) => async (dispatch, getState) => {
+//     const {
+//         auth: {currentUser, sentUserMe},
+//     } = getState();
+//     if (sentUserMe || currentUser || !localStorage.getItem(TOKEN)) return;
+//
+//     console.log(payload, minusNine, getState)
+//
+//     try {
+//         const response = await dispatch({
+//             api: me,
+//             type: types.AUTH_GET_USER_TOKEN_SUCCESS,
+//         });
+//
+//         if (response.success) {
+//             debugger
+//             console.log(response)
+//             setStateRole(response.payload.authorities, dispatch);
+//         } else {
+//             dispatch(logout());
+//         }
+//     } catch (e) {
+//         dispatch(logout());
+//     }
+// };
 
 export const logout = () => (dispatch) => {
     dispatch({
@@ -75,7 +113,7 @@ export const logout = () => (dispatch) => {
     });
 };
 
-export const networkAction =(payload)=> async (dispatch)=>{
+export const networkAction = (payload) => async (dispatch) => {
     dispatch({
         type: types.NETWORK_AUTHENTICATION,
         data: payload.success
