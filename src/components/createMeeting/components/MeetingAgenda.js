@@ -9,6 +9,7 @@ import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
 import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
+import {element} from "prop-types";
 
 const {Option} = Select;
 
@@ -18,13 +19,16 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const dispatch = useDispatch();
 
     const reducers = useSelector(state => state)
-    const {agendaState, memberManagerState, currentAgenda} = reducers.meeting
+    const {agendaState, memberManagerState} = reducers.meeting
 
     const [selectSpeaker, setSelectSpeaker] = useState(null);
     const [selectTime, setSelectTime] = useState(null);
     const [selectDebug, setSelectDebug] = useState(null);
     const [selectStatus, setSelectStatus] = useState(null);
     const [openModal, setOpenModal] = useState(false);
+
+    const [currentAgenda, setCurrentAgenda] = useState([]);
+    const [currentVariants, setCurrentVariants] = useState([]);
 
     useEffect(() => {
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId, fromReestr: false}))
@@ -64,6 +68,16 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     const handleAddClick = () => {
         setInputList([...inputList, {variant: ""}]);
+    };
+
+    const handleAddClickEdit = () => {
+        setCurrentVariants([...currentVariants, {votingText: ""}]);
+    };
+
+    const handleRemoveClickEdit = index => {
+        const list = [...currentVariants];
+        list.splice(index, 1);
+        setCurrentVariants(list);
     };
 
     const addAgenda = (e, v) => {
@@ -111,6 +125,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             typeEnum: 'MOST',
             variants: values
         }
+        console.log(data)
         dispatch(meetingActions.editAgendaAction({data, history, setOpenModal}))
     }
 
@@ -206,6 +221,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         cursor: 'pointer',
         zIndex: '1000'
     }
+
+    console.log(currentAgenda)
 
     return (
         <>
@@ -337,7 +354,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                             </CardBody>
                         </Card>
                         <button
-                            className="btn py-2 px-5 create">{currentAgenda.length !== 0 ? "Редактировать" : "Создать"}</button>
+                            className="btn py-2 px-5 create">Создать</button>
                     </Col>
                 </Row>
             </AvForm>
@@ -360,17 +377,17 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 </tr>
                                 </thead>
                                 <tbody className="">
-                                {agendaState && agendaState.length !== 0 ? agendaState.map((agenda, index) => (
+                                {agendaState && agendaState.length !== 0 ?
+                                    agendaState.map((agenda, index) => (
                                         <tr key={index}>
                                             <td className={"text-center"}>
                                                 <text style={style}
-                                                    className='text-warning text-center'>
+                                                      className='text-warning text-center'>
                                                     <FaPen
                                                         onClick={() => {
-                                                            dispatch(meetingActions.getAgendaById({
-                                                                agendaId: agenda.id,
-                                                                modalStatus: setOpenModal
-                                                            }))
+                                                            setCurrentAgenda(agenda)
+                                                            setCurrentVariants(agenda.votingOptions)
+                                                            setOpenModal(true)
                                                         }}/>
                                                 </text>
                                             </td>
@@ -384,7 +401,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             <td className="text-center">{agenda.active === true ? 'Aктивно' : 'Неактивно'}</td>
                                             <td className="text-center">
                                                 <text style={style}
-                                                        onClick={() => submit(agenda.id)}
+                                                      onClick={() => submit(agenda.id)}
                                                 >
                                                     <RiDeleteBinLine color={"red"} fontSize={20}/>
                                                 </text>
@@ -402,8 +419,10 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                     </div>
                 </Col>
             </Row>
+
+
             <Modal isOpen={openModal} className="modal-dialog modal-lg">
-                {/*<ModalHeader toggle={() => setOpenModal(!openModal)}/>*/}
+
                 <ModalBody>
                     <AvForm onValidSubmit={editAgenda}>
                         <Row>
@@ -511,16 +530,16 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     </CardHeader>
                                     <CardBody>
                                         <Row className="d-flex align-items-center">
-                                            {inputList.map((x, i) =>
-                                                <>
+                                            {currentVariants.map((voting, index) =>
+                                                <div key={index} className="d-flex flex-row">
                                                     <Col md={8} className=''>
                                                         <AvField
-                                                            name={"variant/" + i}
-                                                            label={i + 1 + " - Вариант"}
-                                                            value={x.variant}
+                                                            name={"variant/" + index}
+                                                            label={index + 1 + " - Вариант"}
+                                                            value={voting.votingText}
                                                             onInput={toInputUppercase}
-                                                            onChange={
-                                                                e => handleInputChange(e, i)}
+                                                            // onChange={
+                                                            //     e => handleInputChange(e, i)}
                                                             className="variantAddedInput border border"
                                                             style={{backgroundColor: '#FFFFFF', fontWeight: "bold"}}
                                                             required
@@ -528,15 +547,16 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                     </Col>
                                                     <Col md={4} className=''>
                                                         <div className="float-end mt-4">
-                                                            {inputList.length - 1 === i &&
-                                                            <Button type="button" onClick={handleAddClick}
+                                                            {currentVariants.length - 1 === index &&
+                                                            <Button type="button" onClick={handleAddClickEdit}
                                                                     className="btn create">+</Button>}
-                                                            {inputList.length !== 1 &&
-                                                            <button type="button" onClick={() => handleRemoveClick(i)}
+                                                            {currentVariants.length !== 1 &&
+                                                            <button type="button"
+                                                                    onClick={() => handleRemoveClickEdit(index)}
                                                                     className="btn cancel mx-2">-</button>}
                                                         </div>
                                                     </Col>
-                                                </>
+                                                </div>
                                             )}
                                         </Row>
                                     </CardBody>
