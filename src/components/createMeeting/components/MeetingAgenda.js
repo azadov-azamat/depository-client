@@ -147,7 +147,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
             const data = {
                 id: currentAgenda?.id,
-                active: currentStatus,
+                isActive: currentStatus,
                 speakerId: currentSpeaker,
                 debateEnum: currentDebut,
                 meetingId: parseInt(currentMeetingId),

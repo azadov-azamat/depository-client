@@ -30,7 +30,7 @@ export default function MeetingFiles({currentMeeting, lang}) {
     const {agendaState, meetingFile} = reducers.meeting
 
     const [addFile, setAddFile] = useState({fileName: "", file: []});
-    const [selectAgenda, setSelectAgenda] = useState();
+    const [selectAgenda, setSelectAgenda] = useState(null);
 
     const hiddenFileInput = React.useRef(null);
 
@@ -39,9 +39,8 @@ export default function MeetingFiles({currentMeeting, lang}) {
 
     const handleClick = event => {
         hiddenFileInput.current.click();
-
     };
-
+    console.log(selectAgenda)
 
     useEffect(() => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: parseInt(meetingId)}))
@@ -56,11 +55,10 @@ export default function MeetingFiles({currentMeeting, lang}) {
     function downloadSetFile() {
 
         const data = new FormData();
-        data.append('agendaId', selectAgenda);
+        data.append('agendaId', selectAgenda ? parseInt(selectAgenda) : null);
         data.append('file', addFile.file);
         data.append('meetingId', meetingId);
         dispatch(meetingActions.addAgendaAndMeetingFile({data, history}))
-
     }
 
     const deleteUser = (id) => {
@@ -82,10 +80,6 @@ export default function MeetingFiles({currentMeeting, lang}) {
         });
     };
 
-    function forAgenda(value) {
-        setSelectAgenda(value)
-    }
-
     const style = {
         // background: "#FFFFFF",
         cursor: 'pointer',
@@ -102,10 +96,11 @@ export default function MeetingFiles({currentMeeting, lang}) {
                             <Select
                                 className="setting_input w-100"
                                 showSearch
+                                allowClear={true}
                                 placeholder="Выберите голосование"
                                 optionFilterProp="children"
-                                onChange={forAgenda}
-                                // onSearch={onSearch}
+                                onChange={(value) => setSelectAgenda(value)}
+                                value={selectAgenda}
                                 filterOption={(input, option) =>
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
