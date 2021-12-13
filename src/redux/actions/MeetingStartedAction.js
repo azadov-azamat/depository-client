@@ -1,7 +1,9 @@
 import {
     addBallotApi,
     addLoggingApi,
-    addQuestion, deleteBallot, deleteLoggingByIdApi,
+    addQuestion,
+    deleteBallot,
+    deleteLoggingByIdApi,
     editQuestion,
     editStatusQuestion,
     getBallotByAgendaApi,
@@ -43,7 +45,7 @@ export const DeleteLoggingByIdAction = (payload) => async (dispatch) => {
         api: deleteLoggingByIdApi,
         types: ["REQUEST_DELETE_START_LOGGING", "REQUEST_DELETE_SUCCESS_LOGGING", "REQUEST_DELETE_ERROR_LOGGING",],
         data: payload.ID
-    }).then(res=>{
+    }).then(res => {
         console.log("bu delete logging =====================")
         dispatch(getLoggingAction({meetingId: payload.meetingId}))
         dispatch({
@@ -53,7 +55,7 @@ export const DeleteLoggingByIdAction = (payload) => async (dispatch) => {
                 password_id: null
             }
         })
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err)
     })
 } // success 95%
@@ -203,13 +205,13 @@ export const getBallotVoting = (payload) => async (dispatch) => {
     })
 }
 
-export const deleteBallotAction=(payload)=> async (dispatch)=>{
+export const deleteBallotAction = (payload) => async (dispatch) => {
 
     dispatch({
         api: deleteBallot,
         types: ["REQUEST_DELETE_BALLOT_START", "REQUEST_DELETE_BALLOT_SUCCESS", "REQUEST_DELETE_BALLOT_ERROR"],
         data: payload.data.id
-    }).then(res=>{
+    }).then(res => {
         console.log(res)
         console.log("success")
         const data = {
@@ -217,7 +219,7 @@ export const deleteBallotAction=(payload)=> async (dispatch)=>{
             agendaId: payload.data.agendaId
         }
         dispatch(getBallotVoting(data))
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err)
         console.log("error")
     })

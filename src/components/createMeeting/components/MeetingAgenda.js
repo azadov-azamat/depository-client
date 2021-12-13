@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, CardBody, CardHeader, Col, Label, Modal, ModalBody, Row} from "reactstrap";
-import {AvField, AvForm} from "availity-reactstrap-validation";
+import {AvField, AvForm, AvInput} from "availity-reactstrap-validation";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Select} from "antd";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
+import * as meetingStartedActions from "../../../redux/actions/MeetingStartedAction";
 import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
 import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
 import {element} from "prop-types";
+import {toast} from "react-toastify";
 
 const {Option} = Select;
 
@@ -25,10 +27,16 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const [selectTime, setSelectTime] = useState(null);
     const [selectDebug, setSelectDebug] = useState(null);
     const [selectStatus, setSelectStatus] = useState(null);
+    const [changeSubject, setChangeSubject] = useState('');
     const [openModal, setOpenModal] = useState(false);
 
     const [currentAgenda, setCurrentAgenda] = useState([]);
     const [currentVariants, setCurrentVariants] = useState([]);
+    const [editedVariant, setEditedVariant] = useState([]);
+    const [currentSpeaker, setCurrentSpeaker] = useState(null);
+    const [currentTime, setCurrentTime] = useState(null);
+    const [currentDebut, setCurrentDebut] = useState(null);
+    const [currentStatus, setCurrentStatus] = useState(null);
 
     useEffect(() => {
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId, fromReestr: false}))
@@ -39,21 +47,28 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     }, [currentMeetingId])
 
     useEffect(() => {
-        setSelectSpeaker(currentAgenda?.speakerId);
-        setSelectTime(currentAgenda?.speakTimeEnum);
-        setSelectDebug(currentAgenda?.debateEnum);
-        setSelectStatus(currentAgenda?.active)
+        setCurrentSpeaker(currentAgenda?.speakerId);
+        setCurrentTime(currentAgenda?.speakTimeEnum);
+        setCurrentDebut(currentAgenda?.debateEnum);
+        setCurrentStatus(currentAgenda?.active)
 
     }, [currentAgenda])
 
     const [inputList, setInputList] = useState([{variant: ""}]);
-
+    console.log(currentVariants);
     const toInputUppercase = e => {
         e.target.value = ("" + e.target.value).toUpperCase();
     };
 
     // handle input change
     const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        const list = [...inputList];
+        list[name] = value;
+        setInputList(list);
+    };
+
+    const handleInputChangeEdited = (e) => {
         const {name, value} = e.target;
         const list = [...inputList];
         list[name] = value;
@@ -81,84 +96,75 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     };
 
     const addAgenda = (e, v) => {
+        if (v.subject && selectDebug && selectStatus && selectTime) {
+            const keys = Object.entries(v)
+            delete keys[0];
 
-        const keys = Object.entries(v)
-        delete keys[0];
+            let values = []
 
-        let values = []
+            keys.forEach(element => {
+                values.push(element[1])
+            })
 
-        keys.forEach(element => {
-            values.push(element[1])
-        })
-
-        const data = {
-            active: selectStatus,
-            speakerId: selectSpeaker,
-            debateEnum: selectDebug,
-            meetingId: currentMeetingId,
-            speakTimeEnum: selectTime,
-            subject: v.subject,
-            typeEnum: 'MOST',
-            variants: values
+            const data = {
+                active: selectStatus,
+                speakerId: selectSpeaker,
+                debateEnum: selectDebug,
+                meetingId: currentMeetingId,
+                speakTimeEnum: selectTime,
+                subject: v.subject,
+                typeEnum: 'MOST',
+                variants: values
+            }
+            dispatch(meetingActions.addAgenda({data, history, toast})).then(res => {
+                setSelectSpeaker(null);
+                setSelectTime(null);
+                setSelectDebug(null);
+                setSelectStatus(null);
+                setChangeSubject('')
+                for (let i = 0; i < inputList.length; i++) {
+                    const list = [...inputList];
+                    list.splice(i, inputList.length);
+                    setInputList(list);
+                }
+            })
+        } else {
+            toast.warning(lang("toast.warning"))
         }
-        dispatch(meetingActions.addAgenda({data, history}))
     };
 
     function editAgenda(e, v) {
-        const keys = Object.entries(v)
-        delete keys[0];
+        console.log(v);
+        if (currentDebut && currentTime && currentStatus && v.subject) {
+            const keys = Object.entries(v)
+            delete keys[0];
 
-        let values = []
+            let values = []
 
-        keys.forEach(element => {
-            values.push(element[1])
-        })
+            keys.forEach(element => {
+                values.push({id: parseInt(element[0].substr(8, (element[0].length - 1))), votingText: element[1]})
+            })
 
-        const data = {
-            id: currentAgenda?.id,
-            active: selectStatus,
-            speakerId: selectSpeaker,
-            debateEnum: selectDebug,
-            meetingId: currentMeetingId,
-            speakTimeEnum: selectTime,
-            subject: v.subject,
-            typeEnum: 'MOST',
-            variants: values
+            const data = {
+                id: currentAgenda?.id,
+                active: currentStatus,
+                speakerId: currentSpeaker,
+                debateEnum: currentDebut,
+                meetingId: parseInt(currentMeetingId),
+                speakTimeEnum: currentTime,
+                subject: v.subject,
+                typeEnum: 'MOST',
+                votingOptions: values
+            }
+            dispatch(meetingActions.editAgendaAction({data, history, setOpenModal, toast}))
+        } else {
+            toast.warning(lang("toast.warning"))
         }
-        console.log(data)
-        dispatch(meetingActions.editAgendaAction({data, history, setOpenModal}))
     }
 
     function onSearch(val) {
-        // let field = '';
-        // if (parseInt(val)) {
-        //     field = 'PINFL';
-        // } else {
-        //     field = 'FULL_NAME'
-        // }
-        // if (val.length >= 3) {
-        //     dispatch(meetingActions.getMemberByMeetingId({value: val, field: field}))
-        // }
+
     }
-
-    console.log(currentAgenda)
-
-    function forSpeaker(value) {
-        setSelectSpeaker(value)
-    }
-
-    function forTime(value) {
-        setSelectTime(value)
-    }
-
-    function forDebug(value) {
-        setSelectDebug(value)
-    }
-
-    function forStatus(value) {
-        setSelectStatus(value)
-    }
-
 
     const submit = (currentAgendaId) => {
         confirmAlert({
@@ -170,7 +176,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                     onClick: () => {
                         dispatch(meetingActions.deleteByIdAgenda({
                             currentAgendaId: currentAgendaId,
-                            currentMeetingId: currentMeetingId
+                            currentMeetingId: currentMeetingId,
+                            toast
                         }))
                     }
 
@@ -181,6 +188,14 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             ]
         });
     };
+
+    function deleteVoting(id, index) {
+        if (id === undefined || id === null){
+            handleRemoveClickEdit(index)
+        }else {
+            dispatch(meetingActions.deleteVotingAction({id: id ? id : null, handleRemoveClickEdit, index}))
+        }
+    }
 
     function time(time) {
         if (time === TWOMIN) {
@@ -217,11 +232,9 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     }
 
     const style = {
-        // background: "#FFFFFF",
         cursor: 'pointer',
         zIndex: '1000'
     }
-
     console.log(currentAgenda)
 
     return (
@@ -231,12 +244,13 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                     <Col md={6}>
                         <div className="form-group">
                             <Label className='required_fields'>Вопрос</Label>
-                            <AvField
+                            <AvInput
                                 type="text"
                                 name="subject"
                                 placeholder={'Ваш вопрос'}
                                 style={{backgroundColor: '#FFFFFF'}}
-                                required
+                                onChange={(e) => setChangeSubject(e.target.value)}
+                                value={changeSubject}
                             />
                         </div>
                     </Col>
@@ -249,7 +263,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 allowClear={true}
                                 placeholder="Выберите учетная запись"
                                 optionFilterProp="children"
-                                onChange={forSpeaker}
+                                onChange={(value) => setSelectSpeaker(value)}
+                                value={selectSpeaker}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -273,7 +288,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите время"
                                     optionFilterProp="children"
-                                    onChange={forTime}
+                                    onChange={(value) => setSelectTime(value)}
+                                    value={selectTime}
                                 >
                                     {timer.map((element, index) =>
                                         <Option key={index} value={element.value}>{element.text}</Option>
@@ -288,7 +304,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите прения"
                                     optionFilterProp="children"
-                                    onChange={forDebug}
+                                    onChange={(value) => setSelectDebug(value)}
+                                    value={selectDebug}
                                 >
                                     {timer.map((element, index) =>
                                         <Option key={index} value={element.value}>{element.text}</Option>
@@ -304,7 +321,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите состояние"
                                     optionFilterProp="children"
-                                    onChange={forStatus}
+                                    onChange={(value) => setSelectStatus(value)}
+                                    value={selectStatus}
                                 >
                                     <Option value={true}>Aктивно</Option>
                                     <Option value={false}>Неактивно</Option>
@@ -354,10 +372,12 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                             </CardBody>
                         </Card>
                         <button
-                            className="btn py-2 px-5 create">Создать</button>
+                            className="btn py-2 px-5 create">Создать
+                        </button>
                     </Col>
                 </Row>
             </AvForm>
+
             <Row>
                 <Col md={12} sm={12}>
                     <div className="d-flex justify-content-center mt-5 mb-5">
@@ -385,6 +405,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                       className='text-warning text-center'>
                                                     <FaPen
                                                         onClick={() => {
+                                                            // console.log(agenda.votingOptions)
                                                             setCurrentAgenda(agenda)
                                                             setCurrentVariants(agenda.votingOptions)
                                                             setOpenModal(true)
@@ -420,9 +441,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                 </Col>
             </Row>
 
-
-            <Modal isOpen={openModal} className="modal-dialog modal-lg">
-
+            <Modal isOpen={openModal} className="modal-dialog modal-lg container">
                 <ModalBody>
                     <AvForm onValidSubmit={editAgenda}>
                         <Row>
@@ -448,9 +467,9 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                         allowClear={true}
                                         placeholder="Выберите учетная запись"
                                         optionFilterProp="children"
-                                        onChange={forSpeaker}
+                                        onChange={(value) => setCurrentSpeaker(value)}
                                         defaultValue={currentAgenda?.speakerId}
-                                        value={selectSpeaker}
+                                        value={currentSpeaker}
                                         onSearch={onSearch}
                                         filterOption={(input, option) =>
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -474,9 +493,9 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             className="setting_input w-100"
                                             placeholder="Выберите время"
                                             optionFilterProp="children"
+                                            onChange={(value) => setCurrentTime(value)}
                                             defaultValue={currentAgenda?.speakTimeEnum}
-                                            value={selectTime}
-                                            onChange={forTime}
+                                            value={currentTime}
                                         >
                                             {timer.map((element, index) =>
                                                 <Option key={index} value={element.value}>{element.text}</Option>
@@ -491,9 +510,9 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             className="setting_input w-100"
                                             placeholder="Выберите прения"
                                             optionFilterProp="children"
+                                            onChange={(value) => setCurrentDebut(value)}
                                             defaultValue={currentAgenda?.debateEnum}
-                                            value={selectDebug}
-                                            onChange={forDebug}
+                                            value={currentDebut}
                                         >
                                             {timer.map((element, index) =>
                                                 <Option key={index} value={element.value}>{element.text}</Option>
@@ -508,10 +527,10 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                         <Select
                                             className="setting_input w-100"
                                             placeholder="Выберите состояние"
-                                            defaultValue={currentAgenda?.active}
-                                            value={selectStatus}
                                             optionFilterProp="children"
-                                            onChange={forStatus}
+                                            onChange={(value) => setCurrentStatus(value)}
+                                            defaultValue={currentAgenda?.active}
+                                            value={currentStatus}
                                         >
                                             <Option value={true}>Aктивно</Option>
                                             <Option value={false}>Неактивно</Option>
@@ -534,7 +553,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                 <div key={index} className="d-flex flex-row">
                                                     <Col md={8} className=''>
                                                         <AvField
-                                                            name={"variant/" + index}
+                                                            name={"variant/" + voting.id}
                                                             label={index + 1 + " - Вариант"}
                                                             value={voting.votingText}
                                                             onInput={toInputUppercase}
@@ -552,7 +571,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                                     className="btn create">+</Button>}
                                                             {currentVariants.length !== 1 &&
                                                             <button type="button"
-                                                                    onClick={() => handleRemoveClickEdit(index)}
+                                                                    onClick={() => deleteVoting(voting.id, index)}
                                                                     className="btn cancel mx-2">-</button>}
                                                         </div>
                                                     </Col>
@@ -565,7 +584,10 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                         className="btn py-2 px-5 create">Редактировать
                                 </button>
                                 <button className="btn btnAll m-2 cancel" type={"button"}
-                                        onClick={() => setOpenModal(false)}>{lang("user.otmena")}</button>
+                                        onClick={() => {
+                                            dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
+                                            setOpenModal(false)
+                                        }}>{lang("user.otmena")}</button>
                             </Col>
                         </Row>
                     </AvForm>

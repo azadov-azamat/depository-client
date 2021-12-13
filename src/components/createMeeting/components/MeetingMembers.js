@@ -32,8 +32,8 @@ export default function MeetingMembers({currentMeetingId, lang}) {
     const {memberManagerState} = reducers.meeting
     const {payload} = reducers.auth.totalCount
 
-    const [selectedUser, setSelectedUser] = useState();
-    const [selectedRole, setSelectedRole] = useState();
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedRole, setSelectedRole] = useState(null);
 
     const [page, setPage] = useState(1);
     const size = 7;
@@ -75,7 +75,8 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                     onClick: () => {
                         dispatch(meetingActions.deleteMemberById({
                             currentMemberId: currentMemberId,
-                            currentMeetingId: currentMeetingId
+                            currentMeetingId: currentMeetingId,
+                            toast
                         }))
                     }
 
@@ -115,16 +116,11 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                 memberTypeEnum: selectedRole,
                 userId: selectedUser
             }
-            dispatch(meetingActions.addMemberManagers({data, history, toast}))
+            dispatch(meetingActions.addMemberManagers({data, history, toast, setSelectedRole, setSelectedUser})).then(res=>{
+                setSelectedRole(null);
+                setSelectedUser(null)
+            });
         }
-    }
-
-    function onChange(value) {
-        setSelectedUser(value)
-    }
-
-    function onChange2(value) {
-        setSelectedRole(value)
     }
 
     const style = {
@@ -144,7 +140,8 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                             showSearch
                             placeholder="Select a user"
                             optionFilterProp="children"
-                            onChange={onChange}
+                            onChange={(value)=> setSelectedUser(value)}
+                            value={selectedUser}
                             onSearch={onSearch}
                             filterOption={(input, option) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -162,7 +159,8 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                             className="setting_input w-100"
                             placeholder="Select a role"
                             optionFilterProp="children"
-                            onChange={onChange2}
+                            onChange={(value)=> setSelectedRole(value)}
+                            value={selectedRole}
                         >
                             {roleUser && roleUser.map((role, index) =>
                                 <Option value={role.value}>{role.text}</Option>

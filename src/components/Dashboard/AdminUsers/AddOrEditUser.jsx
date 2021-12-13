@@ -375,7 +375,7 @@ export default function AddOrEditUser() {
                                 </Col>
                                 <Col md={6}>
                                     <AvField
-                                        name="password"
+                                        name="passwordferfwrthtyhsdfwreg"
                                         label={t("user.parol")}
                                         value={userInfo.generatePassword}
                                         className="setting_input border"

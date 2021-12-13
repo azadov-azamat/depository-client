@@ -32,6 +32,7 @@ import {
 } from "../../api/MeetingApi";
 import * as types from "../actionTypes/MeetingActionTypes";
 import {toast} from "react-toastify";
+import {deleteVotingByIdApi} from "../../api/MeetingStartedApi";
 
 export const getMeetingByIdAction = (payload) => async (dispatch) => {
     dispatch({
@@ -140,9 +141,6 @@ export const updateMeetingStatusAction = (payload) => async (dispatch) => {
         data: payload
     }).then(res => {
         console.log(res)
-        // const currentMeetingId = parseInt(localStorage.getItem(DEPOSITORY_CURRENT_MEETING));
-        // dispatch(getMeetingByIdAction({meetingId: currentMeetingId}))
-        // payload.history.push("/supervisory/addOrEditMeeting/" + currentMeetingId + "/member-by-meeting")
     }).catch(err => {
         console.log(err)
     })
@@ -154,10 +152,10 @@ export const deleteMeetingById = (payload) => async (dispatch) => {
         types: types.REQUEST_DELETE_BY_ID,
         data: payload
     }).then(res => {
-        dispatch(getMeetingList({page: 1, size: 6}))
+        dispatch(getMeetingList({page: 1, size: 8}))
     }).catch(err => {
         const lang = localStorage.getItem("i18nextLng")
-        const {errorKey, detail, title} = err.response.data;
+        const {errorKey, detail, title, status} = err.response.data;
         console.log(err.response.data)
         if (errorKey === "ReestrExist") {
             if (lang === "uz") {
@@ -166,6 +164,17 @@ export const deleteMeetingById = (payload) => async (dispatch) => {
                 toast.error("К этому собранию уже есть Реестр!")
             } else {
                 toast.error(title)
+            }
+        }
+        if (status === 500) {
+            if (lang === 'uz') {
+                    toast.error("O`chirishda xatolik!")
+            }
+            if (lang === 'ru') {
+                toast.error("Ошибка при удалении!")
+            }
+            if (lang === 'en') {
+                toast.error("Error deleting!")
             }
         }
     })
@@ -191,7 +200,6 @@ export const addedChairmanFromReestrPageAction = (payload) => async (dispatch) =
     }).then(res => {
         console.log(res)
         dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId, fromReestr: true}))
-        console.log("KELDI========================")
     });
 } // success 90%
 
@@ -258,6 +266,17 @@ export const addMemberManagers = (payload) => async (dispatch) => {
                 payload.toast.error(title)
             }
         }
+        if (errorKey === "meetingIsNotPending") {
+            if (lang === 'uz') {
+                payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
+            }
+            if (lang === 'ru') {
+                payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
+            }
+            if (lang === 'en') {
+                payload.toast.error(title)
+            }
+        }
         dispatch(getMemberByMeetingId({meetingId: payload.data.meetingId, page: 1, size: 6, fromReestr: false}))
     })
 } // success 95%
@@ -270,7 +289,34 @@ export const deleteMemberById = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch(getMemberByMeetingId({meetingId: payload.currentMeetingId, page: 1, size: 6, fromReestr: false}))
     }).catch(err => {
-        toast.error('Извини, ты ошибся')
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title, status} = err.response.data;
+        console.log(err.response.data)
+        if (errorKey === "existInAgenda") {
+            if (lang === "uz") {
+                payload.toast.error("Bu a'zo allaqachon boshqa kun tartibida ishtirok etgan!")
+            }
+            if (lang === "ru") {
+                payload.toast.error("Этот участник уже участвует в другой повестке дня")
+            }
+            if (lang === "en") {
+                payload.toast.error(title)
+            }
+        }
+        if (errorKey === "meetingIsNotPending") {
+            if (lang === 'uz') {
+                payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
+            }
+            if (lang === 'ru') {
+                payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
+            }
+            if (lang === 'en') {
+                payload.toast.error(title)
+            }
+        }
+        if (status === 500) {
+            toast.error('Извини, ты ошибся')
+        }
     })
 } // success 90%
 
@@ -298,7 +344,7 @@ export const getAgendaById = (payload) => async (dispatch) => {
         api: getAgendaByIdApi,
         types: ["REQUEST_START_AGENDA", "REQUEST_GET_AGENDA_BY_ID_SUCCESS", "REQUEST_ERROR_AGENDA"],
         data: payload.agendaId
-    }).then(res=>{
+    }).then(res => {
         payload.modalStatus(true)
     })
 }
@@ -311,8 +357,30 @@ export const addAgenda = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch(getAgendaByMeetingId({meetingId: res.payload.meetingId}))
     }).catch(err => {
-        if (err.response.data.errorKey === "subjectExists") {
-            toast.error('Bu kun tartibidagi masalani siz kiritgansiz!')
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title, status} = err.response.data;
+
+        if (errorKey === "subjectExists") {
+            if (lang === 'uz') {
+                payload.toast.error("Mavzu bu uchrashuvda allaqachon mavjud!")
+            }
+            if (lang === 'ru') {
+                payload.toast.error("Тема уже присутствует на этой встрече!")
+            }
+            if (lang === 'en') {
+                payload.toast.error(title)
+            }
+        }
+        if (errorKey === "meetingIsNotPending") {
+            if (lang === 'uz') {
+                payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
+            }
+            if (lang === 'ru') {
+                payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
+            }
+            if (lang === 'en') {
+                payload.toast.error(title)
+            }
         }
     })
 }  // warning 95%
@@ -326,9 +394,30 @@ export const editAgendaAction = (payload) => async (dispatch) => {
         payload.setOpenModal(false)
         dispatch(getAgendaByMeetingId({meetingId: res.payload.meetingId}))
     }).catch(err => {
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title, status} = err.response.data;
         payload.setOpenModal(false)
-        if (err.response.data.errorKey === "subjectExists") {
-            toast.error('Bu kun tartibidagi masalani siz kiritgansiz!')
+        if (errorKey === "subjectExists") {
+            if (lang === 'uz'){
+                payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
+            }
+            if (lang === 'ru'){
+                payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
+            }
+            if (lang === 'en'){
+                payload.toast.error(title)
+            }
+        }
+        if (errorKey === "meetingIsNotPending") {
+            if (lang === 'uz'){
+                payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
+            }
+            if (lang === 'ru'){
+                payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
+            }
+            if (lang === 'en'){
+                payload.toast.error(title)
+            }
         }
     })
 }  // warning 70%
@@ -341,7 +430,23 @@ export const deleteByIdAgenda = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch(getAgendaByMeetingId({meetingId: payload.currentMeetingId}))
     }).catch(err => {
-        toast.error('Извини, ты ошибся')
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title, status} = err.response.data;
+
+        if (errorKey === "meetingIsNotPending") {
+            if (lang === 'uz'){
+                payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
+            }
+            if (lang === 'ru'){
+                payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
+            }
+            if (lang === 'en'){
+                payload.toast.error(title)
+            }
+        }
+        if (status === 500) {
+            toast.error('Извини, ты ошибся')
+        }
     })
 }
 
@@ -489,5 +594,19 @@ export const getCitiesAction = (payload) => async (dispatch) => {
         api: getCitiesApi,
         types: ["", "REQUEST_GET_CITIES", ""],
         data: payload
+    })
+}
+
+export const deleteVotingAction=(payload)=> async (dispatch)=>{
+    dispatch({
+        api: deleteVotingByIdApi,
+        types: ["REQUEST_DELETE_VOTING_START", "REQUEST_DELETE_VOTING_SUCCESS", "REQUEST_DELETE_VOTING_ERROR"],
+        data: payload.id
+    }).then(res=>{
+        console.log(res)
+        payload.handleRemoveClickEdit(parseInt(payload.index))
+    }).catch(err=>{
+        console.log(err)
+        console.log("error")
     })
 }

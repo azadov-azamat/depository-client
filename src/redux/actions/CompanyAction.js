@@ -179,7 +179,7 @@ export const deleteByIdCompany = (payload) => async (dispatch) => {
         types: types.REQUEST_DELETE_BY_ID,
         data: payload
     }).then(res => {
-        dispatch(getCompanyList({page: 1, size: 6}))
+        dispatch(getCompanyList({page: 1, size: 8}))
     }).catch(err => {
         if (err.response.data.detail === 'By this company already has created meeting!') {
             toast.error('Bu kompaniya allaqachon uchrashuv tashkil qilgan!')

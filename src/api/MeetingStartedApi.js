@@ -64,3 +64,7 @@ export const getBallotVotingApi = (data) => {
 export const deleteBallot = (data) => {
     return HttpClient.doDelete(api.ballotMethod + "/" + data)
 }
+
+export const deleteVotingByIdApi = (data) => {
+    return HttpClient.doDelete(api.votingMethod + "/" + data)
+}
