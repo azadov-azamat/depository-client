@@ -30,7 +30,7 @@ export default function MeetingFiles({currentMeeting, lang}) {
     const {agendaState, meetingFile} = reducers.meeting
 
     const [addFile, setAddFile] = useState({fileName: "", file: []});
-    const [selectAgenda, setSelectAgenda] = useState(null);
+    const [selectAgenda, setSelectAgenda] = useState();
 
     const hiddenFileInput = React.useRef(null);
 
@@ -53,12 +53,18 @@ export default function MeetingFiles({currentMeeting, lang}) {
 
 
     function downloadSetFile() {
-
-        const data = new FormData();
-        data.append('agendaId', selectAgenda ? parseInt(selectAgenda) : null);
-        data.append('file', addFile.file);
-        data.append('meetingId', meetingId);
-        dispatch(meetingActions.addAgendaAndMeetingFile({data, history}))
+        if (selectAgenda !== undefined) {
+            const data = new FormData();
+            data.append('agendaId', selectAgenda)
+            data.append('file', addFile.file);
+            data.append('meetingId', meetingId);
+            dispatch(meetingActions.addAgendaAndMeetingFile({data, history}))
+        }else {
+            const data = new FormData();
+            data.append('file', addFile.file);
+            data.append('meetingId', meetingId);
+            dispatch(meetingActions.addAgendaAndMeetingFile({data, history}))
+        }
     }
 
     const deleteUser = (id) => {
