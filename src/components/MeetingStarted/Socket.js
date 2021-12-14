@@ -3,10 +3,13 @@ import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
 import {DEPOSITORY_ZOOM_MEETING_PASSWORD, TOKEN} from "../../utils/contants";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
+import * as meetingAction from "../../redux/actions/MeetingAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
+import {useTranslation} from "react-i18next";
 
 export const Socket = ({meetingId, memberId}) => {
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const clientRef = useRef(null);
     const topics = useSelector(state => state.socket.topics);
 
@@ -55,25 +58,16 @@ export const Socket = ({meetingId, memberId}) => {
                         payload: msg
                     })
 
+                    console.log(msg)
+
                     msg.forEach(element => {
-                        if (element.loggingText.startsWith("PASSWORD_ZOOM:")) {
-                            console.log(element)
-                            dispatch({
-                                type: 'PASSWORD_ZOOM_MEETING',
-                                payload: {
-                                    password_zoom: element.loggingText.substr(15, (element.loggingText.length - 1)),
-                                    password_id: element.id
-                                }
-                            })
-                            localStorage.setItem(DEPOSITORY_ZOOM_MEETING_PASSWORD, element.loggingText.substr(15, (element.loggingText.length - 1)))
-                            console.log(element.loggingText.substr(15, (element.loggingText.length - 1)))
+                        if (element.loggingText === t("meetingCreated.meetingStatus.active")) {
+                          dispatch(meetingAction.getMeetingByIdAction({meetingId}))
                         }
                     })
                 }
 
                 if (topic === '/topic/answer') {
-                    console.log("keldi answer")
-                    console.log(msg)
                     dispatch({
                         type: 'REQUEST_SUCCESS_QUESTION_LIST',
                         payload: msg
@@ -83,6 +77,7 @@ export const Socket = ({meetingId, memberId}) => {
                 }
 
                 if (topic === ("/topic/getMember/" + meetingId)) {
+                    console.log(msg, meetingId)
                     dispatch({
                         type: 'RESPONSE_GET_ONLINE_MEMBERS_LIST_SUCCESS',
                         payload: msg
@@ -90,12 +85,14 @@ export const Socket = ({meetingId, memberId}) => {
                 }
 
                 if (topic === '/topic/get-zoom/' + meetingId) {
-                    if (msg.zoom && msg.password !== null) {
+                    console.log("============================ get zoom ===========================")
+                    console.log(msg);
+                    if (msg.zoom && msg.zoomPassword !== null) {
                         dispatch({
                             type: "PASSWORD_ZOOM_MEETING",
                             payload: {
                                 startCallMeeting: true,
-                                passwordZoomMeeting: msg.password
+                                passwordZoomMeeting: msg.zoomPassword
                             }
                         })
                     } else if (!msg.zoom) {

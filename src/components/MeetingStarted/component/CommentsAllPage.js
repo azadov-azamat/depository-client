@@ -17,6 +17,7 @@ import {CHAIRMAN, SECRETARY} from "../../../utils/contants";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {AccordionAnswersModal} from "./Accordions/AccordionAnswersModal";
 import {subscribe, unsubscribe} from "../../../redux/actions/socketActions";
+import Text from "antd/es/typography/Text";
 
 export default function CommentsAllPage({
                                             roleMember,
@@ -100,9 +101,9 @@ export default function CommentsAllPage({
                             loggingList?.slice(0).reverse().map((element) => {
                                 let date = new Date(element.createdDate);
                                 return (
-                                    <>
+                                    <Text key={element.id}>
                                         <span>{(date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" + (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes())} - {element.loggingText}</span><br/>
-                                    </>
+                                    </Text>
                                 )
                             })
                         }
@@ -115,12 +116,12 @@ export default function CommentsAllPage({
                     <div className="h-100" style={{overflowY: 'scroll'}}>
                         {meetingFile?.length !== 0 ?
                             meetingFile?.map((element, index) =>
-                                <>
-                                    <a href={BASE_URL + api.downloadFile + element.id} download key={index}
+                                <Text key={index}>
+                                    <a href={BASE_URL + api.downloadFile + element.id} download
                                        className="text-dark border-0"
                                        style={{listStyleType: 'none'}}>{fileTypeIcon(element.contentType)} - {element.originalFileName}</a>
                                     <br/>
-                                </>
+                                </Text>
                             ) : (
                                 <div className='d-flex justify-content-center align-items-center'>
                                     <p>Ничего не найдена</p>
@@ -172,7 +173,7 @@ export default function CommentsAllPage({
                             <div className="accordion" id="accordionExample" style={{overflowY: 'scroll'}}>
                                 <span style={{fontWeight: 'bold'}}>Sizning savollaringiz:</span>
                                 {questionListMemberId && questionListMemberId.map(element =>
-                                    <>
+                                    <Text key={element.id}>
                                         <AccordionAnswersModal open={1}>
                                             <AccordionAnswersModal.Item>
                                                 <AccordionAnswersModal.Header style={element.questionAnswer}>
@@ -185,7 +186,7 @@ export default function CommentsAllPage({
                                                 </AccordionAnswersModal.Body>
                                             </AccordionAnswersModal.Item>
                                         </AccordionAnswersModal>
-                                    </>
+                                    </Text>
                                 )}
                             </div>
                         </Col>

@@ -116,7 +116,14 @@
     "update": "Foydalanuvhi o'zgartirildi",
     "error": "Bu foydalanuvchi kompaniya yoki meetingda mavjud",
     "warning": "Iltimos, Barcha ma`lumotlarni to`liq kiriting",
-    "errorPhoneNumberLength": "Telefon raqami formatini moslashtiring!"
+    "errorPhoneNumberLength": "Telefon raqami formatini moslashtiring!",
+    "statusMeeting": {
+      "pending": "Yig`ilish holati - Kutilmoqda",
+      "finish": "Yig`ilish holati - Tugallangan (arxivlangan)",
+      "canceled": "Yig`ilish holati - Bekor qilingan (arxivlangan)",
+      "disabled": "Yig`ilish holati - Faol emas",
+      "zoomStarted": "Videokonferensiya boshlandi, qoʻshiling."
+    }
   },
 
   "createButton": "Yozuv yaratish | ",

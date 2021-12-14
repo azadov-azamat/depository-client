@@ -16,6 +16,7 @@ import ButtonValue from "./ButtonValue";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {useDispatch, useSelector} from "react-redux";
 import {subscribe} from "../../../redux/actions/socketActions";
+import Text from "antd/es/typography/Text";
 
 export const List = ({meetings, type, companyId, lang}) => {
 
@@ -84,13 +85,13 @@ export const List = ({meetings, type, companyId, lang}) => {
                             <div className="row">
                                 <div className="col-12 d-block d-md-none text-center">
                                     <p style={{fontSize: '18px'}}><b>{status(userMeeting.typeEnum)}</b></p>
-                                    <text>{lang("clientPage.statusNameMeeting")}: <b>{status(userMeeting.status)}</b></text>
+                                    <Text>{lang("clientPage.statusNameMeeting")}: <b>{status(userMeeting.status)}</b></Text>
                                     <br/>
-                                    <text>{lang("clientPage.infoStartMeeting")}:</text>
+                                    <Text>{lang("clientPage.infoStartMeeting")}:</Text>
                                     <br/>
-                                    <text>
+                                    <Text>
                                         <b>{getDate(userMeeting.startRegistration)}</b>
-                                    </text>
+                                    </Text>
                                 </div>
                                 <div className="col-md-4 d-flex justify-content-center align-items-center d-md-none">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
@@ -102,10 +103,10 @@ export const List = ({meetings, type, companyId, lang}) => {
 
                                 <div className="col-md-7 d-none d-md-block mx-3 pt-2">
                                     <p style={{fontSize: '21px'}}><b>{status(userMeeting.typeEnum)}</b></p>
-                                    <text>{lang("clientPage.statusNameMeeting")}: <b>{status(userMeeting.status)}</b></text>
+                                    <Text>{lang("clientPage.statusNameMeeting")}: <b>{status(userMeeting.status)}</b></Text>
                                     <br/>
-                                    <text>{lang("clientPage.infoStartMeeting")}: <b>{getDate(userMeeting.startRegistration)}</b>
-                                    </text>
+                                    <Text>{lang("clientPage.infoStartMeeting")}: <b>{getDate(userMeeting.startRegistration)}</b>
+                                    </Text>
                                 </div>
 
                                 <div className="col-md-4 d-md-flex justify-content-center align-items-center d-none">

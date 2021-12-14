@@ -32,11 +32,11 @@ export default function MeetingHeading({company, lang}) {
                                     <Link to="/issuerLegal/companies"
                                           className="nav-link text-dark"><FaArrowLeft/></Link>
                                     <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
-                                    <Link className="nav-link disabled"><AiOutlineRight/></Link>
+                                    <Link to={"#"} className="nav-link disabled"><AiOutlineRight/></Link>
                                     <Link to={'/issuerLegal/companies'} className="nav-link"
                                           style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.controlPage.clientPage")}</Link>
-                                    <Link className="nav-link disabled"><AiOutlineRight/></Link>
-                                    <Link className="nav-link h5 disabled text-dark">{company?.name}</Link>
+                                    <Link to={"#"} className="nav-link disabled"><AiOutlineRight/></Link>
+                                    <Link to={"#"} className="nav-link h5 disabled text-dark">{company?.name}</Link>
                                 </div>
                                 <div className="d-flex justify-content-start">
                                     <NavbarMeeting companyId={company}/>

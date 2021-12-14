@@ -5,7 +5,7 @@ import {Button} from "reactstrap";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 
-export default function NabLists({company, lang, key}) {
+export default function NabLists({company, lang}) {
 
     const history = useHistory();
     const linkPush = '/issuerLegal/meetings?company_id=' + company?.id + '&type=active';
@@ -26,7 +26,7 @@ export default function NabLists({company, lang, key}) {
     };
 
     return (
-        <div className={"p-3 rounded my-3 NabList"} key={key}>
+        <div className={"p-3 rounded my-3 NabList"}>
             <div className="row">
                 <div className="col-12 col-md-2 justify-content-center align-items-center d-flex">
                     <div className="row justify-content-center align-items-center w-100">

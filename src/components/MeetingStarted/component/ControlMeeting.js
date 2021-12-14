@@ -41,7 +41,6 @@ export default function ControlMeeting({meetingStatus, meetingId, startMeeting})
         }
     }
 
-    console.log(memberManagerState)
     useEffect(() => {
         memberManagerState?.forEach(element => {
             if (element.isConfirmed === true) {
@@ -56,7 +55,7 @@ export default function ControlMeeting({meetingStatus, meetingId, startMeeting})
         <>
             <div className="p-3 d-flex flex-column justify-content-between ">
                 <div>
-                    <h2 className="text-2xl font-bold">Управление собранием</h2>
+                    <h2 className="text-2xl font-bold">Управление засиданием</h2>
                     <p>Состояние заседание: <b>{status(meetingStatus)}</b></p>
                 </div>
                 <div className="">
@@ -67,7 +66,7 @@ export default function ControlMeeting({meetingStatus, meetingId, startMeeting})
                         <br/>
                         принимали участие очно: голосов
                         <br/>
-                        кворум ({percentQuorum}%)
+                        кворум ({parseInt(percentQuorum)}%)
                     </p>
                 </div>
                 {meetingStatus === PENDING ?

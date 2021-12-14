@@ -1,11 +1,30 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Modal, ModalBody, ModalHeader, Table} from "reactstrap";
-import {AiOutlineSetting, BiCheckDouble} from "react-icons/all";
+import {AiOutlineSetting, BiCheckDouble, FiSettings, RiDeleteBinLine} from "react-icons/all";
 import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../utils/contants";
+import * as meetingActions from "../../../redux/actions/MeetingAction";
+import {useDispatch, useSelector} from "react-redux";
+import StatusMembers from "./StatusMembers";
 
-export default function TableUsers({members}) {
+export default function TableUsers({meetingId, lang}) {
 
+    const dispatch = useDispatch();
+    const [count, setCount] = useState(0);
+    const reducers = useSelector(state => state)
+    const {memberManagerState, onlineMemberManager} = reducers.meeting
     const [openModal, setOpenModal] = useState(false);
+
+    useEffect(() => {
+        dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
+    }, [meetingId])
+
+    console.log(memberManagerState)
+
+    const style = {
+        // background: "#FFFFFF",
+        cursor: 'pointer',
+        zIndex: '1000'
+    }
 
     return (
         <>
@@ -25,49 +44,18 @@ export default function TableUsers({members}) {
                         </tr>
                         </thead>
                         <tbody>
-                        {members.length !== 0
-                            ? members.map((role, index) =>
-                                <tr className="text-center" key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{role.user.fullName}</td>
-                                    <td>{role.user.phoneNumber} </td>
-                                    <td style={role.isInvolved === true ? {backgroundColor: '#F1FFE3'} : {backgroundColor: '#FFECEE'}}>
-                                        {
-                                            role.isInvolved === true ? <text className="text-success">online</text> :
-                                                <text className="text-danger">offline</text>
-                                        }
-                                    </td>
-                                    <td>{
-                                        role.memberTypeEnum === SPEAKER ? 'Доклатчик' : '' ||
-                                        role.memberTypeEnum === WATCHER ? 'Приглашенный' : '' ||
-                                        role.memberTypeEnum === SECRETARY ? 'Секретар' : '' ||
-                                        role.memberTypeEnum === CHAIRMAN ? 'Председатель' : '' ||
-                                        role.memberTypeEnum === SIMPLE ? 'Обычный' : ''
-                                    }</td>
-                                    <td>
-                                        <button className="btn btn-link">
-                                            <AiOutlineSetting onClick={setOpenModal(true)}/>
-                                        </button>
-                                    </td>
-                                </tr>
+                        {onlineMemberManager.length !== 0
+                            ? onlineMemberManager.map((user, index) =>
+                                <StatusMembers member={user} index={index} lang={lang}/>
                             ) :
                             <tr className='text-center'>
-                                <th colSpan="6">Ничего не найдена</th>
+                                <th colSpan="5">{lang("meetingCreated.emptyList")}</th>
                             </tr>
                         }
                         </tbody>
                     </Table>
                 </div>
             </div>
-            {/*<Modal isOpen={openModal} className="modal-dialog modal-lg">*/}
-            {/*    <ModalHeader toggle={() => setOpenModal(!openModal)}*/}
-            {/*                 className="d-flex align-items-center">*/}
-            {/*    </ModalHeader>*/}
-            {/*    <ModalBody>*/}
-            {/*        qalesan*/}
-            {/*    </ModalBody>*/}
-            {/*</Modal>*/}
-
         </>
 
     )

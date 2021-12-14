@@ -15,19 +15,21 @@ export const NavbarMeeting = () => {
 
     const link = [
         {
+            id: 1,
             text: t("clientPage.allActiveMeetings"),
             link: '/issuerLegal/meetings?company_id=' + companyId + "&type=active",
             type: 'active'
         },
         {
+            id: 2,
             text: t("clientPage.allArchiveMeetings"),
             link: '/issuerLegal/meetings?company_id=' + companyId + "&type=archive",
             type: 'archive'
         },
     ]
 
-    const linkMap = ({text, link, type}) => (
-        <h4 className={query.get("type") === type ? 'border-bottom' : ''}>
+    const linkMap = ({id, text, link, type}) => (
+        <h4 key={id} className={query.get("type") === type ? 'border-bottom' : ''}>
             <Link to={link}
                   className={query.get("type") === type ? 'nav-link text-dark' : 'nav-link text-dark text-opacity-25'}>{text}</Link>
         </h4>

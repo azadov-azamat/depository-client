@@ -68,12 +68,35 @@ export const editStatusAgendaAction = (payload) => async (dispatch) => {
         data: payload.data
     }).then(res => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: res.payload.meetingId}))
+    }).catch(err=>{
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title, status} = err.response.data;
+        console.log(err.response.data)
+        if (errorKey === "meetingIsActive") {
+            if (lang === "uz") {
+                toast.error("Yig'ilish holati - Faol!");
+            } else if (lang === "ru") {
+                toast.error("Засидание в статусе - Активный!")
+            } else {
+                toast.error("Status of meeting is - Active!")
+            }
+        }
+        if (status === 500) {
+            if (lang === 'uz') {
+                toast.error("O`chirishda xatolik!")
+            }
+            if (lang === 'ru') {
+                toast.error("Ошибка при удалении!")
+            }
+            if (lang === 'en') {
+                toast.error("Error deleting!")
+            }
+        }
     })
 }
 
 
 export const getQuestionByMeetingAction = (payload) => async (dispatch) => {
-    console.log("keldi dispatch");
     dispatch({
         api: getQuestionByMeetingIdApi,
         types: ["REQUEST_START_QUESTION_LIST", "REQUEST_SUCCESS_QUESTION_LIST", "REQUEST_ERROR_QUESTION_LIST"],

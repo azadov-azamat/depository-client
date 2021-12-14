@@ -58,7 +58,7 @@ export default function Router({currentCompany, currentMeeting, userMemberType, 
 
                                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
 
-                                <Link style={style} className="nav-link h5 disabled text-dark">{
+                                <Link to={'#'} style={style} className="nav-link h5 disabled text-dark">{
                                     currentMeeting?.typeEnum === ORDINARY ? 'Внеплановое заседание наблюдательного совета' : '' ||
                                     currentMeeting?.typeEnum === EXTRAORDINARY ? 'Плановое заседание наблюдательного совета' : ''
                                 }</Link>

@@ -106,7 +106,6 @@ const reducers = {
     },
     ["PASSWORD_ZOOM_MEETING"](state, action) {
         state.startCallMeeting = action.payload.startCallMeeting
-        state.endCallMeeting = action.payload.endCallMeeting
         state.passwordZoomMeeting = action.payload.passwordZoomMeeting
     }
 }

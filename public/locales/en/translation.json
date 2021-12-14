@@ -116,7 +116,14 @@
     "update": "User update",
     "error": "This user is present at the company or meeting",
     "warning": "Please Fill All",
-    "errorPhoneNumberLength": "Customize the format of the phone number!"
+    "errorPhoneNumberLength": "Customize the format of the phone number!",
+    "statusMeeting": {
+      "pending": "Meeting Status - Pending",
+      "finish": "Meeting Status - Finish",
+      "canceled": "Meeting Status - Canceled",
+      "disabled": "Meeting Status - Disabled",
+      "zoomStarted": "The video conference has started, please join."
+    }
   },
 
   "createButton": "Create record | ",

@@ -15,6 +15,7 @@ import {
 import ButtonValue from "./ButtonValue";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {useDispatch, useSelector} from "react-redux";
+import Text from "antd/es/typography/Text";
 
 function useQuery() {
     const {search} = useLocation();
@@ -117,13 +118,13 @@ export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
                             <div className="row">
                                 <div className="col-12 d-block d-md-none text-center">
                                     <p style={{fontSize: '18px'}}><b>{status(userMeeting.typeEnum)}</b></p>
-                                    <text>Состояние заседание: <b>{status(userMeeting.status)}</b></text>
+                                    <Text>Состояние заседание: <b>{status(userMeeting.status)}</b></Text>
                                     <br/>
-                                    <text>Начало регистрации на участие в заседании:</text>
+                                    <Text>Начало регистрации на участие в заседании:</Text>
                                     <br/>
-                                    <text>
+                                    <Text>
                                         <b>{getDate(userMeeting.startRegistration)}</b>
-                                    </text>
+                                    </Text>
                                 </div>
                                 <div className="col-md-4 d-flex justify-content-center align-items-center d-md-none">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
@@ -135,11 +136,11 @@ export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
 
                                 <div className="col-md-7 d-none d-md-block mx-3 pt-2">
                                     <p style={{fontSize: '21px'}}><b>{status(userMeeting.typeEnum)}</b></p>
-                                    <text>Состояние заседание: <b>{status(userMeeting.status)}</b></text>
+                                    <Text>Состояние заседание: <b>{status(userMeeting.status)}</b></Text>
                                     <br/>
-                                    <text>Начало регистрации на участие в
+                                    <Text>Начало регистрации на участие в
                                         заседании: <b>{getDate(userMeeting.startRegistration)}</b>
-                                    </text>
+                                    </Text>
                                 </div>
 
                                 <div className="col-md-4 d-md-flex justify-content-center align-items-center d-none">

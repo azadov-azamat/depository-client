@@ -33,6 +33,7 @@ import {
 import * as types from "../actionTypes/MeetingActionTypes";
 import {toast} from "react-toastify";
 import {deleteVotingByIdApi} from "../../api/MeetingStartedApi";
+import {ACTIVE, CANCELED, FINISH, PENDING} from "../../utils/contants";
 
 export const getMeetingByIdAction = (payload) => async (dispatch) => {
     dispatch({
@@ -135,14 +136,46 @@ export const updateMeetingAction = (payload) => async (dispatch) => {
     })
 }
 export const updateMeetingStatusAction = (payload) => async (dispatch) => {
+    const {status, socketClient, dataForUpdateMeetingStatus, userId, meetingId, lang} = payload
     dispatch({
         api: editMeetingStatusApi,
         types: ["REQUEST_START_UPDATE_MEETING_STATUS", "REQUEST_UPDATE_MEETING_STATUS", "REQUEST_ERROR_UPDATE_MEETING_STATUS",],
-        data: payload
+        data: dataForUpdateMeetingStatus
     }).then(res => {
-        console.log(res)
+        const dataForComment = {
+            userId,
+            meetingId,
+            loggingText:
+                status === ACTIVE ? lang("meetingCreated.meetingStatus.active") : ""
+                || status === FINISH ? lang("meetingCreated.meetingStatus.finish") : ""
+                || status === CANCELED ? lang("meetingCreated.meetingStatus.canceled") : ""
+                || status === PENDING ? lang("meetingCreated.meetingStatus.pending") : ""
+        }
+        socketClient.sendMessage('/topic/user-all', JSON.stringify(dataForComment));
     }).catch(err => {
-        console.log(err)
+        const lang = localStorage.getItem("i18nextLng")
+        const {errorKey, detail, title, status} = err.response.data;
+        console.log(err.response.data)
+        if (errorKey === "CompanyNotActive") {
+            if (lang === "uz") {
+                toast.error("Uchrashuv holatini o'zgartirish uchun kompaniya FAOL holatida bo'lishi kerak!");
+            } else if (lang === "ru") {
+                toast.error("Компания должна быть в АКТИВНОМ состоянии для изменения статуса встречи!")
+            } else {
+                toast.error(title)
+            }
+        }
+        if (status === 500) {
+            if (lang === 'uz') {
+                toast.error("O`chirishda xatolik!")
+            }
+            if (lang === 'ru') {
+                toast.error("Ошибка при удалении!")
+            }
+            if (lang === 'en') {
+                toast.error("Error deleting!")
+            }
+        }
     })
 } // success 95%
 
@@ -168,7 +201,7 @@ export const deleteMeetingById = (payload) => async (dispatch) => {
         }
         if (status === 500) {
             if (lang === 'uz') {
-                    toast.error("O`chirishda xatolik!")
+                toast.error("O`chirishda xatolik!")
             }
             if (lang === 'ru') {
                 toast.error("Ошибка при удалении!")
@@ -398,24 +431,24 @@ export const editAgendaAction = (payload) => async (dispatch) => {
         const {errorKey, detail, title, status} = err.response.data;
         payload.setOpenModal(false)
         if (errorKey === "subjectExists") {
-            if (lang === 'uz'){
+            if (lang === 'uz') {
                 payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
             }
-            if (lang === 'ru'){
+            if (lang === 'ru') {
                 payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
             }
-            if (lang === 'en'){
+            if (lang === 'en') {
                 payload.toast.error(title)
             }
         }
         if (errorKey === "meetingIsNotPending") {
-            if (lang === 'uz'){
+            if (lang === 'uz') {
                 payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
             }
-            if (lang === 'ru'){
+            if (lang === 'ru') {
                 payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
             }
-            if (lang === 'en'){
+            if (lang === 'en') {
                 payload.toast.error(title)
             }
         }
@@ -434,13 +467,13 @@ export const deleteByIdAgenda = (payload) => async (dispatch) => {
         const {errorKey, detail, title, status} = err.response.data;
 
         if (errorKey === "meetingIsNotPending") {
-            if (lang === 'uz'){
+            if (lang === 'uz') {
                 payload.toast.error("Joriy yig`ilish KUTISH holatida emas!")
             }
-            if (lang === 'ru'){
+            if (lang === 'ru') {
                 payload.toast.error("Текущая встреча не в статусе - ОЖИДАЕТ!")
             }
-            if (lang === 'en'){
+            if (lang === 'en') {
                 payload.toast.error(title)
             }
         }
@@ -597,15 +630,15 @@ export const getCitiesAction = (payload) => async (dispatch) => {
     })
 }
 
-export const deleteVotingAction=(payload)=> async (dispatch)=>{
+export const deleteVotingAction = (payload) => async (dispatch) => {
     dispatch({
         api: deleteVotingByIdApi,
         types: ["REQUEST_DELETE_VOTING_START", "REQUEST_DELETE_VOTING_SUCCESS", "REQUEST_DELETE_VOTING_ERROR"],
         data: payload.id
-    }).then(res=>{
+    }).then(res => {
         console.log(res)
         payload.handleRemoveClickEdit(parseInt(payload.index))
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err)
         console.log("error")
     })

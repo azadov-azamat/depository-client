@@ -1,6 +1,7 @@
 import React from "react";
 import {Card, CardBody, CardHeader, Collapse} from "reactstrap";
 import PropTypes from "prop-types";
+import Text from "antd/es/typography/Text";
 
 export class AccordionQuestion extends React.Component {
     state = {
@@ -51,9 +52,9 @@ const AccordionItem = ({children, isOpen, onClick}) => (
 const AccordionHeader = ({children, onClick}) => (
     <CardHeader>
         <div className="mb-0 d-flex justify-content-between">
-            <text>
+            <Text>
                 {children}
-            </text>
+            </Text>
             <button className='btn create px-3'
                     onClick={onClick}>
                 Taxrirlash

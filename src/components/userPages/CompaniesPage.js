@@ -8,6 +8,7 @@ import * as companyAction from "../../redux/actions/CompanyAction";
 import {useTranslation} from "react-i18next";
 import {DEPOSITORY_MEMBER_TYPE_USER} from "../../utils/contants";
 import Loader from "react-loader-spinner";
+import Text from "antd/es/typography/Text";
 
 export default function CompaniesPage() {
 
@@ -18,7 +19,6 @@ export default function CompaniesPage() {
     const {currentUser} = reducers.auth
     const {companiesByUserId, loading} = reducers.company
     const [booleanMy, setBooleanMy] = useState(false);
-    console.log(reducers)
 
     useEffect(() => {
         setBooleanMy(companiesByUserId && companiesByUserId.some(element => element.chairmanId === currentUser.id || element.secretaryId === currentUser.id));
@@ -109,8 +109,10 @@ export default function CompaniesPage() {
                             <h3>{t("meetingCreated.emptyList")}</h3>
                         </div>
                         :
-                        companiesByUserId && companiesByUserId.map(value =>
-                            <NabLists company={value} lang={t} key={value.id}/>
+                        companiesByUserId && companiesByUserId.map((value, index) =>
+                            <Text key={index}>
+                                <NabLists company={value} lang={t}/>
+                            </Text>
                         )
                 }
             </Container>
