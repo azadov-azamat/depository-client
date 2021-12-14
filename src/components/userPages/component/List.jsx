@@ -71,7 +71,7 @@ export const List = ({meetings, type, companyId, lang}) => {
         let date = new Date(currentDate);
         return (
             <>
-                {(date.getHours().toString().length === 1 ? ("0" + date.getHours()) : date.getHours()) + ":" + (date.getMinutes().toString().length === 1 ? ("0" + date.getMinutes()) : date.getMinutes()) + " " + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()}
+                {currentDate.substr((currentDate) - 1, 10)}{"  "}{currentDate.substr(11, 5)}
             </>
         )
     }
