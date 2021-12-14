@@ -13,6 +13,7 @@ import {getUserById} from "../../redux/actions/UsersAction";
 import {List} from "../userPages/component/List";
 import {ListMeeting} from "./components/ListMeeting";
 import * as adminMeetingAction from "../../redux/actions/MeetingAction";
+import MeetingsListByUser from "./MeetingsListByUser";
 
 function useQuery() {
     const {search} = useLocation();
@@ -39,10 +40,6 @@ export default function MyProfile() {
     const userId = currentUser.id;
 
     useEffect(() => {
-        dispatch(adminMeetingAction.getMeetingByUserIdAndCompanyIdAction({userId: userId, companyId: companyId}))
-    }, [id])
-
-    useEffect(() => {
         setBooleanMy(
             companiesByUserId?.some(element => element.chairmanId === currentUser.id || element.secretaryId === currentUser.id));
          }, [booleanMy, companiesByUserId])
@@ -53,20 +50,18 @@ export default function MyProfile() {
 
     return (
         <div style={loading ? styleCursor : {}}>
-            <Container>
-                <ProfileRoute lang={t} booleanComp={!booleanMy}/>
+                <ProfileRoute lang={t} booleanComp={booleanMy}/>
                 <Switch>
                     <Route path={"/supervisory/profile/user"} exact>
-                        <ProfileUser lang={t} loading={loading} currentUser={currentUser}/>
+                        <ProfileUser lang={t} loading={loading} currentUser={currentUser} boolean={booleanMy}/>
                     </Route>
                     <Route path={"/supervisory/profile/organization"}>
                         <OrganizationUser lang={t} ID={userId}/>
                     </Route>
                     <Route path={"/supervisory/profile/meetings"}>
-                        <ListMeeting lang={t} meetings={meetingByUser}/>
+                        <MeetingsListByUser lang={t} ID={userId}/>
                     </Route>
                 </Switch>
-            </Container>
         </div>
     )
 }

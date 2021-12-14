@@ -1,6 +1,6 @@
-import React from "react";
-import {Button, Col, Row} from "reactstrap";
-import {AvField, AvForm} from "availity-reactstrap-validation";
+import React, {useState} from "react";
+import {Button, Col, Container, Label, Row} from "reactstrap";
+import {AvField, AvForm, AvInput} from "availity-reactstrap-validation";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
@@ -9,15 +9,21 @@ import {useDispatch} from "react-redux";
 import * as userAction from '../../../redux/actions/UsersAction'
 import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
+import {useHistory} from "react-router-dom";
+import {AiOutlineDoubleRight} from "react-icons/all";
+import PhoneInput from "react-phone-number-input";
 
-export default function ProfileUser({lang, currentUser, loading, ID}) {
+export default function ProfileUser({lang, currentUser, loading, boolean}) {
 
     const dispatch = useDispatch()
+    const history = useHistory();
     const [parol, setParol] = React.useState({
         password: "",
         showPassword: false,
         token: "",
     });
+
+    const [phoneNumber, setPhoneNumber] = useState();
 
     const style = {
         cursor: 'no-drop',
@@ -60,35 +66,37 @@ export default function ProfileUser({lang, currentUser, loading, ID}) {
 
 
     return (
-        <AvForm onValidSubmit={EditProfile}>
-            <Row>
-                <Col md={6}>
-                    <div className="">
-                        <AvField
-                            type="text"
-                            name="fullName"
-                            label={lang("FISH")}
-                            value={currentUser?.fullName}
-                            className="border border-2"
-                            style={style}
-                            disabled
-                            required
-                        />
-
-                        <Row>
-                            <Col md={6}>
-                                <AvField
+        <Container>
+            <AvForm onValidSubmit={EditProfile}>
+                <Row>
+                    <Col md={12} className="container d-flex justify-content-center">
+                        <div className="w-75">
+                            <div className="form-group">
+                                <Label>{lang("FISH")}</Label>
+                                <AvInput
                                     type="text"
-                                    name="passport"
-                                    label={lang("passport")} helpMessage=""
-                                    value={currentUser?.passport}
-                                    className="border border-2"
+                                    name="fullName"
+                                    value={currentUser?.fullName}
+                                    className="border "
                                     style={style}
                                     disabled
                                     required
                                 />
-                            </Col>
-                            <div className='d-md-none'>
+                            </div>
+
+                            <Row>
+                                <Col md={6}>
+                                    <AvField
+                                        type="text"
+                                        name="passport"
+                                        label={lang("passport")} helpMessage=""
+                                        value={currentUser?.passport}
+                                        className="border "
+                                        style={style}
+                                        disabled
+                                        required
+                                    />
+                                </Col>
                                 <Col md={6}>
                                     <AvField
                                         type="text"
@@ -96,165 +104,118 @@ export default function ProfileUser({lang, currentUser, loading, ID}) {
                                         minLength={14}
                                         maxLength={14}
                                         value={currentUser?.pinfl}
-                                        className="border border-2"
+                                        className="border "
                                         style={style}
                                         disabled
+                                        required
+                                    />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <AvField
+                                        type="email"
+                                        name="email"
+                                        label={lang("email")} helpMessage=""
+                                        value={currentUser?.email}
+                                        className="border "
+                                        style={{backgroundColor: "#ffffff"}}
                                         required
                                     />
                                 </Col>
                                 <Col md={6}>
+                                    <div className="form-group">
+                                        <Label className='required_fields'>{lang("companiesList.phoneNumber")}</Label>
+                                        <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
+                                            <PhoneInput
+                                                placeholder="Введите номер телефона"
+                                                value={phoneNumber}
+                                                onChange={setPhoneNumber}
+                                                required={true}
+                                            />
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
                                     <AvField
-                                        type="text"
-                                        name="inn" label={lang("inn")} helpMessage=""
-                                        errorMessage="real-check"
-                                        minLength={9}
-                                        maxLength={9}
-                                        value={currentUser?.inn}
-                                        className="border border-2"
-                                        style={style}
-                                        disabled
+                                        label={lang("password")}
+                                        name="password"
+                                        minLength={4}
+                                        value={currentUser?.password}
+                                        onChange={handlePasswordChange("password")}
+                                        type={parol.showPassword ? "text" : "password"}
+                                        className="border "
+                                        style={{backgroundColor: "#ffffff"}}
                                         required
                                     />
+                                    <div className="float-end">
+                                        <InputAdornment style={{marginTop: "-19px"}} color={"dark"}
+                                                        position={"end"}>
+                                            <IconButton
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {parol.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    </div>
                                 </Col>
-                                <AvField
-                                    type="text"
-                                    label={lang("phoneNumber")}
-                                    name="phoneNumber"
-                                    value={currentUser?.phoneNumber}
-                                    className="border border-2"
-                                    style={{backgroundColor: "#ffffff"}}
-                                    validate={{
-                                        minLength: {value: 6, errorMessage: ''},
-                                    }}
-                                    required
-                                />
-                            </div>
-                            <Col md={6}>
-                                <AvField
-                                    type="email"
-                                    name="email"
-                                    label={lang("email")} helpMessage=""
-                                    value={currentUser?.email}
-                                    className="border border-2"
-                                    style={{backgroundColor: "#ffffff"}}
-                                    required
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <AvField
-                                    label={lang("password")}
-                                    name="password"
-                                    minLength={4}
-                                    value={currentUser?.password}
-                                    onChange={handlePasswordChange("password")}
-                                    type={parol.showPassword ? "text" : "password"}
-                                    className="border border-2"
-                                    style={{backgroundColor: "#ffffff"}}
-                                    required
-                                />
-                                <div className="float-end">
-                                    <InputAdornment style={{marginTop: "-19px"}} color={"dark"}
-                                                    position={"end"}>
-                                        <IconButton
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                        >
-                                            {parol.showPassword ? <Visibility/> : <VisibilityOff/>}
-                                        </IconButton>
-                                    </InputAdornment>
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <AvField
-                                    label={lang("prePassword")}
-                                    name="prePassword"
-                                    minLength={4}
-                                    onChange={handlePasswordChange("password")}
-                                    type={parol.showPassword ? "text" : "password"}
-                                    className="border border-2"
-                                    style={{backgroundColor: "#ffffff"}}
-                                    required
-                                />
-                                <div className="float-end">
-                                    <InputAdornment style={{marginTop: "-19px"}} color={"dark"}
-                                                    position={"end"}>
-                                        <IconButton
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                        >
-                                            {parol.showPassword ? <Visibility/> : <VisibilityOff/>}
-                                        </IconButton>
-                                    </InputAdornment>
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </Col>
-                <Col md={6}>
-                    <Row className='d-none d-md-flex'>
-                        <Col md={6}>
-                            <AvField
-                                type="text"
-                                name="pinfl" label={lang("pinfl")}
-                                minLength={14}
-                                maxLength={14}
-                                value={currentUser?.pinfl}
-                                className="border border-2"
-                                style={style}
-                                disabled
-                                required
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <AvField
-                                type="text"
-                                name="inn" label={lang("inn")} helpMessage=""
-                                errorMessage="real-check"
-                                minLength={9}
-                                maxLength={9}
-                                value={currentUser?.inn}
-                                className="border border-2"
-                                style={style}
-                                disabled
-                                required
-                            />
-                        </Col>
-                    </Row>
-                    <div className="d-none d-md-grid">
-                        <AvField
-                            type="text"
-                            label={lang("phoneNumber")}
-                            name="phoneNumber"
-                            value={currentUser?.phoneNumber}
-                            className="border border-2"
-                            style={{backgroundColor: "#ffffff"}}
-                            validate={{
-                                minLength: {value: 6, errorMessage: ''},
-                            }}
-                            required
-                        />
-                    </div>
-                    <div className="d-flex justify-content-center align-items-center mt-4 mb-4">
-                        {
-                            loading ?
-                                <div className="py-2 px-5 mx-2 create">
-                                    <Loader
-                                        type="ThreeDots"
-                                        color="white"
-                                        height={25}
-                                        width={25}
+                                <Col md={6}>
+                                    <AvField
+                                        label={lang("prePassword")}
+                                        name="prePassword"
+                                        minLength={4}
+                                        onChange={handlePasswordChange("password")}
+                                        type={parol.showPassword ? "text" : "password"}
+                                        className="border "
+                                        style={{backgroundColor: "#ffffff"}}
+                                        required
                                     />
-                                </div>
-                                :
-                                <Button className="py-2 px-5 mx-2 create">
-                                    Обновить персональные данные
-                                </Button>
-                        }
-                    </div>
-                </Col>
-            </Row>
-        </AvForm>
+                                    <div className="float-end">
+                                        <InputAdornment style={{marginTop: "-19px"}} color={"dark"}
+                                                        position={"end"}>
+                                            <IconButton
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {parol.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={12} className="d-flex justify-content-center">
+                                    <div className="d-flex justify-content-center align-items-center mt-4 w-75">
+                                        {
+                                            loading ?
+                                                <div className="py-2 px-5 mx-2 create">
+                                                    <Loader
+                                                        type="ThreeDots"
+                                                        color="white"
+                                                        height={25}
+                                                        width={25}
+                                                    />
+                                                </div>
+                                                :
+                                                <Button className="py-2 px-5 mx-2 create">
+                                                    Обновить персональные данные
+                                                </Button>
+                                        }
+                                        {boolean ?
+                                            <Button className="py-2 px-5 mx-2 create" onClick={()=> history.push("/supervisory/profile/organization?ID=" + currentUser.id)}>
+                                                Мои организации <AiOutlineDoubleRight/>
+                                            </Button> : ''
+                                        }
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Col>
+                </Row>
+            </AvForm>
+        </Container>
     )
 }

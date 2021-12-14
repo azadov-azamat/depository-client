@@ -28,7 +28,8 @@ export default function StatusMembers({member, index, lang}){
                 member.memberTypeEnum === WATCHER ? lang("meetingCreated.roles.watcher") : '' ||
                 member.memberTypeEnum === SECRETARY ? lang("meetingCreated.roles.secretary") : '' ||
                 member.memberTypeEnum === CHAIRMAN ? lang("meetingCreated.roles.chairman") : '' ||
-                member.memberTypeEnum === SIMPLE ? lang("meetingCreated.roles.simple") : ''
+                member.memberTypeEnum === SIMPLE ? "Член наб. совета" : ''
+                // member.memberTypeEnum === SIMPLE ? lang("meetingCreated.roles.simple") : ''
             }</td>
             <td className="text-center">
                 <text style={style}>

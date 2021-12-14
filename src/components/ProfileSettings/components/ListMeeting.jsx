@@ -16,6 +16,7 @@ import ButtonValue from "./ButtonValue";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {useDispatch, useSelector} from "react-redux";
 import Text from "antd/es/typography/Text";
+import * as adminMeetingAction from "../../../redux/actions/MeetingAction";
 
 function useQuery() {
     const {search} = useLocation();
@@ -23,18 +24,23 @@ function useQuery() {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
+export const ListMeeting = ({lang}) => {
 
     const {id} = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
     const reducers = useSelector(state => state)
+    const {meetings, meetingByUser} = reducers.meeting;
     const [statusMeet, setStatusMeet] = useState({success: FINISH, cancel: CANCELED, active: DISABLED})
+
+    useEffect(() => {
+        dispatch(adminMeetingAction.getMeetingByCompanyId({companyId: 25102}))
+    }, [])
 
     let query = useQuery();
 
     console.log(meetings)
-    const companyId = query.get("company_id");
+    // const companyId = query.get("company_id");
 
     useEffect(() => {
         if (query.get("type") === 'archive') {
@@ -89,26 +95,27 @@ export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
     }
 
     function historyPushItem(role, memberId, meetingId) {
-        setStatusOnlineUser(memberId)
+        // setStatusOnlineUser(memberId)
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
             payload: role
         });
-        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
+        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + 25102 + "&memberId=" + memberId)
     }
 
     function isConfirmed(memberId, role, meetingId) {
-        setStatusOnlineUser(memberId)
+        // setStatusOnlineUser(memberId)
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
             payload: role
         });
-        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId);
+        history.push("/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + 25102 + "&memberId=" + memberId);
     }
 
+    console.log(meetings)
     return (
         <>
             {meetings && meetings.map(userMeeting => {
@@ -129,8 +136,7 @@ export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
                                 <div className="col-md-4 d-flex justify-content-center align-items-center d-md-none">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
                                         btnValue(userMeeting.id) :
-                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={companyId}
-                                                     setStatusOnlineUser={setStatusOnlineUser}/>
+                                        <ButtonValue meetingId={userMeeting.id} companyId={25102}/>
                                     }
                                 </div>
 
@@ -146,8 +152,7 @@ export const ListMeeting = ({pathname, meetings, setStatusOnlineUser}) => {
                                 <div className="col-md-4 d-md-flex justify-content-center align-items-center d-none">
                                     {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
                                         btnValue(userMeeting.id) :
-                                        <ButtonValue meetingId={userMeeting.id} pathname={pathname} companyId={companyId}
-                                                     setStatusOnlineUser={setStatusOnlineUser}/>
+                                        <ButtonValue meetingId={userMeeting.id} companyId={25102}/>
                                     }
                                 </div>
                             </div>
