@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 // import {Dropdown,Button, Col, Label, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import * as eimzoService from "../../../eImzo/services/eimzo";
+import {toast} from "react-toastify";
 // import "./eimzo.css"
 export default function TabOpen1({lang}) {
 
@@ -46,7 +47,8 @@ export default function TabOpen1({lang}) {
     const sign = async () => {
         setresult("");
         const keyId = await eimzoService.preLoadKey(keys.find(item => item?.serialNumber === selectedKey));
-        eimzoService.postLoadKey(keyId, obj).then((res) => setresult(res));
+        eimzoService.postLoadKey(keyId, obj).then((res) => setresult(res)).catch(err=>{
+            toast(err)});
     }
 
     return (
