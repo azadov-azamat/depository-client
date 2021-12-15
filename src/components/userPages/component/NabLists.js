@@ -5,7 +5,7 @@ import {Button} from "reactstrap";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 
-export default function NabLists({company, lang}) {
+export default function NabLists({company, lang, logo}) {
 
     const history = useHistory();
     const linkPush = '/issuerLegal/meetings?company_id=' + company?.id + '&type=active';
@@ -35,13 +35,13 @@ export default function NabLists({company, lang}) {
                             {company?.imageUrl === "yes" ?
                                 <>
                                     <img className="d-flex d-md-none"
-                                         src={imgLink} alt="bu company logo"
+                                         src={imgLink} alt={""}
                                          style={{
                                              width: '100%',
                                              height: "65px",
                                          }}/>
                                     <img className="d-md-block d-none"
-                                         src={imgLink} alt="bu company logo"
+                                         src={imgLink} alt=""
                                          style={{
                                              width: '86%',
                                              height: "89px",

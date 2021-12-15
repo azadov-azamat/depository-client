@@ -26,9 +26,10 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const [selectSpeaker, setSelectSpeaker] = useState(null);
     const [selectTime, setSelectTime] = useState(null);
     const [selectDebug, setSelectDebug] = useState(null);
-    const [selectStatus, setSelectStatus] = useState(null);
+    const [selectStatus, setSelectStatus] = useState(true);
     const [changeSubject, setChangeSubject] = useState('');
     const [openModal, setOpenModal] = useState(false);
+    const [inputList, setInputList] = useState([{variant: ""}]);
 
     const [currentAgenda, setCurrentAgenda] = useState([]);
     const [currentVariants, setCurrentVariants] = useState([]);
@@ -36,7 +37,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const [currentSpeaker, setCurrentSpeaker] = useState(null);
     const [currentTime, setCurrentTime] = useState(null);
     const [currentDebut, setCurrentDebut] = useState(null);
-    const [currentStatus, setCurrentStatus] = useState(null);
+    const [currentStatus, setCurrentStatus] = useState(false);
 
     useEffect(() => {
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId, fromReestr: false}))
@@ -54,8 +55,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     }, [currentAgenda])
 
-    const [inputList, setInputList] = useState([{variant: ""}]);
-    console.log(currentVariants);
     const toInputUppercase = e => {
         e.target.value = ("" + e.target.value).toUpperCase();
     };
@@ -96,7 +95,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     };
 
     const addAgenda = (e, v) => {
-        if (v.subject && selectDebug && selectStatus && selectTime) {
+        if (v.subject && selectDebug && selectTime) {
             const keys = Object.entries(v)
             delete keys[0];
 
@@ -120,13 +119,14 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                 setSelectSpeaker(null);
                 setSelectTime(null);
                 setSelectDebug(null);
-                setSelectStatus(null);
+                setSelectStatus(true);
                 setChangeSubject('')
                 for (let i = 0; i < inputList.length; i++) {
                     const list = [...inputList];
                     list.splice(i, inputList.length);
                     setInputList(list);
                 }
+                setInputList([{variant: ''}])
             })
         } else {
             toast.warning(lang("toast.warning"))
@@ -135,7 +135,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     function editAgenda(e, v) {
         console.log(v);
-        if (currentDebut && currentTime && currentStatus && v.subject) {
+        if (currentDebut && currentTime && v.subject) {
             const keys = Object.entries(v)
             delete keys[0];
 
@@ -190,9 +190,9 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     };
 
     function deleteVoting(id, index) {
-        if (id === undefined || id === null){
+        if (id === undefined || id === null) {
             handleRemoveClickEdit(index)
-        }else {
+        } else {
             dispatch(meetingActions.deleteVotingAction({id: id ? id : null, handleRemoveClickEdit, index}))
         }
     }

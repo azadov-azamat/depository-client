@@ -9,6 +9,7 @@ import {useTranslation} from "react-i18next";
 import {DEPOSITORY_MEMBER_TYPE_USER} from "../../utils/contants";
 import Loader from "react-loader-spinner";
 import Text from "antd/es/typography/Text";
+import Logo from '../../images/companyLogo.png';
 
 export default function CompaniesPage() {
 
@@ -111,7 +112,7 @@ export default function CompaniesPage() {
                         :
                         companiesByUserId && companiesByUserId.map((value, index) =>
                             <Text key={index}>
-                                <NabLists company={value} lang={t}/>
+                                <NabLists company={value} lang={t} logo={Logo}/>
                             </Text>
                         )
                 }

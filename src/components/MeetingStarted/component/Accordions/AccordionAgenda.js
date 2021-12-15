@@ -48,8 +48,8 @@ const AccordionItem = ({children, isOpen, onClick}) => (
     </Card>
 );
 
-const AccordionHeader = ({children, onClick}) => (
-    <CardHeader>
+const AccordionHeader = ({children, onClick, status}) => (
+    <CardHeader style={{background: '#fff'}}>
         <div className="mb-0 d-flex justify-content-start align-items-center">
             <Button style={{background: '#132E85'}} className='create' onClick={onClick}>+</Button>
             <text className='mx-2'>{children}</text>

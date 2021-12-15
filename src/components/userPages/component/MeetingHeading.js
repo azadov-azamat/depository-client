@@ -10,7 +10,7 @@ import * as adminCompanyAction from '../../../redux/actions/CompanyAction';
 
 export default function MeetingHeading({company, lang}) {
 
-    const imgLink = BASE_URL + api.getLogoByCompanyId + company?.id;
+    const imgLink = BASE_URL + api.getLogoByCompanyId + "/"+ company?.id;
 
     const style = {
         textOverflow: 'ellipsis',
@@ -45,7 +45,7 @@ export default function MeetingHeading({company, lang}) {
                             <div className="d-flex flex-column align-items-center">
                                 {company?.imageUrl === "yes" ?
                                     <span>
-                                        <img src={imgLink} alt="bu rasm"
+                                        <img src={imgLink} alt=""
                                              style={{borderRadius: "50%", width: "4em", height: "4em"}}/>
                                     </span>
                                     :
@@ -74,7 +74,7 @@ export default function MeetingHeading({company, lang}) {
                             <span style={style} className='h4 d-flex justify-content-end'>{company?.name} - </span>
                             {company?.imageUrl === "yes" ?
                                 <span>
-                                        <img src={imgLink} alt="bu rasm"
+                                        <img src={imgLink} alt=""
                                              style={{borderRadius: "50%", width: "8vh", height: "8vh"}}/>
                                     </span>
                                 :

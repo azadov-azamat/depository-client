@@ -291,7 +291,7 @@ export const ControllerMeeting = () => {
     }
 
     return (
-        <div className="container meeting">
+        <div className="container-fluid meeting px-5">
             <div>
                 <Router zoomEnum={setZoomEnum} currentMeeting={currentMeeting && currentMeeting}
                         currentCompany={currentCompany && currentCompany} userMemberType={userMemberType}/>
