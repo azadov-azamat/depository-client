@@ -8,23 +8,23 @@ import {toast} from "react-toastify";
 
 const PrivateRoute = ({dispatch, auth, path, history, setNav, location, component: Component, ...rest}) => {
 
-    useEffect(()=>{
+    // useEffect(()=>{
         dispatch(userMe())
-    },[])
+    // },[location.pathname])
 
-    const reducers = useSelector(state => state)
-    const {networkState} = reducers.auth
+    // const reducers = useSelector(state => state)
+    // const {networkState} = reducers.auth
 
     useEffect(() => {
         setNav(false)
-        window.addEventListener('online', () => dispatch(networkAction({success: true})));
-        window.addEventListener('offline', () => dispatch(networkAction({success: false})));
+        // window.addEventListener('online', () => dispatch(networkAction({success: true})));
+        // window.addEventListener('offline', () => dispatch(networkAction({success: false})));
     }, [])
 
-    if (!networkState) {
-        toast.error('Интернет не работает!')
-        history.push('/')
-    }
+    // if (!networkState) {
+    //     toast.error('Интернет не работает!')
+    //     history.push('/')
+    // }
 
     const filterRole = (props) => {
         const role = localStorage.getItem(DEPOSITORY_ROLE);

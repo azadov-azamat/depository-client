@@ -1,4 +1,3 @@
-import {addedChairmanFromReestrPageApi} from "./MeetingApi";
 
 export const api = {
     login: '/authenticate',

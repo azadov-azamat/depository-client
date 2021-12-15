@@ -11,9 +11,7 @@ export default function TabOpen2({lang}) {
     const history = useHistory();
     const dispatch = useDispatch()
     const reducers = useSelector(state => state)
-    const authReducer = reducers.auth;
-
-    const {loading} = authReducer;
+    const {loading} = reducers.auth;
 
     function login(e, v) {
         dispatch(authActions.login({data: v, history}))

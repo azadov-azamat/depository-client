@@ -9,7 +9,7 @@ export default function NabLists({company, lang}) {
 
     const history = useHistory();
     const linkPush = '/issuerLegal/meetings?company_id=' + company?.id + '&type=active';
-    const imgLink = BASE_URL + api.getLogoByCompanyId + company.id;
+    const imgLink = BASE_URL + api.getLogoByCompanyId + "/" + company.id;
 
     useEffect(() => {
         AOS.init({

@@ -10,6 +10,7 @@ export default class HttpClient {
 
     static doRequest() {
         const token = localStorage.getItem(TOKEN);
+
         if (token) {
             HttpClient.headers = {
                 ...HttpClient.headers,

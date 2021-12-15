@@ -3,6 +3,9 @@ import {loginUser, me} from "../../api/AuthApi";
 import jwt from "jwt-decode";
 import {BEARER, DEPOSITORY_ROLE, DEPOSITORY_USER, TOKEN} from "../../utils/contants";
 import {toast} from "react-toastify";
+import axios from "axios";
+import {BASE_URL} from "../../utils/config";
+import {api} from "../../api/api";
 
 export const login = (payload) => async (dispatch) => {
     try {
@@ -12,17 +15,25 @@ export const login = (payload) => async (dispatch) => {
             data: payload.data,
         });
         if (res.success) {
-            let token = res.payload;
-            let parsedToken = jwt(token.id_token);
+            let token = res.payload.id_token;
+            let parsedToken = jwt(token);
             let app = parsedToken.auth;
             const sentence = app.replace(/\s+/g, ' ').trim()
             let arr = sentence.split(',');
-
             setTimeout(() => {
                 setStateRole(arr, dispatch);
             }, 1000);
-            localStorage.setItem(TOKEN, BEARER + token.id_token);
 
+            localStorage.setItem(TOKEN, BEARER + token);
+            let apiAccount = BASE_URL + api.userMe;
+
+            axios.get(apiAccount, { headers: {"Authorization" : `Bearer ${token}`} })
+                .then(res => {
+                    dispatch({
+                        type: "AUTH_GET_USER_TOKEN_SUCCESS",
+                        payload: res.data,
+                    });
+            })
             payload.history.push('/')
         }
         return true;
@@ -43,10 +54,12 @@ export const login = (payload) => async (dispatch) => {
 };
 
 export const userMe = (payload, minusNine) => async (dispatch, getState) => {
+
     const {
-        auth: {currentUser, sentUserMe},
+        auth: {currentUser},
     } = getState();
-    if (!minusNine && (sentUserMe || currentUser || !localStorage.getItem(TOKEN))) return;
+
+    if (currentUser || !localStorage.getItem(TOKEN)) return;
 
     try {
         const response = await dispatch({
@@ -58,6 +71,8 @@ export const userMe = (payload, minusNine) => async (dispatch, getState) => {
             ],
         });
         if (response.success) {
+            console.log(response)
+            console.log(payload)
             if (payload) {
                 dispatch({
                     type: "updateState",
