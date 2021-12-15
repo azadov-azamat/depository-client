@@ -71,14 +71,14 @@ export const userMe = (payload, minusNine) => async (dispatch, getState) => {
             ],
         });
         if (response.success) {
-            console.log(response)
-            console.log(payload)
-            if (payload) {
-                dispatch({
-                    type: "updateState",
-                    payload: {currentUser: response.payload},
-                });
-            }
+            // console.log(response)
+            // console.log(payload)
+            // if (payload) {
+            //     dispatch({
+            //         type: "updateState",
+            //         payload: {currentUser: response.payload},
+            //     });
+            // }
             dispatch({
                 type: types.AUTH_GET_USER_TOKEN_SUCCESS,
                 payload: response.payload,

@@ -5,16 +5,12 @@ import SectionTwo from './components/SectionTwo'
 import SectionThree from './components/SectionThree'
 import SectionFour from './components/SectionFour'
 import Footer from './components/Footer'
-import {useSelector} from "react-redux";
 
 
 export default function Home({setNav, lang}) {
 
-    const reducers = useSelector(state => state)
-
     useEffect(() => {
         setNav(true);
-        console.log(reducers)
     }, [])
 
     return (

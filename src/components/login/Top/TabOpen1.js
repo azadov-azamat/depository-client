@@ -11,7 +11,7 @@ export default function TabOpen1({lang}) {
 
     const toggle = () => setDropdownOpen(prevState => !prevState);
     /////////
-    const [isOpen, setOpen] = useState(false);
+    const [open, setIsOpen] = useState(false);
     const [addFile, setAddFile] = useState({fileName: "", file: []});
 
     const hiddenFileInput = React.useRef(null);
@@ -24,7 +24,7 @@ export default function TabOpen1({lang}) {
     function downloadSetFile(e, v) {
         e.preventDefault();
         console.log(v)
-        setOpen(!isOpen)
+        setIsOpen(!open)
     }
 
     // New e imzo function
@@ -54,8 +54,9 @@ export default function TabOpen1({lang}) {
     return (
         <div className="TabOpen1 allCss">
 
-            <div className="eimzoModal" isOpen={isOpen} toggle={() => setOpen(!isOpen)}>
-                <div toggle={() => setOpen(!isOpen)} className="d-flex align-items-center">
+            <div className="eimzoModal">
+            {/*<div className="eimzoModal" isOpen={open} toggle={() => setIsOpen(!open)}>*/}
+                <div toggle={() => setIsOpen(!open)} className="d-flex align-items-center">
                     <div className="d-flex align-items-center eimzo">
                         {/*<img src="../padlock_open.png" className="openLock"/>*/}
                         {/*<img src="../lockWhite.png" className="openLock"/>*/}
@@ -91,7 +92,7 @@ export default function TabOpen1({lang}) {
                                 <DropdownMenu className="dropMenu">
 
                                     {keys.map((item, i) => (
-                                        <DropdownItem className="dropItem">
+                                        <DropdownItem className="dropItem" key={i}>
                                             <div className="d-flex align-items-center">
                                                 <img src="../etp.png"/>
                                                 <b className="textB">№ СЕРТИФИКАТА:</b>
@@ -148,12 +149,12 @@ export default function TabOpen1({lang}) {
             {/*<form method="get" style={{marginTop: "5em"}} action="">*/}
             {/*    <h1>{lang("electronVoice")}</h1>*/}
             {/*    <p>{lang("text.tabOpen1")}</p>*/}
-            {/*    <input onClick={() => setOpen(!isOpen)} type="button" className="butdes2" name="auth_to_oneid"*/}
+            {/*    <input onClick={() => setIsOpen(!isOpen)} type="button" className="butdes2" name="auth_to_oneid"*/}
             {/*           value={lang("signInONEID")}/>*/}
             {/*</form>*/}
 
-            {/*            <Modal className="eimzoModal" isOpen={isOpen} toggle={() => setOpen(!isOpen)}>*/}
-            {/*                <ModalHeader toggle={() => setOpen(!isOpen)} className="d-flex align-items-center">*/}
+            {/*            <Modal className="eimzoModal" isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>*/}
+            {/*                <ModalHeader toggle={() => setIsOpen(!isOpen)} className="d-flex align-items-center">*/}
             {/*                 <div className="d-flex align-items-center eimzo">*/}
             {/*                     /!*<img src="../padlock_open.png" className="openLock"/>*!/*/}
             {/*                     /!*<span>Elektron kalit bilan kirish</span>*!/*/}
