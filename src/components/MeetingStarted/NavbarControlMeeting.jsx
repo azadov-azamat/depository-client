@@ -118,7 +118,7 @@ export const NavbarControlMeeting = ({roleMember, companyId, memberId, countBadg
                                }
                            >
                                {linkMobileClient.map((value, index) =>
-                                   <Option key={index} value={value.link} onClick={value.onClick}>{value.text}</Option>
+                                   <Option key={index} value={value.link} onClick={clicked}>{value.text}</Option>
                                )}
                            </Select>
                        </div>
@@ -139,7 +139,7 @@ export const NavbarControlMeeting = ({roleMember, companyId, memberId, countBadg
                                }
                            >
                                {link.map((value, index) =>
-                                   <Option key={index} value={value.link} onClick={value.onClick}>{value.text}</Option>
+                                   <Option key={index} value={value.link} onClick={clicked}>{value.text}</Option>
                                )}
                                {roleMember === SECRETARY ?
                                    <Option
@@ -175,7 +175,7 @@ export const NavbarControlMeeting = ({roleMember, companyId, memberId, countBadg
                                }
                            >
                                {link.map((value, index) =>
-                                   <Option key={index} value={value.link} onClick={value.onClick}>{value.text}</Option>
+                                   <Option key={index} value={value.link} onClick={clicked}>{value.text}</Option>
                                )}
                                {roleMember === SECRETARY ?
                                    <Option
@@ -211,7 +211,7 @@ export const NavbarControlMeeting = ({roleMember, companyId, memberId, countBadg
                                }
                            >
                                {linkMobileClient.map((value, index) =>
-                                   <Option key={index} value={value.link} onClick={value.onClick}>{value.text}</Option>
+                                   <Option key={index} value={value.link} onClick={clicked}>{value.text}</Option>
                                )}
                            </Select>
                        </div>

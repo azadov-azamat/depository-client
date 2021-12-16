@@ -50,6 +50,7 @@ export const Socket = ({meetingId, memberId, setCount, memberManagerState}) => {
             }}
 
             onMessage={(msg, topic) => {
+
                 dispatch({
                     type: 'COUNT_QUORUM_MEETING',
                     payload: parseInt((memberManagerState?.filter(element=> element.isConfirmed === true).length / memberManagerState.length) * 100)
