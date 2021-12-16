@@ -27,13 +27,13 @@ export default function TableCompany({company, deleteById, updateCompany}) {
                 </Link>
             </th>
             <td className="text-center">
-               <p style={style}>{company.name}</p>
+                <p style={style}>{company.name}</p>
             </td>
             <td className="text-center">
-            <p style={style}>{company.email}</p>
+                <p style={style}>{company.email}</p>
             </td>
             <td className="text-center">
-               <p style={style}>{company.phoneNumber}</p>
+                <p style={style}>{company.phoneNumber}</p>
             </td>
             <td className="text-center">
                 <p style={style}><b>{company.webPage}</b></p>

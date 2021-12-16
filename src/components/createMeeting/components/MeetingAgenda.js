@@ -5,12 +5,10 @@ import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Select} from "antd";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
-import * as meetingStartedActions from "../../../redux/actions/MeetingStartedAction";
 import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
 import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
-import {element} from "prop-types";
 import {toast} from "react-toastify";
 
 const {Option} = Select;
@@ -33,7 +31,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     const [currentAgenda, setCurrentAgenda] = useState([]);
     const [currentVariants, setCurrentVariants] = useState([]);
-    const [editedVariant, setEditedVariant] = useState([]);
     const [currentSpeaker, setCurrentSpeaker] = useState(null);
     const [currentTime, setCurrentTime] = useState(null);
     const [currentDebut, setCurrentDebut] = useState(null);
@@ -52,7 +49,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         setCurrentTime(currentAgenda?.speakTimeEnum);
         setCurrentDebut(currentAgenda?.debateEnum);
         setCurrentStatus(currentAgenda?.active)
-
     }, [currentAgenda])
 
     const toInputUppercase = e => {
@@ -61,13 +57,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     // handle input change
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        const list = [...inputList];
-        list[name] = value;
-        setInputList(list);
-    };
-
-    const handleInputChangeEdited = (e) => {
         const {name, value} = e.target;
         const list = [...inputList];
         list[name] = value;
@@ -134,7 +123,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     };
 
     function editAgenda(e, v) {
-        console.log(v);
         if (currentDebut && currentTime && v.subject) {
             const keys = Object.entries(v)
             delete keys[0];
@@ -235,7 +223,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         cursor: 'pointer',
         zIndex: '1000'
     }
-    console.log(currentAgenda)
 
     return (
         <>

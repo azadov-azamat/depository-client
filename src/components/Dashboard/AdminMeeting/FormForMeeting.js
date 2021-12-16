@@ -116,7 +116,7 @@ export default function FormForMeeting({getName, lang}) {
                         onBlur={(event) => {
                             if (event.target.value !== "") {
                                 getName((event.target.value + ":00.000Z"), "startRegistration")
-                            }else {
+                            } else {
                                 getName("", "startRegistration")
                             }
                         }}
@@ -131,7 +131,7 @@ export default function FormForMeeting({getName, lang}) {
                         onBlur={(event) => {
                             if (event.target.value !== "") {
                                 getName((event.target.value + ":00.000Z"), "startDate")
-                            }else {
+                            } else {
                                 getName("", "startDate")
                             }
                         }}

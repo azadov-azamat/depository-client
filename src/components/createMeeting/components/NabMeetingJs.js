@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Col, Label, Row} from "reactstrap";
 import '../AzamatGlobal.scss';
-import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -24,7 +24,6 @@ import {api} from "../../../api/api";
 import {toast} from "react-toastify";
 import * as meetingActions from '../../../redux/actions/MeetingAction';
 import {REQUEST_API_SUCCESS} from "../../../redux/actionTypes/CompanyActionTypes";
-import {getCompanyByIdForMeeting} from "../../../redux/actions/CompanyAction";
 
 const {Option} = Select;
 
@@ -47,13 +46,13 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     const language = localStorage.getItem('i18nextLng');
     const role = localStorage.getItem(DEPOSITORY_ROLE);
 
-    useEffect(()=>{
+    useEffect(() => {
         setSelectCompany(currentMeeting?.companyId);
         setSelectStatus(currentMeeting?.status);
         setSelectCountry(currentMeeting?.cityId);
         setSelectTypeEnum(currentMeeting?.typeEnum);
         setDescriptionMeeting(currentMeeting?.description)
-    },[currentMeeting])
+    }, [currentMeeting])
 
     useEffect(() => {
         axios.get(BASE_URL + api.getCountry)
@@ -82,22 +81,6 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
         }
     }
 
-    function selectCompanyForMeeting(value) {
-        setSelectCompany(value)
-    }
-
-    function selectStatusMeeting(value) {
-        setSelectStatus(value)
-    }
-
-    function selectCountryMeeting(value) {
-        setSelectCountry(value)
-    }
-
-    function selectType(value) {
-        setSelectTypeEnum(value)
-    }
-
     const statusText = [
         {value: PENDING, text: lang("meetingCreated.meetingStatus.pending")},
         {value: ACTIVE, text: lang("meetingCreated.meetingStatus.active")},
@@ -112,8 +95,6 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     ];
 
     function CreateMeeting(e, v) {
-        e.preventDefault();
-        console.log("keldi create")
         if (!selectCompany && !selectStatus && !selectCountry && !selectTypeEnum) {
             toast.warning(lang("toast.warning"))
         } else {
@@ -128,13 +109,11 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
-            console.log(data)
             dispatch(meetingActions.createMeeting({data, history, toast}))
         }
     }
 
     function editMeeting(e, v) {
-        e.preventDefault();
         const data2 = {
             id: parseInt(id),
             companyId: selectCompany,
@@ -147,7 +126,6 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
             status: selectStatus,
             typeEnum: selectTypeEnum,
         }
-        console.log(data2)
         if (!selectCompany && !selectStatus && !selectCountry && !selectTypeEnum) {
             toast.warning(lang("toast.warning"))
         } else {
@@ -179,7 +157,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             allowClear={true}
                             placeholder="Выберите организацию"
                             optionFilterProp="children"
-                            onChange={selectCompanyForMeeting}
+                            onChange={(value => setSelectCompany(value))}
                             onSearch={onSearch}
                             defaultValue={currentMeeting?.companyId}
                             value={selectCompany}
@@ -190,17 +168,17 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
 
                             {
                                 role === "user" ?
-                                companiesByUserId && companiesByUserId.map((element, index) =>
-                                    element.chairmanId === currentUser.id || element.secretaryId === currentUser.id ?
-                                        <Option value={element.id} key={index}>
-                                            {element.name}
-                                        </Option> : ''
-                                ) :
-                                companies && companies.map((value, index) => (
-                                    <Option value={value.id} key={index}>
-                                        {value.name}
-                                    </Option>
-                                ))
+                                    companiesByUserId && companiesByUserId.map((element, index) =>
+                                        element.chairmanId === currentUser.id || element.secretaryId === currentUser.id ?
+                                            <Option value={element.id} key={index}>
+                                                {element.name}
+                                            </Option> : ''
+                                    ) :
+                                    companies && companies.map((value, index) => (
+                                        <Option value={value.id} key={index}>
+                                            {value.name}
+                                        </Option>
+                                    ))
                             }
                         </Select>
                     </div>
@@ -214,7 +192,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             optionFilterProp="children"
                             defaultValue={currentMeeting?.status}
                             value={selectStatus}
-                            onChange={selectStatusMeeting}
+                            onChange={(value => setSelectStatus(value))}
                         >
                             {statusText && statusText.map((value, index) =>
                                 <Option value={value.value} key={index}>{value.text}</Option>
@@ -231,7 +209,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             className="setting_input w-100"
                             placeholder="Выберите область"
                             optionFilterProp="children"
-                            onChange={selectCountryMeeting}
+                            onChange={(value => setSelectCountry(value))}
                             defaultValue={currentMeeting?.cityId}
                             value={selectCountry}
                         >
@@ -271,7 +249,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             optionFilterProp="children"
                             defaultValue={currentMeeting?.typeEnum}
                             value={selectTypeEnum}
-                            onChange={selectType}
+                            onChange={(value => setSelectTypeEnum(value))}
                         >
                             {typeEnumText && typeEnumText.map((value, index) =>
                                 <Option value={value.value} key={index}>{value.text}</Option>
@@ -317,7 +295,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             placeholder={"Краткая информация"}
                             defaultValue={currentMeeting?.description}
                             value={descriptionMeeting}
-                            onChange={(e)=> setDescriptionMeeting(e.target.value)}
+                            onChange={(e) => setDescriptionMeeting(e.target.value)}
                             style={{backgroundColor: '#FFFFFF', resize: 'none', height: '24vh'}}
                             required
                         />
@@ -339,7 +317,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 <Col md={3}>
                     <div className="d-none d-md-flex justify-content-center" style={{marginTop: '25px'}}>
                         <button type={"submit"}
-                            className="btn btnAll m-2 create">{currentMeeting.length !== 0 ? lang("user.redaktorovat") : lang("user.sozdat")}
+                                className="btn btnAll m-2 create">{currentMeeting.length !== 0 ? lang("user.redaktorovat") : lang("user.sozdat")}
                         </button>
                         <button className="btn btnAll m-2 cancel"
                                 onClick={() => history.push("/admin/meetings")}>{lang("user.otmena")}</button>
@@ -355,7 +333,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             className="border"
                             defaultValue={currentMeeting?.description}
                             value={descriptionMeeting}
-                            onChange={(e)=> setDescriptionMeeting(e.target.value)}
+                            onChange={(e) => setDescriptionMeeting(e.target.value)}
                             style={{backgroundColor: '#FFFFFF', resize: 'none', height: '24vh'}}
                             required
                         />

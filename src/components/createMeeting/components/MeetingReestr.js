@@ -39,7 +39,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
 
     function downloadSetFile(v) {
         if (excelFile.currentFileName === "") {
-            toast.dark("Iltimos faylni tanlang")
+            toast.warning(lang("toast.warning"))
         } else {
             const data = new FormData();
             data.append('file', v);

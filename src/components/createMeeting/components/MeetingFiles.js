@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Col, Label, Row, Table} from "reactstrap";
 import {AvForm, AvGroup, AvInput} from "availity-reactstrap-validation";
 import {FaDownload, FaEye, FiDownload} from "react-icons/all";
-import {FaCheck, FaTimes, FaTrash} from "react-icons/fa";
+import {FaTimes, FaTrash} from "react-icons/fa";
 import {useHistory, useLocation} from "react-router-dom";
 
 import {useDispatch, useSelector} from "react-redux";
@@ -19,7 +19,6 @@ function useQuery() {
 
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
-
 
 export default function MeetingFiles({currentMeeting, lang}) {
 
@@ -40,7 +39,6 @@ export default function MeetingFiles({currentMeeting, lang}) {
     const handleClick = event => {
         hiddenFileInput.current.click();
     };
-    console.log(selectAgenda)
 
     useEffect(() => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: parseInt(meetingId)}))
@@ -51,7 +49,6 @@ export default function MeetingFiles({currentMeeting, lang}) {
         })
     }, [currentMeeting])
 
-
     function downloadSetFile() {
         if (selectAgenda !== undefined) {
             const data = new FormData();
@@ -59,7 +56,7 @@ export default function MeetingFiles({currentMeeting, lang}) {
             data.append('file', addFile.file);
             data.append('meetingId', meetingId);
             dispatch(meetingActions.addAgendaAndMeetingFile({data, history}))
-        }else {
+        } else {
             const data = new FormData();
             data.append('file', addFile.file);
             data.append('meetingId', meetingId);
@@ -87,7 +84,6 @@ export default function MeetingFiles({currentMeeting, lang}) {
     };
 
     const style = {
-        // background: "#FFFFFF",
         cursor: 'pointer',
         zIndex: '1000'
     }

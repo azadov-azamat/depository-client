@@ -1,9 +1,8 @@
 import React, {useEffect} from "react";
 import {Container} from "reactstrap";
 import './AzamatGlobal.scss';
-import {Route, Switch, useHistory, useLocation, useParams} from "react-router-dom";
+import {Route, Switch, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {Select} from 'antd';
 import 'antd/dist/antd.css';
 import * as meetingActions from '../../redux/actions/MeetingAction';
 import MeetingSettingRoutes from "../../routes/MeetingSettingRoutes";
@@ -15,8 +14,6 @@ import MeetingFiles from "./components/MeetingFiles";
 import Loader from "react-loader-spinner";
 import {useTranslation} from "react-i18next";
 
-const {Option} = Select;
-
 function useQuery() {
     const {search} = useLocation();
 
@@ -25,8 +22,6 @@ function useQuery() {
 
 export default function AddOrEditMeeting() {
 
-    const {id} = useParams();
-    const history = useHistory();
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
@@ -47,11 +42,6 @@ export default function AddOrEditMeeting() {
             })
         }
     }, [typeMeeting])
-
-    useEffect(() => {
-
-    }, [])
-
 
     return (
         <div className="allCss">

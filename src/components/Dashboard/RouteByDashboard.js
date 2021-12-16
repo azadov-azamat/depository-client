@@ -51,7 +51,8 @@ export default function RouteByDashboard({
                 <div className={disabled ? `d-none` : `heading_section d-md-none d-block text-center`}><p
                     className="text-uppercase heading_text">{lang("routes.controlPage.control")} {cardName}</p></div>
                 <div className={disabled ? `d-none` : `d-flex flex-column align-items-center justify-content-center`}>
-                    <button onClick={createUser} className='btn-create py-2 px-3 mx-2'>{lang("createButton")}<BsBookmarkPlus
+                    <button onClick={createUser}
+                            className='btn-create py-2 px-3 mx-2'>{lang("createButton")}<BsBookmarkPlus
                         style={{fontSize: '18px'}}/></button>
                     <p className="d-flex d-md-none users_count mt-2">
                         {payload && payload[0] === '0' ?

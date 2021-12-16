@@ -92,7 +92,6 @@ export default function MeetingMembers({currentMeetingId, lang}) {
         {value: SECRETARY, text: lang("meetingCreated.roles.secretary")},
         {value: SPEAKER, text: lang("meetingCreated.roles.speaker")},
         {value: WATCHER, text: lang("meetingCreated.roles.watcher")},
-        // {value: CHAIR_MAN, text: 'Председатель'}
     ];
 
     function onSearch(val) {
@@ -116,7 +115,13 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                 memberTypeEnum: selectedRole,
                 userId: selectedUser
             }
-            dispatch(meetingActions.addMemberManagers({data, history, toast, setSelectedRole, setSelectedUser})).then(res=>{
+            dispatch(meetingActions.addMemberManagers({
+                data,
+                history,
+                toast,
+                setSelectedRole,
+                setSelectedUser
+            })).then(res => {
                 setSelectedRole(null);
                 setSelectedUser(null)
             });
@@ -124,7 +129,6 @@ export default function MeetingMembers({currentMeetingId, lang}) {
     }
 
     const style = {
-        // background: "#FFFFFF",
         cursor: 'pointer',
         zIndex: '1000'
     }
@@ -134,13 +138,14 @@ export default function MeetingMembers({currentMeetingId, lang}) {
             <Col md={3} className="">
                 <AvForm onValidSubmit={addedUsers}>
                     <div className="form-group mt-2">
-                        <Label for="companySecretary" className='required_fields'>{lang("companiesList.accountCount")}</Label>
+                        <Label for="companySecretary"
+                               className='required_fields'>{lang("companiesList.accountCount")}</Label>
                         <Select
                             className="setting_input w-100"
                             showSearch
                             placeholder="Select a user"
                             optionFilterProp="children"
-                            onChange={(value)=> setSelectedUser(value)}
+                            onChange={(value) => setSelectedUser(value)}
                             value={selectedUser}
                             onSearch={onSearch}
                             filterOption={(input, option) =>
@@ -159,7 +164,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                             className="setting_input w-100"
                             placeholder="Select a role"
                             optionFilterProp="children"
-                            onChange={(value)=> setSelectedRole(value)}
+                            onChange={(value) => setSelectedRole(value)}
                             value={selectedRole}
                         >
                             {roleUser && roleUser.map((role, index) =>
@@ -168,7 +173,8 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                         </Select>
                     </div>
                     <div className="d-flex justify-content-center mt-4 mb-md-0 mb-3">
-                        <button className="btn py-3 px-4 mx-2 create " type="submit">{lang("meetingCreated.roles.addMember")}</button>
+                        <button className="btn py-3 px-4 mx-2 create "
+                                type="submit">{lang("meetingCreated.roles.addMember")}</button>
                     </div>
                 </AvForm>
             </Col>
@@ -217,7 +223,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                      style={{width: '60%', bottom: '4px'}}>
                     <p className="d-md-flex align-items-center mt-2" style={{fontWeight: 'bold'}}>
                         {(payload && payload[0]) === 0 ?
-                            (lang("companiesList.accountCount") +" - 0") :
+                            (lang("companiesList.accountCount") + " - 0") :
                             lang("companiesList.accountCount") + " " + (startIndex + 1) + " - " + lastIndex + " " + (lang("companiesList.from")) + " " + ((payload && payload[0]))
                         }
                     </p>
@@ -235,7 +241,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                 <div className="d-md-none d-flex justify-content-between mb-3">
                     <p className="d-flex align-items-center mt-2" style={{fontWeight: 'bold'}}>
                         {(payload && payload[0]) === 0 ?
-                            (lang("companiesList.accountCount") +" - 0") :
+                            (lang("companiesList.accountCount") + " - 0") :
                             lang("companiesList.accountCount") + " " + (startIndex + 1) + " - " + lastIndex + " " + (lang("companiesList.from")) + " " + ((payload && payload[0]))
                         }
                     </p>
