@@ -1,16 +1,14 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Col, Row} from "reactstrap";
-import {Link, useHistory, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {AiOutlineLeft, AiOutlineRight, FaArrowLeft} from "react-icons/all";
 import {NavbarMeeting} from "./NavbarMeeting";
-import {useDispatch, useSelector} from "react-redux";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
-import * as adminCompanyAction from '../../../redux/actions/CompanyAction';
 
 export default function MeetingHeading({company, lang}) {
 
-    const imgLink = BASE_URL + api.getLogoByCompanyId + "/"+ company?.id;
+    const imgLink = BASE_URL + api.getLogoByCompanyId + "/" + company?.id;
 
     const style = {
         textOverflow: 'ellipsis',
@@ -31,7 +29,8 @@ export default function MeetingHeading({company, lang}) {
                                 <div className="d-flex">
                                     <Link to="/issuerLegal/companies"
                                           className="nav-link text-dark"><FaArrowLeft/></Link>
-                                    <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
+                                    <Link to={'/'} className="nav-link"
+                                          style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
                                     <Link to={"#"} className="nav-link disabled"><AiOutlineRight/></Link>
                                     <Link to={'/issuerLegal/companies'} className="nav-link"
                                           style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.controlPage.clientPage")}</Link>

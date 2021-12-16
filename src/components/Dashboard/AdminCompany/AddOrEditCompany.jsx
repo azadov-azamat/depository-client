@@ -70,7 +70,6 @@ export default function AddOrEditCompany() {
         dispatch(actionUser.getUsersList())
     }, [])
 
-    console.log(selectUsers)
 
     useEffect(() => {
         setInn(currentCompany?.inn)
@@ -106,7 +105,6 @@ export default function AddOrEditCompany() {
                 webPage: ("https://" + v.webPage),
                 ...v
             }
-            console.log(data)
             dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
         } else {
             toast.warning(t("toast.warning"))
@@ -149,15 +147,6 @@ export default function AddOrEditCompany() {
         setFile('')
         setImagePreviewUrl('');
     }
-
-    // function onChange(val) {
-    //     const NAME = "FULL_NAME";
-    //     if (val.length >= 3) {
-    //         dispatch(actionUser.getUserFilter({value: val, field: NAME}));
-    //     } else {
-    //         dispatch({type: types.REQUEST_GET_USERS_LIST_SUCCESS, payload: []})
-    //     }
-    // }
 
     return (
         <div className="settings p-3">
@@ -259,7 +248,7 @@ export default function AddOrEditCompany() {
                                     optionFilterProp="children"
                                     defaultValue={currentCompany?.secretaryId}
                                     value={selectUsers.secretary}
-                                    onChange={(value =>  setSelectUsers({...selectUsers, secretary: value}))}
+                                    onChange={(value => setSelectUsers({...selectUsers, secretary: value}))}
                                     onSearch={onSearch}
                                     filterOption={(input, option) =>
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -296,7 +285,7 @@ export default function AddOrEditCompany() {
                                         optionFilterProp="children"
                                         defaultValue={currentCompany?.chairmanId}
                                         value={selectUsers.chairman}
-                                        onChange={(value)=>  setSelectUsers({...selectUsers, chairman: value})}
+                                        onChange={(value) => setSelectUsers({...selectUsers, chairman: value})}
                                         onSearch={onSearch}
                                         filterOption={(input, option) =>
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

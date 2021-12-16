@@ -15,15 +15,16 @@ export default function TableMeetings({meetings, lang}) {
     const language = localStorage.getItem('i18nextLng');
 
     const style = {
-        textOverflow: 'ellipsis',
+        width: '12em',
+        height: '20px',
+        margin: '0',
+        padding: '0',
         overflow: 'hidden',
-        whitespace: 'nowrap',
-        width: '13em',
-        height: '20px'
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
     }
 
     const styleBtn = {
-        // background: "#FFFFFF",
         cursor: 'pointer',
         zIndex: '1000'
     }
@@ -118,16 +119,20 @@ export default function TableMeetings({meetings, lang}) {
                             <FaPen/>
                         </text>
                     </th>
-                    <td className="text-center company" style={style}>
-                            {element.companyName}
+                    <td className="text-center">
+                        <p style={style}>{element.companyName}</p>
                     </td>
-                    <td className="text-center company" style={style}>
-                        {status(element.status)}
+                    <td className="text-center">
+                        <p style={style}>{status(element.status)}</p>
                     </td>
-                    <td className="text-center company" style={style}>{getDate(element.startRegistration)}</td>
-                    <td className="text-center company" style={style}>{getDate(element.startDate)}</td>
-                    <td className="text-center company" style={style}>
-                            {getCityName(element.city)}
+                    <td className="text-center">
+                        <p style={style}>{getDate(element.startRegistration)}</p>
+                    </td>
+                    <td className="text-center">
+                        <p style={style}>{getDate(element.startDate)}</p>
+                    </td>
+                    <td className="text-center">
+                        <p style={style}>{getCityName(element.city)}</p>
                     </td>
                     <td className="text-center">{element.status === ACTIVE || element.status === PENDING ?
                         <span className="text-success  m-0 p-0"> <FaCheck/></span> :
@@ -135,8 +140,8 @@ export default function TableMeetings({meetings, lang}) {
                     </td>
                     <td className="text-center">
                         <text style={styleBtn} className="text-danger"
-                             onClick={() => deleteById(element.id)}>
-                            <FaTrash /></text>
+                              onClick={() => deleteById(element.id)}>
+                            <FaTrash/></text>
                     </td>
                 </tr>
             ))}

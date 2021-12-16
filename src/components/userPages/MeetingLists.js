@@ -9,10 +9,6 @@ import {useTranslation} from "react-i18next";
 import MeetingHeading from "./component/MeetingHeading";
 import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import * as adminMeetingAction from "../../redux/actions/MeetingAction";
-import Socket from "../MeetingStarted/Socket";
-import {subscribe, unsubscribe} from "../../redux/actions/socketActions";
-import * as companyAction from "../../redux/actions/CompanyAction";
-import {DEPOSITORY_USER} from "../../utils/contants";
 
 function useQuery() {
     const {search} = useLocation();

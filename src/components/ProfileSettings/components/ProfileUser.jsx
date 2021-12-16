@@ -44,7 +44,6 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
     }, [currentUser])
 
     function EditProfile(e, v) {
-        console.log(v);
         if (v.password === v.prePassword) {
             const data = {
                 fullName: currentUser?.fullName,

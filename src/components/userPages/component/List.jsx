@@ -1,29 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import '../../SomeStyle.css';
-import {useHistory, useLocation, useParams} from "react-router-dom";
-import {
-    ACTIVE,
-    CANCELED,
-    DEPOSITORY_CURRENT_COMPANY,
-    DEPOSITORY_CURRENT_MEETING,
-    DISABLED,
-    EXTRAORDINARY,
-    FINISH,
-    ORDINARY,
-    PENDING
-} from "../../../utils/contants";
+import {ACTIVE, CANCELED, DISABLED, EXTRAORDINARY, FINISH, ORDINARY, PENDING} from "../../../utils/contants";
 import ButtonValue from "./ButtonValue";
-import * as meetingActions from "../../../redux/actions/MeetingAction";
-import {useDispatch, useSelector} from "react-redux";
-import {subscribe} from "../../../redux/actions/socketActions";
 import Text from "antd/es/typography/Text";
 
 export const List = ({meetings, type, companyId, lang}) => {
 
-    const {id} = useParams();
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const reducers = useSelector(state => state)
     const [statusMeet, setStatusMeet] = useState({success: FINISH, cancel: CANCELED, active: DISABLED})
 
     useEffect(() => {
@@ -68,7 +50,6 @@ export const List = ({meetings, type, companyId, lang}) => {
     }
 
     function getDate(currentDate) {
-        let date = new Date(currentDate);
         return (
             <>
                 {currentDate.substr((currentDate) - 1, 10)}{"  "}{currentDate.substr(11, 5)}

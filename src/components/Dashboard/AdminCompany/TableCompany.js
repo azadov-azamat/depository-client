@@ -5,15 +5,16 @@ import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
 export default function TableCompany({company, deleteById, updateCompany}) {
 
     const style = {
-        textOverflow: 'ellipsis',
-        overflow: 'hidden',
-        whitespace: 'nowrap',
+        whiteSpace: 'nowrap',
         width: '13em',
-        height: '20px'
+        height: '20px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        padding: '0',
+        margin: '0'
     }
 
     const styleBtn = {
-        // background: "#FFFFFF",
         cursor: 'pointer',
         zIndex: '1000'
     }
@@ -25,24 +26,26 @@ export default function TableCompany({company, deleteById, updateCompany}) {
                       className='text-warning'><FaPen/>
                 </Link>
             </th>
-            <td className="text-center" style={style}>
-                    {company.name}
+            <td className="text-center">
+               <p style={style}>{company.name}</p>
             </td>
-            <td className="text-center" style={style}>
-                    {company.email}
+            <td className="text-center">
+            <p style={style}>{company.email}</p>
             </td>
-            <td className="text-center" style={style}>
-                {company.phoneNumber}
+            <td className="text-center">
+               <p style={style}>{company.phoneNumber}</p>
             </td>
-            <td className="text-center" style={style}>
-                    <b>{company.webPage}</b>
+            <td className="text-center">
+                <p style={style}><b>{company.webPage}</b></p>
             </td>
-            <td className="text-center" style={style}>{company.inn}</td>
+            <td className="text-center">
+                <p style={style}>{company.inn}</p>
+            </td>
             <td className="text-center">{company?.active ? <span className="text-success"> <FaCheck/></span> :
                 <span className="text-danger"><FaTimes/></span>}</td>
             <td className="text-center">
                 <text style={styleBtn} className="text-danger"
-                     onClick={() => deleteById(company.id)}>
+                      onClick={() => deleteById(company.id)}>
                     <FaTrash/>
                 </text>
             </td>

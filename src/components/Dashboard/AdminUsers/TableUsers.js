@@ -16,15 +16,16 @@ export default function TableUsers({user, t, deleteById}) {
     }
 
     const style = {
-        textOverflow: 'ellipsis',
-        overflow: 'hidden',
-        whitespace: 'nowrap',
+        whiteSpace: 'nowrap',
         width: '13em',
-        height: '20px'
+        height: '20px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        padding: '0',
+        margin: '0'
     }
 
     const styleBtn = {
-        // background: "#FFFFFF",
         cursor: 'pointer',
         zIndex: '1000'
     }
@@ -36,20 +37,20 @@ export default function TableUsers({user, t, deleteById}) {
                     <Link to={`/admin/users/${user.id}`}
                           className='text-warning'><FaPen/></Link>
                 </th>
-                <td className='text-center' style={style}>
-                    {user.fullName}
+                <td className='text-center'>
+                    <p style={style}>{user.fullName}</p>
                 </td>
-                <td className='text-center' style={style}>
-                    {user.email}
+                <td className='text-center'>
+                    <p style={style}>{user.email}</p>
                 </td>
-                <td className='text-center' style={style}>
-                    {user.phoneNumber}
+                <td className='text-center'>
+                    <p style={style}>{user.phoneNumber}</p>
                 </td>
-                <td className='text-center' style={style}>
-                    {status(user.groupEnum)}
+                <td className='text-center'>
+                    <p style={style}>{status(user.groupEnum)}</p>
                 </td>
-                <td className='text-center' style={style}>
-                    {user.pinfl}
+                <td className='text-center'>
+                    <p style={style}>{user.pinfl}</p>
                 </td>
                 <td className='text-center'>
                     {user.activated ? <span className="text-success">

@@ -11,7 +11,6 @@ import {useHistory} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import RouteByDashboard from "../RouteByDashboard";
 import PaginationDashboard from "../PaginationDashboard";
-import {getCompanySpecFilterAction} from "../../../redux/actions/CompanyAction";
 
 function AdminCompany() {
 
@@ -23,8 +22,14 @@ function AdminCompany() {
     const {loading, companies} = reducers.company
     const {payload} = reducers.auth.totalCount
 
-    const [name, setName] = useState('');
     const [page, setPage] = useState(1);
+    const [dataFilter, setDataFilter] = useState({
+        name: null,
+        email: null,
+        phoneNumber: null,
+        webPage: null,
+        inn: null,
+    })
 
     const size = 8;
 
@@ -33,13 +38,7 @@ function AdminCompany() {
 
     const startIndex = (page - 1) * size;
     const lastIndex = startIndex + (payload && payload[1]);
-    const [dataFilter, setDataFilter] = useState({
-        name:  null,
-        email: null,
-        phoneNumber:  null,
-        webPage: null,
-        inn: null,
-    })
+
     const handleChange = (e, p) => {
         setPage(p);
         _DATA.jump(p);
@@ -62,8 +61,7 @@ function AdminCompany() {
     }, [])
 
     const SearchCompanySpecFilter = (value, fieldName) => {
-        console.log(value)
-        if (value.length >= 3 || value.length === 0){
+        if (value.length >= 3 || value.length === 0) {
             setDataFilter(prev => ({
                 ...prev,
                 [fieldName]: value
@@ -71,9 +69,9 @@ function AdminCompany() {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(adminCompanyAction.getCompanySpecFilterAction({dataFilter, page, size}));
-    },[dataFilter, page])
+    }, [dataFilter, page])
 
     const submit = (id) => {
         confirmAlert({

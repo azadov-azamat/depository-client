@@ -56,14 +56,15 @@ export default function ButtonValue({meetingId, companyId}) {
                 memberManagerType[meetingId] && memberManagerType[meetingId].map(element => {
                     switch (element.memberTypeEnum) {
                         case CHAIRMAN:
-                               return (
-                                   <button
-                                       style={style} key={element?.id}
-                                       onClick={() => element.fromReestr ? isConfirmed(CHAIRMAN, element.id, meetingId) : historyPushItem(CHAIRMAN, element.id, meetingId)}
-                                       className="create py-2 my-2 px-2 mx-2">
-                                       {element.fromReestr ? t("clientPage.toVote") : t("clientPage.controlMeeting")} <br/> ({element.fromReestr ? t("meetingCreated.roles.simple") : t("meetingCreated.roles.chairman")})
-                                   </button>
-                               )
+                            return (
+                                <button
+                                    style={style} key={element?.id}
+                                    onClick={() => element.fromReestr ? isConfirmed(CHAIRMAN, element.id, meetingId) : historyPushItem(CHAIRMAN, element.id, meetingId)}
+                                    className="create py-2 my-2 px-2 mx-2">
+                                    {element.fromReestr ? t("clientPage.toVote") : t("clientPage.controlMeeting")}
+                                    <br/> ({element.fromReestr ? t("meetingCreated.roles.simple") : t("meetingCreated.roles.chairman")})
+                                </button>
+                            )
                         case SECRETARY:
                             return (
                                 <button
