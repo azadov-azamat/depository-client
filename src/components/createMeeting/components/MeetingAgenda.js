@@ -24,7 +24,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const [selectSpeaker, setSelectSpeaker] = useState(null);
     const [selectTime, setSelectTime] = useState(null);
     const [selectDebug, setSelectDebug] = useState(null);
-    const [selectStatus, setSelectStatus] = useState(true);
+
     const [changeSubject, setChangeSubject] = useState('');
     const [openModal, setOpenModal] = useState(false);
     const [inputList, setInputList] = useState([{variant: ""}]);
@@ -48,7 +48,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         setCurrentSpeaker(currentAgenda?.speakerId);
         setCurrentTime(currentAgenda?.speakTimeEnum);
         setCurrentDebut(currentAgenda?.debateEnum);
-        setCurrentStatus(currentAgenda?.active)
+
     }, [currentAgenda])
 
     const toInputUppercase = e => {
@@ -95,8 +95,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             })
 
             const data = {
-                active: selectStatus,
-                speakerId: selectSpeaker,
+                active: true,
+                speakerId: selectSpeaker === undefined ? null : selectSpeaker,
                 debateEnum: selectDebug,
                 meetingId: currentMeetingId,
                 speakTimeEnum: selectTime,
@@ -108,7 +108,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                 setSelectSpeaker(null);
                 setSelectTime(null);
                 setSelectDebug(null);
-                setSelectStatus(true);
                 setChangeSubject('')
                 for (let i = 0; i < inputList.length; i++) {
                     const list = [...inputList];
@@ -136,7 +135,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             const data = {
                 id: currentAgenda?.id,
                 isActive: currentStatus,
-                speakerId: currentSpeaker,
+                speakerId: currentSpeaker === undefined ? null : currentSpeaker,
                 debateEnum: currentDebut,
                 meetingId: parseInt(currentMeetingId),
                 speakTimeEnum: currentTime,
@@ -308,8 +307,9 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     className="setting_input w-100"
                                     placeholder="Выберите состояние"
                                     optionFilterProp="children"
-                                    onChange={(value) => setSelectStatus(value)}
-                                    value={selectStatus}
+                                    // onChange={(value) => setSelectStatus(value)}
+                                    value={true}
+                                    disabled
                                 >
                                     <Option value={true}>Aктивно</Option>
                                     <Option value={false}>Неактивно</Option>
@@ -392,7 +392,6 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                       className='text-warning text-center'>
                                                     <FaPen
                                                         onClick={() => {
-                                                            // console.log(agenda.votingOptions)
                                                             setCurrentAgenda(agenda)
                                                             setCurrentVariants(agenda.votingOptions)
                                                             setOpenModal(true)
@@ -518,6 +517,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             onChange={(value) => setCurrentStatus(value)}
                                             defaultValue={currentAgenda?.active}
                                             value={currentStatus}
+                                            disabled={true}
                                         >
                                             <Option value={true}>Aктивно</Option>
                                             <Option value={false}>Неактивно</Option>
