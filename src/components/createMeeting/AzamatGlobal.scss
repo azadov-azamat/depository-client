@@ -405,6 +405,34 @@ form {
 
 }
 
+.container {
+  .create {
+    background: #133B88;
+    border-radius: 6px;
+    border: 2px solid #133B88;
+    color: white;
+    transition: .5s ease all;
+
+    &:hover {
+      color: #133B88;
+      border: 2px solid #133B88 !important;
+      background-color: white;
+    }
+  }
+
+  .cancel {
+    color: #133B88;
+    border: 2px solid #133B88 !important;
+    transition: .5s ease all;
+
+    &:hover {
+      background-color: #133B88;
+      color: white;
+    }
+  }
+
+}
+
 @media(max-width: 1200px) {
   .nav-links {
     a {

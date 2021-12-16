@@ -13,8 +13,9 @@ import Text from "antd/es/typography/Text";
 import {AccordionAnswersModal} from "./Accordions/AccordionAnswersModal";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import Loader from "react-loader-spinner";
+import {toast} from "react-toastify";
 
-export default function Agenda({agendaSubject, roleMember, meetingId, memberId}) {
+export default function Agenda({agendas, roleMember, meetingId, memberId, quorum}) {
 
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -34,7 +35,7 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
             const data = {
                 id: element.id,
                 meetingId: meetingId,
-                status: true
+                active: true
             }
 
             confirmAlert({
@@ -60,7 +61,7 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
         const data = {
             id: currentAgenda.id,
             meetingId: meetingId,
-            status: false,
+            active: false,
             extraInfo: v.extraInfo
         }
         dispatch(meetingStarted.editStatusAgendaAction({data}))
@@ -88,7 +89,7 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
         }}>
             {
                 roleMember === CHAIRMAN || roleMember === SECRETARY ?
-                    agendaSubject && agendaSubject.map((element, index) =>
+                agendas?.map((element, index) =>
                         <div key={index}
                              className={element.active ? 'questions p-2 mb-3 d-flex justify-content-between w-100 align-items-center shadow' : 'questions border p-2 mb-3 d-flex justify-content-between w-100 align-items-center'}>
                             <span
@@ -99,7 +100,7 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
                         </div>
                     ) :
                     roleMember === SIMPLE ?
-                        agendaSubject && agendaSubject.map((element, index) =>
+                        agendas?.map((element, index) =>
                             <div className="mt-2">
                                 <AccordionAgenda open={1}>
                                     <AccordionAgenda.Item>
@@ -111,7 +112,6 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
                                                     style={element.active ? {color: '#6B8C67FF'} : {color: '#CBCBC7FF'}}><b>Доклатчик: {element.userName}</b></span>
                                             </div>
                                         </AccordionAgenda.Header>
-
                                         <AccordionAgenda.Body>
                                             {element.active ?
                                                 element.votingOptions.map((elementOption, index) =>
@@ -122,7 +122,7 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
                                                             <span
                                                                 style={{fontWeight: 'bold'}}>{elementOption.votingText}</span>
                                                         </div>
-                                                        <AgendaByVoting agenda={element} variant={elementOption}
+                                                        <AgendaByVoting quorum={quorum} agenda={element} variant={elementOption}
                                                                         memberId={memberId} meetingId={meetingId}/>
                                                     </>
                                                 ) :
@@ -148,8 +148,8 @@ export default function Agenda({agendaSubject, roleMember, meetingId, memberId})
                                         </tr>
                                         </thead>
                                         <tbody className="">
-                                        {agendaSubject && agendaSubject.length !== 0 ?
-                                            agendaSubject.map((agenda, index) => (
+                                        {agendas?.length !== 0 ?
+                                            agendas?.map((agenda, index) => (
                                                 <tr key={index}>
                                                     <td className={"text-center"}>
                                                         {index + 1}

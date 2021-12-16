@@ -71,7 +71,7 @@ export const ControllerMeeting = () => {
     const username = currentUser?.fullName;
 
     const [zoomEnum, setZoomEnum] = useState(PENDING);
-
+    const [count, setCount] = useState(0);
     const [call, setCall] = useState(false)
     // const [password, setPassword] = useState()
     const [close, setClose] = useState(false)
@@ -79,6 +79,7 @@ export const ControllerMeeting = () => {
     const [badgeCount, setBadgeCount] = useState(0);
 
     const password = "18cb2890-bb7a-4812-b07b-db0ef273bab1";
+    const percentQuorum = parseInt((count / memberManagerState.length) * 100)
 
     const socketClient = useSelector((state) => state.socket.client);
 
@@ -103,8 +104,11 @@ export const ControllerMeeting = () => {
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: meetingId}))
         dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: meetingId}))
+        dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
     }, [meetingId])
-
+    // useEffect(() => {
+    //     dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
+    // }, [meetingId])
     useEffect(() => {
         if (connected) {
             const data = {
@@ -156,13 +160,13 @@ export const ControllerMeeting = () => {
         }
     }
 
-    console.log(startCallMeeting)
-
-    // useEffect(() => {
-    //     if (!startCallMeeting) {
-    //         setCall(false)
-    //     }
-    // }, [startCallMeeting])
+    useEffect(() => {
+        memberManagerState?.forEach(element => {
+            if (element.isConfirmed === true) {
+                setCount(prevState => prevState + 1)
+            }
+        })
+    }, [meetingId])
 
     importScript("https://meet.jit.si/external_api.js");
 
@@ -179,15 +183,6 @@ export const ControllerMeeting = () => {
         }
 
         if (!startCallMeeting) {
-            console.log("========= yangi ============")
-            // let chars = "0123456789ABCDEFGHIJKLMNOPQRdepositroySTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            // let string_length = 8;
-            // let randomstring = '';
-            // for (let i = 0; i < string_length; i++) {
-            //     let rnum = Math.floor(Math.random() * chars.length);
-            //     randomstring += chars.substring(rnum, rnum + 1);
-            // }
-
             const dataZoom = {
                 password: password,
                 zoom: true,
@@ -207,7 +202,6 @@ export const ControllerMeeting = () => {
             if (room && username)
                 handleStartMeeting(room, username, password, link);
         } else {
-            console.log("========= eski ============")
             setZoomStatusMe(false)
             const dataZoom = {
                 zoom: false,
@@ -241,13 +235,12 @@ export const ControllerMeeting = () => {
             socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
             setZoomStatusMe(false)
             setCall(false)
-            // setCall(startCallMeeting)
         } else {
             setCall(false)
             setZoomStatusMe(false)
         }
 
-        // history.push("/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
+        history.push("/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
     }
 
     function startMeeting({status, quorumCount}) {
@@ -302,8 +295,8 @@ export const ControllerMeeting = () => {
                                                   memberId={memberId} companyId={companyId}/>
                             <Switch>
                                 <Route path={"/issuerLegal/meeting/" + id + "/agenda"}>
-                                    <Agenda agendaSubject={agendaState} roleMember={userMemberType}
-                                            meetingId={meetingId} memberId={parseInt(memberId)}/>
+                                    <Agenda agendas={agendaState} roleMember={userMemberType}
+                                            meetingId={meetingId} memberId={parseInt(memberId)} quorum={percentQuorum}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/question"}>
                                     <Question list={questionList} userId={currentUser.id}/>
@@ -315,7 +308,7 @@ export const ControllerMeeting = () => {
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
                                     <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}
                                                     startMeeting={startMeeting}
-                                                    meetingId={meetingId}/>
+                                                    meetingId={meetingId} quorum={percentQuorum}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/all_users_list"}>
                                     <TableUsers meetingId={meetingId} lang={t}/>

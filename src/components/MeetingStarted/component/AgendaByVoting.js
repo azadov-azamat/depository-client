@@ -8,12 +8,12 @@ import {confirmAlert} from "react-confirm-alert";
 import * as meetingStarted from "../../../redux/actions/MeetingStartedAction";
 import {toast} from "react-toastify";
 
-export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
+export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) => {
 
     const dispatch = useDispatch();
     const reducers = useSelector(state => state)
     const {currentBallotVotingList, loadingBallot} = reducers.meetingStarted
-
+    console.log(currentBallotVotingList)
     useEffect(() => {
         const data = {
             memberId: parseInt(memberId),
@@ -35,7 +35,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
         const data = {
             memberId: parseInt(memberId),
             agendaId: agenda.id,
-            id: 32103 // ballot ID
+            id: 36856 // ballot ID
         }
 
         confirmAlert({
@@ -46,7 +46,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
                     label: 'Да',
                     onClick: () => {
                         toast.warning("Jarayonda...")
-                        // dispatch(meetingStarted.deleteBallotAction({data}))
+                        dispatch(meetingStarted.deleteBallotAction({data}))
                     }
                 },
                 {
@@ -56,15 +56,11 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
         });
     }
 
-    if (hasVoted) {
-        return (
-            <Button className="text-white" onClick={() => deleteBallot(variant.id)}>
-                Удалить голось
-            </Button>
-        );
-    }
-
     const addBallot = ({votingId, option, agendaId}) => {
+
+        // if (quorum >= 75){
+        //     return toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
+        // }
 
         confirmAlert({
             title: 'Проголосовать',
@@ -91,6 +87,16 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
         });
     };
 
+    if (hasVoted) {
+        return (
+            <div className="container">
+                <Button className="text-white" onClick={() => deleteBallot(variant.id)}>
+                    Удалить голось
+                </Button>
+            </div>
+        );
+    }
+    // console.log(currentBallotVotingList)
     return (
         <>
             <div className="container d-flex justify-content-center align-items-center">

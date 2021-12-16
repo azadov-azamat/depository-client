@@ -95,8 +95,8 @@ const reducers = {
     },
 
 
-    ["RESPONSE_CONNECT_SUCCESS"](state) {
-        state.connected = true
+    ["RESPONSE_CONNECT_SUCCESS"](state, action) {
+        state.connected = action.payload;
     },
     ["REQUEST_SUCCESS_GET_BALLOT_VOTING"](state, action) {
         state.currentBallotVotingList[action.requestData.agendaId] = action.payload

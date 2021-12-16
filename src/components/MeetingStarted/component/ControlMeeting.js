@@ -16,16 +16,7 @@ import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
 import {updateMeetingStatusAction} from "../../../redux/actions/MeetingAction";
 
-export default function ControlMeeting({meetingStatus, meetingId, startMeeting}) {
-
-    const dispatch = useDispatch();
-    const [count, setCount] = useState(0);
-    const reducers = useSelector(state => state)
-    const {memberManagerState} = reducers.meeting
-
-    useEffect(() => {
-        dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
-    }, [meetingId])
+export default function ControlMeeting({meetingStatus, startMeeting, quorum}) {
 
     function status(status) {
         if (status === ACTIVE) {
@@ -40,16 +31,6 @@ export default function ControlMeeting({meetingStatus, meetingId, startMeeting})
             return 'Неактивно'
         }
     }
-
-    useEffect(() => {
-        memberManagerState?.forEach(element => {
-            if (element.isConfirmed === true) {
-                setCount(prevState => prevState + 1)
-            }
-        })
-    }, [])
-
-    const percentQuorum = (count / memberManagerState.length) * 100
 
     return (
         <>
@@ -66,21 +47,21 @@ export default function ControlMeeting({meetingStatus, meetingId, startMeeting})
                         <br/>
                         принимали участие очно: голосов
                         <br/>
-                        кворум ({parseInt(percentQuorum)}%)
+                        кворум ({quorum}%)
                     </p>
                 </div>
                 {meetingStatus === PENDING ?
                     <div className="d-flex  justify-content-around align-items-end ">
                         <button className=" btn-meet px-4 py-2 rounded" onClick={() => startMeeting({
                             status: ACTIVE,
-                            quorumCount: percentQuorum
+                            quorumCount: quorum
                         })}>Начать
                             заседание
                         </button>
                         <button className=" btn-meet-outline px-4 py-2 rounded"
                                 onClick={() => startMeeting({
                                     status: CANCELED,
-                                    quorumCount: percentQuorum
+                                    quorumCount: quorum
                                 })}>Отменить заседание
                         </button>
                     </div> : '' ||
@@ -88,20 +69,20 @@ export default function ControlMeeting({meetingStatus, meetingId, startMeeting})
                         <div className="d-flex  justify-content-around align-items-end ">
                             <button className="btn-meet px-4 py-2 rounded" onClick={() => startMeeting({
                                 status: FINISH,
-                                quorumCount: percentQuorum
+                                quorumCount: quorum
                             })}>
                                 Завершить заседание
                             </button>
                             <button className=" btn-meet px-4 py-2 rounded" onClick={() => startMeeting({
                                 status: PENDING,
-                                quorumCount: percentQuorum
+                                quorumCount: quorum
                             })}>
                                 Перенести заседание
                             </button>
                             <button className=" btn-meet-outline px-4 py-2 rounded"
                                     onClick={() => startMeeting({
                                         status: CANCELED,
-                                        quorumCount: percentQuorum
+                                        quorumCount: quorum
                                     })}>Отменить заседание
                             </button>
                         </div> : ''
