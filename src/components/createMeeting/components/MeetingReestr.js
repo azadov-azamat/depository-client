@@ -69,7 +69,6 @@ export default function MeetingReestr({currentMeeting, lang}) {
         setMyBoolean(memberManagerState && memberManagerState.some(element => element.memberTypeEnum === CHAIRMAN));
     }, [memberManagerState])
 
-
     function electChairmanForMeeting(memberId) {
 
         confirmAlert({

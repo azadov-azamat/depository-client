@@ -514,6 +514,15 @@ export const addReestrByMeetingAction = (payload) => async (dispatch) => {
                 toast.error(title)
             }
         }
+        if (errorKey === "notFoundChairman") {
+            if (lang === "uz") {
+                toast.error("Kompaniyada saylangan rais ro'yxatdan topilmadi!");
+            } else if (lang === "ru") {
+                toast.error("Председатель компании не нашелся в реестре!")
+            } else {
+                toast.error(title)
+            }
+        }
         if (errorKey === "NullPointer") {
             if (lang === "uz") {
                 toast.error("Hujayra null bo'lmasligi kerak");

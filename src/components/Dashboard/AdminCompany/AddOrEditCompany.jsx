@@ -70,6 +70,7 @@ export default function AddOrEditCompany() {
         dispatch(actionUser.getUsersList())
     }, [])
 
+    console.log(selectUsers)
 
     useEffect(() => {
         setInn(currentCompany?.inn)
@@ -89,28 +90,6 @@ export default function AddOrEditCompany() {
         }
     }
 
-    function onBlur() {
-
-    }
-
-    function onFocus() {
-
-    }
-
-
-    function forChairMan(value) {
-        setSelectUsers({...selectUsers, chairman: value})
-    }
-
-    function forSecretary(value) {
-        setSelectUsers({...selectUsers, secretary: value})
-        console.log(value)
-    }
-
-    function forStatus(value) {
-        setSelectUsers({...selectUsers, active: value})
-    }
-
     const addCompany = (e, v) => {
         if (phoneNumber && inn) {
             if (phoneNumber.toString().length !== 13) {
@@ -118,8 +97,8 @@ export default function AddOrEditCompany() {
             }
             const data = {
                 active: selectUsers.active,
-                chairmanId: selectUsers.chairman,
-                secretaryId: selectUsers.secretary,
+                chairmanId: selectUsers.chairman === undefined ? null : selectUsers.chairman,
+                secretaryId: selectUsers.secretary === undefined ? null : selectUsers.secretary,
                 imageUrl: file ? "yes" : 'no',
                 image: file,
                 phoneNumber: phoneNumber,
@@ -138,8 +117,8 @@ export default function AddOrEditCompany() {
         const data = {
             id: currentCompany.id,
             active: selectUsers.active,
-            chairmanId: selectUsers.chairman,
-            secretaryId: selectUsers.secretary,
+            chairmanId: selectUsers.chairman === undefined ? null : selectUsers.chairman,
+            secretaryId: selectUsers.secretary === undefined ? null : selectUsers.secretary,
             imageUrl: file ? "yes" : 'no',
             image: file,
             phoneNumber: phoneNumber,
@@ -240,9 +219,7 @@ export default function AddOrEditCompany() {
                                             className="setting_input w-100"
                                             placeholder="Выберите статус"
                                             optionFilterProp="children"
-                                            onChange={forStatus}
-                                            onFocus={onFocus}
-                                            onBlur={onBlur}
+                                            onChange={(value => setSelectUsers({...selectUsers, active: value}))}
                                             defaultValue={currentCompany?.active}
                                             value={selectUsers.active}
                                         >
@@ -282,7 +259,7 @@ export default function AddOrEditCompany() {
                                     optionFilterProp="children"
                                     defaultValue={currentCompany?.secretaryId}
                                     value={selectUsers.secretary}
-                                    onChange={forSecretary}
+                                    onChange={(value =>  setSelectUsers({...selectUsers, secretary: value}))}
                                     onSearch={onSearch}
                                     filterOption={(input, option) =>
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -319,7 +296,7 @@ export default function AddOrEditCompany() {
                                         optionFilterProp="children"
                                         defaultValue={currentCompany?.chairmanId}
                                         value={selectUsers.chairman}
-                                        onChange={forChairMan}
+                                        onChange={(value)=>  setSelectUsers({...selectUsers, chairman: value})}
                                         onSearch={onSearch}
                                         filterOption={(input, option) =>
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

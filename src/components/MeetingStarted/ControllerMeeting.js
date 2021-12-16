@@ -7,13 +7,11 @@ import CommentsAllPage from "./component/CommentsAllPage";
 import * as meetingActions from "../../redux/actions/MeetingAction";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
-import {ACTIVE, CANCELED, CHAIRMAN, DEPOSITORY_USER, DISABLED, FINISH, PENDING, SECRETARY} from "../../utils/contants";
+import {ACTIVE, CANCELED, CHAIRMAN, DISABLED, FINISH, PENDING, SECRETARY} from "../../utils/contants";
 import Question from "./component/Question";
 import Comment from "./component/Comment";
 import ControlMeeting from "./component/ControlMeeting";
-import * as userAction from "../../redux/actions/UsersAction";
 import TableUsers from "./component/TableUsers";
-import usePagination from "../Dashboard/Pagination";
 import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import importScript from "./component/Zoom Meeting/importScript";
 import {Col, Container, Row} from "reactstrap";
@@ -49,38 +47,34 @@ export const ControllerMeeting = () => {
     const {
         agendaState,
         currentMeeting,
-        onlineMemberManager,
         userMemberType,
         memberManagerState,
         meetingFile
     } = reducers.meeting
+
     const {
         loadingLogging,
         questionList,
         loggingList,
         questionListMemberId,
         startCallMeeting,
-        passwordZoomMeeting,
         connected
     } = reducers.meetingStarted
+
     const {currentUser} = reducers.auth
     const {currentCompany} = reducers.company
 
-    const [room, setRoom] = useState()
-
     const username = currentUser?.fullName;
 
-    const [zoomEnum, setZoomEnum] = useState(PENDING);
+    const [room, setRoom] = useState()
     const [count, setCount] = useState(0);
     const [call, setCall] = useState(false)
-    // const [password, setPassword] = useState()
-    const [close, setClose] = useState(false)
-    const link = 'https://meet.jit.si/' + room;
+    const [zoomStatusMe, setZoomStatusMe] = useState(true);
     const [badgeCount, setBadgeCount] = useState(0);
 
-    const password = "18cb2890-bb7a-4812-b07b-db0ef273bab1";
-    const percentQuorum = parseInt((count / memberManagerState.length) * 100)
+    const link = 'https://meet.jit.si/' + room;
 
+    const password = "18cb2890-bb7a-4812-b07b-db0ef273bab1";
     const socketClient = useSelector((state) => state.socket.client);
 
     const handleStartMeeting = (roomName, userName, password, link) => {
@@ -106,9 +100,7 @@ export const ControllerMeeting = () => {
         dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: meetingId}))
         dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
     }, [meetingId])
-    // useEffect(() => {
-    //     dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
-    // }, [meetingId])
+
     useEffect(() => {
         if (connected) {
             const data = {
@@ -145,7 +137,20 @@ export const ControllerMeeting = () => {
 
     }, [dispatch])
 
-    const [zoomStatusMe, setZoomStatusMe] = useState(true);
+    useEffect(() => {
+        // memberManagerState?.forEach(element => {
+        //     if (element.isConfirmed) {
+        //         console.log(element)
+        //         // setCount(prevState => prevState + 1)
+        //     }
+        // })
+
+        console.log(memberManagerState?.filter(element=> element.isConfirmed === true).length)
+    }, [meetingId])
+
+    const percentQuorum = parseInt((count / memberManagerState.length) * 100)
+
+    importScript("https://meet.jit.si/external_api.js");
 
     function clicked() {
         if (zoomStatusMe) {
@@ -159,16 +164,6 @@ export const ControllerMeeting = () => {
             console.log("no clicked")
         }
     }
-
-    useEffect(() => {
-        memberManagerState?.forEach(element => {
-            if (element.isConfirmed === true) {
-                setCount(prevState => prevState + 1)
-            }
-        })
-    }, [meetingId])
-
-    importScript("https://meet.jit.si/external_api.js");
 
     const StartZoomMeeting = event => {
 
@@ -286,7 +281,7 @@ export const ControllerMeeting = () => {
     return (
         <div className="container-fluid meeting px-5">
             <div>
-                <Router zoomEnum={setZoomEnum} currentMeeting={currentMeeting && currentMeeting}
+                <Router currentMeeting={currentMeeting && currentMeeting}
                         currentCompany={currentCompany && currentCompany} userMemberType={userMemberType}/>
                 <div className="shadow p-3 my-3">
                     <div className="row">

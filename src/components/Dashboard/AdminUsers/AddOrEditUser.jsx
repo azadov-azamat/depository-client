@@ -39,11 +39,9 @@ export default function AddOrEditUser() {
         showPassword: false,
         generatePassword: null,
     })
-
     const [phoneNumber, setPhoneNumber] = useState();
     const [pinfl, setPinfl] = useState();
-    const [myBoolean, setMyBoolean] = useState(false);
-
+    const [myBoolean, setMyBoolean] = useState(null);
     const [userInfo, setUserInfo] = useState({
         isAdmin: null,
         pinfl: null,
@@ -72,7 +70,6 @@ export default function AddOrEditUser() {
         setPinfl(currentForUser.pinfl)
         setPhoneNumber(currentForUser.phoneNumber)
         const auth = currentForUser.authorities
-        console.log(auth)
         if ({...auth} === "ROLE_MODERATOR") {
             setMyBoolean(true)
         }
@@ -84,14 +81,12 @@ export default function AddOrEditUser() {
     }, [id])
 
     const addUser = (e, v) => {
-
         const authority = [];
         if (v.isAdmin === true) {
             authority.push("ROLE_MODERATOR")
         } else if (v.isAdmin === false) {
             authority.push("ROLE_USER")
         }
-        console.log(v);
         if (pinfl && userInfo.generateLogin) {
             const data = {
                 fullName: v.fullName,
@@ -108,15 +103,13 @@ export default function AddOrEditUser() {
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber
             }
-            console.log(data)
-            dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
+            // dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
             toast.warning(t("toast.warning"))
         }
     }
 
     const editUser = (e, v) => {
-        console.log(v)
         const authority = [];
         if (v.isAdmin === true) {
             authority.push("ROLE_MODERATOR")
@@ -141,7 +134,6 @@ export default function AddOrEditUser() {
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber
             }
-            console.log(data)
             dispatch(adminUsersAction.editUserAction({data, history}))
         } else {
             toast.warning("Iltimos kerakli hamma malumotlarni to`ldiring")
@@ -162,7 +154,6 @@ export default function AddOrEditUser() {
                     setUserInfo({...userInfo, generateLogin: res.data, generatePassword: randomstring})
                 })
                 .catch((error) => {
-                    console.log(error.response)
                     setUserInfo({...userInfo, pinfl: null})
                     if (lang === "ru") {
                         toast.error("Пинфл уже использовался!")
@@ -201,22 +192,18 @@ export default function AddOrEditUser() {
     };
 
     function selectStatusResidentUser(value) {
-        console.log(value)
         setUserInfo({...userInfo, resident: value})
     }
 
     function selectStatusUser(value) {
-        console.log(value);
         setUserInfo({...userInfo, activated: value})
     }
 
     function selectGroupEnumUser(value) {
-        console.log(value);
         setUserInfo({...userInfo, groupEnum: value})
     }
 
     function selectLoginTypeUser(value) {
-        console.log(value);
         setUserInfo({...userInfo, authTypeEnum: value})
     }
 
@@ -326,11 +313,13 @@ export default function AddOrEditUser() {
                                         <div className="d-flex align-items-center forCheck">
                                             <AvField
                                                 className="mt-3 rounded"
-                                                style={{width: "20px", height: "20px", borderRadius: "5px"}}
                                                 id='forCheck'
                                                 type='checkbox'
                                                 name='isAdmin'
-                                                defaultChecked={myBoolean}
+                                                style={{width: "20px", height: "20px", borderRadius: "5px"}}
+                                                onChange={(e)=> setMyBoolean(e.target.value)}
+                                                defaultValue={() => currentForUser.authorities.some(element => element === 'ROLE_ADMIN')}
+                                                value={myBoolean}
                                             />
                                             <Label for='forCheck'>{t("user.dostup")}</Label>
                                         </div>
@@ -380,7 +369,7 @@ export default function AddOrEditUser() {
                                         value={userInfo.generatePassword}
                                         className="setting_input border"
                                         style={{backgroundColor: "#ffffff"}}
-                                        onChange={(e)=>{
+                                        onChange={(e) => {
                                             setUserInfo({...userInfo, generatePassword: e.target.value})
                                             handlePasswordChange("password")
                                         }}
@@ -438,7 +427,9 @@ export default function AddOrEditUser() {
                                             type='checkbox'
                                             name='isAdmin'
                                             style={{width: "20px", height: "20px", borderRadius: "5px"}}
-                                            defaultChecked={myBoolean}
+                                            onChange={(e) => setMyBoolean(e.target.value)}
+                                            defaultValue={myBoolean}
+                                            value={myBoolean}
                                         />
                                         <Label for='forCheck'>{t("user.dostup")}</Label>
                                     </div>

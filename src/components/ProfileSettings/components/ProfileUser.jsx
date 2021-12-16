@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Label, Row} from "reactstrap";
 import {AvField, AvForm, AvInput} from "availity-reactstrap-validation";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -39,8 +39,12 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
     const handlePasswordChange = (prop) => (event) => {
         setParol({...parol, [prop]: event.target.value});
     };
+    useEffect(() => {
+        setPhoneNumber(currentUser.phoneNumber)
+    }, [currentUser])
 
     function EditProfile(e, v) {
+        console.log(v);
         if (v.password === v.prePassword) {
             const data = {
                 fullName: currentUser?.fullName,
@@ -55,10 +59,11 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                 pinfl: currentUser?.pinfl,
                 resident: currentUser?.resident,
                 email: v.email,
-                phoneNumber: v.phoneNumber,
-                password: v.password
+                phoneNumber: phoneNumber,
+                password: v.password ? v.password : null
             }
             dispatch(userAction.editUserAction({data}))
+            history.push('/admin')
         } else {
             toast.error("Parollar mos emas")
         }
@@ -148,7 +153,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                         type={parol.showPassword ? "text" : "password"}
                                         className="border "
                                         style={{backgroundColor: "#ffffff"}}
-                                        required
+
                                     />
                                     <div className="float-end">
                                         <InputAdornment style={{marginTop: "-19px"}} color={"dark"}
@@ -171,7 +176,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                         type={parol.showPassword ? "text" : "password"}
                                         className="border "
                                         style={{backgroundColor: "#ffffff"}}
-                                        required
+
                                     />
                                     <div className="float-end">
                                         <InputAdornment style={{marginTop: "-19px"}} color={"dark"}
@@ -205,7 +210,8 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                                 </Button>
                                         }
                                         {boolean ?
-                                            <Button className="py-2 px-5 mx-2 create" onClick={()=> history.push("/supervisory/profile/organization?ID=" + currentUser.id)}>
+                                            <Button className="py-2 px-5 mx-2 create"
+                                                    onClick={() => history.push("/supervisory/profile/organization?ID=" + currentUser.id)}>
                                                 Мои организации <AiOutlineDoubleRight/>
                                             </Button> : ''
                                         }

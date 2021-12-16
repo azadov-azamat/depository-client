@@ -5,7 +5,7 @@ import {AiOutlineLeft, AiOutlineRight, FaArrowLeft} from "react-icons/all";
 import {ACTIVE, EXTRAORDINARY, ORDINARY, PENDING} from "../../utils/contants";
 import {RiTimeFill} from "react-icons/ri";
 
-export default function Router({currentCompany, currentMeeting, userMemberType, zoomEnum, password_zoom}) {
+export default function Router({currentCompany, currentMeeting}) {
 
     const style = {
         textOverflow: 'ellipsis',
