@@ -58,9 +58,9 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
 
     const addBallot = ({votingId, option, agendaId}) => {
 
-        // if (quorum >= 75){
-        //     return toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
-        // }
+        if (quorum >= 75){
+            return toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
+        }
 
         confirmAlert({
             title: 'Проголосовать',
