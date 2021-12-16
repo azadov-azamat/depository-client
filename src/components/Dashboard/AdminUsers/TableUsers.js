@@ -3,7 +3,7 @@ import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
 import {Link} from "react-router-dom";
 import {ENTITY, FOREIGNER, INDIVIDUAL} from "../../../utils/contants";
 
-export default function TableUsers({user, t, deleteById}) {
+export default function TableUsers({user, t, deleteById, key}) {
 
     function status(status) {
         if (status === INDIVIDUAL) {
@@ -31,8 +31,7 @@ export default function TableUsers({user, t, deleteById}) {
     }
 
     return (
-        <>
-            <tr className=''>
+            <tr key={key}>
                 <th scope="row" className=' text-center'>
                     <Link to={`/admin/users/${user.id}`}
                           className='text-warning'><FaPen/></Link>
@@ -62,6 +61,5 @@ export default function TableUsers({user, t, deleteById}) {
                           onClick={() => deleteById(user.id)}><FaTrash/></text>
                 </td>
             </tr>
-        </>
     )
 }

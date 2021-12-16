@@ -15,7 +15,7 @@ import {AvField, AvForm} from "availity-reactstrap-validation";
 import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
 
-export default function Agenda({agendas, roleMember, meetingId, memberId, quorum}) {
+export default function Agenda({agendas, roleMember, meetingId, memberId, quorum, fromReestr}) {
 
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -57,7 +57,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
         }
     }
 
-    function editAgendaStatusIsActive(e, v){
+    function editAgendaStatusIsActive(e, v) {
         const data = {
             id: currentAgenda.id,
             meetingId: meetingId,
@@ -88,18 +88,8 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
             height: roleMember === CHAIRMAN || roleMember === SECRETARY ? '57vh' : "75vh"
         }}>
             {
-                roleMember === CHAIRMAN || roleMember === SECRETARY ?
-                agendas?.map((element, index) =>
-                        <div key={index}
-                             className={element.active ? 'questions p-2 mb-3 d-flex justify-content-between w-100 align-items-center shadow' : 'questions border p-2 mb-3 d-flex justify-content-between w-100 align-items-center'}>
-                            <span
-                                className="text-me d-flex align-items-center justify-content-between"><b
-                                style={element.active ? {color: '#198754'} : {color: '#bb2d3b'}}>{element.subject}</b></span>
-                            <button onClick={() => editStatusElement(element)} className='btn create py-2'
-                                    style={{width: '20vh'}}>{element.active ? "Отключить" : "Включить"}</button>
-                        </div>
-                    ) :
-                    roleMember === SIMPLE ?
+                roleMember === CHAIRMAN ?
+                    fromReestr ?
                         agendas?.map((element, index) =>
                             <div className="mt-2">
                                 <AccordionAgenda open={1}>
@@ -122,7 +112,8 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                             <span
                                                                 style={{fontWeight: 'bold'}}>{elementOption.votingText}</span>
                                                         </div>
-                                                        <AgendaByVoting quorum={quorum} agenda={element} variant={elementOption}
+                                                        <AgendaByVoting quorum={quorum} agenda={element}
+                                                                        variant={elementOption}
                                                                         memberId={memberId} meetingId={meetingId}/>
                                                     </>
                                                 ) :
@@ -132,49 +123,108 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                     </AccordionAgenda.Item>
                                 </AccordionAgenda>
                             </div>
-                        ) :
-                        <>
-                            <div className="d-flex justify-content-center">
-                                <table className="table table-hover table-bordered">
-                                    <>
-                                        <thead className="navUsers">
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col" className="w-25">Докладчик</th>
-                                            <th scope="col">Вопрос | Решение</th>
-                                            <th scope="col" style={{width: '0'}}>
-                                                <BiCheckDouble fontSize={25} color={"green"}/>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody className="">
-                                        {agendas?.length !== 0 ?
-                                            agendas?.map((agenda, index) => (
-                                                <tr key={index}>
-                                                    <td className={"text-center"}>
-                                                        {index + 1}
-                                                    </td>
-                                                    <td className="text-center">{agenda.userName}</td>
-                                                    <td>{agendaSubjectAndVoting({
-                                                        subject: agenda.subject,
-                                                        votingLit: agenda.votingOptions,
-                                                        extraInfo: agenda.extraInfo
-                                                    })}</td>
-                                                    <td className="text-center">{agenda.active ?
-                                                        <span className="text-success"> <FaCheck/></span> :
-                                                        <span className="text-danger"><FaTimes/></span>}</td>
-                                                </tr>
-                                            ))
-                                            :
-                                            <tr className='text-center'>
-                                                <th colSpan="5">Ничего не найдена</th>
-                                            </tr>
-                                        }
-                                        </tbody>
-                                    </>
-                                </table>
+                        )
+                        :
+                        agendas?.map((element, index) =>
+                            <div key={index}
+                                 className={element.active ? 'questions p-2 mb-3 d-flex justify-content-between w-100 align-items-center shadow' : 'questions border p-2 mb-3 d-flex justify-content-between w-100 align-items-center'}>
+                            <span
+                                className="text-me d-flex align-items-center justify-content-between"><b
+                                style={element.active ? {color: '#198754'} : {color: '#bb2d3b'}}>{element.subject}</b></span>
+                                <button onClick={() => editStatusElement(element)} className='btn create py-2'
+                                        style={{width: '20vh'}}>{element.active ? "Отключить" : "Включить"}</button>
                             </div>
-                        </>}
+                        )
+                    :
+                    roleMember === SECRETARY ?
+                        agendas?.map((element, index) =>
+                            <div key={index}
+                                 className={element.active ? 'questions p-2 mb-3 d-flex justify-content-between w-100 align-items-center shadow' : 'questions border p-2 mb-3 d-flex justify-content-between w-100 align-items-center'}>
+                            <span
+                                className="text-me d-flex align-items-center justify-content-between"><b
+                                style={element.active ? {color: '#198754'} : {color: '#bb2d3b'}}>{element.subject}</b></span>
+                                <button onClick={() => editStatusElement(element)} className='btn create py-2'
+                                        style={{width: '20vh'}}>{element.active ? "Отключить" : "Включить"}</button>
+                            </div>
+                        ) :
+                        roleMember === SIMPLE ?
+                            agendas?.map((element, index) =>
+                                <div className="mt-2">
+                                    <AccordionAgenda open={1}>
+                                        <AccordionAgenda.Item>
+                                            <AccordionAgenda.Header status={element.active}>
+                                                <div className="agenda" key={index}>
+                                                <span
+                                                    style={element.active ? {} : {color: '#CBCBC7FF'}}><b>{element.subject}</b></span><br/>
+                                                    <span
+                                                        style={element.active ? {color: '#6B8C67FF'} : {color: '#CBCBC7FF'}}><b>Доклатчик: {element.userName}</b></span>
+                                                </div>
+                                            </AccordionAgenda.Header>
+                                            <AccordionAgenda.Body>
+                                                {element.active ?
+                                                    element.votingOptions.map((elementOption, index) =>
+                                                        <>
+                                                            <div className="mt-2 container" key={index}>
+                                                                {index === 0 ? <><span
+                                                                    style={{fontSize: '23px'}}>Решения:</span><br/></> : ""}
+                                                                <span
+                                                                    style={{fontWeight: 'bold'}}>{elementOption.votingText}</span>
+                                                            </div>
+                                                            <AgendaByVoting quorum={quorum} agenda={element}
+                                                                            variant={elementOption}
+                                                                            memberId={memberId} meetingId={meetingId}/>
+                                                        </>
+                                                    ) :
+                                                    <span>Причина: {element.extraInfo}</span>
+                                                }
+                                            </AccordionAgenda.Body>
+                                        </AccordionAgenda.Item>
+                                    </AccordionAgenda>
+                                </div>
+                            ) :
+                            <>
+                                <div className="d-flex justify-content-center">
+                                    <table className="table table-hover table-bordered">
+                                        <>
+                                            <thead className="navUsers">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col" className="w-25">Докладчик</th>
+                                                <th scope="col">Вопрос | Решение</th>
+                                                <th scope="col" style={{width: '0'}}>
+                                                    <BiCheckDouble fontSize={25} color={"green"}/>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody className="">
+                                            {agendas?.length !== 0 ?
+                                                agendas?.map((agenda, index) => (
+                                                    <tr key={index}>
+                                                        <td className={"text-center"}>
+                                                            {index + 1}
+                                                        </td>
+                                                        <td className="text-center">{agenda.userName}</td>
+                                                        <td>{agendaSubjectAndVoting({
+                                                            subject: agenda.subject,
+                                                            votingLit: agenda.votingOptions,
+                                                            extraInfo: agenda.extraInfo
+                                                        })}</td>
+                                                        <td className="text-center">{agenda.active ?
+                                                            <span className="text-success"> <FaCheck/></span> :
+                                                            <span className="text-danger"><FaTimes/></span>}</td>
+                                                    </tr>
+                                                ))
+                                                :
+                                                <tr className='text-center'>
+                                                    <th colSpan="5">Ничего не найдена</th>
+                                                </tr>
+                                            }
+                                            </tbody>
+                                        </>
+                                    </table>
+                                </div>
+                            </>
+            }
             <Modal isOpen={openModal} className="modal-dialog modal-md">
                 <ModalHeader toggle={() => setOpenModal(!openModal)}
                              className="d-flex align-items-center">

@@ -7,7 +7,8 @@ import * as meetingAction from "../../redux/actions/MeetingAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
 import {useTranslation} from "react-i18next";
 
-export const Socket = ({meetingId, memberId}) => {
+export const Socket = ({meetingId, memberId, setCount, memberManagerState}) => {
+
     const dispatch = useDispatch();
     const {t} = useTranslation();
     const clientRef = useRef(null);
@@ -49,6 +50,10 @@ export const Socket = ({meetingId, memberId}) => {
             }}
 
             onMessage={(msg, topic) => {
+                dispatch({
+                    type: 'COUNT_QUORUM_MEETING',
+                    payload: parseInt((memberManagerState?.filter(element=> element.isConfirmed === true).length / memberManagerState.length) * 100)
+                })
 
                 if (topic === '/topic/user') {
                     dispatch({

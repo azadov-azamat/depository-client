@@ -261,7 +261,7 @@ export const getMemberById = (payload) => async (dispatch) => {
     }).then(res => {
         dispatch({
             type: 'CURRENT_MEMBER_TYPE',
-            payload: res.payload.memberTypeEnum
+            payload: {role: res.payload.memberTypeEnum, fromReestr: res.payload.fromReestr}
         })
     });
 } // success 90%

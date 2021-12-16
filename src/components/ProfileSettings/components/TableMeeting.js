@@ -1,5 +1,5 @@
 import React from "react";
-import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
+import {FaCheck, FaPen, FaTimes} from "react-icons/fa";
 import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contants";
 import {REQUEST_CREATE_MEETING} from "../../../redux/actionTypes/MeetingActionTypes";
 import {useDispatch} from "react-redux";
@@ -23,7 +23,6 @@ export default function TableMeeting({meetings, lang}) {
     }
 
     const styleBtn = {
-        // background: "#FFFFFF",
         cursor: 'pointer',
         zIndex: '1000'
     }
@@ -114,7 +113,8 @@ export default function TableMeeting({meetings, lang}) {
             {meetings?.map(element => (
                 <tr key={element.id}>
                     <th scope="row" className='text-center'>
-                        <text onClick={() => updateMeeting(element)} style={styleBtn} className='text-warning text-center'>
+                        <text onClick={() => updateMeeting(element)} style={styleBtn}
+                              className='text-warning text-center'>
                             <FaPen/>
                         </text>
                     </th>
@@ -133,11 +133,6 @@ export default function TableMeeting({meetings, lang}) {
                         <span className="text-success  m-0 p-0"> <FaCheck/></span> :
                         <span className="text-danger  m-0 p-0"><FaTimes/></span>}
                     </td>
-                    {/*<td className="text-center">*/}
-                    {/*    <text style={styleBtn} className="text-danger"*/}
-                    {/*          onClick={() => deleteById(element.id)}>*/}
-                    {/*        <FaTrash /></text>*/}
-                    {/*</td>*/}
                 </tr>
             ))}
         </>

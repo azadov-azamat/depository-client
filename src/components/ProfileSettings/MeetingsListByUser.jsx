@@ -39,15 +39,6 @@ export default function MeetingsListByUser() {
     const lastIndex = startIndex + (payload && payload[1]);
 
     const companyId = parseInt(query.get("company_id"));
-    // const userId = currentUser.id;
-
-    // const [objectData, setObjectData] = useState({
-    //     companyId: null,
-    //     status: null,
-    //     startRegistration: null,
-    //     startDate: null,
-    //     cityId: null
-    // })
 
     useEffect(() => {
 
@@ -90,9 +81,6 @@ export default function MeetingsListByUser() {
         <div className="">
             <div className="container-fluid">
                 <div className="users">
-                    {/*<RouteByDashboard link={"/supervisory/addOrEditMeeting/meeting?type=create"}*/}
-                    {/*                  cardName={t("routes.controlPage.meeting")}*/}
-                    {/*                  startIndex={startIndex} lastIndex={lastIndex} payload={payload} lang={t}/>*/}
                     <div className="minWidth d-flex justify-content-center align-items-center">
                         <div className="list_wrapper">
                             <Table className="usersList" hover>
@@ -109,7 +97,6 @@ export default function MeetingsListByUser() {
                                         className='text-center '>{t("meetingsList.startMeeting")}</th>
                                     <th style={{width: '135px'}} className='text-center  '>{t("meetingsList.city")}</th>
                                     <th style={{width: '15px'}}><VscFolderActive fontSize={20}/></th>
-                                    {/*<th style={{width: '15px'}}/>*/}
                                 </tr>
                                 </thead>
                                 <tbody>

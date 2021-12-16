@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
 
-export default function TableCompany({company, deleteById, updateCompany}) {
+export default function TableCompany({company, deleteById, updateCompany, key}) {
 
     const style = {
         whiteSpace: 'nowrap',
@@ -20,7 +20,7 @@ export default function TableCompany({company, deleteById, updateCompany}) {
     }
 
     return (
-        <tr>
+        <tr key={key}>
             <th scope="row" className=' text-center'>
                 <Link onClick={() => updateCompany(company.id)} to={`/admin/company/update/${company.id}`}
                       className='text-warning'><FaPen/>

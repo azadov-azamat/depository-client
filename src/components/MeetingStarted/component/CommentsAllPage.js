@@ -26,7 +26,8 @@ export default function CommentsAllPage({
                                             meetingFile,
                                             questionListMemberId,
                                             currentMeetingId,
-                                            memberId
+                                            memberId,
+                                            fromReestr
                                         }) {
 
     const dispatch = useDispatch();
@@ -73,7 +74,7 @@ export default function CommentsAllPage({
         }
     }
 
-   async function getRequest (e, v) {
+    async function getRequest(e, v) {
         const data = {
             meetingId: currentMeetingId,
             memberId: memberId,
@@ -82,8 +83,8 @@ export default function CommentsAllPage({
         socketClient.sendMessage('/topic/question', JSON.stringify(data));
     }
 
-    function addQuestion(e, v){
-        getRequest(e, v).then(res=>{
+    function addQuestion(e, v) {
+        getRequest(e, v).then(res => {
             dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: memberId}));
             setOpenQuestionModal(false)
         })
@@ -130,16 +131,31 @@ export default function CommentsAllPage({
                         }
                     </div>
                 </div>
-                {roleMember === SECRETARY || roleMember === CHAIRMAN ? "" :
-                    <div className={'questionNabMeeting text-center'}>
-                        <button onClick={() => setOpenQuestionModal(true)} className="btn create mt-2 mb-1">
-                            Задать вопрос организаторам
-                        </button>
-                        <button onClick={() => setOpenAnswerModal(true)} type="button"
-                                className="btn cancel mt-2 position-relative">
-                            Ответы на вопросы
-                        </button>
-                    </div>
+                {
+                    roleMember === CHAIRMAN ?
+                        fromReestr ?
+                            <div className={'questionNabMeeting text-center'}>
+                                <button onClick={() => setOpenQuestionModal(true)} className="btn create mt-2 mb-1">
+                                    Задать вопрос организаторам
+                                </button>
+                                <button onClick={() => setOpenAnswerModal(true)} type="button"
+                                        className="btn cancel mt-2 position-relative">
+                                    Ответы на вопросы
+                                </button>
+                            </div>
+                            : ""
+                        :
+                        roleMember === SECRETARY ? ''
+                            :
+                            <div className={'questionNabMeeting text-center'}>
+                                <button onClick={() => setOpenQuestionModal(true)} className="btn create mt-2 mb-1">
+                                    Задать вопрос организаторам
+                                </button>
+                                <button onClick={() => setOpenAnswerModal(true)} type="button"
+                                        className="btn cancel mt-2 position-relative">
+                                    Ответы на вопросы
+                                </button>
+                            </div>
                 }
             </div>
             <Modal isOpen={openQuestionModal} centered>

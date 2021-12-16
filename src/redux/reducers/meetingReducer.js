@@ -17,7 +17,8 @@ const initialState = {
 
 const reducers = {
     ['CURRENT_MEMBER_TYPE'](state, action) {
-        state.userMemberType = action.payload;
+        state.userMemberType = action.payload.role;
+        state.fromReestrMember = action.payload.fromReestr
     },
     [types.TOTAL_COUNT_MEETING](state, action) {
         state.totalCount = action;

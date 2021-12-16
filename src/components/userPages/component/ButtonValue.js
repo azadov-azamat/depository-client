@@ -22,23 +22,23 @@ export default function ButtonValue({meetingId, companyId}) {
         }))
     }, [currentUser])
 
-    function historyPushItem(role, memberId, meetingId) {
+    function historyPushItem(role, memberId, meetingId, fromReestr) {
         const linkPushItem = "/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId;
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
-            payload: role
+            payload: {role, fromReestr}
         });
         history.push(linkPushItem)
     }
 
-    function isConfirmed(role, memberId, meetingId) {
+    function isConfirmed(role, memberId, meetingId, fromReestr) {
         const linkPushItem = "/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
         dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
-            payload: role
+            payload: {role, fromReestr}
         });
         history.push(linkPushItem);
     }
@@ -59,7 +59,7 @@ export default function ButtonValue({meetingId, companyId}) {
                             return (
                                 <button
                                     style={style} key={element?.id}
-                                    onClick={() => element.fromReestr ? isConfirmed(CHAIRMAN, element.id, meetingId) : historyPushItem(CHAIRMAN, element.id, meetingId)}
+                                    onClick={() => element.fromReestr ? isConfirmed(CHAIRMAN, element.id, meetingId, element.fromReestr) : historyPushItem(CHAIRMAN, element.id, meetingId, element.fromReestr)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {element.fromReestr ? t("clientPage.toVote") : t("clientPage.controlMeeting")}
                                     <br/> ({element.fromReestr ? t("meetingCreated.roles.simple") : t("meetingCreated.roles.chairman")})
@@ -69,7 +69,7 @@ export default function ButtonValue({meetingId, companyId}) {
                             return (
                                 <button
                                     style={style} key={element?.id}
-                                    onClick={() => historyPushItem(SECRETARY, element.id, meetingId)}
+                                    onClick={() => historyPushItem(SECRETARY, element.id, meetingId, element.fromReestr)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.controlMeeting")} <br/> ({t("meetingCreated.roles.secretary")})
                                 </button>
@@ -78,7 +78,7 @@ export default function ButtonValue({meetingId, companyId}) {
                             return (
                                 <button
                                     style={style} key={element?.id}
-                                    onClick={() => isConfirmed(SIMPLE, element.id, meetingId)}
+                                    onClick={() => isConfirmed(SIMPLE, element.id, meetingId, element.fromReestr)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.simple")})
                                 </button>
@@ -87,7 +87,7 @@ export default function ButtonValue({meetingId, companyId}) {
                             return (
                                 <button
                                     style={style} key={element?.id}
-                                    onClick={() => isConfirmed(WATCHER, element.id, meetingId)}
+                                    onClick={() => isConfirmed(WATCHER, element.id, meetingId, element.fromReestr)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.watcher")})
                                 </button>
@@ -96,7 +96,7 @@ export default function ButtonValue({meetingId, companyId}) {
                             return (
                                 <button
                                     style={style} key={element?.id}
-                                    onClick={() => isConfirmed(SPEAKER, element.id, meetingId)}
+                                    onClick={() => isConfirmed(SPEAKER, element.id, meetingId, element.fromReestr)}
                                     className="create py-2 my-2 px-2 mx-2">
                                     {t("clientPage.toVote")} <br/> ({t("meetingCreated.roles.speaker")})
                                 </button>

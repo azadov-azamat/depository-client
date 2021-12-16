@@ -48,6 +48,7 @@ export const ControllerMeeting = () => {
         agendaState,
         currentMeeting,
         userMemberType,
+        fromReestrMember,
         memberManagerState,
         meetingFile
     } = reducers.meeting
@@ -58,7 +59,8 @@ export const ControllerMeeting = () => {
         loggingList,
         questionListMemberId,
         startCallMeeting,
-        connected
+        connected,
+        countQuorum
     } = reducers.meetingStarted
 
     const {currentUser} = reducers.auth
@@ -136,12 +138,6 @@ export const ControllerMeeting = () => {
         }
 
     }, [dispatch])
-
-    useEffect(() => {
-        setCount(memberManagerState?.filter(element=> element.isConfirmed === true).length)
-    }, [meetingId])
-
-    const percentQuorum = parseInt((count / memberManagerState.length) * 100)
 
     importScript("https://meet.jit.si/external_api.js");
 
@@ -275,16 +271,18 @@ export const ControllerMeeting = () => {
         <div className="container-fluid meeting px-5">
             <div>
                 <Router currentMeeting={currentMeeting && currentMeeting}
-                        currentCompany={currentCompany && currentCompany} userMemberType={userMemberType}/>
+                        currentCompany={currentCompany && currentCompany}/>
                 <div className="shadow p-3 my-3">
                     <div className="row">
                         <div className="col-12 col-md-8">
                             <NavbarControlMeeting clicked={clicked} countBadge={badgeCount} roleMember={userMemberType}
+                                                  fromReestr={fromReestrMember}
                                                   memberId={memberId} companyId={companyId}/>
                             <Switch>
                                 <Route path={"/issuerLegal/meeting/" + id + "/agenda"}>
                                     <Agenda agendas={agendaState} roleMember={userMemberType}
-                                            meetingId={meetingId} memberId={parseInt(memberId)} quorum={percentQuorum}/>
+                                            fromReestr={fromReestrMember}
+                                            meetingId={meetingId} memberId={parseInt(memberId)} quorum={countQuorum}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/question"}>
                                     <Question list={questionList} userId={currentUser.id}/>
@@ -296,7 +294,7 @@ export const ControllerMeeting = () => {
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
                                     <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}
                                                     startMeeting={startMeeting}
-                                                    meetingId={meetingId} quorum={percentQuorum}/>
+                                                    meetingId={meetingId} quorum={countQuorum}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/all_users_list"}>
                                     <TableUsers meetingId={meetingId} lang={t}/>
@@ -338,32 +336,57 @@ export const ControllerMeeting = () => {
                                                      style={{height: '53vh'}}
                                                 >
                                                     {
-                                                        userMemberType === CHAIRMAN || userMemberType === SECRETARY
-                                                            ?
-                                                            <div className="">
-                                                                <h2>Zoom Meeting</h2>
-                                                                <button className="create py-2 px-3 mt-2"
-                                                                        onClick={StartZoomMeeting}
-                                                                        type='submit'>
+                                                        userMemberType === CHAIRMAN ?
+                                                            fromReestrMember ?
+                                                                <div>
                                                                     {
-                                                                        startCallMeeting ?
-                                                                            "Join zoom-meeting" : "Start video-meeting"
+                                                                        !startCallMeeting ?
+                                                                            <h5>Видео конференция еще не запущено</h5>
+                                                                            :
+                                                                            <button className="create py-2 px-3 mt-2"
+                                                                                    onClick={StartZoomMeeting}
+                                                                                    type='submit'>
+                                                                                Join video-meeting
+                                                                            </button>
                                                                     }
-                                                                </button>
-                                                            </div>
-                                                            :
-                                                            <div>
-                                                                {
-                                                                    !startCallMeeting ?
-                                                                        <h5>Видео конференция еще не запущено</h5>
-                                                                        :
-                                                                        <button className="create py-2 px-3 mt-2"
-                                                                                onClick={StartZoomMeeting}
-                                                                                type='submit'>
-                                                                            Join video-meeting
-                                                                        </button>
-                                                                }
-                                                            </div>
+                                                                </div>
+                                                                :
+                                                                <div className="">
+                                                                    <h2>Zoom Meeting</h2>
+                                                                    <button className="create py-2 px-3 mt-2"
+                                                                            onClick={StartZoomMeeting}
+                                                                            type='submit'>
+                                                                        {
+                                                                            startCallMeeting ?
+                                                                                "Join zoom-meeting" : "Start video-meeting"
+                                                                        }
+                                                                    </button>
+                                                                </div>
+                                                            : userMemberType === SECRETARY ?
+                                                                <div className="">
+                                                                    <h2>Zoom Meeting</h2>
+                                                                    <button className="create py-2 px-3 mt-2"
+                                                                            onClick={StartZoomMeeting}
+                                                                            type='submit'>
+                                                                        {
+                                                                            startCallMeeting ?
+                                                                                "Join zoom-meeting" : "Start video-meeting"
+                                                                        }
+                                                                    </button>
+                                                                </div>
+                                                                :
+                                                                <div>
+                                                                    {
+                                                                        !startCallMeeting ?
+                                                                            <h5>Видео конференция еще не запущено</h5>
+                                                                            :
+                                                                            <button className="create py-2 px-3 mt-2"
+                                                                                    onClick={StartZoomMeeting}
+                                                                                    type='submit'>
+                                                                                Join video-meeting
+                                                                            </button>
+                                                                    }
+                                                                </div>
                                                     }
                                                 </Col>
                                             </Row>
@@ -372,7 +395,8 @@ export const ControllerMeeting = () => {
                                 }
                             </div>
                         </div>
-                        <CommentsAllPage roleMember={userMemberType} list={questionList && questionList}
+                        <CommentsAllPage roleMember={userMemberType} fromReestr={fromReestrMember}
+                                         list={questionList && questionList}
                                          currentUserId={currentUser && currentUser.id}
                                          meetingFile={meetingFile && meetingFile}
                                          loggingList={loggingList && loggingList}
@@ -382,7 +406,8 @@ export const ControllerMeeting = () => {
                     </div>
                 </div>
             </div>
-            <Socket meetingId={meetingId} memberId={memberId}/>
+            <Socket meetingId={meetingId} memberId={memberId} setCount={setCount}
+                    memberManagerState={memberManagerState}/>
         </div>
     )
 }

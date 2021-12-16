@@ -11,6 +11,7 @@ const initialState = {
     endCallMeeting: true,
     passwordZoomMeeting: null,
     connected: false,
+    countQuorum: 0
 };
 
 const reducers = {
@@ -107,6 +108,9 @@ const reducers = {
     ["PASSWORD_ZOOM_MEETING"](state, action) {
         state.startCallMeeting = action.payload.startCallMeeting
         state.passwordZoomMeeting = action.payload.passwordZoomMeeting
+    },
+    ["COUNT_QUORUM_MEETING"](state, action){
+        state.countQuorum = action.payload
     }
 }
 
