@@ -8,7 +8,7 @@ import {
     AiOutlineFilePdf,
     AiOutlineFileWord,
     AiOutlineVideoCameraAdd,
-    BsFillFileEarmarkImageFill
+    BsFillFileEarmarkImageFill, FaRegFileAudio, FaRegFileVideo, VscJson
 } from "react-icons/all";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {BASE_URL} from "../../../utils/config";
@@ -54,8 +54,10 @@ export default function CommentsAllPage({
 
         const excel = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         const word = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        const jsonFile = "application/json";
         const pdf = "application/pdf";
         const video = 'video/mp4';
+        const audioMpeg = 'audio/mpeg';
         const image = 'image/jpeg';
         const imgPNG = 'image/png';
 
@@ -70,7 +72,11 @@ export default function CommentsAllPage({
         } else if (type === image) {
             return <AiOutlineFileImage fontSize={30} style={{color: '#132e85'}}/>
         } else if (type === video) {
-            return <AiOutlineVideoCameraAdd fontSize={30} className='text-warning'/>
+            return <FaRegFileVideo fontSize={30} className='text-dark'/>
+        }else if (type === jsonFile){
+            return <VscJson fontSize={30} className='text-warning'/>
+        }else if (type === audioMpeg){
+            return <FaRegFileAudio fontSize={30} className='text-danger'/>
         }
     }
 
