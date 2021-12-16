@@ -13,7 +13,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
     const dispatch = useDispatch();
     const reducers = useSelector(state => state)
     const {currentBallotVotingList, loadingBallot} = reducers.meetingStarted
-    console.log(currentBallotVotingList)
+
     useEffect(() => {
         const data = {
             memberId: parseInt(memberId),
@@ -29,13 +29,13 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
         return currentBallotVotingList[agenda.id].find(voting => voting.votingOptionId === variant.id) !== undefined
     }, [currentBallotVotingList, variant])
 
-    console.log(currentBallotVotingList)
+
 
     const deleteBallot = (votingId) => {
         const data = {
             memberId: parseInt(memberId),
             agendaId: agenda.id,
-            id: 36856 // ballot ID
+            id: 37603 // ballot ID
         }
 
         confirmAlert({
@@ -58,7 +58,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
 
     const addBallot = ({votingId, option, agendaId}) => {
 
-        if (quorum >= 75){
+        if (quorum <= 75) {
             return toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
         }
 
@@ -96,7 +96,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
             </div>
         );
     }
-    // console.log(currentBallotVotingList)
+
     return (
         <>
             <div className="container d-flex justify-content-center align-items-center">

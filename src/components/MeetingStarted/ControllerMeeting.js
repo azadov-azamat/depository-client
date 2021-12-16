@@ -138,14 +138,7 @@ export const ControllerMeeting = () => {
     }, [dispatch])
 
     useEffect(() => {
-        // memberManagerState?.forEach(element => {
-        //     if (element.isConfirmed) {
-        //         console.log(element)
-        //         // setCount(prevState => prevState + 1)
-        //     }
-        // })
-
-        console.log(memberManagerState?.filter(element=> element.isConfirmed === true).length)
+        setCount(memberManagerState?.filter(element=> element.isConfirmed === true).length)
     }, [meetingId])
 
     const percentQuorum = parseInt((count / memberManagerState.length) * 100)

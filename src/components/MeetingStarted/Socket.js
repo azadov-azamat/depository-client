@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
-import {DEPOSITORY_ZOOM_MEETING_PASSWORD, TOKEN} from "../../utils/contants";
+import {TOKEN} from "../../utils/contants";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import * as meetingAction from "../../redux/actions/MeetingAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
@@ -35,7 +35,6 @@ export const Socket = ({meetingId, memberId}) => {
             topics={topics}
 
             onConnect={() => {
-                console.log("CONNECT==================");
                 dispatch({
                     type: "RESPONSE_CONNECT_SUCCESS",
                     payload: true
@@ -43,7 +42,6 @@ export const Socket = ({meetingId, memberId}) => {
             }}
 
             onDisconnect={() => {
-                console.log("DISCONNECTED=======================")
                 dispatch({
                     type: "RESPONSE_CONNECT_SUCCESS",
                     payload: false
@@ -58,11 +56,9 @@ export const Socket = ({meetingId, memberId}) => {
                         payload: msg
                     })
 
-                    console.log(msg)
-
                     msg.forEach(element => {
                         if (element.loggingText === t("meetingCreated.meetingStatus.active")) {
-                          dispatch(meetingAction.getMeetingByIdAction({meetingId}))
+                            dispatch(meetingAction.getMeetingByIdAction({meetingId}))
                         }
                     })
                 }
@@ -77,7 +73,6 @@ export const Socket = ({meetingId, memberId}) => {
                 }
 
                 if (topic === ("/topic/getMember/" + meetingId)) {
-                    console.log(msg, meetingId)
                     dispatch({
                         type: 'RESPONSE_GET_ONLINE_MEMBERS_LIST_SUCCESS',
                         payload: msg
@@ -85,8 +80,6 @@ export const Socket = ({meetingId, memberId}) => {
                 }
 
                 if (topic === '/topic/get-zoom/' + meetingId) {
-                    console.log("============================ get zoom ===========================")
-                    console.log(msg);
                     if (msg.zoom && msg.zoomPassword !== null) {
                         dispatch({
                             type: "PASSWORD_ZOOM_MEETING",
