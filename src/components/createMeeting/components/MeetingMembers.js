@@ -195,7 +195,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                         <tbody>
                         {memberManagerState.length !== 0
                             ? memberManagerState.map((role, index) =>
-                                <tr className="text-center">
+                                <tr className="text-center" key={index}>
                                     <td>{index + 1}</td>
                                     <td>{role.user.fullName}</td>
                                     <td>{role.user.pinfl} </td>
