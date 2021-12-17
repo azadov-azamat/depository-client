@@ -53,16 +53,19 @@ export default function MeetingMembers({currentMeetingId, lang}) {
     };
 
     useEffect(() => {
-        dispatch({
-            type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
-            payload: []
-        })
         dispatch(meetingActions.getMemberByMeetingId({
             meetingId: parseInt(meetingId),
             page: page,
             size,
             fromReestr: false
         }))
+
+        return () => {
+            dispatch({
+                type: 'REQUEST_GET_MEMBER_LIST_SUCCESS',
+                payload: []
+            })
+        }
     }, [page])
 
     const submit = (currentMemberId) => {

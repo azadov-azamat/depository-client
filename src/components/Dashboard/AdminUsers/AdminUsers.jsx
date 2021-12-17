@@ -17,7 +17,6 @@ import * as types from "../../../redux/actionTypes/UsersActionTypes";
 export default function AdminUsers() {
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const {t} = useTranslation();
 
     const reducers = useSelector(state => state);
@@ -51,6 +50,12 @@ export default function AdminUsers() {
 
     useEffect(() => {
         dispatch(adminUserAction.getUserSpecFilterAction({dataFilter, page, size}));
+        return () => {
+            dispatch({
+                type: "TOTAL_COUNT_PAGE",
+                payload: [0, 0]
+            })
+        }
     }, [dataFilter, page])
 
     useEffect(() => {

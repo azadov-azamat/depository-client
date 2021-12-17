@@ -23,11 +23,15 @@ export default function MeetingReestr({currentMeeting, lang}) {
     });
 
     useEffect(() => {
-        dispatch({
-            type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
-            payload: []
-        })
+
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeeting?.id, fromReestr: true}))
+
+        return () => {
+            dispatch({
+                type: 'REQUEST_GET_MEMBER_LIST_SUCCESS',
+                payload: []
+            })
+        }
     }, [currentMeeting?.id])
 
     const hiddenFileInput1 = React.useRef(null);

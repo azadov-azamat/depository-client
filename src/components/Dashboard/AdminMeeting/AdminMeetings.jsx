@@ -60,6 +60,12 @@ function AdminMeetings() {
 
     useEffect(() => {
         dispatch(adminMeetingAction.getMeetingSpecFilterAction({objectData, page, size}));
+        return () => {
+            dispatch({
+                type: "TOTAL_COUNT_PAGE",
+                payload: [0, 0]
+            })
+        }
     }, [objectData, page])
 
     const SearchMeetingSpecFilter = (value, fieldName) => {

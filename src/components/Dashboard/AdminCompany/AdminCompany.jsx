@@ -71,6 +71,12 @@ function AdminCompany() {
 
     useEffect(() => {
         dispatch(adminCompanyAction.getCompanySpecFilterAction({dataFilter, page, size}));
+        return () => {
+            dispatch({
+                type: "TOTAL_COUNT_PAGE",
+                payload: [0, 0]
+            })
+        }
     }, [dataFilter, page])
 
     const submit = (id) => {

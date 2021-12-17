@@ -38,10 +38,23 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     useEffect(() => {
         dispatch(meetingActions.getMemberByMeetingId({meetingId: currentMeetingId, fromReestr: false}))
+
+        return () => {
+            dispatch({
+                type: 'REQUEST_GET_MEMBER_LIST_SUCCESS',
+                payload: []
+            })
+        }
     }, [agendaState])
 
     useEffect(() => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
+        return () => {
+            dispatch({
+                type: 'REQUEST_GET_AGENDA_MY_MEETING_ID_SUCCESS',
+                payload: []
+            })
+        }
     }, [currentMeetingId])
 
     useEffect(() => {

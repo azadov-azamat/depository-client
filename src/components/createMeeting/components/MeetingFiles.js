@@ -43,10 +43,12 @@ export default function MeetingFiles({currentMeeting, lang}) {
     useEffect(() => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: parseInt(meetingId)}))
         dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: parseInt(meetingId)}))
-        dispatch({
-            type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
-            payload: []
-        })
+        return () => {
+            dispatch({
+                type: 'REQUEST_SUCCESS_GET_FILES_BY_MEETING_ID',
+                payload: []
+            })
+        }
     }, [currentMeeting])
 
     function downloadSetFile() {
