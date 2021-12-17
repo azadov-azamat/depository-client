@@ -35,13 +35,14 @@ export default function AddOrEditMeeting() {
     useEffect(() => {
         if (typeMeeting === "update") {
             dispatch(meetingActions.getMeetingByIdAction({meetingId: parseInt(meetingId)}))
-        } else {
-            dispatch({
-                type: "REQUEST_GET_MEETING_SUCCESS",
-                payload: []
-            })
         }
-    }, [typeMeeting])
+        return () => {
+            dispatch({
+                type: 'REQUEST_GET_MEETING_SUCCESS',
+                payload: []
+            });
+        }
+    }, [meetingId])
 
     return (
         <div className="allCss">

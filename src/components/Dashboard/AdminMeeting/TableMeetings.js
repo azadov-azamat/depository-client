@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {confirmAlert} from "react-confirm-alert";
 import * as adminMeetingAction from "../../../redux/actions/MeetingAction";
 import {useHistory} from "react-router-dom";
+import Text from "antd/es/typography/Text";
 
 export default function TableMeetings({meetings, lang}) {
 
@@ -32,33 +33,33 @@ export default function TableMeetings({meetings, lang}) {
     function status(status) {
         if (status === ACTIVE) {
             return (
-                <text style={style}>
+                <Text style={style}>
                     {lang("meetingCreated.meetingStatus.active")}
-                </text>
+                </Text>
             )
         } else if (status === PENDING) {
             return (
-                <text style={style}>
+                <Text style={style}>
                     {lang("meetingCreated.meetingStatus.pending")}
-                </text>
+                </Text>
             )
         } else if (status === FINISH) {
             return (
-                <text style={style}>
+                <Text style={style}>
                     {lang("meetingCreated.meetingStatus.finish")}
-                </text>
+                </Text>
             )
         } else if (status === CANCELED) {
             return (
-                <text style={style}>
+                <Text style={style}>
                     {lang("meetingCreated.meetingStatus.canceled")}
-                </text>
+                </Text>
             )
         } else if (status === DISABLED) {
             return (
-                <text style={style}>
+                <Text style={style}>
                     {lang("meetingCreated.meetingStatus.disabled")}
-                </text>
+                </Text>
             )
         }
     }
@@ -73,10 +74,7 @@ export default function TableMeetings({meetings, lang}) {
     }
 
     const updateMeeting = (currentMeeting) => {
-        dispatch({
-            type: REQUEST_CREATE_MEETING,
-            payload: currentMeeting
-        })
+
         history.push("/supervisory/addOrEditMeeting/meeting?type=update&meeting_id=" + currentMeeting.id)
     }
 

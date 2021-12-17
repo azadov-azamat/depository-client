@@ -42,6 +42,9 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     const [selectCountry, setSelectCountry] = useState(null);
     const [selectTypeEnum, setSelectTypeEnum] = useState(null);
     const [descriptionMeeting, setDescriptionMeeting] = useState(null);
+    const [startRegistration, setStartRegistration] = useState(null);
+    const [endRegistration, setEndRegistration] = useState(null);
+    const [startDate, setStartDate] = useState(null);
 
     const language = localStorage.getItem('i18nextLng');
     const role = localStorage.getItem(DEPOSITORY_ROLE);
@@ -51,7 +54,10 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
         setSelectStatus(currentMeeting?.status);
         setSelectCountry(currentMeeting?.cityId);
         setSelectTypeEnum(currentMeeting?.typeEnum);
-        setDescriptionMeeting(currentMeeting?.description)
+        setDescriptionMeeting(currentMeeting?.description);
+        setStartRegistration(currentMeeting.length !== 0 ? currentMeeting.startRegistration.substr((currentMeeting.startRegistration) - 1, 16) : "")
+        setEndRegistration(currentMeeting.length !== 0 ? currentMeeting.endRegistration.substr((currentMeeting.endRegistration) - 1, 16) : "")
+        setStartDate(currentMeeting.length !== 0 ? currentMeeting.startDate.substr((currentMeeting.startDate) - 1, 16) : "")
     }, [currentMeeting])
 
     useEffect(() => {
@@ -59,12 +65,6 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
             .then(res => {
                 setCountry(res.data)
             })
-        return () => {
-            dispatch({
-                type: 'REQUEST_GET_MEETING_SUCCESS',
-                payload: []
-            });
-        }
     }, [])
 
     function onSearch(val) {
@@ -97,7 +97,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     ];
 
     function CreateMeeting(e, v) {
-        if (!selectCompany && !selectStatus && !selectCountry && !selectTypeEnum) {
+        if (selectCompany === undefined  || selectStatus === undefined  || selectCountry === undefined  || selectTypeEnum === undefined  || startDate === '' || startRegistration === '' || endRegistration === '') {
             toast.warning(lang("toast.warning"))
         } else {
             const data = {
@@ -105,30 +105,19 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 cityId: selectCountry,
                 address: v.address,
                 description: v.description,
-                startDate: v.startDate + ':00.000Z',
-                startRegistration: v.startRegistration + ':00.000Z',
-                endRegistration: v.endRegistration + ':00.000Z',
+                startDate: startDate + ':00.000Z',
+                startRegistration: startRegistration + ':00.000Z',
+                endRegistration: endRegistration + ':00.000Z',
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
+            console.log(data)
             dispatch(meetingActions.createMeeting({data, history, toast}))
         }
     }
 
     function editMeeting(e, v) {
-        const data2 = {
-            id: parseInt(id),
-            companyId: selectCompany,
-            cityId: selectCountry,
-            address: v.address,
-            description: v.description,
-            startDate: v.startDate + ':00.000Z',
-            startRegistration: v.startRegistration + ':00.000Z',
-            endRegistration: v.endRegistration + ':00.000Z',
-            status: selectStatus,
-            typeEnum: selectTypeEnum,
-        }
-        if (!selectCompany && !selectStatus && !selectCountry && !selectTypeEnum) {
+        if (selectCompany === undefined  || selectStatus === undefined  || selectCountry === undefined  || selectTypeEnum === undefined  || startDate === '' || startRegistration === '' || endRegistration === '') {
             toast.warning(lang("toast.warning"))
         } else {
             const data = {
@@ -137,15 +126,17 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 cityId: selectCountry,
                 address: v.address,
                 description: v.description,
-                startDate: v.startDate + ':00.000Z',
-                startRegistration: v.startRegistration + ':00.000Z',
-                endRegistration: v.endRegistration + ':00.000Z',
+                startDate: startDate + ':00.000Z',
+                startRegistration: startRegistration + ':00.000Z',
+                endRegistration: endRegistration + ':00.000Z',
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
+            console.log(data)
             dispatch(meetingActions.updateMeetingAction({data, history}))
         }
     }
+
 
     return (
         <AvForm onValidSubmit={currentMeeting.length !== 0 ? editMeeting : CreateMeeting}>
@@ -207,7 +198,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                     <div className="form-group">
                         <Label className='required_fields'>{lang("meetingsList.city")}</Label>
                         <Select
-                            allowClear={true}
+                            // allowClear={true}
                             className="setting_input w-100"
                             placeholder="Выберите область"
                             optionFilterProp="children"
@@ -262,11 +253,13 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 <Col md={3} sm={6} xs={6}>
                     <div className="form-group">
                         <Label className='required_fields'>{lang("meetingsList.startRegister")}</Label>
-                        <AvField
+                        <input
                             type="datetime-local"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting?.startRegistration.substr((currentMeeting?.startRegistration) - 1, 16) : ""}
+                            defaultValue={startRegistration}
+                            onChange={(e) => setStartRegistration(e.target.value)}
+                            value={startRegistration}
                             name="startRegistration"
-                            className="border text-center timer"
+                            className="border text-center timer form-control"
                             style={{backgroundColor: '#FFFFFF'}}
                             required
                         />
@@ -275,11 +268,13 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 <Col md={3} sm={6} xs={6}>
                     <div className="form-group">
                         <Label className='required_fields'>{lang("meetingsList.finishRegister")}</Label>
-                        <AvField
+                        <input
                             type="datetime-local"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting?.startRegistration.substr((currentMeeting?.startRegistration) - 1, 16) : ""}
+                            defaultValue={endRegistration}
+                            onChange={(e) => setEndRegistration(e.target.value)}
+                            value={endRegistration}
                             name="endRegistration"
-                            className="border  text-center timer"
+                            className="border text-center timer form-control"
                             style={{backgroundColor: '#FFFFFF'}}
                             required
                         />
@@ -306,11 +301,13 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 <Col md={3}>
                     <div className="form-group">
                         <Label className='required_fields'>{lang("meetingsList.startMeeting")}</Label>
-                        <AvField
+                        <input
                             type="datetime-local"
-                            defaultValue={currentMeeting.length !== 0 ? currentMeeting.startDate.substr((currentMeeting?.startDate) - 1, 16) : ""}
+                            defaultValue={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            value={startDate}
                             name="startDate"
-                            className="border  text-center timer"
+                            className="border  text-center timer form-control"
                             style={{backgroundColor: '#FFFFFF'}}
                             required
                         />
