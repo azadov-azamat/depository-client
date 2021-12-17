@@ -47,7 +47,7 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum}) {
                         <br/>
                         принимали участие очно: голосов
                         <br/>
-                        кворум ({quorum}%)
+                        кворум ({isNaN(quorum) ? 0 : quorum}%)
                     </p>
                 </div>
                 {meetingStatus === PENDING ?
