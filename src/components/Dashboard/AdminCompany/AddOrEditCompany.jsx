@@ -167,8 +167,8 @@ export default function AddOrEditCompany() {
             <div className="container-fluid" style={{marginTop: '12vh'}}>
                 <RouteByDashboard lang={t} cardName={t("routes.controlPage.company")} disabled={true}
                                   link2={`/admin/company`}
-                                  statusName={currentCompany ? t("routes.addOrEditPage.editCompany") : t("routes.addOrEditPage.addCompany")}/>
-                <AvForm className="container_wrapper" onValidSubmit={currentCompany ? editCompany : addCompany}
+                                  statusName={currentCompany.length !== 0 ? t("routes.addOrEditPage.editCompany") : t("routes.addOrEditPage.addCompany")}/>
+                <AvForm className="container_wrapper" onValidSubmit={currentCompany.length !== 0 ? editCompany : addCompany}
                         enctype="multipart/form-data">
                     <Row>
                         <Col md={2} className="d-flex justify-content-center align-items-center">
@@ -396,7 +396,7 @@ export default function AddOrEditCompany() {
                                 </div>
                                 :
                                 <button type="submit"
-                                        className="btn-save px-3 py-2 my-1 mx-2">{currentCompany ? t("settings") : t("pages.company.addCompany")}</button>
+                                        className="btn-save px-3 py-2 my-1 mx-2">{currentCompany.length !== 0 ? t("settings") : t("pages.company.addCompany")}</button>
                             }
                             <button className="btn-cancel  my-1 px-3 py-2 mx-2"><Link
                                 to="/admin/company">{t("cancel")}</Link>
