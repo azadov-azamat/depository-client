@@ -101,7 +101,7 @@ export default function AddOrEditUser() {
             const data = {
                 fullName: v.fullName,
                 activated: userInfo.activated,
-                authTypeEnum: ['ROLE_USER'],
+                authTypeEnum: userInfo.authTypeEnum,
                 authorities: authority,
                 email: v.email,
                 groupEnum: userInfo.groupEnum,
