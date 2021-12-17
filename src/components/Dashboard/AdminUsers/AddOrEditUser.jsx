@@ -101,7 +101,7 @@ export default function AddOrEditUser() {
             const data = {
                 fullName: v.fullName,
                 activated: userInfo.activated,
-                authTypeEnum: userInfo.authTypeEnum,
+                authTypeEnum: ['ROLE_USER'],
                 authorities: authority,
                 email: v.email,
                 groupEnum: userInfo.groupEnum,
@@ -113,7 +113,7 @@ export default function AddOrEditUser() {
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber
             }
-            // dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
+            dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
             toast.warning(t("toast.warning"))
         }
