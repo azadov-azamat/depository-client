@@ -37,22 +37,6 @@ function AdminMeetings() {
         cityId: null
     })
 
-    useEffect(() => {
-
-        dispatch({
-            type: 'updateState',
-            payload: {
-                currentCompany: '',
-                currentMeeting: ''
-            }
-        });
-
-        dispatch({
-            type: 'REQUEST_GET_MEETING_SUCCESS',
-            payload: []
-        });
-    }, [page])
-
     const handleChange = (e, p) => {
         setPage(p);
         _DATA.jump(p);

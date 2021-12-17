@@ -17,6 +17,7 @@ import {BASE_URL} from "../../../utils/config";
 import {toast} from "react-toastify";
 import * as adminUsersAction from '../../../redux/actions/UsersAction';
 import {Select} from "antd";
+import * as types from "../../../redux/actionTypes/UsersActionTypes";
 
 const {Option} = Select;
 
@@ -77,7 +78,16 @@ export default function AddOrEditUser() {
 
     useEffect(() => {
         const current = parseInt(id);
-        dispatch(adminUsersAction.getUserById({userId: current, history}))
+        if (!isNaN(current)) {
+            dispatch(adminUsersAction.getUserById({userId: current, history}))
+        }
+
+        return () => {
+            dispatch({
+                type: types.REQUEST_GET_USER_SUCCESS,
+                payload: []
+            })
+        }
     }, [id])
 
     const addUser = (e, v) => {
@@ -317,7 +327,7 @@ export default function AddOrEditUser() {
                                                 type='checkbox'
                                                 name='isAdmin'
                                                 style={{width: "20px", height: "20px", borderRadius: "5px"}}
-                                                onChange={(e)=> setMyBoolean(e.target.value)}
+                                                onChange={(e) => setMyBoolean(e.target.value)}
                                                 defaultValue={() => currentForUser.authorities.some(element => element === 'ROLE_ADMIN')}
                                                 value={myBoolean}
                                             />

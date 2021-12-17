@@ -49,7 +49,9 @@ export default function AdminUsers() {
     };
 
     useEffect(() => {
+
         dispatch(adminUserAction.getUserSpecFilterAction({dataFilter, page, size}));
+
         return () => {
             dispatch({
                 type: "TOTAL_COUNT_PAGE",
@@ -57,13 +59,6 @@ export default function AdminUsers() {
             })
         }
     }, [dataFilter, page])
-
-    useEffect(() => {
-        dispatch({
-            type: types.REQUEST_GET_USER_SUCCESS,
-            payload: []
-        })
-    }, [page, name])
 
     const del = (userId) => {
 

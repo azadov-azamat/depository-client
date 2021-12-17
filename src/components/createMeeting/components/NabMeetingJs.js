@@ -59,10 +59,12 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
             .then(res => {
                 setCountry(res.data)
             })
-        dispatch({
-            type: "REQUEST_GET_AGENDA_BY_ID_SUCCESS",
-            payload: []
-        })
+        return () => {
+            dispatch({
+                type: 'REQUEST_GET_MEETING_SUCCESS',
+                payload: []
+            });
+        }
     }, [])
 
     function onSearch(val) {

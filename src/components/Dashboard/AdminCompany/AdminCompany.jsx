@@ -44,22 +44,6 @@ function AdminCompany() {
         _DATA.jump(p);
     };
 
-    useEffect(() => {
-        dispatch({
-            type: 'updateState',
-            payload: {
-                currentCompany: '',
-                users: '',
-                loading: false,
-                createCompanyLoading: false
-            }
-        });
-        dispatch({
-            type: "REQUEST_API_SUCCESS_USERS",
-            payload: []
-        })
-    }, [])
-
     const SearchCompanySpecFilter = (value, fieldName) => {
         if (value.length >= 3 || value.length === 0) {
             setDataFilter(prev => ({

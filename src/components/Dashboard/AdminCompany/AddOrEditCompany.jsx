@@ -64,10 +64,24 @@ export default function AddOrEditCompany() {
         if (!isNaN(current)) {
             dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(id), history}))
         }
+
+        return () => {
+            dispatch({
+                type: "REQUEST_GET_COMPANY_BY_ID",
+                payload: []
+            })
+        }
     }, [id])
 
     useEffect(() => {
         dispatch(actionUser.getUsersList())
+
+        return () => {
+            dispatch({
+                type: "REQUEST_API_SUCCESS_USERS",
+                payload: []
+            })
+        }
     }, [])
 
 
