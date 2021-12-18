@@ -84,7 +84,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                     className="border "
                                     style={style}
                                     disabled
-                                    required
+
                                 />
                             </div>
 
@@ -98,7 +98,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                         className="border "
                                         style={style}
                                         disabled
-                                        required
+
                                     />
                                 </Col>
                                 <Col md={6}>
@@ -111,7 +111,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                         className="border "
                                         style={style}
                                         disabled
-                                        required
+
                                     />
                                 </Col>
                             </Row>
