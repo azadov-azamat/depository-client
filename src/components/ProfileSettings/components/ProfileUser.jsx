@@ -64,7 +64,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                 pinfl: currentUser?.pinfl,
                 resident: currentUser?.resident,
                 email: v.email,
-                phoneNumber: phoneNumber,
+                phoneNumber: phoneNumber === undefined ? null : phoneNumber,
                 password: v.password ? v.password : null
             }
             dispatch(userAction.editUserAction({data}))
@@ -134,7 +134,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                 </Col>
                                 <Col md={6}>
                                     <div className="form-group">
-                                        <Label className='required_fields'>{lang("companiesList.phoneNumber")}</Label>
+                                        <Label>{lang("companiesList.phoneNumber")}</Label>
                                         <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                             <PhoneInput
                                                 placeholder="Введите номер телефона"
