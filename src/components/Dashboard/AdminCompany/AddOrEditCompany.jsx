@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Link, useHistory, useParams} from 'react-router-dom'
-import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {AvField, AvForm, AvInput} from 'availity-reactstrap-validation';
 import {ImCancelCircle} from "react-icons/all";
 import {useDispatch, useSelector} from 'react-redux';
 import {Col, Label, Row} from "reactstrap";
@@ -86,13 +86,13 @@ export default function AddOrEditCompany() {
 
 
     useEffect(() => {
-        setInn(currentCompany?.inn)
-        setPhoneNumber(currentCompany?.phoneNumber)
+        setInn(currentCompany?.inn ? currentCompany?.inn : null)
+        setPhoneNumber(currentCompany?.phoneNumber ? currentCompany?.phoneNumber : null)
         setSelectUsers({
             ...selectUsers,
             secretary: currentCompany.secretaryId,
             chairman: currentCompany.chairmanId,
-            active: currentCompany.active
+            active: currentCompany.active !== null ? currentCompany.active : false
         })
     }, [currentCompany])
 
@@ -104,7 +104,8 @@ export default function AddOrEditCompany() {
     }
 
     const addCompany = (e, v) => {
-        if (phoneNumber && inn) {
+        debugger
+        if (phoneNumber !== null || inn !== null) {
             if (phoneNumber.toString().length !== 13) {
                 return toast.error(t("toast.errorPhoneNumberLength"))
             }
@@ -119,11 +120,14 @@ export default function AddOrEditCompany() {
                 webPage: ("https://" + v.webPage),
                 ...v
             }
-            dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
+            console.log(data)
+            // dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
         } else {
             toast.warning(t("toast.warning"))
         }
     }
+
+    console.log(currentCompany)
 
     const editCompany = (e, v) => {
         const data = {
@@ -168,7 +172,8 @@ export default function AddOrEditCompany() {
                 <RouteByDashboard lang={t} cardName={t("routes.controlPage.company")} disabled={true}
                                   link2={`/admin/company`}
                                   statusName={currentCompany.length !== 0 ? t("routes.addOrEditPage.editCompany") : t("routes.addOrEditPage.addCompany")}/>
-                <AvForm className="container_wrapper" onValidSubmit={currentCompany.length !== 0 ? editCompany : addCompany}
+                <AvForm className="container_wrapper"
+                        onValidSubmit={currentCompany.length !== 0 ? editCompany : addCompany}
                         enctype="multipart/form-data">
                     <Row>
                         <Col md={2} className="d-flex justify-content-center align-items-center">
@@ -234,16 +239,20 @@ export default function AddOrEditCompany() {
                                 <Col md={6}>
                                     <div className="form-group">
                                         <Label className='required_fields'>{t("pages.company.inn")}</Label>
-                                        <input
-                                            ref={ref}
+                                        <AvInput
                                             placeholder={'Введите ИНН '}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="inn"
                                             value={inn}
                                             minLength={9} maxLength={9}
                                             onChange={(e) => setInn(e.target.value)}
-                                            className="setting_input border w-100"
+                                            className="setting_input border w-100 form-control"
                                             required
+                                            validate={{
+                                                required: {value: true, errorMessage: 'Please enter a name'},
+                                                pattern: {value: '^[0-9]+$', errorMessage: 'Your name must be composed only with letter and numbers'},
+                                                maxLength: {value: 9, errorMessage: 'Your name must be between 6 and 16 characters'}
+                                            }}
                                         />
                                     </div>
                                 </Col>
