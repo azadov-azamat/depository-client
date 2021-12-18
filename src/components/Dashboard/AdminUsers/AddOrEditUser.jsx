@@ -56,15 +56,15 @@ export default function AddOrEditUser() {
         authTypeEnum: null,
         generatePassword: null
     })
-
+    console.log(userInfo)
     useEffect(() => {
         setUserInfo({
             ...userInfo,
             pinfl: currentForUser.pinfl,
             generateLogin: currentForUser.login,
 
-            resident: currentForUser.resident !== null ? currentForUser.resident : true,
-            activated: currentForUser.activated !== null ? currentForUser.activated : true,
+            resident: currentForUser.resident !== undefined ? currentForUser.resident : true,
+            activated: currentForUser.activated !== undefined ? currentForUser.activated : true,
             groupEnum: currentForUser.groupEnum ? currentForUser.groupEnum : INDIVIDUAL,
             authTypeEnum: currentForUser.authTypeEnum ? currentForUser.authTypeEnum : INPASS,
         })
