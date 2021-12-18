@@ -92,8 +92,9 @@ export default function AddOrEditCompany() {
             ...selectUsers,
             secretary: currentCompany.secretaryId,
             chairman: currentCompany.chairmanId,
-            active: currentCompany.active !== null ? currentCompany.active : false
+            active: currentCompany.active === null ? true : currentCompany.active
         })
+
     }, [currentCompany])
 
     function onSearch(val) {
@@ -104,30 +105,27 @@ export default function AddOrEditCompany() {
     }
 
     const addCompany = (e, v) => {
-        debugger
-        if (phoneNumber !== null || inn !== null) {
+        if (phoneNumber !== null) {
             if (phoneNumber.toString().length !== 13) {
                 return toast.error(t("toast.errorPhoneNumberLength"))
             }
             const data = {
-                active: selectUsers.active,
+                active: selectUsers.active === undefined ? false : selectUsers.active,
                 chairmanId: selectUsers.chairman === undefined ? null : selectUsers.chairman,
                 secretaryId: selectUsers.secretary === undefined ? null : selectUsers.secretary,
                 imageUrl: file ? "yes" : 'no',
                 image: file,
                 phoneNumber: phoneNumber,
-                inn: inn,
+                inn: v.inn,
                 webPage: ("https://" + v.webPage),
                 ...v
             }
-            console.log(data)
-            // dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
+            dispatch(adminCompanyAction.createCompanyForAdmin({data, history}))
         } else {
             toast.warning(t("toast.warning"))
         }
     }
 
-    console.log(currentCompany)
 
     const editCompany = (e, v) => {
         const data = {
@@ -243,15 +241,22 @@ export default function AddOrEditCompany() {
                                             placeholder={'Введите ИНН '}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="inn"
-                                            value={inn}
+                                            value={currentCompany.length !== 0 ? currentCompany.inn : ""}
+                                            // value={inn}
                                             minLength={9} maxLength={9}
-                                            onChange={(e) => setInn(e.target.value)}
+                                            // onChange={(e) => setInn(e.target.value)}
                                             className="setting_input border w-100 form-control"
                                             required
                                             validate={{
                                                 required: {value: true, errorMessage: 'Please enter a name'},
-                                                pattern: {value: '^[0-9]+$', errorMessage: 'Your name must be composed only with letter and numbers'},
-                                                maxLength: {value: 9, errorMessage: 'Your name must be between 6 and 16 characters'}
+                                                pattern: {
+                                                    value: '^[0-9]+$',
+                                                    errorMessage: 'Your name must be composed only with letter and numbers'
+                                                },
+                                                maxLength: {
+                                                    value: 9,
+                                                    errorMessage: 'Your name must be between 6 and 16 characters'
+                                                }
                                             }}
                                         />
                                     </div>
