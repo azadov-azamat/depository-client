@@ -46,7 +46,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
 
     function EditProfile(e, v) {
         if (v.password){
-            if (v.password.length <= 4 || v.prePassword.length <= 4){
+            if (v.password.length <= 3 || v.prePassword.length <= 3){
                 return toast.error("Parol uzunligi 4 tadan kam bo`lmasligi kerak!")
             }
         }
