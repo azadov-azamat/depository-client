@@ -11,10 +11,10 @@ export default function TabOpen2({lang}) {
     const history = useHistory();
     const dispatch = useDispatch()
     const reducers = useSelector(state => state)
-    const {loading} = reducers.auth;
+    const {loading, historyPushLogin} = reducers.auth;
 
     function login(e, v) {
-        dispatch(authActions.login({data: v, history}))
+        dispatch(authActions.login({data: v, history, historyPushLogin}))
     }
 
     const style = {

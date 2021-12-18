@@ -4,6 +4,7 @@ import {TOKEN} from "../../utils/contants";
 import {AUTH_GET_CURRENT_USER_REQUEST} from "../actionTypes/AuthActionTypes";
 
 const initState = {
+    historyPushLogin: null,
     token: null,
     login: false,
     isAdmin: false,
@@ -19,6 +20,9 @@ const initState = {
 const reducers = {
     [types.TOTAL_COUNT_PAGE](state, action) {
         state.totalCount = action;
+    },
+    ["HISTORY_PUSH_FROM_LOGIN"](state, action) {
+        state.historyPushLogin = action.payload;
     },
     [types.REQUEST_START || AUTH_GET_CURRENT_USER_REQUEST](state) {
         state.loading = true;
