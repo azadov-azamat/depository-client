@@ -45,6 +45,11 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
     }, [currentUser])
 
     function EditProfile(e, v) {
+        if (v.password){
+            if (v.password.length <= 4 || v.prePassword.length <= 4){
+                return toast.error("Parol uzunligi 4 tadan kam bo`lmasligi kerak!")
+            }
+        }
         if (v.password === v.prePassword) {
             const data = {
                 fullName: currentUser?.fullName,
@@ -62,7 +67,6 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                 phoneNumber: phoneNumber,
                 password: v.password ? v.password : null
             }
-
             dispatch(userAction.editUserAction({data}))
             history.push('/admin')
         } else {
