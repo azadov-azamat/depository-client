@@ -62,9 +62,9 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                 phoneNumber: phoneNumber,
                 password: v.password ? v.password : null
             }
-            console.log(data)
-            // dispatch(userAction.editUserAction({data}))
-            // history.push('/admin')
+
+            dispatch(userAction.editUserAction({data}))
+            history.push('/admin')
         } else {
             toast.error("Parollar mos emas")
         }
