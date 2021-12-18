@@ -34,11 +34,11 @@ export const login = (payload) => async (dispatch) => {
                         payload: res.data,
                     });
             })
-            if (payload.historyPushLogin !== null){
-                payload.history.push(payload.historyPushLogin)
-            }else {
+            // if (payload.historyPushLogin !== null){
+            //     payload.history.push(payload.historyPushLogin)
+            // }else {
                 payload.history.push('/')
-            }
+            // }
         }
         return true;
     } catch (err) {
