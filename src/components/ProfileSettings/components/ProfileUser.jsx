@@ -39,6 +39,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
     const handlePasswordChange = (prop) => (event) => {
         setParol({...parol, [prop]: event.target.value});
     };
+
     useEffect(() => {
         setPhoneNumber(currentUser.phoneNumber)
     }, [currentUser])
@@ -61,8 +62,9 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                 phoneNumber: phoneNumber,
                 password: v.password ? v.password : null
             }
-            dispatch(userAction.editUserAction({data}))
-            history.push('/admin')
+            console.log(data)
+            // dispatch(userAction.editUserAction({data}))
+            // history.push('/admin')
         } else {
             toast.error("Parollar mos emas")
         }
@@ -124,7 +126,6 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                         value={currentUser?.email}
                                         className="border "
                                         style={{backgroundColor: "#ffffff"}}
-                                        required
                                     />
                                 </Col>
                                 <Col md={6}>
@@ -135,7 +136,6 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                                 placeholder="Введите номер телефона"
                                                 value={phoneNumber}
                                                 onChange={setPhoneNumber}
-                                                required={true}
                                             />
                                         </div>
                                     </div>
@@ -146,7 +146,6 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                     <AvField
                                         label={lang("password")}
                                         name="password"
-                                        minLength={4}
                                         value={currentUser?.password}
                                         onChange={handlePasswordChange("password")}
                                         type={parol.showPassword ? "text" : "password"}
@@ -170,7 +169,6 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                     <AvField
                                         label={lang("prePassword")}
                                         name="prePassword"
-                                        minLength={4}
                                         onChange={handlePasswordChange("password")}
                                         type={parol.showPassword ? "text" : "password"}
                                         className="border "
