@@ -26,6 +26,7 @@ import MyProfile from "../components/ProfileSettings/MyProfile";
 import AddOrEditUser from "../components/Dashboard/AdminUsers/AddOrEditUser";
 import {MeetingLists} from "../components/userPages/MeetingLists";
 import eimzo from "../eImzo/eimzoo";
+import UserMaterialUI from "../components/Dashboard/AdminUsers/UserMaterialUI";
 
 const App = () => {
     const [infoV, setInfoV] = useState(true)

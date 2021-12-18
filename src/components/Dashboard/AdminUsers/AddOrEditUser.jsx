@@ -63,10 +63,10 @@ export default function AddOrEditUser() {
             pinfl: currentForUser.pinfl,
             generateLogin: currentForUser.login,
 
-            resident: currentForUser.resident,
-            activated: currentForUser.activated,
-            groupEnum: currentForUser.groupEnum,
-            authTypeEnum: currentForUser.authTypeEnum,
+            resident: currentForUser.resident !== null ? currentForUser.resident : true,
+            activated: currentForUser.activated !== null ? currentForUser.activated : true,
+            groupEnum: currentForUser.groupEnum ? currentForUser.groupEnum : INDIVIDUAL,
+            authTypeEnum: currentForUser.authTypeEnum ? currentForUser.authTypeEnum : INPASS,
         })
         setPinfl(currentForUser.pinfl)
         setPhoneNumber(currentForUser.phoneNumber)
@@ -97,7 +97,7 @@ export default function AddOrEditUser() {
         } else if (v.isAdmin === false) {
             authority.push("ROLE_USER")
         }
-        if (pinfl && userInfo.generateLogin) {
+        if (pinfl || userInfo.generateLogin) {
             const data = {
                 fullName: v.fullName,
                 activated: userInfo.activated,
@@ -111,7 +111,7 @@ export default function AddOrEditUser() {
                 passport: v.passport,
                 pinfl: pinfl,
                 resident: userInfo.resident,
-                phoneNumber: phoneNumber
+                phoneNumber: phoneNumber === undefined ? null : phoneNumber
             }
             dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
@@ -127,7 +127,7 @@ export default function AddOrEditUser() {
             authority.push("ROLE_USER")
         }
         const current = parseInt(id);
-        if (pinfl && authority && userInfo.generateLogin) {
+        if (pinfl || authority && userInfo.generateLogin) {
             const data = {
                 id: current,
                 fullName: v.fullName,
@@ -142,7 +142,7 @@ export default function AddOrEditUser() {
                 passport: v.passport,
                 pinfl: pinfl,
                 resident: userInfo.resident,
-                phoneNumber: phoneNumber
+                phoneNumber: phoneNumber === undefined ? null : phoneNumber
             }
             dispatch(adminUsersAction.editUserAction({data, history}))
         } else {
@@ -178,17 +178,6 @@ export default function AddOrEditUser() {
         }
     }
 
-    function generate(pinfl, login) {
-        let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        let string_length = 8;
-        let randomstring = '';
-        for (let i = 0; i < string_length; i++) {
-            let rnum = Math.floor(Math.random() * chars.length);
-            randomstring += chars.substring(rnum, rnum + 1);
-        }
-        setUserInfo({...userInfo, generateLogin: login, pinfl: pinfl, generatePassword: randomstring})
-    }
-
     const handleClickShowPassword = () => {
         setPassword({...password, showPassword: !password.showPassword});
     };
@@ -197,38 +186,16 @@ export default function AddOrEditUser() {
         event.preventDefault();
     };
 
-    const handlePasswordChange = (prop) => (event) => {
-        setPassword({...password, [prop]: event.target.value});
-    };
-
-    function selectStatusResidentUser(value) {
-        setUserInfo({...userInfo, resident: value})
-    }
-
-    function selectStatusUser(value) {
-        setUserInfo({...userInfo, activated: value})
-    }
-
-    function selectGroupEnumUser(value) {
-        setUserInfo({...userInfo, groupEnum: value})
-    }
-
-    function selectLoginTypeUser(value) {
-        setUserInfo({...userInfo, authTypeEnum: value})
-    }
-
     const statusText = [
-        {value: INDIVIDUAL, text: t("user.jismoniy")},
-        {value: ENTITY, text: t("user.yuridik")},
-        {value: FOREIGNER, text: t("user.chetel")},
+        {id: 1, value: INDIVIDUAL, text: t("user.jismoniy")},
+        {id: 2, value: ENTITY, text: t("user.yuridik")},
+        {id: 3, value: FOREIGNER, text: t("user.chetel")},
     ];
 
     const statusLogin = [
-        {value: ANY, text: t("user.etp")},
-        {value: INPASS, text: t("user.loginetp")},
+        {id: 1, value: ANY, text: t("user.etp")},
+        {id: 2, value: INPASS, text: t("user.loginetp")},
     ];
-
-    console.log(currentForUser)
 
     return (
         <div className="settings p-3">
@@ -269,10 +236,10 @@ export default function AddOrEditUser() {
                                             optionFilterProp="children"
                                             defaultValue={currentForUser?.groupEnum}
                                             value={userInfo.groupEnum}
-                                            onChange={selectGroupEnumUser}
+                                            onChange={(value => setUserInfo({...userInfo, groupEnum: value}))}
                                         >
-                                            {statusText && statusText.map(value =>
-                                                <Option value={value.value}>{value.text}</Option>
+                                            {statusText?.map(value =>
+                                                <Option value={value.value} key={value.id}>{value.text}</Option>
                                             )}
                                         </Select>
                                     </Col>
@@ -285,7 +252,7 @@ export default function AddOrEditUser() {
                                                 optionFilterProp="children"
                                                 defaultValue={currentForUser?.resident}
                                                 value={userInfo.resident}
-                                                onChange={selectStatusResidentUser}
+                                                onChange={(value => setUserInfo({...userInfo, resident: value}))}
                                             >
                                                 <Option value={true}>{t("user.rezident")}</Option>
                                                 <Option value={false}>{t("user.nerezident")}</Option>
@@ -311,7 +278,7 @@ export default function AddOrEditUser() {
                                             optionFilterProp="children"
                                             defaultValue={currentForUser?.activated}
                                             value={userInfo.activated}
-                                            onChange={selectStatusUser}
+                                            onChange={(value => setUserInfo({...userInfo, activated: value}))}
                                         >
                                             <Option value={true}>{t("user.aktiv")}</Option>
                                             <Option value={false}>{t("user.neaktiv")}</Option>
@@ -381,7 +348,6 @@ export default function AddOrEditUser() {
                                         style={{backgroundColor: "#ffffff"}}
                                         onChange={(e) => {
                                             setUserInfo({...userInfo, generatePassword: e.target.value})
-                                            handlePasswordChange("password")
                                         }}
                                         type={password.showPassword ? "text" : "password"}
                                         maxLength={16}
@@ -408,11 +374,11 @@ export default function AddOrEditUser() {
                                             placeholder="Выберите статус"
                                             optionFilterProp="children"
                                             defaultValue={currentForUser?.authTypeEnum}
-                                            value={currentForUser.authTypeEnum}
-                                            onChange={selectLoginTypeUser}
+                                            value={userInfo.authTypeEnum}
+                                            onChange={(value => setUserInfo({...userInfo, authTypeEnum: value}))}
                                         >
-                                            {statusLogin && statusLogin.map((value, index) =>
-                                                <Option value={value.value} key={index}>{value.text}</Option>
+                                            {statusLogin?.map(value =>
+                                                <Option value={value.value} key={value.id}>{value.text}</Option>
                                             )}
                                         </Select>
                                     </div>
