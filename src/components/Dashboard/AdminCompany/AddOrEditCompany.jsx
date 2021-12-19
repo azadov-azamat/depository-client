@@ -8,13 +8,13 @@ import '../styles/settings.scss';
 import {Select} from "antd";
 import * as adminCompanyAction from '../../../redux/actions/CompanyAction';
 import * as actionUser from '../../../redux/actions/UsersAction';
+import {getUserById} from '../../../redux/actions/UsersAction';
 import Loader from "react-loader-spinner";
 import {useTranslation} from "react-i18next";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
 import RouteByDashboard from "../RouteByDashboard";
 import PhoneInput from "react-phone-number-input";
-import {useIMask} from 'react-imask';
 import {toast} from "react-toastify";
 
 const {Option} = Select;
@@ -30,15 +30,13 @@ export default function AddOrEditCompany() {
     const {currentCompany, createCompanyLoading} = reducers.company;
     const {users} = reducers.users
 
-    const [opts, setOpts] = useState({mask: Number});
-    const {ref, maskRef} = useIMask(opts);
     const [file, setFile] = useState('');
     const [imagePreviewUrl, setImagePreviewUrl] = useState('');
     const [selectUsers, setSelectUsers] = useState({
         secretary: null,
         chairman: null,
         active: null
-    })
+    });
 
     const [phoneNumber, setPhoneNumber] = useState()
     const [inn, setInn] = useState();
@@ -74,7 +72,7 @@ export default function AddOrEditCompany() {
     }, [id])
 
     useEffect(() => {
-        dispatch(actionUser.getUsersList())
+        // dispatch(actionUser.getUsersList())
 
         return () => {
             dispatch({
@@ -83,7 +81,6 @@ export default function AddOrEditCompany() {
             })
         }
     }, [])
-
 
     useEffect(() => {
         setInn(currentCompany?.inn ? currentCompany?.inn : null)
@@ -98,9 +95,8 @@ export default function AddOrEditCompany() {
     }, [currentCompany])
 
     function onSearch(val) {
-        const NAME = "FULL_NAME";
         if (val.length >= 3) {
-            dispatch(actionUser.getUserFilter({value: val, field: NAME}));
+            dispatch(actionUser.getUserSearch({value: val}));
         }
     }
 
@@ -163,6 +159,8 @@ export default function AddOrEditCompany() {
         setFile('')
         setImagePreviewUrl('');
     }
+
+    console.log(currentCompany)
 
     return (
         <div className="settings p-3">
@@ -282,6 +280,7 @@ export default function AddOrEditCompany() {
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
                                 >
+                                    <Option value={selectUsers.secretary}>{currentCompany?.secretary?.fullName}</Option>
                                     {users?.map(value =>
                                         <Option value={value.id} key={value.id}>{value.fullName}</Option>
                                     )}
@@ -319,6 +318,7 @@ export default function AddOrEditCompany() {
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                         }
                                     >
+                                        <Option value={selectUsers.chairman}>{currentCompany?.chairman?.fullName}</Option>
                                         {users?.map((value, index) =>
                                             <Option value={value.id} key={index}>{value.fullName}</Option>
                                         )}

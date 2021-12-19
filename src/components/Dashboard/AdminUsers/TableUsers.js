@@ -31,35 +31,35 @@ export default function TableUsers({user, t, deleteById, key}) {
     }
 
     return (
-            <tr key={key}>
-                <th scope="row" className=' text-center'>
-                    <Link to={`/admin/users/${user.id}`}
-                          className='text-warning'><FaPen/></Link>
-                </th>
-                <td className='text-center'>
-                    <p style={style}>{user.fullName}</p>
-                </td>
-                <td className='text-center'>
-                    <p style={style}>{user.email}</p>
-                </td>
-                <td className='text-center'>
-                    <p style={style}>{user.phoneNumber}</p>
-                </td>
-                <td className='text-center'>
-                    <p style={style}>{status(user.groupEnum)}</p>
-                </td>
-                <td className='text-center'>
-                    <p style={style}>{user.pinfl}</p>
-                </td>
-                <td className='text-center'>
-                    {user.activated ? <span className="text-success">
+        <tr key={key}>
+            <th scope="row" className=' text-center'>
+                <Link to={`/admin/users/${user.id}`}
+                      className='text-warning'><FaPen/></Link>
+            </th>
+            <td className='text-center'>
+                <p style={style}>{user.fullName}</p>
+            </td>
+            <td className='text-center'>
+                <p style={style}>{user.email}</p>
+            </td>
+            <td className='text-center'>
+                <p style={style}>{user.phoneNumber}</p>
+            </td>
+            <td className='text-center'>
+                <p style={style}>{status(user.groupEnum)}</p>
+            </td>
+            <td className='text-center'>
+                <p style={style}>{user.pinfl}</p>
+            </td>
+            <td className='text-center'>
+                {user.activated ? <span className="text-success">
                                 <FaCheck/></span> :
-                        <span className="text-danger"><FaTimes/></span>}
-                </td>
-                <td className='text-center'>
-                    <text className="text-danger" style={styleBtn}
-                          onClick={() => deleteById(user.id)}><FaTrash/></text>
-                </td>
-            </tr>
+                    <span className="text-danger"><FaTimes/></span>}
+            </td>
+            <td className='text-center'>
+                <text className="text-danger" style={styleBtn}
+                      onClick={() => deleteById(user.id)}><FaTrash/></text>
+            </td>
+        </tr>
     )
 }

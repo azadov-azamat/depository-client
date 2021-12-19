@@ -4,7 +4,7 @@ import {
     editUserApi,
     getById,
     getFilterUser,
-    getUsers,
+    getUsers, getUserSearchApi,
     getUserSpecFilterApi
 } from "../../api/UsersApi";
 import * as types from "../actionTypes/UsersActionTypes";
@@ -16,6 +16,7 @@ import {
 import {dark} from "@material-ui/core/styles/createPalette";
 import {toast} from "react-toastify";
 import {DEPOSITORY_USER} from "../../utils/contants";
+import {userMe} from "./AuthActions";
 
 
 export const createUserForAdmin = (payload) => async (dispatch) => {
@@ -40,8 +41,8 @@ export const createUserForAdmin = (payload) => async (dispatch) => {
                 }
             }
             if (err.response.data.title === 'Method argument not valid') {
-                err.response.data.fieldErrors.forEach(element=>{
-                    if (element.field === "pinfl"){
+                err.response.data.fieldErrors.forEach(element => {
+                    if (element.field === "pinfl") {
                         if (lang === "ru") {
                             payload.toast.error("PINFL Длина должна быть 14 символов!")
                         }
@@ -76,7 +77,7 @@ export const createUserForAdmin = (payload) => async (dispatch) => {
                     payload.toast.error(err.response.data.title)
                 }
             }
-            if (err.response.data.errorKey === 'innexists'){
+            if (err.response.data.errorKey === 'innexists') {
                 if (lang === "ru") {
                     payload.toast.error("ИНН уже используется!")
                 }
@@ -113,9 +114,6 @@ export const getUserSpecFilterAction = (payload) => async (dispatch) => {
             types: [types.REQUEST_API_START_USERS, types.REQUEST_API_SUCCESS_USERS, types.REQUEST_API_ERROR_USERS],
             data: payload
         });
-        if (res.success) {
-            console.log(res.success)
-        }
     } catch (err) {
         if (err.response) {
             console.log(err.response)
@@ -147,8 +145,20 @@ export const getUserFilter = (payload) => async (dispatch) => {
 export const getUserById = (payload) => async (dispatch) => {
     dispatch({
         api: getById,
-        types: ["",types.REQUEST_GET_USER_SUCCESS,""],
+        types: ["", types.REQUEST_GET_USER_SUCCESS, ""],
         data: payload.userId
+    })
+}
+
+export const getUserSearch = (payload) => async (dispatch) => {
+    dispatch({
+        api: getUserSearchApi,
+        types: [
+            types.REQUEST_GET_USERS_LIST_START,
+            types.REQUEST_GET_USERS_LIST_SUCCESS,
+            types.REQUEST_GET_USERS_LIST_ERROR
+        ],
+        data: payload
     })
 }
 
@@ -158,8 +168,8 @@ export const editUserAction = (payload) => async (dispatch) => {
         types: [REQUEST_API_START_USERS, '', REQUEST_API_ERROR_USERS],
         data: payload.data
     }).then(res => {
-        // toast.success("keldi")
         payload.history.push('/admin/users')
+        dispatch(userMe());
     }).catch(err => {
         console.log(err.response)
     })

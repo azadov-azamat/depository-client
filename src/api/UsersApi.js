@@ -25,6 +25,10 @@ export const getById =(data)=>{
     return HttpClient.doGet(api.userMethods + "/"+ data)
 }
 
+export const getUserSearchApi =(data)=>{
+    return HttpClient.doGet(api.userSearch + (data && data ? "?searchValue=" + data.value :''))
+}
+
 export const editUserApi = (data)=>{
     return HttpClient.doPut(api.userMethods, data)
 }

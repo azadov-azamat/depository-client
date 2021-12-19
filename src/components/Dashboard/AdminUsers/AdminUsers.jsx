@@ -3,7 +3,6 @@ import '../styles/users.css'
 import {useDispatch, useSelector} from 'react-redux';
 import {Table} from "reactstrap";
 import FormForUser from "./FormForUser";
-import {useHistory} from "react-router-dom";
 import usePagination from "../Pagination";
 import {confirmAlert} from "react-confirm-alert";
 import {useTranslation} from "react-i18next";
@@ -11,7 +10,6 @@ import RouteByDashboard from "../RouteByDashboard";
 import PaginationDashboard from "../PaginationDashboard";
 import * as adminUserAction from "../../../redux/actions/UsersAction";
 import TableUsers from "./TableUsers";
-import * as types from "../../../redux/actionTypes/UsersActionTypes";
 
 
 export default function AdminUsers() {
@@ -24,7 +22,6 @@ export default function AdminUsers() {
     const {loading, users} = reducers.users
     const {payload} = reducers.auth.totalCount
 
-    const [name, setName] = useState('');
     const [page, setPage] = useState(1);
 
     const size = 8;
@@ -49,9 +46,7 @@ export default function AdminUsers() {
     };
 
     useEffect(() => {
-
         dispatch(adminUserAction.getUserSpecFilterAction({dataFilter, page, size}));
-
         return () => {
             dispatch({
                 type: "TOTAL_COUNT_PAGE",
@@ -72,7 +67,6 @@ export default function AdminUsers() {
                 },
                 {
                     label: 'Нет',
-                    // onClick: () => dispatch(adminUserAction.deleteUserAction(userId))
                 }
             ]
         });

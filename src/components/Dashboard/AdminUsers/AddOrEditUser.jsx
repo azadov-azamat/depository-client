@@ -42,7 +42,7 @@ export default function AddOrEditUser() {
     })
     const [phoneNumber, setPhoneNumber] = useState();
     const [pinfl, setPinfl] = useState();
-    const [myBoolean, setMyBoolean] = useState(null);
+    const [myBoolean, setMyBoolean] = useState(false);
     const [userInfo, setUserInfo] = useState({
         isAdmin: null,
         pinfl: null,
@@ -56,7 +56,7 @@ export default function AddOrEditUser() {
         authTypeEnum: null,
         generatePassword: null
     })
-    console.log(userInfo)
+
     useEffect(() => {
         setUserInfo({
             ...userInfo,
@@ -70,10 +70,24 @@ export default function AddOrEditUser() {
         })
         setPinfl(currentForUser.pinfl)
         setPhoneNumber(currentForUser.phoneNumber)
-        const auth = currentForUser.authorities
-        if ({...auth} === "ROLE_MODERATOR") {
-            setMyBoolean(true)
-        }
+        const role = currentForUser?.authorities
+
+        // role.forEach(element => {
+        //     console.log(element)
+        //         // if (element === "ROLE_ADMIN") {
+        //         //     setMyBoolean(true);
+        //         // } else if (element === "ROLE_MODERATOR") {
+        //         //     setMyBoolean(true);
+        //         // } else if (element === "ROLE_USER") {
+        //         //     setMyBoolean(false);
+        //         // }
+        //     }
+        // )
+        // setMyBoolean(role.some(element=> element === "ROLE_MODERATOR"))
+        // console.log(role.some(element=> element === "ROLE_MODERATOR"))
+        // if (role[0] === "ROLE_MODERATOR" || role[0] === "ROLE_ADMIN") {
+        //     setMyBoolean(true)
+        // }
     }, [currentForUser])
 
     useEffect(() => {
@@ -91,18 +105,12 @@ export default function AddOrEditUser() {
     }, [id])
 
     const addUser = (e, v) => {
-        const authority = [];
-        if (v.isAdmin === true) {
-            authority.push("ROLE_MODERATOR")
-        } else if (v.isAdmin === false) {
-            authority.push("ROLE_USER")
-        }
         if (pinfl || userInfo.generateLogin) {
             const data = {
                 fullName: v.fullName,
                 activated: userInfo.activated,
                 authTypeEnum: userInfo.authTypeEnum,
-                authorities: authority,
+                authorities: myBoolean ? ["ROLE_MODERATOR"] : ["ROLE_USER"],
                 email: v.email,
                 groupEnum: userInfo.groupEnum,
                 inn: null,
@@ -113,7 +121,7 @@ export default function AddOrEditUser() {
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber === undefined ? null : phoneNumber
             }
-            dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
+            // dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
             toast.warning(t("toast.warning"))
         }
@@ -196,7 +204,8 @@ export default function AddOrEditUser() {
         {id: 1, value: ANY, text: t("user.etp")},
         {id: 2, value: INPASS, text: t("user.loginetp")},
     ];
-
+    // const [x, setX] = useState(false);
+    // console.log(x);
     return (
         <div className="settings p-3">
             <div className="container-fluid" style={{marginTop: '12vh'}}>
@@ -289,17 +298,19 @@ export default function AddOrEditUser() {
                                     <Col md={12}>
                                         <div className="d-flex align-items-center forCheck">
                                             <AvField
-                                                className="mt-3 rounded"
+                                                className="mt-3 rounded form-check-input"
                                                 id='forCheck'
                                                 type='checkbox'
                                                 name='isAdmin'
+                                                checked={myBoolean}
                                                 style={{width: "20px", height: "20px", borderRadius: "5px"}}
-                                                onChange={(e) => setMyBoolean(e.target.value)}
-                                                defaultValue={() => currentForUser.authorities.some(element => element === 'ROLE_ADMIN')}
+                                                onChange={(e) => setMyBoolean(!myBoolean)}
                                                 value={myBoolean}
                                             />
-                                            <Label for='forCheck'>{t("user.dostup")}</Label>
+                                            <Label for='forCheck'
+                                                   className="form-check-label">{t("user.dostup")}</Label>
                                         </div>
+                                        {/*<input type="checkbox" checked={x} onChange={() => setX(!x)} />*/}
                                     </Col>
                                 </Row>
                             </div>
@@ -399,12 +410,13 @@ export default function AddOrEditUser() {
                                 <Col md={6} className="d-flex d-md-none">
                                     <div className="d-flex align-items-center forCheck">
                                         <AvField
+                                            className="mt-3 rounded form-check-input"
                                             id='forCheck'
                                             type='checkbox'
                                             name='isAdmin'
+                                            checked={myBoolean}
                                             style={{width: "20px", height: "20px", borderRadius: "5px"}}
-                                            onChange={(e) => setMyBoolean(e.target.value)}
-                                            defaultValue={myBoolean}
+                                            onChange={(e) => setMyBoolean(!myBoolean)}
                                             value={myBoolean}
                                         />
                                         <Label for='forCheck'>{t("user.dostup")}</Label>

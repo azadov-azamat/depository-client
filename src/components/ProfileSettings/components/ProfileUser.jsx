@@ -12,6 +12,7 @@ import {toast} from "react-toastify";
 import {useHistory} from "react-router-dom";
 import {AiOutlineDoubleRight} from "react-icons/all";
 import PhoneInput from "react-phone-number-input";
+import {userMe} from "../../../redux/actions/AuthActions";
 
 export default function ProfileUser({lang, currentUser, loading, boolean}) {
 
@@ -28,6 +29,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
     const style = {
         cursor: 'no-drop',
     }
+
     const handleClickShowPassword = () => {
         setParol({...parol, showPassword: !parol.showPassword});
     };

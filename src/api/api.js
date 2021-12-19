@@ -5,6 +5,7 @@ export const api = {
     userMethods: '/moder/user',
     userFilter: '/moder/user/filter',
     userSpecFilter: '/moder/user/spec-filter',
+    userSearch: '/moder/user/search',
 
     meetingMethod: '/meeting',
     editMeetingStatus: '/meeting/meeting-status',

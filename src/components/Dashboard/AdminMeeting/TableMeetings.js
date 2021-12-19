@@ -1,7 +1,6 @@
 import React from "react";
 import {FaCheck, FaPen, FaTimes, FaTrash} from "react-icons/fa";
 import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contants";
-import {REQUEST_CREATE_MEETING} from "../../../redux/actionTypes/MeetingActionTypes";
 import {useDispatch} from "react-redux";
 import {confirmAlert} from "react-confirm-alert";
 import * as adminMeetingAction from "../../../redux/actions/MeetingAction";
@@ -74,7 +73,6 @@ export default function TableMeetings({meetings, lang}) {
     }
 
     const updateMeeting = (currentMeeting) => {
-
         history.push("/supervisory/addOrEditMeeting/meeting?type=update&meeting_id=" + currentMeeting.id)
     }
 

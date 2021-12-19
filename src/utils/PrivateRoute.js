@@ -33,7 +33,7 @@ const PrivateRoute = ({dispatch, auth, path, history, setNav, location, componen
         toast.error('Интернет не работает!')
         history.push('/')
     }
-    console.log(location)
+
     const filterRole = (props) => {
         const role = localStorage.getItem(DEPOSITORY_ROLE);
         if (role === 'admin' || role === 'moder') {
