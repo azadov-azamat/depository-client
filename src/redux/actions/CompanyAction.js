@@ -26,9 +26,9 @@ export const getCompanyByIdAction = (payload) => async (dispatch) => {
         const user  = []
         if (company.secretary !== null){
             user.push(company.secretary)
-            if (company.chairman !== null){
-                user.push(company.chairman)
-            }
+        }
+        if (company.chairman !== null){
+            user.push(company.chairman)
         }
         dispatch({
             type: "REQUEST_GET_USERS_LIST_SUCCESS",

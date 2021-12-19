@@ -63,12 +63,6 @@ export default function AddOrEditCompany() {
             dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(id), history}))
         }
 
-        return () => {
-            dispatch({
-                type: "REQUEST_GET_COMPANY_BY_ID",
-                payload: []
-            })
-        }
     }, [id])
 
     useEffect(() => {
@@ -97,11 +91,6 @@ export default function AddOrEditCompany() {
     function onSearch(val) {
         if (val.length >= 3) {
             dispatch(actionUser.getUserSearch({value: val}));
-        }else if (val.length === 0){
-            dispatch({
-                type: "REQUEST_API_SUCCESS_USERS",
-                payload: []
-            })
         }
     }
 
