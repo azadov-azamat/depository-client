@@ -8,7 +8,6 @@ import '../styles/settings.scss';
 import {Select} from "antd";
 import * as adminCompanyAction from '../../../redux/actions/CompanyAction';
 import * as actionUser from '../../../redux/actions/UsersAction';
-import {getUserById} from '../../../redux/actions/UsersAction';
 import Loader from "react-loader-spinner";
 import {useTranslation} from "react-i18next";
 import {BASE_URL} from "../../../utils/config";
@@ -63,11 +62,15 @@ export default function AddOrEditCompany() {
             dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(id), history}))
         }
 
+        return () => {
+            dispatch({
+                type: "REQUEST_GET_COMPANY_BY_ID",
+                payload: []
+            })
+        }
     }, [id])
 
     useEffect(() => {
-        // dispatch(actionUser.getUsersList())
-
         return () => {
             dispatch({
                 type: "REQUEST_API_SUCCESS_USERS",
@@ -154,8 +157,6 @@ export default function AddOrEditCompany() {
         setImagePreviewUrl('');
     }
 
-    console.log(currentCompany)
-
     return (
         <div className="settings p-3">
             <div className="container-fluid" style={{marginTop: '12vh'}}>
@@ -170,7 +171,7 @@ export default function AddOrEditCompany() {
                             {currentCompany && currentCompany.imageUrl === "yes" ?
                                 <div className='currentCompanyLogo d-flex align-items-center'>
                                     <img className="w-100"
-                                         src={BASE_URL + api.getLogoByCompanyId + currentCompany.id}
+                                         src={BASE_URL + api.getLogoByCompanyId + "/"+ currentCompany.id}
                                          alt=""/>
                                 </div>
                                 :
@@ -234,9 +235,7 @@ export default function AddOrEditCompany() {
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="inn"
                                             value={currentCompany.length !== 0 ? currentCompany.inn : ""}
-                                            // value={inn}
                                             minLength={9} maxLength={9}
-                                            // onChange={(e) => setInn(e.target.value)}
                                             className="setting_input border w-100 form-control"
                                             required
                                             validate={{
@@ -274,7 +273,6 @@ export default function AddOrEditCompany() {
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
                                 >
-                                    {/*<Option className={currentCompany.secretary === null ? 'd-none' :""} value={selectUsers.secretary}>{currentCompany?.secretary?.fullName}</Option>*/}
                                     {users?.map(value =>
                                         <Option value={value.id} key={value.id}>{value.fullName}</Option>
                                     )}
@@ -312,7 +310,6 @@ export default function AddOrEditCompany() {
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                         }
                                     >
-                                        {/*<Option value={selectUsers.chairman}>{currentCompany?.chairman?.fullName}</Option>*/}
                                         {users?.map((value, index) =>
                                             <Option value={value.id} key={index}>{value.fullName}</Option>
                                         )}
