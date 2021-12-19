@@ -97,6 +97,11 @@ export default function AddOrEditCompany() {
     function onSearch(val) {
         if (val.length >= 3) {
             dispatch(actionUser.getUserSearch({value: val}));
+        }else if (val.length === 0){
+            dispatch({
+                type: "REQUEST_API_SUCCESS_USERS",
+                payload: []
+            })
         }
     }
 
@@ -280,7 +285,7 @@ export default function AddOrEditCompany() {
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
                                 >
-                                    <Option value={selectUsers.secretary}>{currentCompany?.secretary?.fullName}</Option>
+                                    {/*<Option className={currentCompany.secretary === null ? 'd-none' :""} value={selectUsers.secretary}>{currentCompany?.secretary?.fullName}</Option>*/}
                                     {users?.map(value =>
                                         <Option value={value.id} key={value.id}>{value.fullName}</Option>
                                     )}
@@ -318,7 +323,7 @@ export default function AddOrEditCompany() {
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                         }
                                     >
-                                        <Option value={selectUsers.chairman}>{currentCompany?.chairman?.fullName}</Option>
+                                        {/*<Option value={selectUsers.chairman}>{currentCompany?.chairman?.fullName}</Option>*/}
                                         {users?.map((value, index) =>
                                             <Option value={value.id} key={index}>{value.fullName}</Option>
                                         )}

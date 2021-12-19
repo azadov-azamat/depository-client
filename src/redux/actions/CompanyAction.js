@@ -22,6 +22,18 @@ export const getCompanyByIdAction = (payload) => async (dispatch) => {
         if (res.payload.imageUrl !== "no") {
             dispatch(getLogoCompanyByCompanyIDAction({companyId: payload.companyId}))
         }
+        const company = res.payload
+        const user  = []
+        if (company.secretary !== null){
+            user.push(company.secretary)
+            if (company.chairman !== null){
+                user.push(company.chairman)
+            }
+        }
+        dispatch({
+            type: "REQUEST_GET_USERS_LIST_SUCCESS",
+            payload: user
+        })
     }).catch(err => {
         if (err.response.status === 404) {
             payload.history.push('/notFound')
