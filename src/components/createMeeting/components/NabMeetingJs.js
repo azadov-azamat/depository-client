@@ -68,10 +68,9 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     }, [])
 
     function onSearch(val) {
-        const NAME = "NAME";
         if (val.length >= 3) {
             if (role === 'admin') {
-                dispatch(adminCompanyAction.getCompanyFilter({value: val, field: NAME}));
+                dispatch(adminCompanyAction.getCompanySearchNameAction({name: val}));
             } else {
                 dispatch(companyAction.getCompanyByUserId({currentUserId: currentUser?.id}))
             }
@@ -111,7 +110,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
-            console.log(data)
+
             dispatch(meetingActions.createMeeting({data, history, toast}))
         }
     }

@@ -203,8 +203,6 @@ export const ControllerMeeting = () => {
 
         if (userMemberType === CHAIRMAN || userMemberType === SECRETARY) {
             const dataZoom = {
-                password: null,
-                zoom: false,
                 meetingId: parseInt(id),
                 memberId: parseInt(memberId)
             }
@@ -216,14 +214,15 @@ export const ControllerMeeting = () => {
                 meetingId: parseInt(id),
                 loggingText: "Видео конференция завершено"
             }
+
             socketClient.sendMessage('/topic/user-all', JSON.stringify(data));
+
             setZoomStatusMe(false)
             setCall(false)
         } else {
             setCall(false)
             setZoomStatusMe(false)
         }
-
         history.push("/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
     }
 

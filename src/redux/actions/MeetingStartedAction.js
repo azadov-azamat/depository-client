@@ -102,6 +102,7 @@ export const getQuestionByMeetingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_QUESTION_LIST", "REQUEST_SUCCESS_QUESTION_LIST", "REQUEST_ERROR_QUESTION_LIST"],
         data: payload
     }).then(res => {
+
     }).catch(err => {
     })
 }
@@ -215,14 +216,12 @@ export const getBallotByVotingAction = (payload) => async (dispatch) => {
 }
 
 export const getBallotVoting = (payload) => async (dispatch) => {
-    console.log("Action ga keldi")
-    console.log(payload)
     dispatch({
         api: getBallotVotingApi,
         types: ["REQUEST_START_GET_BALLOT_VOTING", "REQUEST_SUCCESS_GET_BALLOT_VOTING", "REQUEST_ERROR_GET_BALLOT_VOTING"],
         data: payload
     }).then(res => {
-        console.log(res)
+
     }).catch(err => {
         console.log(err)
     })
@@ -235,7 +234,7 @@ export const deleteBallotAction = (payload) => async (dispatch) => {
         types: ["REQUEST_DELETE_BALLOT_START", "REQUEST_DELETE_BALLOT_SUCCESS", "REQUEST_DELETE_BALLOT_ERROR"],
         data: payload.data.id
     }).then(res => {
-        console.log(res)
+
         console.log("success")
         const data = {
             memberId: payload.data.memberId,

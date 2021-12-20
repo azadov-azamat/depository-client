@@ -163,7 +163,7 @@ export const getCompanySearchNameAction = (payload) => async (dispatch) => {
     try {
         const res = await dispatch({
             api: getCompanySearchNameApi,
-            types: [types.REQUEST_API_START, "REQUEST_SUCCESS_COMPANY_SEARCH_NAME", types.REQUEST_API_ERROR],
+            types: [types.REQUEST_API_START, types.REQUEST_GET_ADMIN_LIST_SUCCESS, types.REQUEST_API_ERROR],
             data: payload
         });
     } catch (err) {

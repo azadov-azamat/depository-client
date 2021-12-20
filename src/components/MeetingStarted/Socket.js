@@ -53,7 +53,7 @@ export const Socket = ({meetingId, memberId, setCount, memberManagerState}) => {
 
                 dispatch({
                     type: 'COUNT_QUORUM_MEETING',
-                    payload: parseInt((memberManagerState?.filter(element=> element.isConfirmed === true).length / memberManagerState.length) * 100)
+                    payload: parseInt((memberManagerState?.filter(element => element.isConfirmed === true).length / memberManagerState.length) * 100)
                 })
 
                 if (topic === '/topic/user') {

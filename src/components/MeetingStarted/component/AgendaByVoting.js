@@ -22,20 +22,11 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
         dispatch(meetingStartedAction.getBallotVoting(data))
     }, [agenda.id, loadingBallot])
 
-    const hasVoted = useMemo(() => {
-        if (!currentBallotVotingList[agenda.id]) {
-            return false;
-        }
-        return currentBallotVotingList[agenda.id].find(voting => voting.votingOptionId === variant.id) !== undefined
-    }, [currentBallotVotingList, variant])
-
-
-
     const deleteBallot = (votingId) => {
         const data = {
             memberId: parseInt(memberId),
             agendaId: agenda.id,
-            id: 37603 // ballot ID
+            id: votingId
         }
 
         confirmAlert({
@@ -45,7 +36,6 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
                 {
                     label: 'Да',
                     onClick: () => {
-                        toast.warning("Jarayonda...")
                         dispatch(meetingStarted.deleteBallotAction({data}))
                     }
                 },
@@ -58,7 +48,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
 
     const addBallot = ({votingId, option, agendaId}) => {
 
-        if (quorum <= 75) {
+        if (quorum < 75) {
             return toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
         }
 
@@ -87,10 +77,17 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
         });
     };
 
-    if (hasVoted) {
+    const voting = useMemo(() => {
+        if (!currentBallotVotingList[agenda.id]) {
+            return undefined;
+        }
+        return currentBallotVotingList[agenda.id].find(voting => voting.votingOptionId === variant.id);
+    }, [currentBallotVotingList, variant])
+
+    if (voting !== undefined) {
         return (
             <div className="container">
-                <Button className="text-white" onClick={() => deleteBallot(variant.id)}>
+                <Button className="text-white" onClick={() => deleteBallot(voting.id)}>
                     Удалить голось
                 </Button>
             </div>
