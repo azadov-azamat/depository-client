@@ -3,7 +3,7 @@ import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../utils/cont
 import {FiSettings} from "react-icons/all";
 import {Modal, ModalBody, ModalHeader} from "reactstrap";
 
-export default function StatusMembers({member, index, lang}){
+export default function StatusMembers({member, index, lang}) {
 
     const style = {
         cursor: 'pointer',
@@ -12,7 +12,7 @@ export default function StatusMembers({member, index, lang}){
 
     const [openModal, setOpenModal] = useState(false);
 
-    return(
+    return (
         <tr className="text-center">
             <td>{index + 1}</td>
             <td>{member.user.fullName}</td>
@@ -27,13 +27,13 @@ export default function StatusMembers({member, index, lang}){
                 member.memberTypeEnum === SPEAKER ? lang("meetingCreated.roles.speaker") : '' ||
                 member.memberTypeEnum === WATCHER ? lang("meetingCreated.roles.watcher") : '' ||
                 member.memberTypeEnum === SECRETARY ? lang("meetingCreated.roles.secretary") : '' ||
-                member.memberTypeEnum === CHAIRMAN ? lang("meetingCreated.roles.chairman") : '' ||
+                member.memberTypeEnum === CHAIRMAN ? member.fromReestr ? "Член наб. совета" : lang("meetingCreated.roles.chairman") : '' ||
                 member.memberTypeEnum === SIMPLE ? "Член наб. совета" : ''
                 // member.memberTypeEnum === SIMPLE ? lang("meetingCreated.roles.simple") : ''
             }</td>
             <td className="text-center">
                 <text style={style}>
-                    <FiSettings fontSize={20} style={{color: "#133B88"}} onClick={()=> setOpenModal(true)}/>
+                    <FiSettings fontSize={20} style={{color: "#133B88"}} onClick={() => setOpenModal(true)}/>
                 </text>
             </td>
             <Modal isOpen={openModal} className="modal-dialog modal-lg">
