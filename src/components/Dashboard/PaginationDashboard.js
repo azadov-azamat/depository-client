@@ -5,7 +5,7 @@ export default function PaginationDashboard({count, page, lang, handleChange, pa
     return (
         <>
             <div className="d-none d-md-flex justify-content-between align-items-center position-fixed"
-                 style={{width: '96%', bottom: '4px'}}>
+                 style={{width: '96%', bottom: '4px', background: '#FFF'}}>
                 <Pagination
                     count={count}
                     size="large"
