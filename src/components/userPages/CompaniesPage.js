@@ -14,34 +14,25 @@ import Logo from '../../images/companyLogo.png';
 export default function CompaniesPage() {
 
     const history = useHistory();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const {t} = useTranslation();
     const reducers = useSelector(state => state)
     const {currentUser} = reducers.auth
     const {companiesByUserId, loading} = reducers.company
     const [booleanMy, setBooleanMy] = useState(false);
 
+    const userId = currentUser?.id;
+
     useEffect(() => {
-        setBooleanMy(companiesByUserId && companiesByUserId.some(element => element.chairmanId === currentUser.id || element.secretaryId === currentUser.id));
+        setBooleanMy(
+            companiesByUserId?.some(element => element.chairmanId === userId || element.secretaryId === userId));
     }, [booleanMy, companiesByUserId])
 
     useEffect(() => {
 
-        if (currentUser.id) {
-            dispatch(companyAction.getCompanyByUserId({currentUserId: currentUser?.id}))
+        if (userId) {
+            dispatch(companyAction.getCompanyByUserId({currentUserId: userId}))
         }
-
-        dispatch({
-            type: 'REQUEST_GET_MEETING_SUCCESS',
-            payload: []
-        });
-
-        dispatch({
-            type: 'REQUEST_GET_MEETING_BY_COMPANY_ID',
-            payload: []
-        });
-
-        localStorage.removeItem(DEPOSITORY_MEMBER_TYPE_USER)
 
     }, [currentUser])
 

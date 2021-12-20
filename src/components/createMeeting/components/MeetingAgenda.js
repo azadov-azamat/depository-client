@@ -224,8 +224,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             <>
                 <p style={{fontWeight: 'bold'}}>{subject}</p>
                 <hr/>
-                {votingLit && votingLit.map((element, index) =>
-                    <div className='text-start'><span key={index}>{index + 1} - {element.votingText}</span><br/></div>
+                {votingLit?.map((element, index) =>
+                    <div className='text-start' key={index}><span>{index + 1} - {element.votingText}</span><br/></div>
                 )}
             </>
         )
@@ -269,7 +269,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                             >
-                                {memberManagerState && memberManagerState.map((username, index) =>
+                                {memberManagerState?.map((username, index) =>
                                     username.memberTypeEnum === SPEAKER ?
                                         <Option key={index}
                                                 value={username.id}>{username.user.fullName + " - " + username.user.pinfl}</Option> : ''
@@ -342,7 +342,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                             <CardBody>
                                 <Row className="d-flex align-items-center">
                                     {inputList.map((x, i) =>
-                                        <>
+                                        <div key={i} className="d-flex flex-row">
                                             <Col md={8} className=''>
                                                 <AvField
                                                     name={"variant/" + i}
@@ -366,7 +366,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                             className="btn cancel mx-2">-</button>}
                                                 </div>
                                             </Col>
-                                        </>
+                                        </div>
                                     )}
                                 </Row>
                             </CardBody>

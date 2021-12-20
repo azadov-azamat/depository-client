@@ -26,7 +26,6 @@ const User = (props) => {
     const [randomS, setRandomS] = useState('');
 
     function savePnfl(e) {
-        // console.log(e.target.value);
         if (e.target.value.length === 14) {
             axios.post(BASE_URL + "/moder/user/generate-login/" + e.target.value, e.target.value)
                 .then((res) => {

@@ -7,7 +7,7 @@ import * as meetingAction from "../../redux/actions/MeetingAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
 import {useTranslation} from "react-i18next";
 
-export const Socket = ({meetingId, memberId, setCount, memberManagerState}) => {
+export const Socket = ({meetingId, memberId, memberManagerState}) => {
 
     const dispatch = useDispatch();
     const {t} = useTranslation();
@@ -69,7 +69,7 @@ export const Socket = ({meetingId, memberId, setCount, memberManagerState}) => {
                     })
                 }
 
-                if (topic === '/topic/answer') {
+                if (topic === '/topic/answer/' + meetingId) {
                     dispatch({
                         type: 'REQUEST_SUCCESS_QUESTION_LIST',
                         payload: msg

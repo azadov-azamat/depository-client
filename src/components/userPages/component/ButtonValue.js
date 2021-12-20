@@ -50,10 +50,12 @@ export default function ButtonValue({meetingId, companyId}) {
         height: '65px',
     }
 
+    console.log(memberManagerType[meetingId])
+
     return (
         <>
             {
-                memberManagerType[meetingId] && memberManagerType[meetingId].map(element => {
+                memberManagerType[meetingId]?.map(element => {
                     switch (element.memberTypeEnum) {
                         case CHAIRMAN:
                             return (

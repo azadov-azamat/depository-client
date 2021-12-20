@@ -18,14 +18,6 @@ export default function TableUsers({meetingId, lang}) {
         dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
     }, [meetingId])
 
-    console.log(memberManagerState)
-
-    const style = {
-        // background: "#FFFFFF",
-        cursor: 'pointer',
-        zIndex: '1000'
-    }
-
     return (
         <>
             <div className="d-flex justify-content-center" style={{overflowY: 'scroll', height: '57vh'}}>

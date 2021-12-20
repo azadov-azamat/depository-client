@@ -48,6 +48,7 @@ export default function CommentsAllPage({
         dispatch(meetingStartedAction.getLoggingAction({meetingId: currentMeetingId}))
         dispatch(meetingActions.getMeetingFilesByMeetingIdAction({meetingId: currentMeetingId}))
         dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: memberId}));
+
     }, [currentMeetingId])
 
     function fileTypeIcon(type) {

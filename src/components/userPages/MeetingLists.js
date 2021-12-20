@@ -39,7 +39,14 @@ export const MeetingLists = () => {
     }, [companyId, currentUser])
 
     useEffect(() => {
-        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}))
+        dispatch(adminCompanyAction.getCompanyByIdAction({companyId: companyId, history}));
+
+        return () => {
+            dispatch({
+                type: 'REQUEST_SUCCESS_MEETING_BY_USER_AND_COMPANY',
+                payload: []
+            });
+        }
     }, [companyId])
 
     return (

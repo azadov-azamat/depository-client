@@ -39,7 +39,7 @@ export default function MeetingsListByUser() {
     const lastIndex = startIndex + (payload && payload[1]);
 
     const companyId = parseInt(query.get("company_id"));
-
+    console.log(meetingByUser)
     useEffect(() => {
 
         dispatch({
@@ -67,15 +67,6 @@ export default function MeetingsListByUser() {
             companyId: companyId
         }));
     }, [currentUser])
-
-    // const SearchMeetingSpecFilter = (value, fieldName) => {
-    //     setObjectData(prev => ({
-    //         ...prev,
-    //         [fieldName]: value
-    //     }))
-    // }
-
-    console.log(meetingByUser)
 
     return (
         <div className="">

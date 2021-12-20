@@ -69,7 +69,6 @@ export const ControllerMeeting = () => {
     const username = currentUser?.fullName;
 
     const [room, setRoom] = useState()
-    const [count, setCount] = useState(0);
     const [call, setCall] = useState(false)
     const [zoomStatusMe, setZoomStatusMe] = useState(true);
     const [badgeCount, setBadgeCount] = useState(0);
@@ -78,14 +77,6 @@ export const ControllerMeeting = () => {
 
     const password = "18cb2890-bb7a-4812-b07b-db0ef273bab1";
     const socketClient = useSelector((state) => state.socket.client);
-
-    const handleStartMeeting = (roomName, userName, password, link) => {
-        setCall(true)
-        // console.log(roomName)
-        // console.log(userName)
-        // console.log(password)
-        // console.log(link)
-    }
 
     useEffect(() => {
         dispatch(adminCompanyAction.getCompanyByIdAction({companyId: parseInt(companyId), history}))
@@ -140,6 +131,14 @@ export const ControllerMeeting = () => {
     }, [dispatch])
 
     importScript("https://meet.jit.si/external_api.js");
+
+    const handleStartMeeting = (roomName, userName, password, link) => {
+        setCall(true)
+        // console.log(roomName)
+        // console.log(userName)
+        // console.log(password)
+        // console.log(link)
+    }
 
     function clicked() {
         if (zoomStatusMe) {
@@ -291,7 +290,7 @@ export const ControllerMeeting = () => {
                                              meetingId={meetingId} userId={currentUser.id}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
-                                    <ControlMeeting meetingStatus={currentMeeting && currentMeeting.status}
+                                    <ControlMeeting meetingStatus={currentMeeting?.status}
                                                     startMeeting={startMeeting}
                                                     meetingId={meetingId} quorum={countQuorum}/>
                                 </Route>
@@ -405,7 +404,7 @@ export const ControllerMeeting = () => {
                     </div>
                 </div>
             </div>
-            <Socket meetingId={meetingId} memberId={memberId} setCount={setCount}
+            <Socket meetingId={meetingId} memberId={memberId}
                     memberManagerState={memberManagerState}/>
         </div>
     )
