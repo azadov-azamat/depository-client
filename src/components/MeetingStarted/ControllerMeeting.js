@@ -118,12 +118,12 @@ export const ControllerMeeting = () => {
 
     useEffect(() => {
 
-        dispatch(subscribe('/topic/user'));
+        dispatch(subscribe('/topic/user/' + meetingId));
         dispatch(subscribe('/topic/get-zoom/' + meetingId));
         dispatch(subscribe('/topic/getMember/' + meetingId));
 
         return () => {
-            dispatch(unsubscribe('/topic/user'));
+            dispatch(unsubscribe('/topic/user/' + meetingId));
             dispatch(unsubscribe('/topic/get-zoom/' + meetingId));
             dispatch(unsubscribe('/topic/getMember/' + meetingId));
         }

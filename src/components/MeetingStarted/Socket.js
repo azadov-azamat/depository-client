@@ -56,7 +56,7 @@ export const Socket = ({meetingId, memberId, memberManagerState}) => {
                     payload: parseInt((memberManagerState?.filter(element => element.isConfirmed === true).length / memberManagerState.length) * 100)
                 })
 
-                if (topic === '/topic/user') {
+                if (topic === '/topic/user/' + meetingId) {
                     dispatch({
                         type: 'REQUEST_SUCCESS_LOGGING_LIST',
                         payload: msg
