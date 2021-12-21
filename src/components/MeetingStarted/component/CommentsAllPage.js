@@ -38,9 +38,9 @@ export default function CommentsAllPage({
     const socketClient = useSelector((state) => state.socket.client);
 
     useEffect(() => {
-        dispatch(subscribe('/topic/answer'));
+        dispatch(subscribe('/topic/answer/' + currentMeetingId));
         return () => {
-            dispatch(unsubscribe('/topic/answer'));
+            dispatch(unsubscribe('/topic/answer/'+currentMeetingId));
         }
     }, [dispatch])
 
