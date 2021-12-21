@@ -35,7 +35,7 @@ export default function ButtonValue({meetingId, companyId}) {
     function isConfirmed(role, memberId, meetingId, fromReestr) {
         const linkPushItem = "/issuerLegal/meeting/" + meetingId + "/agenda?companyId=" + companyId + "&memberId=" + memberId
         dispatch(meetingActions.getMeetingByIdAction({meetingId: meetingId}))
-        dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
+        // dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
         dispatch({
             type: "CURRENT_MEMBER_TYPE",
             payload: {role, fromReestr}

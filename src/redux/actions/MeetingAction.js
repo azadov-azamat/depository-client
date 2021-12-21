@@ -359,7 +359,9 @@ export const IsConfirmedAction = (payload) => async (dispatch) => {
         types: ["REQUEST_START_IS_CONFIRMED", "REQUEST_SUCCESS_IS_CONFIRMED", "REQUEST_ERROR_IS_CONFIRMED"],
         data: payload.currentMemberId
     }).then(res => {
+
     }).catch(err => {
+
     })
 }
 

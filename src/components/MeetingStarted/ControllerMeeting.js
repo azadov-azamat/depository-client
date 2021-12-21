@@ -14,13 +14,14 @@ import ControlMeeting from "./component/ControlMeeting";
 import TableUsers from "./component/TableUsers";
 import * as adminCompanyAction from "../../redux/actions/CompanyAction";
 import importScript from "./component/Zoom Meeting/importScript";
-import {Col, Container, Row} from "reactstrap";
+import {Col, Container, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
 import {Jutsu} from 'react-jutsu';
 import Socket from "./Socket";
 import {subscribe, unsubscribe} from "../../redux/actions/socketActions";
 import {confirmAlert} from "react-confirm-alert";
 import {toast} from "react-toastify";
 import {useTranslation} from "react-i18next";
+import {AvField, AvForm} from "availity-reactstrap-validation";
 
 function useQuery() {
     const {search} = useLocation();
@@ -50,6 +51,7 @@ export const ControllerMeeting = () => {
         userMemberType,
         fromReestrMember,
         memberManagerState,
+        currentMemberManager,
         meetingFile
     } = reducers.meeting
 
@@ -72,6 +74,7 @@ export const ControllerMeeting = () => {
     const [call, setCall] = useState(false)
     const [zoomStatusMe, setZoomStatusMe] = useState(true);
     const [badgeCount, setBadgeCount] = useState(0);
+    const [openModal, setOpenModal] = useState(false);
 
     const link = 'https://meet.jit.si/' + room;
 
@@ -92,6 +95,7 @@ export const ControllerMeeting = () => {
         dispatch(meetingActions.getAgendaByMeetingId({meetingId: meetingId}))
         dispatch(meetingStartedAction.getQuestionByMeetingAction({meetingId: meetingId}))
         dispatch(meetingActions.getMemberByMeetingId({meetingId: meetingId, fromReestr: true}))
+
     }, [meetingId])
 
     useEffect(() => {
@@ -114,6 +118,7 @@ export const ControllerMeeting = () => {
 
     useEffect(() => {
         dispatch(meetingActions.getMemberById({ID: memberId}))
+        dispatch(meetingActions.IsConfirmedAction({currentMemberId: memberId}))
     }, [memberId])
 
     useEffect(() => {
@@ -122,12 +127,14 @@ export const ControllerMeeting = () => {
         dispatch(subscribe('/topic/get-zoom/' + meetingId));
         dispatch(subscribe('/topic/getMember/' + meetingId));
         dispatch(subscribe('/topic/meeting-status/' + meetingId));
+        dispatch(subscribe('/topic/quorum/' + meetingId));
 
         return () => {
             dispatch(unsubscribe('/topic/user/' + meetingId));
             dispatch(unsubscribe('/topic/get-zoom/' + meetingId));
             dispatch(unsubscribe('/topic/getMember/' + meetingId));
             dispatch(unsubscribe('/topic/meeting-status/' + meetingId));
+            dispatch(unsubscribe('/topic/quorum/' + meetingId));
         }
     }, [dispatch])
 
@@ -250,6 +257,7 @@ export const ControllerMeeting = () => {
                             } else {
                                 toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
                             }
+
                         } else {
                             dispatch(meetingActions.updateMeetingStatusAction({
                                 dataForUpdateMeetingStatus,
@@ -280,7 +288,7 @@ export const ControllerMeeting = () => {
                             <Switch>
                                 <Route path={"/issuerLegal/meeting/" + id + "/agenda"}>
                                     <Agenda agendas={agendaState} roleMember={userMemberType}
-                                            fromReestr={fromReestrMember}
+                                            fromReestr={fromReestrMember} currentMeeting={currentMeeting}
                                             meetingId={meetingId} memberId={parseInt(memberId)} quorum={countQuorum}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/question"}>
@@ -291,8 +299,8 @@ export const ControllerMeeting = () => {
                                              meetingId={meetingId} userId={currentUser.id}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
-                                    <ControlMeeting meetingStatus={currentMeeting?.status}
-                                                    startMeeting={startMeeting}
+                                    <ControlMeeting meetingStatus={currentMeeting?.status} agenda={agendaState}
+                                                    startMeeting={startMeeting} lang={t}
                                                     meetingId={meetingId} quorum={countQuorum}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/all_users_list"}>
@@ -405,8 +413,21 @@ export const ControllerMeeting = () => {
                     </div>
                 </div>
             </div>
-            <Socket meetingId={meetingId} memberId={memberId}
-                    memberManagerState={memberManagerState}/>
+            <Modal isOpen={openModal} centered>
+                <ModalHeader className="d-flex align-items-center">
+                    <h3>Уважаемый участник</h3>
+                </ModalHeader>
+                <ModalBody>
+                    <div className="container d-flex justify-content-center align-items-center flex-column">
+                        <h2>Засидания заверщено</h2>
+                        <button className={"create px-3"}
+                            onClick={() => history.push("/issuerLegal/meetings?company_id=" + companyId + "&type=archive")}>Ok
+                        </button>
+                    </div>
+                </ModalBody>
+            </Modal>
+            <Socket meetingId={meetingId} memberId={memberId} currentMember={currentMemberManager}
+                    setOpenModal={setOpenModal}/>
         </div>
     )
 }

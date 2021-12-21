@@ -1,10 +1,4 @@
 /* Created azamat_azadov 7/16/2021 */
-.allCss {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
 
 .allCss .d-flex h2 {
   color: #132E85;

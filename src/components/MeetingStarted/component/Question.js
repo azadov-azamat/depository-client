@@ -1,11 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {AccordionQuestion} from "./Accordions/AccordionQuestion";
 import {AvField, AvForm} from "availity-reactstrap-validation";
-import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, TOKEN} from "../../../utils/contants";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
-import {Pagination} from "@material-ui/lab";
-import usePagination from "../../Dashboard/Pagination";
 import {subscribe, unsubscribe} from "../../../redux/actions/socketActions";
 
 export default function Question({list, userId}) {
@@ -22,7 +19,7 @@ export default function Question({list, userId}) {
         }
     }, [dispatch])
 
-   async function responseQuestion(e, v) {
+    async function responseQuestion(e, v) {
         const data = {
             id: v.currentId,
             questionAnswer: logging,
@@ -35,8 +32,8 @@ export default function Question({list, userId}) {
         }
     }
 
-    function editQuestion(e, v){
-        responseQuestion(e, v).then(res=>{
+    function editQuestion(e, v) {
+        responseQuestion(e, v).then(res => {
             setLogging("")
         })
     }

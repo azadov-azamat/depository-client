@@ -71,8 +71,8 @@ export const editStatusAgendaAction = (payload) => async (dispatch) => {
     }).catch(err=>{
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title, status} = err.response.data;
-        console.log(err.response.data)
-        if (errorKey === "meetingIsActive") {
+
+         if (errorKey === "meetingIsActive") {
             if (lang === "uz") {
                 toast.error("Yig'ilish holati - Faol!");
             } else if (lang === "ru") {
@@ -81,6 +81,7 @@ export const editStatusAgendaAction = (payload) => async (dispatch) => {
                 toast.error("Status of meeting is - Active!")
             }
         }
+
         if (status === 500) {
             if (lang === 'uz') {
                 toast.error("O`chirishda xatolik!")

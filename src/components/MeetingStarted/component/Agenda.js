@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import * as meetingStarted from "../../../redux/actions/MeetingStartedAction";
 import {confirmAlert} from "react-confirm-alert";
-import {CHAIRMAN, SECRETARY, SIMPLE} from "../../../utils/contants";
+import {ACTIVE, CANCELED, CHAIRMAN, FINISH, SECRETARY, SIMPLE} from "../../../utils/contants";
 import {AccordionAgenda} from "./Accordions/AccordionAgenda";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import AgendaByVoting from "./AgendaByVoting";
@@ -15,7 +15,7 @@ import {AvField, AvForm} from "availity-reactstrap-validation";
 import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
 
-export default function Agenda({agendas, roleMember, meetingId, memberId, quorum, fromReestr}) {
+export default function Agenda({agendas, roleMember, meetingId, memberId, quorum, fromReestr, currentMeeting}) {
 
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -28,6 +28,15 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
     }, [meetingId])
 
     function editStatusElement(element) {
+        if (currentMeeting?.status === FINISH){
+            return toast.error("Засидание в статусе - Заверщено!")
+        }
+        if (currentMeeting?.status === CANCELED){
+            return toast.error("Засидание в статусе - Отмена!")
+        }
+        if (currentMeeting?.status === ACTIVE){
+            return toast.error("Засидание в статусе - Активный!")
+        }
         if (element.active) {
             setCurrentAgenda(element)
             setOpenModal(true)
@@ -154,8 +163,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                         <AccordionAgenda.Item>
                                             <AccordionAgenda.Header status={element.active}>
                                                 <div className="agenda" key={index}>
-                                                <span
-                                                    style={element.active ? {} : {color: '#CBCBC7FF'}}><b>{element.subject}</b></span><br/>
+                                                <span style={element.active ? {} : {color: '#CBCBC7FF'}}><b>{element.subject}</b></span><br/>
                                                     <span
                                                         style={element.active ? {color: '#6B8C67FF'} : {color: '#CBCBC7FF'}}><b>Доклатчик: {element.userName}</b></span>
                                                 </div>

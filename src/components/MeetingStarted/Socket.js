@@ -1,13 +1,13 @@
 import React, {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
-import {TOKEN} from "../../utils/contants";
+import {CANCELED, CHAIRMAN, DISABLED, FINISH, PENDING, SECRETARY, TOKEN} from "../../utils/contants";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import * as meetingAction from "../../redux/actions/MeetingAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
 import {useTranslation} from "react-i18next";
 
-export const Socket = ({meetingId, memberId, memberManagerState}) => {
+export const Socket = ({meetingId, memberId, currentMember, setOpenModal}) => {
 
     const dispatch = useDispatch();
     const {t} = useTranslation();
@@ -51,21 +51,10 @@ export const Socket = ({meetingId, memberId, memberManagerState}) => {
 
             onMessage={(msg, topic) => {
 
-                dispatch({
-                    type: 'COUNT_QUORUM_MEETING',
-                    payload: parseInt((memberManagerState?.filter(element => element.isConfirmed === true).length / memberManagerState.length) * 100)
-                })
-
                 if (topic === '/topic/user/' + meetingId) {
                     dispatch({
                         type: 'REQUEST_SUCCESS_LOGGING_LIST',
                         payload: msg
-                    })
-
-                    msg.forEach(element => {
-                        if (element.loggingText === t("meetingCreated.meetingStatus.active")) {
-                            dispatch(meetingAction.getMeetingByIdAction({meetingId}))
-                        }
                     })
                 }
 
@@ -78,7 +67,7 @@ export const Socket = ({meetingId, memberId, memberManagerState}) => {
                     dispatch(meetingStartedAction.getQuestionByMemberIdAction({memberId: memberId}));
                 }
 
-                if (topic === ("/topic/getMember/" + meetingId)) {
+                if (topic === ('/topic/getMember/' + meetingId)) {
                     dispatch({
                         type: 'RESPONSE_GET_ONLINE_MEMBERS_LIST_SUCCESS',
                         payload: msg
@@ -106,7 +95,22 @@ export const Socket = ({meetingId, memberId, memberManagerState}) => {
                 }
 
                 if (topic === '/topic/meeting-status/' + meetingId){
-                    console.log(msg)
+                    dispatch({
+                        type: 'REQUEST_GET_MEETING_SUCCESS',
+                        payload: msg
+                    })
+                    if (msg.status === FINISH || msg.status === CANCELED || msg.status === DISABLED || msg.status === PENDING) {
+                        if (currentMember?.memberTypeEnum !== SECRETARY || (currentMember?.memberTypeEnum !== CHAIRMAN && currentMember?.fromReestr === true)){
+                            setOpenModal(true)
+                        }
+                    }
+                }
+
+                if (topic === '/topic/quorum/' + meetingId){
+                    dispatch({
+                        type: 'COUNT_QUORUM_MEETING',
+                        payload: parseInt((msg?.filter(element => element.isConfirmed === true).length / msg.length) * 100)
+                    })
                 }
             }}
         />
