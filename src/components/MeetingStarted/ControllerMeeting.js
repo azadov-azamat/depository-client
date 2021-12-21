@@ -138,6 +138,13 @@ export const ControllerMeeting = () => {
         }
     }, [dispatch])
 
+    useEffect(()=>{
+        dispatch({
+            type: 'COUNT_QUORUM_MEETING',
+            payload: parseInt((memberManagerState?.filter(element => element.isConfirmed === true).length / memberManagerState.length) * 100)
+        })
+    },[memberManagerState])
+
     importScript("https://meet.jit.si/external_api.js");
 
     const handleStartMeeting = (roomName, userName, password, link) => {
