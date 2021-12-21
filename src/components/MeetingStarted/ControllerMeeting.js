@@ -121,13 +121,14 @@ export const ControllerMeeting = () => {
         dispatch(subscribe('/topic/user/' + meetingId));
         dispatch(subscribe('/topic/get-zoom/' + meetingId));
         dispatch(subscribe('/topic/getMember/' + meetingId));
+        dispatch(subscribe('/topic/meeting-status/' + meetingId));
 
         return () => {
             dispatch(unsubscribe('/topic/user/' + meetingId));
             dispatch(unsubscribe('/topic/get-zoom/' + meetingId));
             dispatch(unsubscribe('/topic/getMember/' + meetingId));
+            dispatch(unsubscribe('/topic/meeting-status/' + meetingId));
         }
-
     }, [dispatch])
 
     importScript("https://meet.jit.si/external_api.js");
@@ -240,7 +241,7 @@ export const ControllerMeeting = () => {
                     label: 'Да',
                     onClick: () => {
                         if (status === ACTIVE) {
-                            if (quorumCount >= 0) {
+                            if (quorumCount > 0) {
                                 dispatch(meetingActions.updateMeetingStatusAction({
                                     dataForUpdateMeetingStatus,
                                     socketClient,
