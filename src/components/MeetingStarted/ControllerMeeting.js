@@ -255,7 +255,7 @@ export const ControllerMeeting = () => {
                     label: 'Да',
                     onClick: () => {
                         if (status === ACTIVE) {
-                            if (quorumCount > 0) {
+                            if (quorumCount > 74) {
                                 dispatch(meetingActions.updateMeetingStatusAction({
                                     dataForUpdateMeetingStatus,
                                     socketClient,
