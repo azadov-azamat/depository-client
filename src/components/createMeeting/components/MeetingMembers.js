@@ -136,6 +136,17 @@ export default function MeetingMembers({currentMeetingId, lang}) {
         zIndex: '1000'
     }
 
+    const styleTable = {
+        whiteSpace: 'nowrap',
+        width: '13em',
+        height: '20px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        padding: '0',
+        margin: '0'
+    }
+
+
     return (
         <Row>
             <Col md={3} className="">
@@ -200,7 +211,9 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                             ? memberManagerState.map((role, index) =>
                                 <tr className="text-center" key={index}>
                                     <td>{index + 1}</td>
-                                    <td>{role.user.fullName}</td>
+                                    <td>
+                                        <p style={styleTable}>{role.user.fullName}</p>
+                                    </td>
                                     <td>{role.user.pinfl} </td>
                                     <td>{
                                         role.memberTypeEnum === SPEAKER ? lang("meetingCreated.roles.speaker") : '' ||
