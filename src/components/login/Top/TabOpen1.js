@@ -25,34 +25,37 @@ export default function TabOpen1({lang}) {
 
     useEffect(() => {
         eimzoService.startApi();
+        // eimzoService.getAllCertificates().then((res) => {
+        //     setKeys(res);
+        //     if (res.length === 1) {
+        //         setSelectedKey(res[0]);
+        //         dispatch(authAction.loginEds(res[0].serialNumber))
+        //     }
+        // });
+    }, []);
+
+    useEffect(() => {
         eimzoService.getAllCertificates().then((res) => {
             setKeys(res);
             if (res.length === 1) {
                 setSelectedKey(res[0]);
-                dispatch(authAction.loginEds(res[0].serialNumber))
             }
+            dispatch(authAction.loginEds(selectedKey?.serialNumber))
         });
-    }, []);
+    }, [selectedKey])
 
     const sign = async () => {
         setresult("");
         const keyId = await eimzoService.preLoadKey(keys.find(item =>
             item?.serialNumber === selectedKey?.serialNumber));
-        dispatch(authAction.loginEds(selectedKey?.serialNumber)).then(res => {
-            console.log(res)
-            if (res.success) {
-                eimzoService.postLoadKey(keyId, uuidFromBack).then((res) => {
-                        dispatch(authAction.postPks7FileAction(res));
-                        // setresult(res)
-                    }
-                ).catch(err => {
-                    toast(err)
-                });
+        eimzoService.postLoadKey(keyId, uuidFromBack).then((res) => {
+                dispatch(authAction.postPks7FileAction(res));
+                // setresult(res)
             }
-        })
+        ).catch(err => {
+            toast(err)
+        });
     }
-
-    console.log(pks7FileResult)
 
     return (
         <div className="TabOpen1 allCss">
