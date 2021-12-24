@@ -6,7 +6,7 @@ export const loginUser = (data = {username: null, password: null, newUser: false
 }
 
 export const loginEdsApi = (data) => {
-    return HttpClient.doGet(api.loginEds)
+    return HttpClient.doGet(api.loginEds + (data ? "?serialNumber=" + data : ''))
 }
 
 export const me = (data) => {

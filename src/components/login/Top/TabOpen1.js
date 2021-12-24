@@ -16,8 +16,9 @@ export default function TabOpen1({lang}) {
     const toggle = () => setDropdownOpen(prevState => !prevState);
 
     const [open, setIsOpen] = useState(false);
-    const [selectedKey, setselectedKey] = useState(null);
+    const [selectedKey, setSelectedKey] = useState(null);
     const [keys, setKeys] = useState([]);
+
     // const [obj, setobj] = useState("elektron kalit");
 
     const [result, setresult] = useState("");
@@ -26,16 +27,19 @@ export default function TabOpen1({lang}) {
         eimzoService.startApi();
         eimzoService.getAllCertificates().then((res) => {
             setKeys(res);
-            setselectedKey(res[0]?.serialNumber);
+            if (res.length === 1) {
+                setSelectedKey(res[0]);
+                dispatch(authAction.loginEds(res[0].serialNumber))
+            }
         });
-        dispatch(authAction.loginEds())
     }, []);
 
     const sign = async () => {
         setresult("");
         const keyId = await eimzoService.preLoadKey(keys.find(item =>
-            item?.serialNumber === selectedKey));
-        eimzoService.postLoadKey(keyId, uuidFromBack).then((res) =>
+            item?.serialNumber === selectedKey?.serialNumber));
+        dispatch(authAction.loginEds(selectedKey?.serialNumber))
+        eimzoService.postLoadKey(keyId, "uuidFromBack").then((res) =>
             setresult(res)
         ).catch(err => {
             toast(err)
@@ -44,7 +48,6 @@ export default function TabOpen1({lang}) {
 
     return (
         <div className="TabOpen1 allCss">
-
             <div className="eimzoModal">
                 <div toggle={() => setIsOpen(!open)} className="d-flex align-items-center">
                     <div className="d-flex align-items-center eimzo">
@@ -61,14 +64,24 @@ export default function TabOpen1({lang}) {
                                 <DropdownToggle
                                     className="dropToggle d-flex justify-content-between align-items-center">
                                     <span className="dropToggle2">
-                                        {keys.length === 1 ? keys[0].inn + " - " + keys[0].parsedAlias.cn.toUpperCase() : "Выберите ключ"}
+                                        {
+                                            keys.length > 0
+                                                ?
+                                                selectedKey !== null
+                                                    ?
+                                                    selectedKey?.inn + " - " + selectedKey?.parsedAlias.cn.toUpperCase()
+                                                    :
+                                                    "Выберите ключ"
+                                                :
+                                                "Выберите ключ"
+                                        }
                                     </span>
                                     <img src="../down2.png" className="toggleImg"/>
                                 </DropdownToggle>
                                 <DropdownMenu className="dropMenu">
 
                                     {keys.map((item, i) => (
-                                        <DropdownItem className="dropItem" key={i}>
+                                        <DropdownItem className="dropItem" key={i} onClick={() => setSelectedKey(item)}>
                                             <div className="d-flex align-items-center">
                                                 <img src="../etp.png"/>
                                                 <b className="textB">№ СЕРТИФИКАТА:</b>
@@ -95,7 +108,7 @@ export default function TabOpen1({lang}) {
                         </div>
                         <div className="group">
                             <button className="d-flex align-items-center bg-white signEtp" onClick={sign}
-                                    disabled={!selectedKey || !uuidFromBack}>
+                                    disabled={!selectedKey}>
                                 <img src="../signin.jpg" className="openLock"/>
                                 <span className="imzolash text-black">Kirish</span>
                             </button>
