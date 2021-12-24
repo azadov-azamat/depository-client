@@ -9,6 +9,10 @@ export const loginEdsApi = (data) => {
     return HttpClient.doGet(api.loginEds + (data ? "?serialNumber=" + data : ''))
 }
 
+export const postPks7FileApi = (data) => {
+    return HttpClient.doPost(api.pks7File, data)
+}
+
 export const me = (data) => {
     return HttpClient.doGet(api.userMe);
 }

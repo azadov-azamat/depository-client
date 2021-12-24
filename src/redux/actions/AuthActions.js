@@ -1,5 +1,5 @@
 import * as types from '../actionTypes/actionTypes'
-import {loginEdsApi, loginUser, me} from "../../api/AuthApi";
+import {loginEdsApi, loginUser, me, postPks7FileApi} from "../../api/AuthApi";
 import jwt from "jwt-decode";
 import {BEARER, DEPOSITORY_ROLE, DEPOSITORY_USER, TOKEN} from "../../utils/contants";
 import {toast} from "react-toastify";
@@ -64,6 +64,15 @@ export const loginEds = (payload) => async (dispatch) => {
         data: payload
     })
 }
+
+export const postPks7FileAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: postPks7FileApi,
+        types: ["REQUEST_EDS_START_PKS", "REQUEST_EDS_SUCCESS_PKS", "REQUEST_EDS_ERROR_PKS"],
+        data: payload
+    })
+}
+
 export const userMe = (payload, minusNine) => async (dispatch, getState) => {
 
     const {

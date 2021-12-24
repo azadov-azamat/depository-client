@@ -9,7 +9,7 @@ export default function TabOpen1({lang}) {
 
     const dispatch = useDispatch();
     const reducers = useSelector(state => state)
-    const {uuidFromBack} = reducers.auth
+    const {uuidFromBack, pks7FileResult} = reducers.auth
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -38,13 +38,21 @@ export default function TabOpen1({lang}) {
         setresult("");
         const keyId = await eimzoService.preLoadKey(keys.find(item =>
             item?.serialNumber === selectedKey?.serialNumber));
-        dispatch(authAction.loginEds(selectedKey?.serialNumber))
-        eimzoService.postLoadKey(keyId, "uuidFromBack").then((res) =>
-            setresult(res)
-        ).catch(err => {
-            toast(err)
-        });
+        dispatch(authAction.loginEds(selectedKey?.serialNumber)).then(res => {
+            console.log(res)
+            if (res.success) {
+                eimzoService.postLoadKey(keyId, uuidFromBack).then((res) => {
+                        dispatch(authAction.postPks7FileAction(res));
+                        // setresult(res)
+                    }
+                ).catch(err => {
+                    toast(err)
+                });
+            }
+        })
     }
+
+    console.log(pks7FileResult)
 
     return (
         <div className="TabOpen1 allCss">

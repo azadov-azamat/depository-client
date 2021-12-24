@@ -204,8 +204,7 @@ export default function AddOrEditUser() {
         {id: 1, value: ANY, text: t("user.etp")},
         {id: 2, value: INPASS, text: t("user.loginetp")},
     ];
-    // const [x, setX] = useState(false);
-    // console.log(x);
+
     return (
         <div className="settings p-3">
             <div className="container-fluid" style={{marginTop: '12vh'}}>

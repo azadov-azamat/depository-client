@@ -2,6 +2,7 @@
 export const api = {
     login: '/authenticate',
     loginEds: '/eds/signrequest',
+    pks7File: '/eds/auth',
     userMe: '/account',
     userMethods: '/moder/user',
     userFilter: '/moder/user/filter',

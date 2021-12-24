@@ -15,7 +15,8 @@ const initState = {
     networkState: true,
     currentUser: '',
     sentUserMe: false,
-    uuidFromBack: null
+    uuidFromBack: null,
+    pks7FileResult: null
 };
 
 const reducers = {
@@ -31,6 +32,9 @@ const reducers = {
     },
     ['REQUEST_EDS_SUCCESS'](state, action) {
         state.uuidFromBack = action.payload;
+    },
+    ['REQUEST_EDS_SUCCESS_PKS'](state, action) {
+        state.pks7FileResult = action.payload;
     },
     [types.REQUEST_START](state) {
         state.loading = true;
