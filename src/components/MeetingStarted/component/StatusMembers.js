@@ -10,12 +10,24 @@ export default function StatusMembers({member, index, lang}) {
         zIndex: '1000'
     }
 
+    const styleTable = {
+        whiteSpace: 'nowrap',
+        width: '13em',
+        height: '20px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        padding: '0',
+        margin: '0'
+    }
+
     const [openModal, setOpenModal] = useState(false);
 
     return (
         <tr className="text-center">
             <td>{index + 1}</td>
-            <td>{member.user.fullName}</td>
+            <td>
+                <p style={styleTable}>{member.user.fullName}</p>
+            </td>
             <td>{member.user.phoneNumber} </td>
             <td style={member.isInvolved === true ? {backgroundColor: '#F1FFE3'} : {backgroundColor: '#FFECEE'}}>
                 {
