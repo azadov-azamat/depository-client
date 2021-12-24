@@ -61,7 +61,6 @@ export const preLoadKey = (vo) =>
     });
 
 export const postLoadKey = (id, string) => {
-    console.log(id, 6);
     return new Promise((resolve, reject) => {
         CAPIWS.callFunction(
             {
@@ -98,7 +97,6 @@ export const postLoadKey = (id, string) => {
                     // }
                 } else {
                     reject(data.reason);
-                    console.log(data);
                 }
             }
         );

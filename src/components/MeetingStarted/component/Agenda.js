@@ -173,6 +173,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                     element.votingOptions.map((elementOption, index) =>
                                                         <>
                                                             <div className="mt-2 container" key={index}>
+                                             '
                                                                 {index === 0 ? <><span
                                                                     style={{fontSize: '23px'}}>Решения:</span><br/></> : ""}
                                                                 <span

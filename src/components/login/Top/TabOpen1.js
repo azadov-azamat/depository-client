@@ -1,66 +1,53 @@
 import React, {useEffect, useState} from 'react';
-// import {Dropdown,Button, Col, Label, Modal, ModalBody, ModalHeader, Row} from "reactstrap";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import * as eimzoService from "../../../eImzo/services/eimzo";
 import {toast} from "react-toastify";
-// import "./eimzo.css"
+import {useDispatch, useSelector} from "react-redux";
+import * as authAction from '../../../redux/actions/AuthActions';
+
 export default function TabOpen1({lang}) {
 
-    // new dropdown page
+    const dispatch = useDispatch();
+    const reducers = useSelector(state => state)
+    const {uuidFromBack} = reducers.auth
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const toggle = () => setDropdownOpen(prevState => !prevState);
-    /////////
+
     const [open, setIsOpen] = useState(false);
-    const [addFile, setAddFile] = useState({fileName: "", file: []});
-
-    const hiddenFileInput = React.useRef(null);
-
-    const handleClick = event => {
-        hiddenFileInput.current.click();
-        console.log(event)
-    };
-
-    function downloadSetFile(e, v) {
-        e.preventDefault();
-        console.log(v)
-        setIsOpen(!open)
-    }
-
-    // New e imzo function
-
-    const [keys, setKeys] = useState([]);
     const [selectedKey, setselectedKey] = useState(null);
-    const [obj, setobj] = useState("elektron kalit");
+    const [keys, setKeys] = useState([]);
+    // const [obj, setobj] = useState("elektron kalit");
 
     const [result, setresult] = useState("");
 
     useEffect(() => {
         eimzoService.startApi();
         eimzoService.getAllCertificates().then((res) => {
-            console.log(res)
             setKeys(res);
             setselectedKey(res[0]?.serialNumber);
         });
+        dispatch(authAction.loginEds())
     }, []);
 
     const sign = async () => {
         setresult("");
-        const keyId = await eimzoService.preLoadKey(keys.find(item => item?.serialNumber === selectedKey));
-        eimzoService.postLoadKey(keyId, obj).then((res) => setresult(res)).catch(err=>{
-            toast(err)});
+        const keyId = await eimzoService.preLoadKey(keys.find(item =>
+            item?.serialNumber === selectedKey));
+        eimzoService.postLoadKey(keyId, uuidFromBack).then((res) =>
+            setresult(res)
+        ).catch(err => {
+            toast(err)
+        });
     }
 
     return (
         <div className="TabOpen1 allCss">
 
             <div className="eimzoModal">
-            {/*<div className="eimzoModal" isOpen={open} toggle={() => setIsOpen(!open)}>*/}
                 <div toggle={() => setIsOpen(!open)} className="d-flex align-items-center">
                     <div className="d-flex align-items-center eimzo">
-                        {/*<img src="../padlock_open.png" className="openLock"/>*/}
-                        {/*<img src="../lockWhite.png" className="openLock"/>*/}
-                        {/*<span>Elektron kalit bilan kirish</span>*/}
                         <img src="../logo.png" className="openLock2"/>
                         <span className="text-white etp2">Вход с помощью ЭЦП</span>
                     </div>
@@ -70,18 +57,7 @@ export default function TabOpen1({lang}) {
                     <div className="App">
                         <div className="group d-flex align-items-center">
                             <span className='etp'>ЭЦП</span>
-
-                            {/*    <select className="selecteKey" onChange={e => setselectedKey(e.target?.value)}>*/}
-                            {/*    {keys.map((item, i) => (*/}
-                            {/*            <option selected={i === 0} key={i} value={item?.serialNumber}>*/}
-                            {/*                {item?.inn} - {item?.parsedAlias?.cn?.toUpperCase()}*/}
-                            {/*            </option>*/}
-                            {/*    ))}*/}
-                            {/*</select>*/}
-
-                            {/*new dropdown page*/}
                             <Dropdown isOpen={dropdownOpen} toggle={toggle} className="drop">
-
                                 <DropdownToggle
                                     className="dropToggle d-flex justify-content-between align-items-center">
                                     <span className="dropToggle2">
@@ -99,8 +75,8 @@ export default function TabOpen1({lang}) {
                                                 <span className="textB">{item.serialNumber}</span>
                                             </div>
                                             <div className="d-flex align-items-center">
-                                                <b>INN: </b>
-                                                <span className="textB">{item?.inn}</span>
+                                                <b>PINFL: </b>
+                                                <span className="textB">{item?.parsedAlias['1.2.860.3.16.1.2']}</span>
                                                 <b className="textB">{item.parsedAlias.uid ? "ФИЗИЧЕСКОE ЛИЦО" : "ЮРИДИЧЕСКОE ЛИЦО"}</b>
                                             </div>
                                             <div className="d-flex align-items-center">
@@ -108,7 +84,7 @@ export default function TabOpen1({lang}) {
                                                 <span className="textB">{item?.parsedAlias?.cn?.toUpperCase()}</span>
                                             </div>
                                             <div className="d-flex align-items-center srok">
-                                                <b>Срок дествия сертификата: </b>
+                                                <b>Срок дествия сертификата:&nbsp;</b>
                                                 <span
                                                     className="">{item.parsedAlias.validfrom} - {item.parsedAlias.validto}</span>
                                             </div>
@@ -116,91 +92,22 @@ export default function TabOpen1({lang}) {
                                     ))}
                                 </DropdownMenu>
                             </Dropdown>
-
-                        </div>
-                        <div className="group d-none">
-                            <textarea placeholder="text" onChange={e => setobj(e.target.value)}/>
                         </div>
                         <div className="group">
                             <button className="d-flex align-items-center bg-white signEtp" onClick={sign}
-                                    disabled={!selectedKey || !obj}>
+                                    disabled={!selectedKey || !uuidFromBack}>
                                 <img src="../signin.jpg" className="openLock"/>
                                 <span className="imzolash text-black">Kirish</span>
                             </button>
                         </div>
-
                         {result !== "" && (
                             <div className="group">
                                 <textarea style={{height: "500px"}}>{result}</textarea>
                             </div>
                         )}
-
-                        {/*<ul className="dropdown-menu keysDropdownMenu" aria-labelledby="leDropdownMenu1">*/}
-                        {/*  <li><a href="#" onClick="uiComboSelect('itm-77957EB8-0')"><img src="/src/assets/pfx.ico" alt="#"/> <b>SERTIFIKAT*/}
-                        {/*    №:</b> 77957eb8<br/><b>STIR:</b> 490183397 <b>JISMONIY SHAXS</b><br/><b>F.I.Sh.:</b>AZIMOV BOBUR BAXRAMDJONOVICH<br/><font*/}
-                        {/*    size="-2"><b>Sertifikatni amal qilish muddati:</b> 20.08.2021 - 20.08.2023</font>*/}
-                        {/*    </a>*/}
-                        {/*  </li>*/}
-                        {/*</ul>*/}
                     </div>
                 </div>
             </div>
-
-            {/*<form method="get" style={{marginTop: "5em"}} action="">*/}
-            {/*    <h1>{lang("electronVoice")}</h1>*/}
-            {/*    <p>{lang("text.tabOpen1")}</p>*/}
-            {/*    <input onClick={() => setIsOpen(!isOpen)} type="button" className="butdes2" name="auth_to_oneid"*/}
-            {/*           value={lang("signInONEID")}/>*/}
-            {/*</form>*/}
-
-            {/*            <Modal className="eimzoModal" isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>*/}
-            {/*                <ModalHeader toggle={() => setIsOpen(!isOpen)} className="d-flex align-items-center">*/}
-            {/*                 <div className="d-flex align-items-center eimzo">*/}
-            {/*                     /!*<img src="../padlock_open.png" className="openLock"/>*!/*/}
-            {/*                     /!*<span>Elektron kalit bilan kirish</span>*!/*/}
-            {/*                     <img src="../logo.png" className="openLock2"/>*/}
-            {/*                     <span>Вход с помощью ЭЦП</span>*/}
-            {/*                 </div>*/}
-            {/*                </ModalHeader>*/}
-
-            {/*<ModalBody className="d-flex justify-content-center">*/}
-            {/*    <div className="App">*/}
-            {/*        <div className="group d-flex align-items-center">*/}
-            {/*           <span className='etp'>ЭЦП</span>*/}
-
-            {/*            <select className="selecteKey" onChange={e => setselectedKey(e.target?.value)}>*/}
-            {/*                {keys.map((item, i) => (*/}
-            {/*                    <option selected={i === 0} key={i} value={item?.serialNumber}>*/}
-            {/*                        {item?.inn} - {item?.parsedAlias?.cn?.toUpperCase()}</option>*/}
-            {/*                ))}*/}
-            {/*            </select>*/}
-            {/*        </div>*/}
-            {/*        <div className="group">*/}
-            {/*            <textarea placeholder="text" onChange={e => setobj(e.target.value)}/>*/}
-            {/*        </div>*/}
-            {/*        <div className="group">*/}
-            {/*            <button className="d-flex align-items-center" onClick={sign} disabled={!selectedKey || !obj}>*/}
-            {/*                <img src="../lockWhite.png" className="openLock"/>*/}
-            {/*                <span className="imzolash">Kirish</span>*/}
-            {/*            </button>*/}
-            {/*        </div>*/}
-
-            {/*        {result !== "" && (*/}
-            {/*            <div className="group">*/}
-            {/*                <textarea style={{height: "500px"}}>{result}</textarea>*/}
-            {/*            </div>*/}
-            {/*        )}*/}
-
-            {/*        /!*<ul className="dropdown-menu keysDropdownMenu" aria-labelledby="leDropdownMenu1">*!/*/}
-            {/*        /!*  <li><a href="#" onClick="uiComboSelect('itm-77957EB8-0')"><img src="/src/assets/pfx.ico" alt="#"/> <b>SERTIFIKAT*!/*/}
-            {/*        /!*    №:</b> 77957eb8<br/><b>STIR:</b> 490183397 <b>JISMONIY SHAXS</b><br/><b>F.I.Sh.:</b>AZIMOV BOBUR BAXRAMDJONOVICH<br/><font*!/*/}
-            {/*        /!*    size="-2"><b>Sertifikatni amal qilish muddati:</b> 20.08.2021 - 20.08.2023</font>*!/*/}
-            {/*        /!*    </a>*!/*/}
-            {/*        /!*  </li>*!/*/}
-            {/*        /!*</ul>*!/*/}
-            {/*    </div>*/}
-            {/*</ModalBody>*/}
-            {/*            </Modal>*/}
         </div>
     );
 }

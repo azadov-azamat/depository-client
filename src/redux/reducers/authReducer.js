@@ -15,6 +15,7 @@ const initState = {
     networkState: true,
     currentUser: '',
     sentUserMe: false,
+    uuidFromBack: null
 };
 
 const reducers = {
@@ -27,6 +28,9 @@ const reducers = {
     [types.REQUEST_START || AUTH_GET_CURRENT_USER_REQUEST](state) {
         state.loading = true;
         state.replay = false
+    },
+    ['REQUEST_EDS_SUCCESS'](state, action) {
+        state.uuidFromBack = action.payload;
     },
     [types.REQUEST_START](state) {
         state.loading = true;

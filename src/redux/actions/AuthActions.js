@@ -1,5 +1,5 @@
 import * as types from '../actionTypes/actionTypes'
-import {loginUser, me} from "../../api/AuthApi";
+import {loginEdsApi, loginUser, me} from "../../api/AuthApi";
 import jwt from "jwt-decode";
 import {BEARER, DEPOSITORY_ROLE, DEPOSITORY_USER, TOKEN} from "../../utils/contants";
 import {toast} from "react-toastify";
@@ -27,17 +27,17 @@ export const login = (payload) => async (dispatch) => {
             localStorage.setItem(TOKEN, BEARER + token);
             let apiAccount = BASE_URL + api.userMe;
 
-            axios.get(apiAccount, { headers: {"Authorization" : `Bearer ${token}`} })
+            axios.get(apiAccount, {headers: {"Authorization": `Bearer ${token}`}})
                 .then(res => {
                     dispatch({
                         type: "AUTH_GET_USER_TOKEN_SUCCESS",
                         payload: res.data,
                     });
-            })
+                })
             // if (payload.historyPushLogin !== null){
             //     payload.history.push(payload.historyPushLogin)
             // }else {
-                payload.history.push('/')
+            payload.history.push('/')
             // }
         }
         return true;
@@ -57,6 +57,13 @@ export const login = (payload) => async (dispatch) => {
 
 };
 
+export const loginEds = (payload) => async (dispatch) => {
+    dispatch({
+        api: loginEdsApi,
+        types: ["REQUEST_EDS_START", "REQUEST_EDS_SUCCESS", "REQUEST_EDS_ERROR"],
+        data: payload
+    })
+}
 export const userMe = (payload, minusNine) => async (dispatch, getState) => {
 
     const {
@@ -138,6 +145,7 @@ export const networkAction = (payload) => async (dispatch) => {
         data: payload.success
     })
 }
+
 const setStateRole = (roles, dispatch) => {
     let roleAdmin = false;
     let roleModer = false;

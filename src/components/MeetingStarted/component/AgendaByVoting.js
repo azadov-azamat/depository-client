@@ -48,33 +48,33 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
 
     const addBallot = ({votingId, option, agendaId}) => {
 
-        if (quorum < 75) {
+        if (quorum > 74) {
+            confirmAlert({
+                title: 'Проголосовать',
+                message: 'Вы действительно хотите удалить в компанию?',
+                buttons: [
+                    {
+                        label: 'Да',
+                        onClick: () => {
+                            const data = {
+                                agendaId: agendaId,
+                                meetingId: meetingId,
+                                memberId: memberId,
+                                options: option,
+                                votingOptionId: votingId
+                            }
+
+                            dispatch(meetingStarted.addBallotAction({data}))
+                        }
+                    },
+                    {
+                        label: 'Нет',
+                    }
+                ]
+            });
+        } else {
             return toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
         }
-
-        confirmAlert({
-            title: 'Проголосовать',
-            message: 'Вы действительно хотите удалить в компанию?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: () => {
-                        const data = {
-                            agendaId: agendaId,
-                            meetingId: meetingId,
-                            memberId: memberId,
-                            options: option,
-                            votingOptionId: votingId
-                        }
-
-                        dispatch(meetingStarted.addBallotAction({data}))
-                    }
-                },
-                {
-                    label: 'Нет',
-                }
-            ]
-        });
     };
 
     const voting = useMemo(() => {

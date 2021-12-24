@@ -1,6 +1,7 @@
 
 export const api = {
     login: '/authenticate',
+    loginEds: '/eds/signrequest',
     userMe: '/account',
     userMethods: '/moder/user',
     userFilter: '/moder/user/filter',
