@@ -10,7 +10,7 @@ export const loginEdsApi = (data) => {
 }
 
 export const postPks7FileApi = (data) => {
-    return HttpClient.doPost(api.pks7File+ (data ? "?pkcs7=" + data : ''))
+    return HttpClient.doPost(api.pks7File, data)
 }
 
 export const me = (data) => {

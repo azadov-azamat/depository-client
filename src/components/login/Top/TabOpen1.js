@@ -44,12 +44,20 @@ export default function TabOpen1({lang}) {
         });
     }, [selectedKey])
 
+    console.log(keys)
+
     const sign = async () => {
         setresult("");
         const keyId = await eimzoService.preLoadKey(keys.find(item =>
             item?.serialNumber === selectedKey?.serialNumber));
         eimzoService.postLoadKey(keyId, uuidFromBack).then((res) => {
-                dispatch(authAction.postPks7FileAction(res));
+                const data = {
+                    pinfl: res.parsedAlias['1.2.860.3.16.1.2'],
+                    fullName: res.parsedAlias.cn,
+                    inn: res.inn,
+                    serialnumber: res.serialNumber
+                }
+                dispatch(authAction.postPks7FileAction(data));
                 // setresult(res)
             }
         ).catch(err => {
