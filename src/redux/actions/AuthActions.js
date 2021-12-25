@@ -65,7 +65,7 @@ export const postPks7FileAction = (payload) => async (dispatch) => {
     dispatch({
         api: postPks7FileApi,
         types: ["REQUEST_EDS_START_PKS", "REQUEST_EDS_SUCCESS_PKS", "REQUEST_EDS_ERROR_PKS"],
-        data: payload
+        data: payload.data
     }).then(res => {
         let token = res.payload.id_token;
         let parsedToken = jwt(token);

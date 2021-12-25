@@ -4,10 +4,12 @@ import * as eimzoService from "../../../eImzo/services/eimzo";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import * as authAction from '../../../redux/actions/AuthActions';
+import {useHistory} from "react-router-dom";
 
 export default function TabOpen1({lang}) {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const reducers = useSelector(state => state)
     const {uuidFromBack, pks7FileResult} = reducers.auth
 
@@ -50,14 +52,14 @@ export default function TabOpen1({lang}) {
         setresult("");
         const keyId = await eimzoService.preLoadKey(keys.find(item =>
             item?.serialNumber === selectedKey?.serialNumber));
-        eimzoService.postLoadKey(keyId, uuidFromBack).then((res) => {
+        eimzoService.postLoadKey(keyId, uuidFromBack.hash).then((res) => {
                 const data = {
                     pinfl: selectedKey.parsedAlias['1.2.860.3.16.1.2'],
                     fullName: selectedKey.parsedAlias.cn,
                     inn: selectedKey.inn,
                     serialnumber: selectedKey.serialNumber
                 }
-                dispatch(authAction.postPks7FileAction(data));
+                dispatch(authAction.postPks7FileAction({data, history}));
                 // setresult(res)
             }
         ).catch(err => {
