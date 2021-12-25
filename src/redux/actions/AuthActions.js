@@ -34,11 +34,7 @@ export const login = (payload) => async (dispatch) => {
                         payload: res.data,
                     });
                 })
-            // if (payload.historyPushLogin !== null){
-            //     payload.history.push(payload.historyPushLogin)
-            // }else {
             payload.history.push('/')
-            // }
         }
         return true;
     } catch (err) {
@@ -70,6 +66,29 @@ export const postPks7FileAction = (payload) => async (dispatch) => {
         api: postPks7FileApi,
         types: ["REQUEST_EDS_START_PKS", "REQUEST_EDS_SUCCESS_PKS", "REQUEST_EDS_ERROR_PKS"],
         data: payload
+    }).then(res => {
+        let token = res.payload.id_token;
+        let parsedToken = jwt(token);
+        let app = parsedToken.auth;
+        const sentence = app.replace(/\s+/g, ' ').trim()
+        let arr = sentence.split(',');
+        setTimeout(() => {
+            setStateRole(arr, dispatch);
+        }, 1000);
+
+        localStorage.setItem(TOKEN, BEARER + token);
+        let apiAccount = BASE_URL + api.userMe;
+
+        axios.get(apiAccount, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(res => {
+                dispatch({
+                    type: "AUTH_GET_USER_TOKEN_SUCCESS",
+                    payload: res.data,
+                });
+            })
+        payload.history.push('/')
+    }).catch(err => {
+
     })
 }
 

@@ -52,10 +52,10 @@ export default function TabOpen1({lang}) {
             item?.serialNumber === selectedKey?.serialNumber));
         eimzoService.postLoadKey(keyId, uuidFromBack).then((res) => {
                 const data = {
-                    pinfl: res.parsedAlias['1.2.860.3.16.1.2'],
-                    fullName: res.parsedAlias.cn,
-                    inn: res.inn,
-                    serialnumber: res.serialNumber
+                    pinfl: selectedKey.parsedAlias['1.2.860.3.16.1.2'],
+                    fullName: selectedKey.parsedAlias.cn,
+                    inn: selectedKey.inn,
+                    serialnumber: selectedKey.serialNumber
                 }
                 dispatch(authAction.postPks7FileAction(data));
                 // setresult(res)
