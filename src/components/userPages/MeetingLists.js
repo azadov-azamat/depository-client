@@ -57,7 +57,7 @@ export const MeetingLists = () => {
                     <Col md={12}>
                         <Switch>
                             <Route path={"/issuerLegal/meetings"}>
-                                <List meetings={meetingByUser} companyId={companyId} type={status} lang={t}/>
+                                <List meetings={meetingByUser} companyId={companyId} type={status} lang={t} history={history}/>
                             </Route>
                         </Switch>
                     </Col>

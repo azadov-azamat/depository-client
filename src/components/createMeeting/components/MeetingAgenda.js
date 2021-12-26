@@ -474,7 +474,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                         }
                                     >
-                                        {memberManagerState && memberManagerState.map((username, index) =>
+                                        {memberManagerState?.map((username, index) =>
                                             username.memberTypeEnum === SPEAKER ?
                                                 <Option key={index}
                                                         value={username.id}>{username.user.fullName + " - " + username.user.pinfl}</Option> : ''

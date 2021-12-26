@@ -1,7 +1,18 @@
 import React, {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
-import {CANCELED, CHAIRMAN, DISABLED, FINISH, PENDING, SECRETARY, TOKEN} from "../../utils/contants";
+import {
+    CANCELED,
+    CHAIRMAN,
+    DISABLED,
+    FINISH,
+    PENDING,
+    SECRETARY,
+    SIMPLE,
+    SPEAKER,
+    TOKEN,
+    WATCHER
+} from "../../utils/contants";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
 import * as meetingAction from "../../redux/actions/MeetingAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
@@ -94,19 +105,22 @@ export const Socket = ({meetingId, memberId, currentMember, setOpenModal}) => {
                     }
                 }
 
-                if (topic === '/topic/meeting-status/' + meetingId){
+                if (topic === '/topic/meeting-status/' + meetingId) {
                     dispatch({
                         type: 'REQUEST_GET_MEETING_SUCCESS',
                         payload: msg
                     })
                     if (msg.status === FINISH || msg.status === CANCELED || msg.status === DISABLED || msg.status === PENDING) {
-                        if (currentMember?.memberTypeEnum !== SECRETARY || (currentMember?.memberTypeEnum !== CHAIRMAN && currentMember?.fromReestr === true)){
+                        if (currentMember?.memberTypeEnum === SIMPLE ||
+                            currentMember?.memberTypeEnum === WATCHER ||
+                            currentMember?.memberTypeEnum === SPEAKER ||
+                            currentMember?.memberTypeEnum === CHAIRMAN && currentMember?.fromReestr) {
                             setOpenModal(true)
                         }
                     }
                 }
 
-                if (topic === '/topic/quorum/' + meetingId){
+                if (topic === '/topic/quorum/' + meetingId) {
                     dispatch({
                         type: 'COUNT_QUORUM_MEETING',
                         payload: parseInt((msg?.filter(element => element.isConfirmed === true).length / msg.length) * 100)

@@ -21,7 +21,6 @@ import {subscribe, unsubscribe} from "../../redux/actions/socketActions";
 import {confirmAlert} from "react-confirm-alert";
 import {toast} from "react-toastify";
 import {useTranslation} from "react-i18next";
-import {AvField, AvForm} from "availity-reactstrap-validation";
 
 function useQuery() {
     const {search} = useLocation();
@@ -138,12 +137,12 @@ export const ControllerMeeting = () => {
         }
     }, [dispatch])
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch({
             type: 'COUNT_QUORUM_MEETING',
             payload: parseInt((memberManagerState?.filter(element => element.isConfirmed === true).length / memberManagerState.length) * 100)
         })
-    },[memberManagerState])
+    }, [memberManagerState])
 
     importScript("https://meet.jit.si/external_api.js");
 
@@ -291,7 +290,9 @@ export const ControllerMeeting = () => {
                         <div className="col-12 col-md-8">
                             <NavbarControlMeeting clicked={clicked} countBadge={badgeCount} roleMember={userMemberType}
                                                   fromReestr={fromReestrMember}
-                                                  memberId={memberId} companyId={companyId}/>
+                                                  memberId={memberId} companyId={companyId}
+                                                  archiveBoolean={currentMeeting?.status === PENDING || currentMeeting?.status === ACTIVE}
+                            />
                             <Switch>
                                 <Route path={"/issuerLegal/meeting/" + id + "/agenda"}>
                                     <Agenda agendas={agendaState} roleMember={userMemberType}
@@ -299,11 +300,13 @@ export const ControllerMeeting = () => {
                                             meetingId={meetingId} memberId={parseInt(memberId)} quorum={countQuorum}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/question"}>
-                                    <Question list={questionList} userId={currentUser.id}/>
+                                    <Question list={questionList} userId={currentUser.id}
+                                              currentMeeting={currentMeeting}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/addComment"}>
                                     <Comment loading={loadingLogging} socketClient={socketClient}
-                                             meetingId={meetingId} userId={currentUser.id}/>
+                                             meetingId={meetingId} userId={currentUser.id}
+                                             currentMeeting={currentMeeting}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
                                     <ControlMeeting meetingStatus={currentMeeting?.status} agenda={agendaState}
@@ -428,7 +431,7 @@ export const ControllerMeeting = () => {
                     <div className="container d-flex justify-content-center align-items-center flex-column">
                         <h2>Засидания заверщено</h2>
                         <button className={"create px-3"}
-                            onClick={() => history.push("/issuerLegal/meetings?company_id=" + companyId + "&type=archive")}>Ok
+                                onClick={() => history.push("/issuerLegal/meetings?company_id=" + companyId + "&type=archive")}>Ok
                         </button>
                     </div>
                 </ModalBody>

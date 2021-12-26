@@ -35,16 +35,15 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
         }
     }
 
-    function agendaSubjectAndVoting({subject, votingLit, extraInfo}) {
+    function agendaSubjectAndVoting({subject, speaker, extraInfo}) {
         return (
             <>
                 <p style={{fontWeight: 'bold'}}>{subject}</p>
+                {speaker !== null ?
+                    <span>Доклатчик: {speaker}</span> : ''
+                } <br/>
                 <span style={{fontSize: "12px"}}
                       className={extraInfo === null || extraInfo === undefined ? 'd-none' : ''}>Причина: {extraInfo}</span>
-                <hr/>
-                {votingLit && votingLit.map((element, index) =>
-                    <div className='text-start'><span key={index}>{index + 1} - {element.votingText}</span><br/></div>
-                )}
             </>
         )
     }
@@ -109,33 +108,48 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                                 <Table hover>
                                     <thead>
                                     <tr>
-                                        <th style={{width: '15px'}}/>
+                                        {/*<th style={{width: '15px'}}/>*/}
                                         <th className="text-center">Вопросы поставленные <br/> на голосование</th>
                                         <th className="text-center">
                                             Итого голосования
                                         </th>
-                                        <th>Доклатчик</th>
+                                        {/*<th className="text-center">Доклатчик</th>*/}
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {agenda?.length !== 0 ?
                                         agenda?.map((element, index) => (
-                                            <tr key={index}>
-                                                <td className={"text-center"}>
-                                                    {index + 1}
-                                                </td>
-                                                <td>{agendaSubjectAndVoting({
-                                                    subject: element.subject,
-                                                    votingLit: element.votingOptions,
-                                                    extraInfo: element.extraInfo
-                                                })}</td>
-                                                <td>
-                                                    За: 50 <br/>
-                                                    Против: 20 <br/>
-                                                    Воздержались: 25
-                                                </td>
-                                                <td className="text-center">{element.userName}</td>
-                                            </tr>
+                                          <>
+                                              <tr key={index}>
+                                                  {/*<td className={"text-center"}>*/}
+                                                  {/*    {index + 1}*/}
+                                                  {/*</td>*/}
+                                                  <td colSpan={'2'} className="text-center">{agendaSubjectAndVoting({
+                                                      subject: element.subject,
+                                                      speaker: element.userName,
+                                                      extraInfo: element.extraInfo
+                                                  })}</td>
+                                                  {/*<td>*/}
+                                                  {/*    За: 50 <br/>*/}
+                                                  {/*    Против: 20 <br/>*/}
+                                                  {/*    Воздержались: 25*/}
+                                                  {/*</td>*/}
+                                                  {/*<td className="text-center">{element.userName}</td>*/}
+                                              </tr>
+                                              {
+                                                  element.votingOptions.map(elementVoting=>
+                                                      <tr key={element.id}>
+                                                          <td>{elementVoting.votingText}</td>
+                                                          <td>
+                                                              За: 50 <br/>
+                                                              Против: 20 <br/>
+                                                              Воздержались: 25
+                                                          </td>
+                                                          {/*<td className="text-center">{element.userName}</td>*/}
+                                                      </tr>
+                                                  )
+                                              }
+                                          </>
                                         ))
                                         :
                                         <tr className='text-center'>

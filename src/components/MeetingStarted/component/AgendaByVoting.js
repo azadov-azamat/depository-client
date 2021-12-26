@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo} from "react";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
-import {AGAINST, DEPOSITORY_CURRENT_MEMBER, FOR, REFRAIN} from "../../../utils/contants";
+import {ACTIVE, AGAINST, CANCELED, DEPOSITORY_CURRENT_MEMBER, FINISH, FOR, REFRAIN} from "../../../utils/contants";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "reactstrap";
 import {element} from "prop-types";
@@ -13,6 +13,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
     const dispatch = useDispatch();
     const reducers = useSelector(state => state)
     const {currentBallotVotingList, loadingBallot} = reducers.meetingStarted
+    const {currentMeeting} = reducers.meeting
 
     useEffect(() => {
         const data = {
@@ -23,6 +24,15 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
     }, [agenda.id, loadingBallot])
 
     const deleteBallot = (votingId) => {
+        if (currentMeeting?.status === FINISH) {
+            return toast.error("Засидание в статусе - Заверщено!")
+        }
+        if (currentMeeting?.status === CANCELED) {
+            return toast.error("Засидание в статусе - Отмена!")
+        }
+        if (currentMeeting?.status === ACTIVE) {
+            return toast.error("Засидание в статусе - Активный!")
+        }
         const data = {
             memberId: parseInt(memberId),
             agendaId: agenda.id,
@@ -47,6 +57,16 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
     }
 
     const addBallot = ({votingId, option, agendaId}) => {
+
+        if (currentMeeting?.status === FINISH) {
+            return toast.error("Засидание в статусе - Заверщено!")
+        }
+        if (currentMeeting?.status === CANCELED) {
+            return toast.error("Засидание в статусе - Отмена!")
+        }
+        if (currentMeeting?.status === ACTIVE) {
+            return toast.error("Засидание в статусе - Активный!")
+        }
 
         if (quorum > 74) {
             confirmAlert({

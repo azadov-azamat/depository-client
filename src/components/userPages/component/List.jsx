@@ -4,7 +4,7 @@ import {ACTIVE, CANCELED, DISABLED, EXTRAORDINARY, FINISH, ORDINARY, PENDING} fr
 import ButtonValue from "./ButtonValue";
 import Text from "antd/es/typography/Text";
 
-export const List = ({meetings, type, companyId, lang}) => {
+export const List = ({meetings, type, companyId, lang, history}) => {
 
     const [statusMeet, setStatusMeet] = useState({success: FINISH, cancel: CANCELED, active: DISABLED})
 
@@ -75,11 +75,11 @@ export const List = ({meetings, type, companyId, lang}) => {
                                     </Text>
                                 </div>
                                 <div className="col-md-4 d-flex justify-content-center align-items-center d-md-none">
-                                    {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
-                                        btnValue(userMeeting.id) :
+                                    {/*{statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?*/}
+                                    {/*    btnValue(userMeeting.id) :*/}
                                         <ButtonValue meetingId={userMeeting.id}
-                                                     companyId={companyId}/>
-                                    }
+                                                     companyId={companyId} successStatus={statusMeet.success} cancelStatus={statusMeet.cancel}/>
+
                                 </div>
 
                                 <div className="col-md-7 d-none d-md-block mx-3 pt-2">
@@ -91,11 +91,10 @@ export const List = ({meetings, type, companyId, lang}) => {
                                 </div>
 
                                 <div className="col-md-4 d-md-flex justify-content-center align-items-center d-none">
-                                    {statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?
-                                        btnValue(userMeeting.id) :
+                                    {/*{statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?*/}
+                                    {/*    btnValue(userMeeting.id) :*/}
                                         <ButtonValue meetingId={userMeeting.id}
-                                                     companyId={companyId} lang={lang}/>
-                                    }
+                                                     companyId={companyId} lang={lang}  successStatus={statusMeet.success} cancelStatus={statusMeet.cancel}/>
                                 </div>
                             </div>
                         </div>

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import * as meetingStarted from "../../../redux/actions/MeetingStartedAction";
 import {confirmAlert} from "react-confirm-alert";
-import {ACTIVE, CANCELED, CHAIRMAN, FINISH, SECRETARY, SIMPLE} from "../../../utils/contants";
+import {ACTIVE, CANCELED, CHAIRMAN, FINISH, PENDING, SECRETARY, SIMPLE} from "../../../utils/contants";
 import {AccordionAgenda} from "./Accordions/AccordionAgenda";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import AgendaByVoting from "./AgendaByVoting";
@@ -28,13 +28,13 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
     }, [meetingId])
 
     function editStatusElement(element) {
-        if (currentMeeting?.status === FINISH){
+        if (currentMeeting?.status === FINISH) {
             return toast.error("Засидание в статусе - Заверщено!")
         }
-        if (currentMeeting?.status === CANCELED){
+        if (currentMeeting?.status === CANCELED) {
             return toast.error("Засидание в статусе - Отмена!")
         }
-        if (currentMeeting?.status === ACTIVE){
+        if (currentMeeting?.status === ACTIVE) {
             return toast.error("Засидание в статусе - Активный!")
         }
         if (element.active) {
@@ -67,6 +67,15 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
     }
 
     function editAgendaStatusIsActive(e, v) {
+        if (currentMeeting?.status === FINISH) {
+            return toast.error("Засидание в статусе - Заверщено!")
+        }
+        if (currentMeeting?.status === CANCELED) {
+            return toast.error("Засидание в статусе - Отмена!")
+        }
+        if (currentMeeting?.status === ACTIVE) {
+            return toast.error("Засидание в статусе - Активный!")
+        }
         const data = {
             id: currentAgenda.id,
             meetingId: meetingId,
@@ -77,14 +86,14 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
         setOpenModal(false)
     }
 
-    function agendaSubjectAndVoting({subject, votingLit, extraInfo}) {
+    function agendaSubjectAndVoting({subject, votingList, extraInfo}) {
         return (
             <>
                 <p style={{fontWeight: 'bold'}}>{subject}</p>
                 <span style={{fontSize: "12px"}}
                       className={extraInfo === null || extraInfo === undefined ? 'd-none' : ''}>Причина: {extraInfo}</span>
                 <hr/>
-                {votingLit && votingLit.map((element, index) =>
+                {votingList?.map((element, index) =>
                     <div className='text-start'><span key={index}>{index + 1} - {element.votingText}</span><br/></div>
                 )}
             </>
@@ -123,7 +132,9 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                         </div>
                                                         <AgendaByVoting quorum={quorum} agenda={element}
                                                                         variant={elementOption}
-                                                                        memberId={memberId} meetingId={meetingId}/>
+                                                                        memberId={memberId} meetingId={meetingId}
+                                                                        currentMeeting={currentMeeting}
+                                                        />
                                                     </>
                                                 ) :
                                                 <span>Причина: {element.extraInfo}</span>
@@ -163,7 +174,8 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                         <AccordionAgenda.Item>
                                             <AccordionAgenda.Header status={element.active}>
                                                 <div className="agenda" key={index}>
-                                                <span style={element.active ? {} : {color: '#CBCBC7FF'}}><b>{element.subject}</b></span><br/>
+                                                    <span
+                                                        style={element.active ? {} : {color: '#CBCBC7FF'}}><b>{element.subject}</b></span><br/>
                                                     <span
                                                         style={element.active ? {color: '#6B8C67FF'} : {color: '#CBCBC7FF'}}><b>Доклатчик: {element.userName}</b></span>
                                                 </div>
@@ -173,7 +185,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                     element.votingOptions.map((elementOption, index) =>
                                                         <>
                                                             <div className="mt-2 container" key={index}>
-                                             '
+                                                                '
                                                                 {index === 0 ? <><span
                                                                     style={{fontSize: '23px'}}>Решения:</span><br/></> : ""}
                                                                 <span
@@ -215,7 +227,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                         <td className="text-center">{agenda.userName}</td>
                                                         <td>{agendaSubjectAndVoting({
                                                             subject: agenda.subject,
-                                                            votingLit: agenda.votingOptions,
+                                                            votingList: agenda.votingOptions,
                                                             extraInfo: agenda.extraInfo
                                                         })}</td>
                                                         <td className="text-center">{agenda.active ?
@@ -246,9 +258,8 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                             name="extraInfo"
                             label="Комментирование"
                             className="border"
-                            // value={logging}
-                            // onChange={(e) => setLogging(e.target.value)}
                             style={{backgroundColor: '#FFFFFF', resize: 'none', height: '30vh'}}
+                            required
                         />
                         {loading ?
                             <div className="d-flex align-items-center justify-content-center" style={{

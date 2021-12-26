@@ -1,15 +1,25 @@
 import React, {useRef, useState} from 'react'
 import {AvField, AvForm} from 'availity-reactstrap-validation'
 import Loader from "react-loader-spinner";
-import {DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, TOKEN} from "../../../utils/contants";
+import {ACTIVE, CANCELED, DEPOSITORY_CURRENT_MEETING, DEPOSITORY_USER, FINISH, TOKEN} from "../../../utils/contants";
 import {useDispatch} from "react-redux";
 import SockJsClient from "react-stomp";
+import {toast} from "react-toastify";
 
-export default function Comment({loading, socketClient, meetingId, userId}) {
+export default function Comment({loading, socketClient, meetingId, userId, currentMeeting}) {
 
     const [logging, setLogging] = useState();
 
     async function postComment() {
+        if (currentMeeting?.status === FINISH) {
+            return toast.error("Засидание в статусе - Заверщено!")
+        }
+        if (currentMeeting?.status === CANCELED) {
+            return toast.error("Засидание в статусе - Отмена!")
+        }
+        if (currentMeeting?.status === ACTIVE) {
+            return toast.error("Засидание в статусе - Активный!")
+        }
         const data = {
             userId: userId,
             meetingId: meetingId,

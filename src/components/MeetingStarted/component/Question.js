@@ -4,8 +4,10 @@ import {AvField, AvForm} from "availity-reactstrap-validation";
 import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
 import {useDispatch, useSelector} from "react-redux";
 import {subscribe, unsubscribe} from "../../../redux/actions/socketActions";
+import {ACTIVE, CANCELED, FINISH} from "../../../utils/contants";
+import {toast} from "react-toastify";
 
-export default function Question({list, userId}) {
+export default function Question({list, userId, currentMeeting}) {
 
     const dispatch = useDispatch();
     const [logging, setLogging] = useState();
@@ -20,11 +22,21 @@ export default function Question({list, userId}) {
     }, [dispatch])
 
     async function responseQuestion(e, v) {
+        if (currentMeeting?.status === FINISH) {
+            return toast.error("Засидание в статусе - Заверщено!")
+        }
+        if (currentMeeting?.status === CANCELED) {
+            return toast.error("Засидание в статусе - Отмена!")
+        }
+        if (currentMeeting?.status === ACTIVE) {
+            return toast.error("Засидание в статусе - Активный!")
+        }
         const data = {
             id: v.currentId,
             questionAnswer: logging,
             userId: userId
         }
+
         socketClient.sendMessage('/topic/question', JSON.stringify(data));
 
         if (v.checkbox) {
