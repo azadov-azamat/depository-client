@@ -11,7 +11,7 @@ export default function TabOpen1({lang}) {
     const dispatch = useDispatch();
     const history = useHistory();
     const reducers = useSelector(state => state)
-    const {uuidFromBack, pks7FileResult} = reducers.auth
+    const {uuidFromBack} = reducers.auth
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -21,19 +21,10 @@ export default function TabOpen1({lang}) {
     const [selectedKey, setSelectedKey] = useState(null);
     const [keys, setKeys] = useState([]);
 
-    // const [obj, setobj] = useState("elektron kalit");
-
     const [result, setresult] = useState("");
 
     useEffect(() => {
         eimzoService.startApi();
-        // eimzoService.getAllCertificates().then((res) => {
-        //     setKeys(res);
-        //     if (res.length === 1) {
-        //         setSelectedKey(res[0]);
-        //         dispatch(authAction.loginEds(res[0].serialNumber))
-        //     }
-        // });
     }, []);
 
     useEffect(() => {
@@ -46,13 +37,11 @@ export default function TabOpen1({lang}) {
         });
     }, [selectedKey])
 
-    console.log(keys)
-
     const sign = async () => {
         setresult("");
         const keyId = await eimzoService.preLoadKey(keys.find(item =>
             item?.serialNumber === selectedKey?.serialNumber));
-        eimzoService.postLoadKey(keyId, uuidFromBack.hash).then((res) => {
+        eimzoService.postLoadKey(keyId, uuidFromBack?.hash).then((res) => {
                 const data = {
                     pinfl: selectedKey.parsedAlias['1.2.860.3.16.1.2'],
                     fullName: selectedKey.parsedAlias.cn,
@@ -60,7 +49,6 @@ export default function TabOpen1({lang}) {
                     serialnumber: selectedKey.serialNumber
                 }
                 dispatch(authAction.postPks7FileAction({data, history}));
-                // setresult(res)
             }
         ).catch(err => {
             toast(err)
