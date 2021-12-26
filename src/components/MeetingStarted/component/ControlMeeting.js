@@ -1,23 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {
-    ACTIVE,
-    CANCELED,
-    DEPOSITORY_CURRENT_MEETING,
-    DEPOSITORY_USER,
-    DISABLED,
-    FINISH,
-    PENDING, TOKEN
-} from "../../../utils/contants";
-import {confirmAlert} from "react-confirm-alert";
-import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
-import * as meetingActions from "../../../redux/actions/MeetingAction";
-import {toast} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
-import SockJsClient from "react-stomp";
-import {updateMeetingStatusAction} from "../../../redux/actions/MeetingAction";
+import React from 'react'
+import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contants";
 import {Table} from "reactstrap";
-import {Link} from "react-router-dom";
-import {FaCheck, FaPen, FaTimes} from "react-icons/fa";
+import AnalysisBallots from "./components/AnalysisBallots";
 
 export default function ControlMeeting({meetingStatus, startMeeting, quorum, lang, agenda}) {
 
@@ -47,6 +31,18 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
             </>
         )
     }
+
+
+    const styleTable = {
+        whiteSpace: 'nowrap',
+        width: '22em',
+        height: '20px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        padding: '0',
+        margin: '0'
+    }
+
 
     return (
         <>
@@ -108,48 +104,37 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                                 <Table hover>
                                     <thead>
                                     <tr>
-                                        {/*<th style={{width: '15px'}}/>*/}
                                         <th className="text-center">Вопросы поставленные <br/> на голосование</th>
                                         <th className="text-center">
                                             Итого голосования
                                         </th>
-                                        {/*<th className="text-center">Доклатчик</th>*/}
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {agenda?.length !== 0 ?
                                         agenda?.map((element, index) => (
-                                          <>
-                                              <tr key={index}>
-                                                  {/*<td className={"text-center"}>*/}
-                                                  {/*    {index + 1}*/}
-                                                  {/*</td>*/}
-                                                  <td colSpan={'2'} className="text-center">{agendaSubjectAndVoting({
-                                                      subject: element.subject,
-                                                      speaker: element.userName,
-                                                      extraInfo: element.extraInfo
-                                                  })}</td>
-                                                  {/*<td>*/}
-                                                  {/*    За: 50 <br/>*/}
-                                                  {/*    Против: 20 <br/>*/}
-                                                  {/*    Воздержались: 25*/}
-                                                  {/*</td>*/}
-                                                  {/*<td className="text-center">{element.userName}</td>*/}
-                                              </tr>
-                                              {
-                                                  element.votingOptions.map(elementVoting=>
-                                                      <tr key={element.id}>
-                                                          <td>{elementVoting.votingText}</td>
-                                                          <td>
-                                                              За: 50 <br/>
-                                                              Против: 20 <br/>
-                                                              Воздержались: 25
-                                                          </td>
-                                                          {/*<td className="text-center">{element.userName}</td>*/}
-                                                      </tr>
-                                                  )
-                                              }
-                                          </>
+                                            <>
+                                                <tr key={index}>
+                                                    <td colSpan={'2'} className="text-center">{agendaSubjectAndVoting({
+                                                        subject: element.subject,
+                                                        speaker: element.userName,
+                                                        extraInfo: element.extraInfo
+                                                    })}
+                                                    </td>
+                                                </tr>
+                                                {
+                                                    element.votingOptions.map(elementVoting =>
+                                                        <tr key={element.id}>
+                                                            <td>
+                                                                <p style={styleTable}>{elementVoting.votingText}</p>
+                                                            </td>
+                                                            <td>
+                                                                <AnalysisBallots votingId={elementVoting.id}/>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                }
+                                            </>
                                         ))
                                         :
                                         <tr className='text-center'>
@@ -158,7 +143,7 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                                     }
                                     </tbody>
                                 </Table>
-                            </div> :""
+                            </div> : ""
                 }
             </div>
         </>

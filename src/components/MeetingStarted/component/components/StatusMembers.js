@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../utils/contants";
+import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../../utils/contants";
 import {FiSettings} from "react-icons/all";
 import {Modal, ModalBody, ModalHeader} from "reactstrap";
 

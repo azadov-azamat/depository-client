@@ -4,7 +4,7 @@ import {AiOutlineSetting, BiCheckDouble, FiSettings, RiDeleteBinLine} from "reac
 import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../utils/contants";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {useDispatch, useSelector} from "react-redux";
-import StatusMembers from "./StatusMembers";
+import StatusMembers from "./components/StatusMembers";
 
 export default function TableUsers({meetingId, lang}) {
 

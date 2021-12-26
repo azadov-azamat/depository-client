@@ -11,7 +11,8 @@ const initialState = {
     endCallMeeting: true,
     passwordZoomMeeting: null,
     connected: false,
-    countQuorum: 0
+    countQuorum: 0,
+    votingBallots: []
 };
 
 const reducers = {
@@ -93,6 +94,9 @@ const reducers = {
     },
     ["REQUEST_DELETE_BALLOT_SUCCESS"](state) {
         state.loadingBallot = false
+    },
+    ["REQUEST_SUCCESS_GET_BALLOT_BY_VOTING"](state, action) {
+        state.votingBallots[action.requestData.votingId] = action.payload
     },
 
 

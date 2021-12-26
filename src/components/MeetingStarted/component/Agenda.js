@@ -5,7 +5,7 @@ import {confirmAlert} from "react-confirm-alert";
 import {ACTIVE, CANCELED, CHAIRMAN, FINISH, PENDING, SECRETARY, SIMPLE} from "../../../utils/contants";
 import {AccordionAgenda} from "./Accordions/AccordionAgenda";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
-import AgendaByVoting from "./AgendaByVoting";
+import AgendaByVoting from "./components/AgendaByVoting";
 import {BiCheckDouble} from "react-icons/all";
 import {FaCheck, FaTimes} from "react-icons/fa";
 import {Col, Modal, ModalBody, ModalHeader, Row} from "reactstrap";

@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo} from "react";
-import * as meetingStartedAction from "../../../redux/actions/MeetingStartedAction";
-import {ACTIVE, AGAINST, CANCELED, DEPOSITORY_CURRENT_MEMBER, FINISH, FOR, REFRAIN} from "../../../utils/contants";
+import * as meetingStartedAction from "../../../../redux/actions/MeetingStartedAction";
+import {ACTIVE, AGAINST, CANCELED, DEPOSITORY_CURRENT_MEMBER, FINISH, FOR, REFRAIN} from "../../../../utils/contants";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "reactstrap";
 import {element} from "prop-types";
 import {confirmAlert} from "react-confirm-alert";
-import * as meetingStarted from "../../../redux/actions/MeetingStartedAction";
+import * as meetingStarted from "../../../../redux/actions/MeetingStartedAction";
 import {toast} from "react-toastify";
 
 export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) => {
