@@ -13,11 +13,12 @@ import {
 import * as meetingActions from "../../../redux/actions/MeetingAction";
 import {BASE_URL} from "../../../utils/config";
 import {api} from "../../../api/api";
-import {CHAIRMAN, SECRETARY} from "../../../utils/contants";
+import {ACTIVE, CANCELED, CHAIRMAN, FINISH, SECRETARY} from "../../../utils/contants";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {AccordionAnswersModal} from "./Accordions/AccordionAnswersModal";
 import {subscribe, unsubscribe} from "../../../redux/actions/socketActions";
 import Text from "antd/es/typography/Text";
+import {toast} from "react-toastify";
 
 export default function CommentsAllPage({
                                             roleMember,
@@ -27,7 +28,8 @@ export default function CommentsAllPage({
                                             questionListMemberId,
                                             currentMeetingId,
                                             memberId,
-                                            fromReestr
+                                            fromReestr,
+                                            currentMeeting
                                         }) {
 
     const dispatch = useDispatch();
@@ -85,6 +87,16 @@ export default function CommentsAllPage({
     }
 
     async function getRequest(e, v) {
+        if (currentMeeting?.status === FINISH) {
+            return toast.error("Засидание в статусе - Заверщено!")
+        }
+        if (currentMeeting?.status === CANCELED) {
+            return toast.error("Засидание в статусе - Отмена!")
+        }
+        if (currentMeeting?.status === ACTIVE) {
+            return toast.error("Засидание в статусе - Активный!")
+        }
+
         const data = {
             meetingId: currentMeetingId,
             memberId: memberId,

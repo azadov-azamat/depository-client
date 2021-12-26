@@ -412,14 +412,16 @@ export const ControllerMeeting = () => {
                                 }
                             </div>
                         </div>
-                        <CommentsAllPage roleMember={userMemberType} fromReestr={fromReestrMember}
+                        <CommentsAllPage roleMember={userMemberType}
                                          list={questionList && questionList}
-                                         currentUserId={currentUser && currentUser.id}
-                                         meetingFile={meetingFile && meetingFile}
                                          loggingList={loggingList && loggingList}
-                                         currentMeetingId={parseInt(id)}
+                                         meetingFile={meetingFile && meetingFile}
                                          questionListMemberId={questionListMemberId && questionListMemberId}
-                                         memberId={parseInt(memberId)}/>
+                                         currentMeetingId={parseInt(id)}
+                                         memberId={parseInt(memberId)}
+                                         fromReestr={fromReestrMember}
+                                         currentMeeting={currentMeeting}
+                        />
                     </div>
                 </div>
             </div>
