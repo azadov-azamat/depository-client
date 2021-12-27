@@ -1,9 +1,13 @@
 import React, {useState} from "react";
 import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../../utils/contants";
 import {FiSettings} from "react-icons/all";
-import {Modal, ModalBody, ModalHeader} from "reactstrap";
-
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import {useDispatch} from "react-redux";
+import * as meetingStartedAction from "../../../../redux/actions/MeetingStartedAction";
+``
 export default function StatusMembers({member, index, lang}) {
+
+    const dispatch = useDispatch();
 
     const style = {
         cursor: 'pointer',
@@ -48,12 +52,32 @@ export default function StatusMembers({member, index, lang}) {
                     <FiSettings fontSize={20} style={{color: "#133B88"}} onClick={() => setOpenModal(true)}/>
                 </text>
             </td>
-            <Modal isOpen={openModal} className="modal-dialog modal-lg">
-                <ModalHeader toggle={() => setOpenModal(!openModal)} className="d-flex align-items-center"/>
+            <Modal isOpen={openModal} toggle={false}>
+                <ModalHeader toggle={() => setOpenModal(!openModal)} className="d-flex align-items-center">
+                    Вид участие в заседании
+                </ModalHeader>
                 <ModalBody>
-                    Full name: {member.user.fullName} <br/>
-                    Pinfl: {member.user.pinfl}
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="flexRadioDefault"
+                               id="flexRadioDefault1"/>
+                        <label className="form-check-label" htmlFor="flexRadioDefault1">
+                            Дистанционно
+                        </label>
+                    </div>
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                               checked/>
+                        <label className="form-check-label" htmlFor="flexRadioDefault2">
+                            Очно
+                        </label>
+                    </div>
                 </ModalBody>
+                <ModalFooter>
+                    <div className="container d-flex justify-content-end">
+                        <button className='btn create'>save</button>
+                        <button className='btn cancel px-2 mx-2' onClick={()=> setOpenModal(false)}>cancel</button>
+                    </div>
+                </ModalFooter>
             </Modal>
         </tr>
     )
