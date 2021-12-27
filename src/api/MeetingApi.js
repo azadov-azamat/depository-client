@@ -63,12 +63,17 @@ export const getMeetingByUserIdAndCompanyIdApi = (data) => {
 export const addMemberManagerApi = (data) => {
     return HttpClient.doPost(api.memberManager, data)
 }
+
 export const deleteMember = (data) => {
     return HttpClient.doDelete(api.member + "/" + data)
 }
 
 export const isConfirmed = (data) => {
     return HttpClient.doPut(api.member + "/" + data)
+}
+
+export const isRemotely = (data) => {
+    return HttpClient.doPut(api.memberIsRemotely + (data && data.memberId ? "?memberId=" + data.memberId + "&remotely=" + data.remotely: ''))
 }
 
 

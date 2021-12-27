@@ -27,7 +27,7 @@ import {
     getMemberByIdApi,
     getMemberByMeetingIdApi,
     getMemberTypeEnumApi,
-    isConfirmed,
+    isConfirmed, isRemotely,
     postMeeting
 } from "../../api/MeetingApi";
 import * as types from "../actionTypes/MeetingActionTypes";
@@ -360,6 +360,18 @@ export const IsConfirmedAction = (payload) => async (dispatch) => {
         data: payload.currentMemberId
     }).then(res => {
 
+    }).catch(err => {
+
+    })
+}
+
+export const IsRemotelyAction = (payload) => async (dispatch) => {
+    dispatch({
+        api: isRemotely,
+        types: ["REQUEST_START_IS_REMOTELY", "REQUEST_SUCCESS_IS_REMOTELY", "REQUEST_ERROR_IS_REMOTELY"],
+        data: payload.data
+    }).then(res => {
+        payload.setOpenModal(false)
     }).catch(err => {
 
     })

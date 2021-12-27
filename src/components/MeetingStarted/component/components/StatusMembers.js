@@ -1,13 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CHAIRMAN, SECRETARY, SIMPLE, SPEAKER, WATCHER} from "../../../../utils/contants";
 import {FiSettings} from "react-icons/all";
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import {Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {useDispatch} from "react-redux";
-import * as meetingStartedAction from "../../../../redux/actions/MeetingStartedAction";
-``
+import * as meetingAction from "../../../../redux/actions/MeetingAction";
+
 export default function StatusMembers({member, index, lang}) {
 
     const dispatch = useDispatch();
+    const [remotely, setRemotely] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     const style = {
         cursor: 'pointer',
@@ -24,7 +26,17 @@ export default function StatusMembers({member, index, lang}) {
         margin: '0'
     }
 
-    const [openModal, setOpenModal] = useState(false);
+    function isRemotelyFunc(memberId) {
+        const data = {
+            memberId,
+            remotely
+        }
+        dispatch(meetingAction.IsRemotelyAction({data, setOpenModal}))
+    }
+
+    useEffect(() => {
+        setRemotely(member?.isRemotely);
+    }, [member])
 
     return (
         <tr className="text-center">
@@ -45,7 +57,6 @@ export default function StatusMembers({member, index, lang}) {
                 member.memberTypeEnum === SECRETARY ? lang("meetingCreated.roles.secretary") : '' ||
                 member.memberTypeEnum === CHAIRMAN ? member.fromReestr ? "Член наб. совета" : lang("meetingCreated.roles.chairman") : '' ||
                 member.memberTypeEnum === SIMPLE ? "Член наб. совета" : ''
-                // member.memberTypeEnum === SIMPLE ? lang("meetingCreated.roles.simple") : ''
             }</td>
             <td className="text-center">
                 <text style={style}>
@@ -53,20 +64,30 @@ export default function StatusMembers({member, index, lang}) {
                 </text>
             </td>
             <Modal isOpen={openModal} toggle={false}>
-                <ModalHeader toggle={() => setOpenModal(!openModal)} className="d-flex align-items-center">
+                <ModalHeader toggle={() => {
+                    setRemotely(member?.isRemotely)
+                    setOpenModal(!openModal)
+                }} className="d-flex align-items-center">
                     Вид участие в заседании
                 </ModalHeader>
                 <ModalBody>
                     <div className="form-check">
                         <input className="form-check-input" type="radio" name="flexRadioDefault"
-                               id="flexRadioDefault1"/>
+                               id="flexRadioDefault1"
+                               checked={remotely === true}
+                               onChange={(e) => setRemotely(true)}
+                               value={member?.isRemotely}
+                        />
                         <label className="form-check-label" htmlFor="flexRadioDefault1">
                             Дистанционно
                         </label>
                     </div>
                     <div className="form-check">
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                               checked/>
+                               checked={remotely === false}
+                               onChange={(e) => setRemotely(false)}
+                               value={!member?.isRemotely}
+                        />
                         <label className="form-check-label" htmlFor="flexRadioDefault2">
                             Очно
                         </label>
@@ -74,8 +95,12 @@ export default function StatusMembers({member, index, lang}) {
                 </ModalBody>
                 <ModalFooter>
                     <div className="container d-flex justify-content-end">
-                        <button className='btn create'>save</button>
-                        <button className='btn cancel px-2 mx-2' onClick={()=> setOpenModal(false)}>cancel</button>
+                        <button className='btn create' onClick={() => isRemotelyFunc(member?.id)}>save</button>
+                        <button className='btn cancel px-2 mx-2' onClick={() => {
+                            setRemotely(member?.isRemotely)
+                            setOpenModal(false)
+                        }}>cancel
+                        </button>
                     </div>
                 </ModalFooter>
             </Modal>

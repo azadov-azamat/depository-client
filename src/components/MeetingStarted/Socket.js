@@ -70,7 +70,7 @@ export const Socket = ({meetingId, memberId, currentMember, setOpenModal}) => {
                     dispatch({
                         type: 'RESPONSE_GET_ONLINE_MEMBERS_LIST_SUCCESS',
                         payload: msg
-                    })
+                    });
                 }
 
                 if (topic === '/topic/get-zoom/' + meetingId) {

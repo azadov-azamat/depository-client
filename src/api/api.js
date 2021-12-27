@@ -15,6 +15,7 @@ export const api = {
     meetingByUserAndCompany: '/meeting/by-user',
     meetingSpecFilter: "/meeting/spec-filter",
     member: '/member',
+    memberIsRemotely: '/member/remotely',
     addedChairmanFromReestrPage: '/member/elect-chairmen/',
     memberManager: '/member/managers',
     memberByMeetingId: '/member/by-meeting',
