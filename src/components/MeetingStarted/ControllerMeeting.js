@@ -310,8 +310,8 @@ export const ControllerMeeting = () => {
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/controlMeeting"}>
                                     <ControlMeeting meetingStatus={currentMeeting?.status} agenda={agendaState}
-                                                    startMeeting={startMeeting} lang={t}
-                                                    meetingId={meetingId} quorum={countQuorum}/>
+                                                    startMeeting={startMeeting} lang={t} members={memberManagerState}
+                                                    quorum={countQuorum}/>
                                 </Route>
                                 <Route path={"/issuerLegal/meeting/" + id + "/all_users_list"}>
                                     <TableUsers meetingId={meetingId} lang={t}/>

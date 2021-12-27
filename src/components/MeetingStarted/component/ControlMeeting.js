@@ -3,7 +3,7 @@ import {ACTIVE, CANCELED, DISABLED, FINISH, PENDING} from "../../../utils/contan
 import {Table} from "reactstrap";
 import AnalysisBallots from "./components/AnalysisBallots";
 
-export default function ControlMeeting({meetingStatus, startMeeting, quorum, lang, agenda}) {
+export default function ControlMeeting({meetingStatus, startMeeting, quorum, lang, agenda, members}) {
 
     function status(status) {
         if (status === ACTIVE) {
@@ -22,7 +22,7 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
     function agendaSubjectAndVoting({subject, speaker, extraInfo}) {
         return (
             <>
-                <p style={{fontWeight: 'bold'}}>{subject}</p>
+                <p style={{fontWeight: 'bold'}}>Повестка дня: {subject}</p>
                 {speaker !== null ?
                     <span>Доклатчик: {speaker}</span> : ''
                 } <br/>
@@ -43,6 +43,7 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
         margin: '0'
     }
 
+    console.log(members)
 
     return (
         <>
@@ -55,9 +56,9 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                     <p>
                         <b>из них:</b>
                         <br/>
-                        принимали участие дистанционно: голосов;
+                        принимали участие дистанционно: {(members?.filter(element=> element.isRemotely)).length} голосов;
                         <br/>
-                        принимали участие очно: голосов
+                        принимали участие очно: {(members?.filter(element=> !element.isRemotely)).length} голосов
                         <br/>
                         кворум ({isNaN(quorum) ? 0 : quorum}%)
                     </p>
@@ -100,7 +101,7 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                         </div> : '' ||
                         meetingStatus === FINISH ?
                             <div>
-                                <h4>Resultant</h4>
+                                <h4>РЕЗУЛЬТАТЫ</h4>
                                 <Table hover>
                                     <thead>
                                     <tr>

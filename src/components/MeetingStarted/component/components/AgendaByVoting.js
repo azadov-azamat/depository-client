@@ -12,7 +12,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
 
     const dispatch = useDispatch();
     const reducers = useSelector(state => state)
-    const {currentBallotVotingList, loadingBallot} = reducers.meetingStarted
+    const {currentBallotVotingList, loadingBallot, countQuorum} = reducers.meetingStarted
     const {currentMeeting} = reducers.meeting
 
     useEffect(() => {
@@ -23,6 +23,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
         dispatch(meetingStartedAction.getBallotVoting(data))
     }, [agenda.id, loadingBallot])
 
+    console.log(countQuorum)
     const deleteBallot = (votingId) => {
         if (currentMeeting?.status === FINISH) {
             return toast.error("Засидание в статусе - Заверщено!")
@@ -68,7 +69,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
             return toast.error("Засидание в статусе - Активный!")
         }
 
-        if (quorum > 74) {
+        if (countQuorum > 74) {
             confirmAlert({
                 title: 'Проголосовать',
                 message: 'Вы действительно хотите удалить в компанию?',

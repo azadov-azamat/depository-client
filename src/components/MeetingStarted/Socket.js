@@ -1,20 +1,8 @@
 import React, {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import SockJsClient from "react-stomp";
-import {
-    CANCELED,
-    CHAIRMAN,
-    DISABLED,
-    FINISH,
-    PENDING,
-    SECRETARY,
-    SIMPLE,
-    SPEAKER,
-    TOKEN,
-    WATCHER
-} from "../../utils/contants";
+import {CANCELED, CHAIRMAN, DISABLED, FINISH, PENDING, SIMPLE, SPEAKER, TOKEN, WATCHER} from "../../utils/contants";
 import * as meetingStartedAction from "../../redux/actions/MeetingStartedAction";
-import * as meetingAction from "../../redux/actions/MeetingAction";
 import {setClient, unsetClient} from "../../redux/actions/socketActions"
 import {useTranslation} from "react-i18next";
 

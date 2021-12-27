@@ -166,7 +166,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     }
 
-    const submit = (currentAgendaId) => {
+    const deleteAgenda = (currentAgendaId) => {
         confirmAlert({
             title: 'Удалить',
             message: 'Вы действительно хотите удалить в Пользователи?',
@@ -421,7 +421,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             <td className="text-center">{agenda.active === true ? 'Aктивно' : 'Неактивно'}</td>
                                             <td className="text-center">
                                                 <text style={style}
-                                                      onClick={() => submit(agenda.id)}
+                                                      onClick={() => deleteAgenda(agenda.id)}
                                                 >
                                                     <RiDeleteBinLine color={"red"} fontSize={20}/>
                                                 </text>
