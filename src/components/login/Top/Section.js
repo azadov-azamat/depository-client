@@ -4,9 +4,7 @@ import Tab1 from "./Tab1";
 import Tab2 from "./Tab2";
 import TabOpen1 from "./TabOpen1";
 import TabOpen2 from "./TabOpen2";
-// import emizoo from "./eImzo/eimzoo"
 import {useTranslation} from "react-i18next";
-
 
 export default function Section() {
 
@@ -34,7 +32,6 @@ export default function Section() {
     };
     return (
         <div className="Section">
-
             <div className="left-content">
                 <h1 data-aos="zoom-in" style={{marginTop: '10em'}}>{t("authorization")}</h1>
                 <Nav tabs>

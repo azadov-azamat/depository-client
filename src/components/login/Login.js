@@ -1,14 +1,17 @@
-import React, {Component, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import 'aos/dist/aos.css';
 import "aos/dist/aos";
 import AOS from "aos";
 import Section from "./Top/Section";
 import FooterImg from "./Bottom/FooterImg";
 import './global.scss';
-import {useTranslation} from "react-i18next";
+import {useSelector} from "react-redux";
 
 
 export default function Login() {
+
+    const reducers = useSelector(state => state)
+    const {loading} = reducers.auth;
 
     useEffect(() => {
         AOS.init({
@@ -16,12 +19,15 @@ export default function Login() {
         });
     }, [])
 
-    const {t} = useTranslation();
+    const style = {
+        cursor: 'wait',
+        opacity: '0.2'
+    }
 
     return (
-        <div>
-            <div className="Login ">
-                <Section />
+        <div style={loading ? style : {}}>
+            <div className="Login">
+                <Section/>
                 <FooterImg/>
             </div>
         </div>

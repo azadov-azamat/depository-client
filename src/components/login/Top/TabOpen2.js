@@ -23,7 +23,7 @@ export default function TabOpen2({lang}) {
     }
 
     return (
-        <div className="TabOpen2" style={loading ? {cursor: 'wait'} : {}}>
+        <div className="TabOpen2">
             <AvForm onValidSubmit={login} style={{marginTop: "9em"}}>
                 <h1>{lang("electronVoice")}</h1>
                 <p>{lang("text.tabOpen2")}<br/>
