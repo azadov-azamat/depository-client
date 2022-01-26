@@ -96,7 +96,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     ];
 
     function CreateMeeting(e, v) {
-        if (selectCompany === undefined  || selectStatus === undefined  || selectCountry === undefined  || selectTypeEnum === undefined  || startDate === '' || startRegistration === '' || endRegistration === '') {
+        if (selectCompany === undefined || selectStatus === undefined || selectCountry === undefined || selectTypeEnum === undefined || startDate === '' || startRegistration === '' || endRegistration === '') {
             toast.warning(lang("toast.warning"))
         } else {
             const data = {
@@ -116,7 +116,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
     }
 
     function editMeeting(e, v) {
-        if (selectCompany === undefined  || selectStatus === undefined  || selectCountry === undefined  || selectTypeEnum === undefined  || startDate === '' || startRegistration === '' || endRegistration === '') {
+        if (selectCompany === undefined || selectStatus === undefined || selectCountry === undefined || selectTypeEnum === undefined || startDate === '' || startRegistration === '' || endRegistration === '') {
             toast.warning(lang("toast.warning"))
         } else {
             const data = {
@@ -136,6 +136,17 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
         }
     }
 
+    function getCityName(city) {
+        if (language === "uz") {
+            return city.nameUz
+        }
+        if (language === "ru") {
+            return city.nameRu
+        }
+        if (language === "en") {
+            return city.nameEn
+        }
+    }
 
     return (
         <AvForm onValidSubmit={currentMeeting.length !== 0 ? editMeeting : CreateMeeting}>
@@ -206,12 +217,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             value={selectCountry}
                         >
                             {country && country.map((value, index) => (
-                                <Option value={value.id} key={index}>
-                                    {
-                                        language && language === 'uz' || language === 'en' ?
-                                            value.nameUz : value.nameRu
-                                    }
-                                </Option>
+                                <Option value={value.id} key={index}>{getCityName(value)}</Option>
                             ))}
                         </Select>
                     </div>

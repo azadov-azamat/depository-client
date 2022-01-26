@@ -18,6 +18,7 @@ import {toast} from "react-toastify";
 import * as adminUsersAction from '../../../redux/actions/UsersAction';
 import {Select} from "antd";
 import * as types from "../../../redux/actionTypes/UsersActionTypes";
+import InputMask from "react-input-mask";
 
 const {Option} = Select;
 
@@ -159,8 +160,8 @@ export default function AddOrEditUser() {
     }
 
     const savePinfl = (value) => {
-        if (value.length === 14) {
-            axios.post(BASE_URL + "/moder/user/generate-login/" + value)
+        if (value.replaceAll(" ", '').length === 14) {
+            axios.post(BASE_URL + "/moder/user/generate-login/" + value.replaceAll(" ", ''))
                 .then((res) => {
                     let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
                     let string_length = 8;
@@ -172,6 +173,7 @@ export default function AddOrEditUser() {
                     setUserInfo({...userInfo, generateLogin: res.data, generatePassword: randomstring})
                 })
                 .catch((error) => {
+                    console.log(error.response.data)
                     setUserInfo({...userInfo, pinfl: null})
                     if (lang === "ru") {
                         toast.error("Пинфл уже использовался!")
@@ -212,7 +214,7 @@ export default function AddOrEditUser() {
                                   link2={`/admin/users`}
                                   statusName={id ? t("routes.addOrEditPage.editUser") : t("routes.addOrEditPage.addUser")}/>
             </div>
-            <div className='container'>
+            <div className='container shadow pt-1 pb-2 rounded mt-3'>
                 <AvForm className="container_wrapper" onValidSubmit={id ? editUser : addUser}>
                     <Row>
                         <Col md={6}>
@@ -221,6 +223,7 @@ export default function AddOrEditUser() {
                                 <AvField
                                     name="fullName"
                                     value={currentForUser?.fullName}
+                                    placeholder={"Введите фамилья, имя и отчество"}
                                     style={{backgroundColor: "#ffffff"}}
                                     /* FULL_NAME */ className="setting_input border  p-2 w-100"
                                     type="text"
@@ -230,6 +233,7 @@ export default function AddOrEditUser() {
                                 <AvField
                                     name="email"
                                     value={currentForUser?.email}
+                                    placeholder={"Введите адрес электронной почты"}
                                     style={{backgroundColor: "#ffffff"}}
                                     /* EMAIL */ className="setting_input border  p-2 w-100"
                                     type="email"
@@ -273,7 +277,7 @@ export default function AddOrEditUser() {
                                         <Label>{t("companiesList.phoneNumber")}</Label>
                                         <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                             <PhoneInput
-                                                placeholder="Enter phone number"
+                                                placeholder={"Введите номер телефона"}
                                                 value={phoneNumber}
                                                 onChange={setPhoneNumber}/>
                                         </div>
@@ -309,7 +313,6 @@ export default function AddOrEditUser() {
                                             <Label for='forCheck'
                                                    className="form-check-label">{t("user.dostup")}</Label>
                                         </div>
-                                        {/*<input type="checkbox" checked={x} onChange={() => setX(!x)} />*/}
                                     </Col>
                                 </Row>
                             </div>
@@ -319,18 +322,21 @@ export default function AddOrEditUser() {
                                 <Col md={6}>
                                     <div className="form-group d-flex flex-column">
                                         <Label className='required_fields'>{t("user.pnfl")}</Label>
-                                        <input
-                                            ref={ref}
+                                        <AvField
+                                            className="setting_input border w-100 form-control"
+                                            placeholder={"Введите ПИНФЛ"}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
+                                            mask="9 9999 999 999 999"
+                                            tag={InputMask}
+                                            maskChar=" "
                                             name="pinfl"
                                             value={pinfl}
-                                            maxLength={14}
                                             onChange={(event) => {
                                                 const value = event.target.value;
                                                 setPinfl(value)
                                                 savePinfl(value)
                                             }}
-                                            className="setting_input border"
+                                            required
                                         />
                                     </div>
                                 </Col>
@@ -341,10 +347,12 @@ export default function AddOrEditUser() {
                                         <Label className='required_fields'>{t("user.login")}</Label>
                                         <AvField
                                             className="setting_input border"
+                                            placeholder={"Вам нужно ввести пинфл"}
                                             value={userInfo.generateLogin}
                                             type="text"
                                             name="username"
                                             style={{backgroundColor: "#ffffff"}}
+                                            required
                                             disabled
                                         />
                                     </div>
@@ -352,6 +360,7 @@ export default function AddOrEditUser() {
                                 <Col md={6}>
                                     <AvField
                                         name="passwordferfwrthtyhsdfwreg"
+                                        placeholder={"Введите пароль"}
                                         label={t("user.parol")}
                                         value={userInfo.generatePassword}
                                         className="setting_input border"
@@ -398,6 +407,7 @@ export default function AddOrEditUser() {
                                         style={{backgroundColor: "#ffffff"}}
                                         name="passport"
                                         value={currentForUser?.passport}
+                                        placeholder={"Введите серию и номер паспорта"}
                                         label={t("user.passport")}
                                         className="setting_input border"
                                         minLength={2}
