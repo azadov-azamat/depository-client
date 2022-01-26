@@ -57,7 +57,7 @@
     "serviceMainText13": "Qayta ishlash jarayonini tezlashtirish va\nsanash",
     "serviceMainText14": "Xarajatlarni kamaytirish uchun zarur shartlar\npochta ro'yxatlari.",
     "serviceMainText15": "Qimmatli qog'ozlar markaziy depozitariysi Davlat korxonasi Barcha huquqlar himoyalangan © 2004-2016. Ushbu saytda e'lon qilingan materiallardan to'liq yoki qisman foydalanish va ularga iqtibos keltirish bilan rasmiy saytga havola kerak.",
-    "tab1": "EDS bilan kiring",
+    "tab1": "ERI bilan kiring",
     "tab2": "Tizim jurnalining foydalanuvchi nomi va parolidan foydalanib tizimga kiring",
     "tab3": "Faqat Administrator uchun",
     "tabOpen1": "Agar siz ONE ID uchun ro'yxatdan o'tgan bo'lsangiz,\n                         u bilan kirishingiz mumkin\n                         yoki boshqa yo'lni tanlang",
@@ -65,6 +65,17 @@
     "tabOpenModal2": "Kirish va parolni olish uchun quyidagi telefon raqamiga murojaat qiling",
     "tabOpenModal21": "Biz bilan bog'lanish"
   },
+
+  "eds": {
+    "textEds": "ERI bilan tizimga kiring",
+    "eds": "ERI",
+    "selectKey": "Kalitni tanlang",
+    "certificate": "SERTIFIKAT",
+    "pinfl": "PINFL",
+    "termCertificate": "Sertifikatning amal qilish muddati",
+    "signIn": "Kirish"
+  },
+
 
   "AdminUser": {
     "fullName": "F.I.O",
@@ -214,6 +225,18 @@
       "legalAddress": "Yuridik manzili",
       "comment": "Tashkilot tavsifi",
       "addCompany": "Kompaniya yarating"
+    },
+    "agenda": {
+      "question": "Savol",
+      "solution": "Yechim",
+      "time": "Vaqt",
+      "debut": "Kutish",
+      "status": "Holati",
+      "answersList": "Ovoz berish imkoniyatlari",
+      "answer": "Variant",
+      "active": "Faol",
+      "noActive": "Faol emas",
+      "added": "Qo`shish"
     }
   },
 

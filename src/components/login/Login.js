@@ -19,13 +19,8 @@ export default function Login() {
         });
     }, [])
 
-    const style = {
-        cursor: 'wait',
-        opacity: '0.2'
-    }
-
     return (
-        <div style={loading ? style : {}}>
+        <div className={loading ? "login-auth" : ""}>
             <div className="Login">
                 <Section/>
                 <FooterImg/>

@@ -66,6 +66,16 @@
     "tabOpenModal21": "Contact us"
   },
 
+  "eds": {
+    "textEds": "Login with EDS",
+    "eds": "EDS",
+    "selectKey": "Choose a key",
+    "certificate": "CERTIFICATE",
+    "pinfl": "PINFL",
+    "termCertificate": "Certificate validity period",
+    "signIn": "Sign in"
+  },
+
   "AdminUser": {
     "fullName": "F.I.O",
     "email": "E-mail",
@@ -215,6 +225,18 @@
       "legalAddress": "Legal address",
       "comment": "Description of the organization",
       "addCompany": "Create a company"
+    },
+    "agenda": {
+      "question": "Question",
+      "solution": "Solution",
+      "time": "Time",
+      "debut": "Debut",
+      "status": "Status",
+      "answersList": "Voting options",
+      "answer": "Option",
+      "active": "Active",
+      "noActive": "No active",
+      "added": "Added"
     }
   },
 

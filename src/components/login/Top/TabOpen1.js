@@ -61,14 +61,14 @@ export default function TabOpen1({lang}) {
                 <div toggle={() => setIsOpen(!open)} className="d-flex align-items-center">
                     <div className="d-flex align-items-center eimzo">
                         <img src="../logo.png" className="openLock2"/>
-                        <span className="text-white etp2">Вход с помощью ЭЦП</span>
+                        <span className="text-white etp2">{lang("eds.textEds")}</span>
                     </div>
                 </div>
 
                 <div className="d-flex justify-content-center">
                     <div className="App">
                         <div className="group d-flex align-items-center">
-                            <span className='etp'>ЭЦП</span>
+                            <span className='etp'>{lang("eds.eds")}</span>
                             <Dropdown isOpen={dropdownOpen} toggle={toggle} className="drop">
                                 <DropdownToggle
                                     className="dropToggle d-flex justify-content-between align-items-center">
@@ -80,9 +80,9 @@ export default function TabOpen1({lang}) {
                                                     ?
                                                     selectedKey?.inn + " - " + selectedKey?.parsedAlias.cn.toUpperCase()
                                                     :
-                                                    "Выберите ключ"
+                                                    lang("eds.selectKey")
                                                 :
-                                                "Выберите ключ"
+                                                lang("eds.selectKey")
                                         }
                                     </span>
                                     <img src="../down2.png" className="toggleImg"/>
@@ -93,20 +93,20 @@ export default function TabOpen1({lang}) {
                                         <DropdownItem className="dropItem" key={i} onClick={() => setSelectedKey(item)}>
                                             <div className="d-flex align-items-center">
                                                 <img src="../etp.png"/>
-                                                <b className="textB">№ СЕРТИФИКАТА:</b>
+                                                <b className="textB">№ {lang("eds.certificate")}:</b>
                                                 <span className="textB">{item.serialNumber}</span>
                                             </div>
                                             <div className="d-flex align-items-center">
-                                                <b>PINFL: </b>
+                                                <b>{lang("user.pnfl")}: </b>
                                                 <span className="textB">{item?.parsedAlias['1.2.860.3.16.1.2']}</span>
-                                                <b className="textB">{item.parsedAlias.uid ? "ФИЗИЧЕСКОE ЛИЦО" : "ЮРИДИЧЕСКОE ЛИЦО"}</b>
+                                                <b className="textB">{item.parsedAlias.uid ? lang("user.jismoniy") : lang("user.yuridik")}</b>
                                             </div>
                                             <div className="d-flex align-items-center">
-                                                <b>Ф.И.О.: </b>
+                                                <b>{lang("AdminUser.fullName")}: </b>
                                                 <span className="textB">{item?.parsedAlias?.cn?.toUpperCase()}</span>
                                             </div>
                                             <div className="d-flex align-items-center srok">
-                                                <b>Срок дествия сертификата:&nbsp;</b>
+                                                <b>{lang("eds.termCertificate")}:&nbsp;</b>
                                                 <span
                                                     className="">{item.parsedAlias.validfrom} - {item.parsedAlias.validto}</span>
                                             </div>
@@ -119,7 +119,7 @@ export default function TabOpen1({lang}) {
                             <button className="d-flex align-items-center bg-white signEtp" onClick={sign}
                                     disabled={!selectedKey}>
                                 <img src="../signin.jpg" className="openLock"/>
-                                <span className="imzolash text-black">Kirish</span>
+                                <span className="imzolash text-black">{lang("eds.signIn")}</span>
                             </button>
                         </div>
                         {result !== "" && (

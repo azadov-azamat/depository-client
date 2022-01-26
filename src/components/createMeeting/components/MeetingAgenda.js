@@ -10,6 +10,7 @@ import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
 import {toast} from "react-toastify";
+import ModalAgenda from "./ModalAgenda/index"
 
 const {Option} = Select;
 
@@ -61,6 +62,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         setCurrentSpeaker(currentAgenda?.speakerId);
         setCurrentTime(currentAgenda?.speakTimeEnum);
         setCurrentDebut(currentAgenda?.debateEnum);
+        setCurrentStatus(currentAgenda?.active)
 
     }, [currentAgenda])
 
@@ -242,7 +244,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                 <Row>
                     <Col md={6}>
                         <div className="form-group">
-                            <Label className='required_fields'>Вопрос</Label>
+                            <Label className='required_fields'>{lang("pages.agenda.question")}</Label>
                             <AvInput
                                 type="text"
                                 name="subject"
@@ -255,7 +257,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                     </Col>
                     <Col md={6}>
                         <div className="form-group">
-                            <Label for="companySecretary">Учетная запись</Label>
+                            <Label for="companySecretary">{lang("companiesList.accountCount")}</Label>
                             <Select
                                 className="setting_input w-100"
                                 showSearch
@@ -282,7 +284,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                     <Col md={12} className="d-md-inline-flex d-flex">
                         <div className=" col-4">
                             <div className="form-group">
-                                <Label className='required_fields'>Время</Label>
+                                <Label className='required_fields'>{lang("pages.agenda.time")}</Label>
                                 <Select
                                     className="setting_input w-100"
                                     placeholder="Выберите время"
@@ -298,7 +300,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                         </div>
                         <div className="col-4  px-3">
                             <div className="form-group">
-                                <Label className='required_fields'>Прения</Label>
+                                <Label className='required_fields'>{lang("pages.agenda.debut")}</Label>
                                 <Select
                                     className="setting_input w-100"
                                     placeholder="Выберите прения"
@@ -315,7 +317,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
                         <div className="col-4">
                             <div className="form-group">
-                                <Label className='required_fields'>Состояние</Label>
+                                <Label className='required_fields'>{lang("pages.agenda.status")}</Label>
                                 <Select
                                     className="setting_input w-100"
                                     placeholder="Выберите состояние"
@@ -324,8 +326,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     value={true}
                                     disabled
                                 >
-                                    <Option value={true}>Aктивно</Option>
-                                    <Option value={false}>Неактивно</Option>
+                                    <Option value={true}>{lang("pages.agenda.active")}</Option>
+                                    <Option value={false}>{lang("pages.agenda.noActive")}</Option>
                                 </Select>
                             </div>
                         </div>
@@ -336,7 +338,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                         <Card>
                             <CardHeader>
                                 <div className="form-group">
-                                    <Label className='required_fields'>Варианты голосования</Label>
+                                    <Label className='required_fields'>{lang("pages.agenda.answersList")}</Label>
                                 </div>
                             </CardHeader>
                             <CardBody>
@@ -346,7 +348,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             <Col md={8} className=''>
                                                 <AvField
                                                     name={"variant/" + i}
-                                                    label={i + 1 + " - Вариант"}
+                                                    label={i + 1 + " - " + lang("pages.agenda.answer")}
                                                     value={x.variant}
                                                     onInput={toInputUppercase}
                                                     onChange={
@@ -372,7 +374,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                             </CardBody>
                         </Card>
                         <button
-                            className="btn py-2 px-5 create">Создать
+                            className="btn py-2 px-5 create">{lang("pages.agenda.added")}
                         </button>
                     </Col>
                 </Row>
@@ -386,11 +388,11 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 <thead className="navUsers">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Докладчик</th>
-                                    <th scope="col">Время</th>
-                                    <th scope="col">Прения</th>
-                                    <th scope="col">Вопрос | Решение</th>
-                                    <th scope="col">Состояние</th>
+                                    <th scope="col">{lang("meetingCreated.roles.speaker")}</th>
+                                    <th scope="col">{lang("pages.agenda.time")}</th>
+                                    <th scope="col">{lang("pages.agenda.debut")}</th>
+                                    <th scope="col">{lang("pages.agenda.question")} | {lang("pages.agenda.solution")}</th>
+                                    <th scope="col">{lang("pages.agenda.status")}</th>
                                     <th scope="col" style={{width: '0'}}>
                                         <BiCheckDouble fontSize={25} color={"green"}/>
                                     </th>
@@ -418,7 +420,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                 subject: agenda.subject,
                                                 votingLit: agenda.votingOptions
                                             })}</td>
-                                            <td className="text-center">{agenda.active === true ? 'Aктивно' : 'Неактивно'}</td>
+                                            <td className="text-center">{agenda.active === true ? lang("pages.agenda.active") : lang("pages.agenda.noActive")}</td>
                                             <td className="text-center">
                                                 <text style={style}
                                                       onClick={() => deleteAgenda(agenda.id)}
@@ -439,160 +441,14 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                     </div>
                 </Col>
             </Row>
-
-            <Modal isOpen={openModal} className="modal-dialog modal-lg container">
-                <ModalBody>
-                    <AvForm onValidSubmit={editAgenda}>
-                        <Row>
-                            <Col md={6}>
-                                <div className="form-group">
-                                    <Label className='required_fields'>Вопрос</Label>
-                                    <AvField
-                                        type="text"
-                                        name="subject"
-                                        value={currentAgenda?.subject}
-                                        placeholder={'Ваш вопрос'}
-                                        style={{backgroundColor: '#FFFFFF'}}
-                                        required
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="form-group">
-                                    <Label for="companySecretary">Учетная запись</Label>
-                                    <Select
-                                        className="setting_input w-100"
-                                        showSearch
-                                        allowClear={true}
-                                        placeholder="Выберите учетная запись"
-                                        optionFilterProp="children"
-                                        onChange={(value) => setCurrentSpeaker(value)}
-                                        defaultValue={currentAgenda?.speakerId}
-                                        value={currentSpeaker}
-                                        onSearch={onSearch}
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
-                                    >
-                                        {memberManagerState?.map((username, index) =>
-                                            username.memberTypeEnum === SPEAKER ?
-                                                <Option key={index}
-                                                        value={username.id}>{username.user.fullName + " - " + username.user.pinfl}</Option> : ''
-                                        )}
-                                    </Select>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={12} className="d-md-inline-flex d-flex">
-                                <div className=" col-4">
-                                    <div className="form-group">
-                                        <Label className='required_fields'>Время</Label>
-                                        <Select
-                                            className="setting_input w-100"
-                                            placeholder="Выберите время"
-                                            optionFilterProp="children"
-                                            onChange={(value) => setCurrentTime(value)}
-                                            defaultValue={currentAgenda?.speakTimeEnum}
-                                            value={currentTime}
-                                        >
-                                            {timer.map((element, index) =>
-                                                <Option key={index} value={element.value}>{element.text}</Option>
-                                            )}
-                                        </Select>
-                                    </div>
-                                </div>
-                                <div className="col-4  px-3">
-                                    <div className="form-group">
-                                        <Label className='required_fields'>Прения</Label>
-                                        <Select
-                                            className="setting_input w-100"
-                                            placeholder="Выберите прения"
-                                            optionFilterProp="children"
-                                            onChange={(value) => setCurrentDebut(value)}
-                                            defaultValue={currentAgenda?.debateEnum}
-                                            value={currentDebut}
-                                        >
-                                            {timer.map((element, index) =>
-                                                <Option key={index} value={element.value}>{element.text}</Option>
-                                            )}
-                                        </Select>
-                                    </div>
-                                </div>
-
-                                <div className="col-4">
-                                    <div className="form-group">
-                                        <Label className='required_fields'>Состояние</Label>
-                                        <Select
-                                            className="setting_input w-100"
-                                            placeholder="Выберите состояние"
-                                            optionFilterProp="children"
-                                            onChange={(value) => setCurrentStatus(value)}
-                                            defaultValue={currentAgenda?.active}
-                                            value={currentStatus}
-                                            disabled={true}
-                                        >
-                                            <Option value={true}>Aктивно</Option>
-                                            <Option value={false}>Неактивно</Option>
-                                        </Select>
-                                    </div>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={12} sm={12} className="mt-3">
-                                <Card>
-                                    <CardHeader>
-                                        <div className="form-group">
-                                            <Label className='required_fields'>Варианты голосования</Label>
-                                        </div>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <Row className="d-flex align-items-center">
-                                            {currentVariants.map((voting, index) =>
-                                                <div key={index} className="d-flex flex-row">
-                                                    <Col md={8} className=''>
-                                                        <AvField
-                                                            name={"variant/" + voting.id}
-                                                            label={index + 1 + " - Вариант"}
-                                                            value={voting.votingText}
-                                                            onInput={toInputUppercase}
-                                                            // onChange={
-                                                            //     e => handleInputChange(e, i)}
-                                                            className="variantAddedInput border border"
-                                                            style={{backgroundColor: '#FFFFFF', fontWeight: "bold"}}
-                                                            required
-                                                        />
-                                                    </Col>
-                                                    <Col md={4} className=''>
-                                                        <div className="float-end mt-4">
-                                                            {currentVariants.length - 1 === index &&
-                                                            <Button type="button" onClick={handleAddClickEdit}
-                                                                    className="btn create">+</Button>}
-                                                            {currentVariants.length !== 1 &&
-                                                            <button type="button"
-                                                                    onClick={() => deleteVoting(voting.id, index)}
-                                                                    className="btn cancel mx-2">-</button>}
-                                                        </div>
-                                                    </Col>
-                                                </div>
-                                            )}
-                                        </Row>
-                                    </CardBody>
-                                </Card>
-                                <button type={"submit"}
-                                        className="btn py-2 px-5 create">Редактировать
-                                </button>
-                                <button className="btn btnAll m-2 cancel" type={"button"}
-                                        onClick={() => {
-                                            dispatch(meetingActions.getAgendaByMeetingId({meetingId: currentMeetingId}))
-                                            setOpenModal(false)
-                                        }}>{lang("user.otmena")}</button>
-                            </Col>
-                        </Row>
-                    </AvForm>
-                </ModalBody>
-            </Modal>
+            <ModalAgenda setOpenModal={setOpenModal} openModal={openModal} lang={lang} currentAgenda={currentAgenda}
+                         currentDebut={currentDebut} currentMeetingId={currentMeetingId}
+                         memberManagerState={memberManagerState} deleteVoting={deleteAgenda}
+                         currentSpeaker={currentSpeaker} currentStatus={currentStatus} currentTime={currentTime}
+                         currentVariants={currentVariants} dispatch={dispatch} editAgenda={editAgenda}
+                         setCurrentSpeaker={setCurrentSpeaker} setCurrentTime={setCurrentTime}
+                         setCurrentStatus={setCurrentStatus} handleAddClickEdit={handleAddClickEdit} onSearch={onSearch}
+                         setCurrentDebut={setCurrentDebut} timer={timer} toInputUppercase={toInputUppercase}/>
         </>
     )
 }

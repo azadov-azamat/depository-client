@@ -66,12 +66,22 @@
     "tabOpenModal21": "свяжитесь с нами"
   },
 
+  "eds": {
+    "textEds": "Вход с помощью ЭЦП",
+    "eds": "ЭЦП",
+    "selectKey": "Выберите ключ",
+    "certificate": "СЕРТИФИКАТА",
+    "pinfl": "ПИНФЛ",
+    "termCertificate": "Срок дествия сертификата",
+    "signIn": "Вход"
+  },
+
   "AdminUser": {
     "fullName": "Ф.И.О",
     "email": "Эл. почта",
     "number": "Номер телефона",
     "group": "Группа",
-    "pinfl": "ЖШИР",
+    "pinfl": "ПИНФЛ",
     "role": "Роль"
   },
 
@@ -216,6 +226,18 @@
       "legalAddress": "Юридический адрес",
       "comment": "Описание организации",
       "addCompany": "Создать компанию"
+    },
+    "agenda": {
+      "question": "Вопрос",
+      "solution": "Решение",
+      "time": "Время",
+      "debut": "Прения",
+      "status": "Состояние",
+      "answersList": "Варианты голосования",
+      "answer": "Вариант",
+      "active": "Aктивно",
+      "noActive": "Неактивно",
+      "added": "Создать"
     }
   },
 
