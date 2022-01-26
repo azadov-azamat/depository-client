@@ -70,11 +70,11 @@ export default function MeetingMembers({currentMeetingId, lang}) {
 
     const submit = (currentMemberId) => {
         confirmAlert({
-            title: 'Удалить',
-            message: 'Вы действительно хотите удалить в Пользователи?',
+            title: lang("alert.delete"),
+            message: lang("alert.deleteMsg"),
             buttons: [
                 {
-                    label: 'Да',
+                    label: lang("alert.yes"),
                     onClick: () => {
                         dispatch(meetingActions.deleteMemberById({
                             currentMemberId: currentMemberId,
@@ -85,7 +85,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
 
                 },
                 {
-                    label: 'Нет',
+                    label: lang("alert.no"),
                 }
             ]
         });
@@ -157,7 +157,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                         <Select
                             className="setting_input w-100"
                             showSearch
-                            placeholder="Select a user"
+                            placeholder={lang("meetingCreated.placeholders.selectUser")}
                             optionFilterProp="children"
                             onChange={(value) => setSelectedUser(value)}
                             value={selectedUser}
@@ -176,7 +176,7 @@ export default function MeetingMembers({currentMeetingId, lang}) {
                         <Label>{lang("meetingCreated.roles.addRole")}</Label>
                         <Select
                             className="setting_input w-100"
-                            placeholder="Select a role"
+                            placeholder={lang("meetingCreated.placeholders.selectRole")}
                             optionFilterProp="children"
                             onChange={(value) => setSelectedRole(value)}
                             value={selectedRole}

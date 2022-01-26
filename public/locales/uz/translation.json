@@ -159,14 +159,29 @@
     "finishRegister":"Ro`yxatdan o`tishning tugash vaqti",
     "commentMeeting": "Uchrashuv tavsiflari"
   },
-
   "meetingCreated": {
     "general": "General",
     "addedMember": "Tizim foydalanuvchilari",
     "addedAgenda" : "Kun tartibidagi masalalar",
     "addedReestr": "Kuzatuv kengashi a'zolari ro'yxati",
     "addedFiles": "Uchrashuv fayllari",
-
+    "placeholders": {
+      "selectOrganization": "Tashkilotni tanlang",
+      "selectCity": "Viloyatni tanlang",
+      "yourAddress": "Manzilingizni kiriting",
+      "selectType": "Uchrashuv turini tanlang",
+      "enterDescription": "Qisqacha ma'lumot",
+      "selectUser": "Foydalanuvchini tanlang",
+      "selectRole": "Rol tanlang",
+      "yourQuest": "Sizning savolingiz",
+      "selectTime": "Vaqtni tanlang",
+      "selectDebut": "Kutish vaqtini tanlang",
+      "selectStatus": "Holatini tanlang",
+      "selectFileReestr": "Excel fayl tanlang",
+      "selectFile": "Uchrashuv uchun fayl yuklang",
+      "selectAgenda": "Kun tartibini tanlang",
+      "yourAnswer": "Sizning javobingiz"
+    },
     "meetingStatus": {
       "pending": "Ishga tushirish kutilmoqda",
       "active": "Jadval bo'yicha faol",
@@ -184,6 +199,21 @@
       "simple": "Oddiy",
       "addRole": "Rol qo'shish",
       "addMember": "Foydalanuvchi qo'shish"
+    },
+    "reestr": {
+      "addReestr": "Kuzatuv kengashi a'zolari ro'yxatini yuklang",
+      "download": "Yuklash",
+      "typeDoc": "Hujjat turi",
+      "numberDoc": "Hujjat raqami",
+      "position": "Lavozim",
+      "loading": "Yuklanmoqda...",
+      "uploadFile": "Faylni yuklash",
+      "errorFile": "Xatolik yuz berdi, Iltimos tekshiring"
+    },
+    "filePage": {
+      "agenda": "Tegishli ovoz berish",
+      "uploadFile": "Uchrashuv fayllarini yuklang",
+      "nameFile": "Fayl nomi"
     },
     "emptyList": "Hech narsa topilmadi"
   },
@@ -236,7 +266,12 @@
       "answer": "Variant",
       "active": "Faol",
       "noActive": "Faol emas",
-      "added": "Qo`shish"
+      "added": "Qo`shish",
+      "minute2": "2 daqiqa",
+      "minute5": "5 daqiqa",
+      "minute10": "10 daqiqa",
+      "minute15": "15 daqiqa",
+      "minute20": "20 daqiqa"
     }
   },
 

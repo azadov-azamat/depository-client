@@ -167,7 +167,23 @@
     "addedAgenda" : "Agenda items",
     "addedReestr": "List of members of the supervisory board",
     "addedFiles": "Files meeting",
-
+    "placeholders": {
+      "selectOrganization": "Choose an organization",
+      "selectCity": "Choose an area",
+      "yourAddress": "Enter your address",
+      "selectType": "Select type of meeting",
+      "enterDescription": "brief information",
+      "selectUser": "Select user",
+      "selectRole": "Select role",
+      "yourQuest": "Your question",
+      "selectTime": "Choose time",
+      "selectDebut": "Choose debate",
+      "selectStatus": "Choose status",
+      "selectFileReestr": "Select the Excel file",
+      "selectFile": "Upload file for meeting",
+      "selectAgenda": "Choose a vote",
+      "yourAnswer": "Your answer"
+    },
     "meetingStatus": {
       "pending": "Awaiting launch",
       "active": "Active on schedule",
@@ -185,6 +201,21 @@
       "simple": "Regular",
       "addRole": "Add Role",
       "addMember": "Add Member"
+    },
+    "reestr": {
+      "addReestr": "Download the list of members of the Supervisory Board",
+      "download": "Download",
+      "typeDoc": "Document type",
+      "numberDoc": "Document number",
+      "position": "Position",
+      "loading": "Loading...",
+      "uploadFile": "Upload file",
+      "errorFile": "An error has occurred, please check"
+    },
+    "filePage": {
+      "agenda": "Related voting",
+      "uploadFile": "Upload meeting files",
+      "nameFile": "File name"
     },
     "emptyList": "Nothing found"
   },
@@ -236,7 +267,12 @@
       "answer": "Option",
       "active": "Active",
       "noActive": "No active",
-      "added": "Added"
+      "added": "Added",
+      "minute2": "2 minutes",
+      "minute5": "5 minutes",
+      "minute10": "10 minutes",
+      "minute15": "15 minutes",
+      "minute20": "20 minutes"
     }
   },
 

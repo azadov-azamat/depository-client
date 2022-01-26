@@ -68,18 +68,18 @@ export default function MeetingFiles({currentMeeting, lang}) {
 
     const deleteUser = (id) => {
         confirmAlert({
-            title: 'Удалить',
-            message: 'Вы действительно хотите удалить в компанию?',
+            title: lang("alert.delete"),
+            message: lang("alert.deleteMsg"),
             buttons: [
                 {
-                    label: 'Да',
+                    label: lang("alert.yes"),
                     onClick: () => {
                         dispatch(meetingActions.deleteMeetingFileAction({id: id, meetingId: currentMeeting?.id}))
                     }
 
                 },
                 {
-                    label: 'Нет',
+                    label: lang("alert.no"),
                 }
             ]
         });
@@ -96,12 +96,12 @@ export default function MeetingFiles({currentMeeting, lang}) {
                 <Row>
                     <Col md={6}>
                         <div className="form-group">
-                            <Label for="companySecretary">Связанные голосование</Label>
+                            <Label for="companySecretary">{lang("meetingCreated.filePage.agenda")}</Label>
                             <Select
                                 className="setting_input w-100"
                                 showSearch
                                 allowClear={true}
-                                placeholder="Выберите голосование"
+                                placeholder={lang("meetingCreated.placeholders.selectAgenda")}
                                 optionFilterProp="children"
                                 onChange={(value) => setSelectAgenda(value)}
                                 value={selectAgenda}
@@ -119,14 +119,14 @@ export default function MeetingFiles({currentMeeting, lang}) {
                     <Col md={6}>
                         <div className="app-required-select d-inline">
                             <AvGroup>
-                                <Label for={"fileInput"}>Загрузить файлы заседание</Label>
+                                <Label for={"fileInput"}>{lang("meetingCreated.filePage.uploadFile")}</Label>
                                 <AvInput id={"fileInput"}
                                          type="text" value={addFile.fileName}
                                          name={"fileName"}
                                          onClick={handleClick}
                                          className=""
                                          onChange={handleClick}
-                                         placeholder={"Select file"}
+                                         placeholder={lang("meetingCreated.placeholders.selectFile")}
                                          required
                                 />
                                 <div className="custom-file float-end">
@@ -151,7 +151,7 @@ export default function MeetingFiles({currentMeeting, lang}) {
                             </AvGroup>
                             <div
                                 className={"d-flex justify-content-md-end justify-content-center"}>
-                                <button type={"submit"} className={"btn create mt-2"}>Загрузить</button>
+                                <button type={"submit"} className={"btn create mt-2"}>{lang("meetingCreated.reestr.download")}</button>
                             </div>
                         </div>
                     </Col>
@@ -165,8 +165,8 @@ export default function MeetingFiles({currentMeeting, lang}) {
                                 <thead className="navUsers">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Имя файля</th>
-                                    <th scope="col">Связанное голосование</th>
+                                    <th scope="col">{lang("meetingCreated.filePage.nameFile")}</th>
+                                    <th scope="col">{lang("meetingCreated.filePage.agenda")}</th>
                                     <th scope="col"><FaEye fontSize={20}/></th>
                                     <th scope="col"><FaTimes/></th>
                                 </tr>
@@ -189,7 +189,7 @@ export default function MeetingFiles({currentMeeting, lang}) {
                                             </td>
                                         </tr>) :
                                     <tr className='text-center'>
-                                        <th colSpan="5">Ничего не найдена</th>
+                                        <th colSpan="5">{lang("meetingCreated.emptyList")}</th>
                                     </tr>
                                 }
                                 </tbody>

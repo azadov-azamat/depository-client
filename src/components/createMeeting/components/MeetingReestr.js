@@ -55,14 +55,14 @@ export default function MeetingReestr({currentMeeting, lang}) {
 
     function responseReestr() {
         if (loadingReestr === 'loading') {
-            return (<p>Yuklanmoqda...</p>)
+            return (<p>{lang("meetingCreated.reestr.loading")}</p>)
         } else if (loadingReestr === 'download') {
             return (
-                <a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>{excelFile.currentFileName ? excelFile.currentFileName : "file yuklang"}</a>)
+                <a href={BASE_URL + api.getReestrByMeetingUrl + '?meetingId=' + currentMeeting.id}>{excelFile.currentFileName ? excelFile.currentFileName : lang("meetingCreated.reestr.uploadFile")}</a>)
         } else if (loadingReestr === 'error') {
-            return (<p>xatolik yuz berdi, Iltimos tekshiring</p>)
+            return (<p>{lang("meetingCreated.reestr.errorFile")}</p>)
         } else if (!currentReestr) {
-            return (<p>file yuklang</p>)
+            return (<p>{lang("meetingCreated.reestr.uploadFile")}</p>)
         }
     }
 
@@ -76,11 +76,11 @@ export default function MeetingReestr({currentMeeting, lang}) {
     function electChairmanForMeeting(memberId) {
 
         confirmAlert({
-            title: 'Выбор председатель',
-            message: 'Вы действительно хотите избрать этого Член наблюдательного совета?',
+            title: lang("alert.selectChairman"),
+            message: lang("alert.chairmanMsg"),
             buttons: [
                 {
-                    label: 'Да',
+                    label: lang("alert.yes"),
                     onClick: () => {
                         setChecked(true)
                         dispatch(meetingActions.addedChairmanFromReestrPageAction({memberId, setMyBoolean}))
@@ -88,7 +88,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
 
                 },
                 {
-                    label: 'Нет',
+                    label: lang("alert.no"),
                     onClick: () => {
                         setChecked(false)
                     }
@@ -103,15 +103,14 @@ export default function MeetingReestr({currentMeeting, lang}) {
                 <Row className='d-flex align-items-center justify-content-center'>
                     <Col md={4} sm={6}>
                         <AvGroup>
-                            <Label for={"fileInput"} className='required_fields'>Загрузить cписок членов наб.
-                                совета</Label>
+                            <Label for={"fileInput"} className='required_fields'>{lang("meetingCreated.reestr.addReestr")}</Label>
                             <AvInput id={"fileInput"}
                                      type="text" value={excelFile.currentFileName}
                                      name={"fileName1"}
                                      onClick={handleClick1}
                                      style={{backgroundColor: '#FFFFFF'}}
                                      onChange={handleClick1}
-                                     placeholder={"Select file"}
+                                     placeholder={lang("meetingCreated.placeholders.selectFileReestr")}
                             />
                             <div className="custom-file">
                                 <Button color={"link"} onClick={handleClick1}
@@ -147,7 +146,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
                                     width={30}
                                 />
                             </div> :
-                            <button className={"btn create mt-4 px-3 py-2"}>Загрузить</button>
+                            <button className={"btn create mt-4 px-3 py-2"}>{lang("meetingCreated.reestr.download")}</button>
                         }
                     </Col>
                 </Row>
@@ -157,20 +156,19 @@ export default function MeetingReestr({currentMeeting, lang}) {
             </AvForm>
             <Row>
                 <Col md={12} sm={12}>
-                    {/*<h3 className="">Список членов наб совета</h3>*/}
                     <div className="d-flex justify-content-center mb-5">
                         <Table hover className="table-bordered">
                             <thead className="navUsers">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Ф.И.О</th>
-                                <th scope="col">ПНФЛ</th>
-                                <th scope="col">Тип документ</th>
-                                <th scope="col">Номер документ</th>
-                                <th scope="col">Телефон</th>
-                                <th scope="col">E-mail</th>
-                                <th scope="col">Позиция</th>
-                                <th scope="col">Председатель</th>
+                                <th scope="col">{lang("AdminUser.fullName")}</th>
+                                <th scope="col">{lang("AdminUser.pinfl")}</th>
+                                <th scope="col">{lang("meetingCreated.reestr.typeDoc")}</th>
+                                <th scope="col">{lang("meetingCreated.reestr.numberDoc")}</th>
+                                <th scope="col">{lang("phoneNumber")}</th>
+                                <th scope="col">{lang("email")}</th>
+                                <th scope="col">{lang("meetingCreated.reestr.position")}</th>
+                                <th scope="col">{lang("chairMan")}</th>
                             </tr>
                             </thead>
                             <tbody className="">
@@ -202,7 +200,7 @@ export default function MeetingReestr({currentMeeting, lang}) {
                                     </tr>
                                 ) :
                                 <tr className='text-center'>
-                                    <th colSpan="9">Ничего не найдена</th>
+                                    <th colSpan="9">{lang("meetingCreated.emptyList")}</th>
                                 </tr>
                             }
                             </tbody>

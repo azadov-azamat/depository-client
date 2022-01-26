@@ -131,7 +131,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                 status: selectStatus,
                 typeEnum: selectTypeEnum,
             }
-            console.log(data)
+
             dispatch(meetingActions.updateMeetingAction({data, history}))
         }
     }
@@ -147,7 +147,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             className="setting_input w-100"
                             showSearch
                             allowClear={true}
-                            placeholder="Выберите организацию"
+                            placeholder={lang("meetingCreated.placeholders.selectOrganization")}
                             optionFilterProp="children"
                             onChange={(value => setSelectCompany(value))}
                             onSearch={onSearch}
@@ -180,7 +180,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                         <Label className='required_fields'>{lang("meetingsList.statusMeeting")}</Label>
                         <Select
                             className="setting_input w-100"
-                            placeholder="Выберите статус"
+                            placeholder={lang("meetingCreated.placeholders.selectStatus")}
                             optionFilterProp="children"
                             defaultValue={currentMeeting?.status}
                             value={selectStatus}
@@ -199,7 +199,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                         <Select
                             // allowClear={true}
                             className="setting_input w-100"
-                            placeholder="Выберите область"
+                            placeholder={lang("meetingCreated.placeholders.selectCity")}
                             optionFilterProp="children"
                             onChange={(value => setSelectCountry(value))}
                             defaultValue={currentMeeting?.cityId}
@@ -223,7 +223,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             name="address"
                             type="text"
                             value={currentMeeting?.address}
-                            placeholder={"введите свой адрес"}
+                            placeholder={lang("meetingCreated.placeholders.yourAddress")}
                             className="border "
                             style={{backgroundColor: '#FFFFFF'}}
                             required
@@ -237,7 +237,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                         <Label className='required_fields'>{lang("meetingsList.typeMeeting")}</Label>
                         <Select
                             className="setting_input w-100"
-                            placeholder="Выберите тип заседание"
+                            placeholder={lang("meetingCreated.placeholders.selectType")}
                             optionFilterProp="children"
                             defaultValue={currentMeeting?.typeEnum}
                             value={selectTypeEnum}
@@ -288,7 +288,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                             type="textarea"
                             name="description"
                             className="border"
-                            placeholder={"Краткая информация"}
+                            placeholder={lang("meetingCreated.placeholders.enterDescription")}
                             defaultValue={currentMeeting?.description}
                             value={descriptionMeeting}
                             onChange={(e) => setDescriptionMeeting(e.target.value)}
@@ -327,7 +327,7 @@ export default function NabMeetingJs({id, currentMeeting, lang}) {
                         <AvField
                             type="textarea"
                             name="description"
-                            placeholder={"Краткая информация"}
+                            placeholder={lang("meetingCreated.placeholders.enterDescription")}
                             className="border"
                             defaultValue={currentMeeting?.description}
                             value={descriptionMeeting}

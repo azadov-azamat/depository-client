@@ -37,7 +37,7 @@ export default ({
                                     type="text"
                                     name="subject"
                                     value={currentAgenda?.subject}
-                                    placeholder={'Ваш вопрос'}
+                                    placeholder={lang("meetingCreated.placeholders.yourQuest")}
                                     style={{backgroundColor: '#FFFFFF'}}
                                     required
                                 />
@@ -50,7 +50,7 @@ export default ({
                                     className="setting_input w-100"
                                     showSearch
                                     allowClear={true}
-                                    placeholder="Выберите учетная запись"
+                                    placeholder={lang("meetingCreated.placeholders.selectUser")}
                                     optionFilterProp="children"
                                     onChange={(value) => setCurrentSpeaker(value)}
                                     defaultValue={currentAgenda?.speakerId}
@@ -76,7 +76,7 @@ export default ({
                                     <Label className='required_fields'>{lang("pages.agenda.time")}</Label>
                                     <Select
                                         className="setting_input w-100"
-                                        placeholder="Выберите время"
+                                        placeholder={lang("meetingCreated.placeholders.selectTime")}
                                         optionFilterProp="children"
                                         onChange={(value) => setCurrentTime(value)}
                                         defaultValue={currentAgenda?.speakTimeEnum}
@@ -93,7 +93,7 @@ export default ({
                                     <Label className='required_fields'>{lang("pages.agenda.debut")}</Label>
                                     <Select
                                         className="setting_input w-100"
-                                        placeholder="Выберите прения"
+                                        placeholder={lang("meetingCreated.placeholders.selectDebut")}
                                         optionFilterProp="children"
                                         onChange={(value) => setCurrentDebut(value)}
                                         defaultValue={currentAgenda?.debateEnum}
@@ -111,7 +111,7 @@ export default ({
                                     <Label className='required_fields'>{lang("pages.agenda.status")}</Label>
                                     <Select
                                         className="setting_input w-100"
-                                        placeholder="Выберите состояние"
+                                        placeholder={lang("meetingCreated.placeholders.selectStatus")}
                                         optionFilterProp="children"
                                         onChange={(value) => setCurrentStatus(value)}
                                         defaultValue={currentAgenda?.active}
@@ -143,6 +143,7 @@ export default ({
                                                         label={index + 1 + " - " + lang("pages.agenda.answer")}
                                                         value={voting.votingText}
                                                         onInput={toInputUppercase}
+                                                        placeholder={lang("meetingCreated.placeholders.yourAnswer")}
                                                         // onChange={
                                                         //     e => handleInputChange(e, i)}
                                                         className="variantAddedInput border border"

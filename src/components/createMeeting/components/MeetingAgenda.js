@@ -170,11 +170,11 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     const deleteAgenda = (currentAgendaId) => {
         confirmAlert({
-            title: 'Удалить',
-            message: 'Вы действительно хотите удалить в Пользователи?',
+            title: lang("alert.delete"),
+            message: lang("alert.deleteMsg"),
             buttons: [
                 {
-                    label: 'Да',
+                    label: lang("alert.yes"),
                     onClick: () => {
                         dispatch(meetingActions.deleteByIdAgenda({
                             currentAgendaId: currentAgendaId,
@@ -185,7 +185,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
                 },
                 {
-                    label: 'Нет',
+                    label: lang("alert.no"),
                 }
             ]
         });
@@ -201,24 +201,24 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
 
     function time(time) {
         if (time === TWOMIN) {
-            return '2 минуты'
+            return lang("pages.agenda.minute2")
         } else if (time === FIVEMIN) {
-            return "5 минуты"
+            return lang("pages.agenda.minute5")
         } else if (time === TENMIN) {
-            return '10 минуты'
+            return lang("pages.agenda.minute10")
         } else if (time === FIFTEENMIN) {
-            return '15 минуты'
+            return lang("pages.agenda.minute15")
         } else if (time === TWENTYMIN) {
-            return '20 минуты'
+            return lang("pages.agenda.minute20")
         }
     }
 
     const timer = [
-        {value: TWOMIN, text: '2 минуты'},
-        {value: FIVEMIN, text: '5 минуты'},
-        {value: TENMIN, text: '10 минуты'},
-        {value: FIFTEENMIN, text: '15 минуты'},
-        {value: TWENTYMIN, text: '20 минуты'},
+        {value: TWOMIN, text: lang("pages.agenda.minute2")},
+        {value: FIVEMIN, text: lang("pages.agenda.minute5")},
+        {value: TENMIN, text: lang("pages.agenda.minute10")},
+        {value: FIFTEENMIN, text: lang("pages.agenda.minute15")},
+        {value: TWENTYMIN, text: lang("pages.agenda.minute20")},
     ]
 
     function agendaSubjectAndVoting({subject, votingLit}) {
@@ -248,7 +248,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                             <AvInput
                                 type="text"
                                 name="subject"
-                                placeholder={'Ваш вопрос'}
+                                placeholder={lang("meetingCreated.placeholders.yourQuest")}
                                 style={{backgroundColor: '#FFFFFF'}}
                                 onChange={(e) => setChangeSubject(e.target.value)}
                                 value={changeSubject}
@@ -262,7 +262,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 className="setting_input w-100"
                                 showSearch
                                 allowClear={true}
-                                placeholder="Выберите учетная запись"
+                                placeholder={lang("meetingCreated.placeholders.selectUser")}
                                 optionFilterProp="children"
                                 onChange={(value) => setSelectSpeaker(value)}
                                 value={selectSpeaker}
@@ -287,7 +287,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 <Label className='required_fields'>{lang("pages.agenda.time")}</Label>
                                 <Select
                                     className="setting_input w-100"
-                                    placeholder="Выберите время"
+                                    placeholder={lang("meetingCreated.placeholders.selectTime")}
                                     optionFilterProp="children"
                                     onChange={(value) => setSelectTime(value)}
                                     value={selectTime}
@@ -303,7 +303,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 <Label className='required_fields'>{lang("pages.agenda.debut")}</Label>
                                 <Select
                                     className="setting_input w-100"
-                                    placeholder="Выберите прения"
+                                    placeholder={lang("meetingCreated.placeholders.selectDebut")}
                                     optionFilterProp="children"
                                     onChange={(value) => setSelectDebug(value)}
                                     value={selectDebug}
@@ -320,7 +320,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                 <Label className='required_fields'>{lang("pages.agenda.status")}</Label>
                                 <Select
                                     className="setting_input w-100"
-                                    placeholder="Выберите состояние"
+                                    placeholder={lang("meetingCreated.placeholders.selectStatus")}
                                     optionFilterProp="children"
                                     // onChange={(value) => setSelectStatus(value)}
                                     value={true}
@@ -351,6 +351,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                                     label={i + 1 + " - " + lang("pages.agenda.answer")}
                                                     value={x.variant}
                                                     onInput={toInputUppercase}
+                                                    placeholder={lang("meetingCreated.placeholders.yourAnswer")}
                                                     onChange={
                                                         e => handleInputChange(e, i)}
                                                     className="variantAddedInput border border"
@@ -443,7 +444,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             </Row>
             <ModalAgenda setOpenModal={setOpenModal} openModal={openModal} lang={lang} currentAgenda={currentAgenda}
                          currentDebut={currentDebut} currentMeetingId={currentMeetingId}
-                         memberManagerState={memberManagerState} deleteVoting={deleteAgenda}
+                         memberManagerState={memberManagerState} deleteVoting={deleteVoting}
                          currentSpeaker={currentSpeaker} currentStatus={currentStatus} currentTime={currentTime}
                          currentVariants={currentVariants} dispatch={dispatch} editAgenda={editAgenda}
                          setCurrentSpeaker={setCurrentSpeaker} setCurrentTime={setCurrentTime}
