@@ -284,18 +284,18 @@ export const ControllerMeeting = () => {
         <div className="container-fluid meeting px-5">
             <div>
                 <Router currentMeeting={currentMeeting && currentMeeting}
-                        currentCompany={currentCompany && currentCompany}/>
+                        currentCompany={currentCompany && currentCompany} lang={t}/>
                 <div className="shadow p-3 my-3">
                     <div className="row">
                         <div className="col-12 col-md-8">
                             <NavbarControlMeeting clicked={clicked} countBadge={badgeCount} roleMember={userMemberType}
-                                                  fromReestr={fromReestrMember}
+                                                  fromReestr={fromReestrMember} lang={t}
                                                   memberId={memberId} companyId={companyId}
                                                   archiveBoolean={currentMeeting?.status === PENDING || currentMeeting?.status === ACTIVE}
                             />
                             <Switch>
                                 <Route path={"/issuerLegal/meeting/" + id + "/agenda"}>
-                                    <Agenda agendas={agendaState} roleMember={userMemberType}
+                                    <Agenda agendas={agendaState} roleMember={userMemberType} lang={t}
                                             fromReestr={fromReestrMember} currentMeeting={currentMeeting}
                                             meetingId={meetingId} memberId={parseInt(memberId)} quorum={countQuorum}/>
                                 </Route>

@@ -7,10 +7,12 @@ import {element} from "prop-types";
 import {confirmAlert} from "react-confirm-alert";
 import * as meetingStarted from "../../../../redux/actions/MeetingStartedAction";
 import {toast} from "react-toastify";
+import {useTranslation} from "react-i18next";
 
-export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) => {
+export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
 
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const reducers = useSelector(state => state)
     const {currentBallotVotingList, loadingBallot, countQuorum} = reducers.meetingStarted
     const {currentMeeting} = reducers.meeting
@@ -26,13 +28,13 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
     console.log(countQuorum)
     const deleteBallot = (votingId) => {
         if (currentMeeting?.status === FINISH) {
-            return toast.error("Засидание в статусе - Заверщено!")
+            return toast.error(t("toast.statusMeeting.finish"))
         }
         if (currentMeeting?.status === CANCELED) {
-            return toast.error("Засидание в статусе - Отмена!")
+            return toast.error(t("toast.statusMeeting.canceled"))
         }
         if (currentMeeting?.status === ACTIVE) {
-            return toast.error("Засидание в статусе - Активный!")
+            return toast.error(t("toast.statusMeeting.active"))
         }
         const data = {
             memberId: parseInt(memberId),
@@ -41,8 +43,8 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
         }
 
         confirmAlert({
-            title: 'Удалить голось',
-            message: 'Вы действительно хотите удалить в голось?',
+            title: t("alert.delete"),
+            message: t("alert.deleteMsg"),
             buttons: [
                 {
                     label: 'Да',
@@ -60,22 +62,22 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
     const addBallot = ({votingId, option, agendaId}) => {
 
         if (currentMeeting?.status === FINISH) {
-            return toast.error("Засидание в статусе - Заверщено!")
+            return toast.error(t("toast.statusMeeting.finish"))
         }
         if (currentMeeting?.status === CANCELED) {
-            return toast.error("Засидание в статусе - Отмена!")
+            return toast.error(t("toast.statusMeeting.canceled"))
         }
         if (currentMeeting?.status === ACTIVE) {
-            return toast.error("Засидание в статусе - Активный!")
+            return toast.error(t("toast.statusMeeting.active"))
         }
 
         if (countQuorum > 74) {
             confirmAlert({
-                title: 'Проголосовать',
-                message: 'Вы действительно хотите удалить в компанию?',
+                title: t("alert.vote"),
+                message: t("alert.voteMsg"),
                 buttons: [
                     {
-                        label: 'Да',
+                        label: t("alert.yes"),
                         onClick: () => {
                             const data = {
                                 agendaId: agendaId,
@@ -89,12 +91,12 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
                         }
                     },
                     {
-                        label: 'Нет',
+                        label: t("alert.no"),
                     }
                 ]
             });
         } else {
-            return toast.error("Quorum 75% dan yuqori bo`lishi kerak!")
+            return toast.error(t("toast.quorum"))
         }
     };
 
@@ -109,7 +111,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
         return (
             <div className="container">
                 <Button className="text-white" onClick={() => deleteBallot(voting.id)}>
-                    Удалить голось
+                    {t("meetingStarted.deleteVote")}
                 </Button>
             </div>
         );
@@ -125,7 +127,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
                         option: FOR,
                         agendaId: agenda.id
                     })}>
-                    За
+                    {t("meetingStarted.vote.yes")}
                 </Button>
                 <Button style={{width: "33%"}} color={"danger"}
                         onClick={() => addBallot({
@@ -133,14 +135,14 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId, quorum}) =
                             option: REFRAIN,
                             agendaId: agenda.id
                         })}
-                        className='mx-2'>Против</Button>
+                        className='mx-2'>{t("meetingStarted.vote.no")}</Button>
                 <Button style={{width: "33%"}}
                         onClick={() => addBallot({
                             votingId: variant.id,
                             option: AGAINST,
                             agendaId: agenda.id
                         })}
-                >Воздержался</Button>
+                >{t("meetingStarted.vote.abstained")}</Button>
             </div>
         </>
     )

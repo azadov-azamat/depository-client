@@ -153,7 +153,7 @@ export default function AddOrEditUser() {
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber === undefined ? null : phoneNumber
             }
-            dispatch(adminUsersAction.editUserAction({data, history}))
+            dispatch(adminUsersAction.editUserAction({data, history, toast}))
         } else {
             toast.warning("Iltimos kerakli hamma malumotlarni to`ldiring")
         }

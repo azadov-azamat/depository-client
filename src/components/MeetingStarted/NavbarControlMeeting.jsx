@@ -15,7 +15,8 @@ export const NavbarControlMeeting = ({
                                          countBadge,
                                          clicked,
                                          fromReestr,
-                                         archiveBoolean
+                                         archiveBoolean,
+                                         lang
                                      }) => {
 
     const {id} = useParams();
@@ -27,35 +28,35 @@ export const NavbarControlMeeting = ({
     const link = [
         {
             id: 1,
-            text: 'Повестка дня',
+            text: lang("meetingStarted.navbar.agenda"),
             link: "/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId,
             onClick: clicked,
             className: 'nav-link'
         },
         {
             id: 2,
-            text: 'Вопросы',
+            text: lang("meetingStarted.navbar.questions"),
             link: "/issuerLegal/meeting/" + id + "/question?companyId=" + companyId + "&memberId=" + memberId,
             onClick: clicked,
             className: 'nav-link'
         },
         {
             id: 3,
-            text: 'Комментирование',
+            text: lang("meetingStarted.navbar.comment"),
             link: "/issuerLegal/meeting/" + id + "/addComment?companyId=" + companyId + "&memberId=" + memberId,
             onClick: clicked,
             className: !archiveBoolean ? 'd-none' : 'nav-link'
         },
         {
             id: 4,
-            text: 'Управлять',
+            text: lang("meetingStarted.navbar.control"),
             link: "/issuerLegal/meeting/" + id + "/controlMeeting?companyId=" + companyId + "&memberId=" + memberId,
             onClick: clicked,
             className: 'nav-link'
         },
         {
             id: 5,
-            text: 'Видео Конфереция',
+            text: lang("meetingStarted.navbar.zoom"),
             link: "/issuerLegal/meeting/" + id + "/zoom-meeting?companyId=" + companyId + "&memberId=" + memberId,
             onClick: clicked,
             className: !archiveBoolean ? 'd-none' : 'nav-link'
@@ -65,14 +66,14 @@ export const NavbarControlMeeting = ({
     const linkMobileClient = [
         {
             id: 1,
-            text: 'Повестка дня',
+            text: lang("meetingStarted.navbar.agenda"),
             link: "/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId,
             onClick: clicked,
             className: 'nav-link'
         },
         {
             id: 2,
-            text: 'Видео Конфереция',
+            text: lang("meetingStarted.navbar.zoom"),
             link: "/issuerLegal/meeting/" + id + "/zoom-meeting?companyId=" + companyId + "&memberId=" + memberId,
             onClick: clicked,
             className: !archiveBoolean ? 'd-none' : 'nav-link'
@@ -114,12 +115,12 @@ export const NavbarControlMeeting = ({
                                 <NavLink
                                     to={"/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId}
                                     onClick={clicked}
-                                    className={"nav-link"}>Повестка дня</NavLink>
+                                    className={"nav-link"}>{lang("meetingStarted.navbar.agenda")}</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink onClick={clicked}
                                          to={"/issuerLegal/meeting/" + id + "/zoom-meeting?companyId=" + companyId + "&memberId=" + memberId}
-                                         className={!archiveBoolean ? "d-none" : "nav-link"}>Видео Конфереция</NavLink>
+                                         className={!archiveBoolean ? "d-none" : "nav-link"}>{lang("meetingStarted.navbar.agenda")}</NavLink>
                             </NavItem>
                         </ul>
                         <div className="form-group text-center d-flex d-md-none">
@@ -158,11 +159,6 @@ export const NavbarControlMeeting = ({
                                     <Option className={value.className} key={index} value={value.link}
                                             onClick={clicked}>{value.text}</Option>
                                 )}
-                                {/*{roleMember === SECRETARY ?*/}
-                                {/*    <Option*/}
-                                {/*        value={"/issuerLegal/meeting/" + id + "/all_users_list?companyId=" + companyId + "&memberId=" + memberId}*/}
-                                {/*        className={"nav-link"}>Участники</Option> : ""*/}
-                                {/*}*/}
                             </Select>
                         </div>
                     </div> // xamma kalonka predsedatel uchun
@@ -178,7 +174,7 @@ export const NavbarControlMeeting = ({
                                     style={roleMember === SECRETARY ? {
                                         paddingLeft: "6px",
                                         paddingRight: '6px'
-                                    } : {}}>Участники</NavLink>
+                                    } : {}}>{lang("meetingStarted.navbar.users")}</NavLink>
                             </NavItem>
                         </ul>
                         <div className="form-group text-center d-flex d-md-none">
@@ -197,7 +193,7 @@ export const NavbarControlMeeting = ({
                                 )}
                                 <Option
                                     value={"/issuerLegal/meeting/" + id + "/all_users_list?companyId=" + companyId + "&memberId=" + memberId}
-                                    className={"nav-link"}>Участники</Option>
+                                    className={"nav-link"}>{lang("meetingStarted.navbar.users")}</Option>
                             </Select>
                         </div>
                     </div>
@@ -208,12 +204,12 @@ export const NavbarControlMeeting = ({
                                 <NavLink
                                     to={"/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId}
                                     onClick={clicked}
-                                    className={"nav-link"}>Повестка дня</NavLink>
+                                    className={"nav-link"}>{lang("meetingStarted.navbar.agenda")}</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink onClick={clicked}
                                          to={"/issuerLegal/meeting/" + id + "/zoom-meeting?companyId=" + companyId + "&memberId=" + memberId}
-                                         className={!archiveBoolean ? "d-none" : "nav-link"}>Видео Конфереция</NavLink>
+                                         className={!archiveBoolean ? "d-none" : "nav-link"}>{lang("meetingStarted.navbar.zoom")}</NavLink>
                             </NavItem>
                         </ul>
                         <div className="form-group text-center d-flex d-md-none">

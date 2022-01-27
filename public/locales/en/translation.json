@@ -20,11 +20,11 @@
   "ownerEngagement": "Increasing owner engagement",
   "realTime": "Receive in real time",
   "centralDepos": "Central Securities Depository ",
-  "toBegin" : "to Begin",
+  "toBegin": "to Begin",
   "aboutDepos": "About the depository",
   "InstructionalVideo": "Instructional video",
-  "userProfile" : "Profile",
-  "settings":"Settings",
+  "userProfile": "Profile",
+  "settings": "Settings",
   "signIn": "To come in",
   "exit": "Exit",
   "placeholderLogin": "ENTER LOGIN",
@@ -38,7 +38,8 @@
   "companyManagement": "Companies management",
   "signInONEID": "Login with ЭЦП",
   "personalData": "Personal data of the head of the executive body",
-
+  "updateProfile": "Update personal data",
+  "myCompany": "My organizations",
   "text": {
     "headerText": "It is a convenient universal voting tool, allows the supervisory board to register for meetings and vote by filling out an electronic ballot form on the website",
     "aboutText": "The Electronic Voting service is a convenient universal voting tool that allows shareholders / members of the supervisory board to register at meetings / meetings and vote by filling out an electronic ballot form on the website, watch the webcast of the meeting / meeting, get acquainted with the agenda and materials of the meeting / meeting , maintain online communication with the issuer using a single interface and remote identification using a verified account on the Public Services Portal (ESIA). To access the E-voting, no special technical means are required; connection to the platform is possible from anywhere in the world if there is an Internet connection.",
@@ -65,7 +66,6 @@
     "tabOpenModal2": "To obtain a Login and Password, please contact the following phone number",
     "tabOpenModal21": "Contact us"
   },
-
   "eds": {
     "textEds": "Login with EDS",
     "eds": "EDS",
@@ -75,7 +75,6 @@
     "termCertificate": "Certificate validity period",
     "signIn": "Sign in"
   },
-
   "AdminUser": {
     "fullName": "F.I.O",
     "email": "E-mail",
@@ -84,14 +83,12 @@
     "pinfl": "PINFL",
     "role": "Role"
   },
-
   "UsersHeading": {
     "sound": "Electronic voting",
     "user": "User management",
     "save": "Create User",
     "update": "Edit user"
   },
-
   "user": {
     "all": "All",
     "jismoniy": "Individual",
@@ -120,7 +117,6 @@
     "update": "Edit user",
     "create": "User created"
   },
-
   "toast": {
     "creat": "User create",
     "update": "User update",
@@ -135,36 +131,31 @@
       "zoomStarted": "The video conference has started, please join."
     }
   },
-
   "createButton": "Create record | ",
-
-  "companiesList" : {
-    "nameCompany" : "Name",
-    "email" : "mail",
-    "phoneNumber" : "Telephone",
-    "webSite" : "Web site",
-    "inn" : "inn",
-    "accountCount" : "Account",
+  "companiesList": {
+    "nameCompany": "Name",
+    "email": "mail",
+    "phoneNumber": "Telephone",
+    "webSite": "Web site",
+    "inn": "inn",
+    "accountCount": "Account",
     "from": "from"
   },
-
   "meetingsList": {
     "nameCompany": "Company",
     "statusMeeting": "Meeting status",
-    "startRegister":"Registration start",
+    "startRegister": "Registration start",
     "startMeeting": "Beginning sitting up",
     "city": "City/region",
     "address": "Address",
     "typeMeeting": "Meeting type",
-    "finishRegister":"End of registration",
+    "finishRegister": "End of registration",
     "commentMeeting": "Meeting Descriptions"
-
   },
-
   "meetingCreated": {
     "general": "General",
     "addedMember": "System users",
-    "addedAgenda" : "Agenda items",
+    "addedAgenda": "Agenda items",
     "addedReestr": "List of members of the supervisory board",
     "addedFiles": "Files meeting",
     "placeholders": {
@@ -231,32 +222,40 @@
     },
     "emptyList": "Nothing found"
   },
-
-  "routes" : {
-    "menu" : "Main menu",
+  "meetingStarted": {
+    "startRegister": "Registration for meetings has begun",
+    "finishRegister": "Meeting registration closed",
+    "startZoom": "Zoom meetings have begun",
+    "navbar": {
+      "agenda": "Agenda",
+      "questions": "Questions",
+      "comment": "Commenting",
+      "control": "To rule",
+      "zoom": "Video Conference",
+      "users": "Members"
+    }
+  },
+  "routes": {
+    "menu": "Main menu",
     "electronVoting": "Electronic voting",
     "profile": "My profile",
-
-    "controlPage" : {
+    "controlPage": {
       "company": "companies",
       "meeting": "meetings",
       "user": "users",
       "control": "Control ",
       "clientPage": "Joint Stock Company"
     },
-
-    "addOrEditPage" : {
-      "addCompany" : "ADD COMPANY",
+    "addOrEditPage": {
+      "addCompany": "ADD COMPANY",
       "editCompany": "EDIT COMPANY",
-
-      "addUser" : "Create user",
+      "addUser": "Create user",
       "editUser": "Editing user",
-
-      "addMeeting" : "Creation of a meeting",
+      "addMeeting": "Creation of a meeting",
       "editMeeting": "Editing meeting"
     }
   },
-  "pages" : {
+  "pages": {
     "company": {
       "nameCompany": "Name of company",
       "status": "Status",
@@ -287,7 +286,6 @@
       "minute20": "20 minutes"
     }
   },
-
   "clientPage": {
     "countMeeting": "Total meetings",
     "allActiveMeetings": "General meeting",

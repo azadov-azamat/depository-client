@@ -12,7 +12,8 @@ import {toast} from "react-toastify";
 import {useHistory} from "react-router-dom";
 import {AiOutlineDoubleRight} from "react-icons/all";
 import PhoneInput from "react-phone-number-input";
-import {userMe} from "../../../redux/actions/AuthActions";
+import {TOKEN} from "../../../utils/contants";
+import jwt from "jwt-decode";
 
 export default function ProfileUser({lang, currentUser, loading, boolean}) {
 
@@ -47,8 +48,8 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
     }, [currentUser])
 
     function EditProfile(e, v) {
-        if (v.password){
-            if (v.password.length <= 3 || v.prePassword.length <= 3){
+        if (v.password) {
+            if (v.password.length <= 3 || v.prePassword.length <= 3) {
                 return toast.error("Parol uzunligi 4 tadan kam bo`lmasligi kerak!")
             }
         }
@@ -69,8 +70,22 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                 phoneNumber: phoneNumber === undefined ? null : phoneNumber,
                 password: v.password ? v.password : null
             }
-            dispatch(userAction.editUserAction({data}))
-            history.push('/admin')
+            dispatch(userAction.editUserAction({data, history, toast}))
+            const token = localStorage.getItem(TOKEN);
+            if (token) {
+                let parsedToken = jwt(token);
+                let app = parsedToken.auth;
+                if (app === "ROLE_ADMIN") {
+                    history.push('/admin')
+                } else if (app === "ROLE_MODERATOR") {
+                    history.push('/admin')
+                } else {
+                    history.push("/issuerLegal/companies");
+                }
+            } else {
+                history.push('/site/login')
+            }
+
         } else {
             toast.error("Parollar mos emas")
         }
@@ -88,6 +103,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                 <AvInput
                                     type="text"
                                     name="fullName"
+                                    placeholder={lang("meetingCreated.placeholders.enterName")}
                                     value={currentUser?.fullName}
                                     className="border "
                                     style={style}
@@ -101,6 +117,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                     <AvField
                                         type="text"
                                         name="passport"
+                                        placeholder={lang("meetingCreated.placeholders.enterPassport")}
                                         label={lang("passport")} helpMessage=""
                                         value={currentUser?.passport}
                                         className="border "
@@ -113,6 +130,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                     <AvField
                                         type="text"
                                         name="pinfl" label={lang("pinfl")}
+                                        placeholder={lang("meetingCreated.placeholders.enterPinfl")}
                                         minLength={14}
                                         maxLength={14}
                                         value={currentUser?.pinfl}
@@ -128,6 +146,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                     <AvField
                                         type="email"
                                         name="email"
+                                        placeholder={lang("meetingCreated.placeholders.enterEmail")}
                                         label={lang("email")} helpMessage=""
                                         value={currentUser?.email}
                                         className="border "
@@ -139,7 +158,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                         <Label>{lang("companiesList.phoneNumber")}</Label>
                                         <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                             <PhoneInput
-                                                placeholder="Введите номер телефона"
+                                                placeholder={lang("meetingCreated.placeholders.enterPhone")}
                                                 value={phoneNumber}
                                                 onChange={setPhoneNumber}
                                             />
@@ -152,6 +171,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                     <AvField
                                         label={lang("password")}
                                         name="password"
+                                        placeholder={lang("meetingCreated.placeholders.enterPassword")}
                                         value={currentUser?.password}
                                         onChange={handlePasswordChange("password")}
                                         type={parol.showPassword ? "text" : "password"}
@@ -175,6 +195,7 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                     <AvField
                                         label={lang("prePassword")}
                                         name="prePassword"
+                                        placeholder={lang("meetingCreated.placeholders.enterPassword")}
                                         onChange={handlePasswordChange("password")}
                                         type={parol.showPassword ? "text" : "password"}
                                         className="border "
@@ -209,13 +230,13 @@ export default function ProfileUser({lang, currentUser, loading, boolean}) {
                                                 </div>
                                                 :
                                                 <Button className="py-2 px-5 mx-2 create">
-                                                    Обновить персональные данные
+                                                    {lang("updateProfile")}
                                                 </Button>
                                         }
                                         {boolean ?
                                             <Button className="py-2 px-5 mx-2 create"
                                                     onClick={() => history.push("/supervisory/profile/organization?ID=" + currentUser.id)}>
-                                                Мои организации <AiOutlineDoubleRight/>
+                                                {lang("myCompany")} <AiOutlineDoubleRight/>
                                             </Button> : ''
                                         }
                                     </div>

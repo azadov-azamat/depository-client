@@ -89,7 +89,7 @@ export const createUserForAdmin = (payload) => async (dispatch) => {
                 }
             }
         }
-        console.log(err.response)
+
     })
 }
 
@@ -163,6 +163,7 @@ export const getUserSearch = (payload) => async (dispatch) => {
 }
 
 export const editUserAction = (payload) => async (dispatch) => {
+    const lang = localStorage.getItem('i18nextLng')
     dispatch({
         api: editUserApi,
         types: [REQUEST_API_START_USERS, '', REQUEST_API_ERROR_USERS],
@@ -171,7 +172,67 @@ export const editUserAction = (payload) => async (dispatch) => {
         payload.history.push('/admin/users')
         dispatch(userMe());
     }).catch(err => {
-        console.log(err.response)
+        if (err.response.data.status === 400) {
+            if (err.response.data.title === 'Passport already used!') {
+                if (lang === "ru") {
+                    payload.toast.error("Паспорт уже использовался!")
+                }
+                if (lang === "uz") {
+                    payload.toast.error("Pasport allaqachon ishlatilgan!")
+                }
+                if (lang === "en") {
+                    payload.toast.error(err.response.data.title)
+                }
+            }
+            if (err.response.data.title === 'Method argument not valid') {
+                err.response.data.fieldErrors.forEach(element => {
+                    if (element.field === "pinfl") {
+                        if (lang === "ru") {
+                            payload.toast.error("PINFL Длина должна быть 14 символов!")
+                        }
+                        if (lang === "uz") {
+                            payload.toast.error("PINFL uzunligi 14 belgidan iborat bo'lishi kerak!")
+                        }
+                        if (lang === "en") {
+                            payload.toast.error(element.message)
+                        }
+                    }
+                })
+            }
+            if (err.response.data.errorKey === 'phonenumberexists') {
+                if (lang === "ru") {
+                    payload.toast.error("Телефонный номер уже используется!")
+                }
+                if (lang === "uz") {
+                    payload.toast.error("Telefon raqami allaqachon ishlatilmoqda!")
+                }
+                if (lang === "en") {
+                    payload.toast.error(err.response.data.title)
+                }
+            }
+            if (err.response.data.errorKey === 'emailexists') {
+                if (lang === "ru") {
+                    payload.toast.error("Email уже используется!")
+                }
+                if (lang === "uz") {
+                    payload.toast.error("Email allaqachon ishlatilmoqda!")
+                }
+                if (lang === "en") {
+                    payload.toast.error(err.response.data.title)
+                }
+            }
+            if (err.response.data.errorKey === 'innexists') {
+                if (lang === "ru") {
+                    payload.toast.error("ИНН уже используется!")
+                }
+                if (lang === "uz") {
+                    payload.toast.error("INN allaqachon ishlatilmoqda!")
+                }
+                if (lang === "en") {
+                    payload.toast.error(err.response.data.title)
+                }
+            }
+        }
     })
 }
 

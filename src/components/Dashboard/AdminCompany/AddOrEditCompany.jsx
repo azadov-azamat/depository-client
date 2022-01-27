@@ -171,7 +171,7 @@ export default function AddOrEditCompany() {
                             {currentCompany && currentCompany.imageUrl === "yes" ?
                                 <div className='currentCompanyLogo d-flex align-items-center'>
                                     <img className="w-100"
-                                         src={BASE_URL + api.getLogoByCompanyId + "/"+ currentCompany.id}
+                                         src={BASE_URL + api.getLogoByCompanyId + "/" + currentCompany.id}
                                          alt=""/>
                                 </div>
                                 :

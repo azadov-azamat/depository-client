@@ -58,7 +58,7 @@ export default function ProfileRoute({lang}) {
                             <Link to={'/supervisory/profile/user'} className="nav-link"
                                   style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.profile")}</Link>
                             <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
-                            <Link className="nav-link h4 disabled" style={{color: "#3D5398"}}>Мои организации</Link>
+                            <Link className="nav-link h4 disabled" style={{color: "#3D5398"}}>{lang("myCompany")}</Link>
                         </> : ''
                 }
                 {
@@ -75,7 +75,7 @@ export default function ProfileRoute({lang}) {
                                   style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.profile")}</Link>
                             <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                             <Link to={'/supervisory/profile/organization'} className="nav-link"
-                                  style={{color: "rgba(155,153,150,0.98)"}}>Мои организации</Link>
+                                  style={{color: "rgba(155,153,150,0.98)"}}>{lang("myCompany")}</Link>
                             <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
                             <Link className="nav-link h4 disabled"
                                   style={{color: "#3D5398"}}>{lang("clientPage.countMeeting")}</Link>

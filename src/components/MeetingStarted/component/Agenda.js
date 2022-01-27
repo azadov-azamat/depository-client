@@ -15,7 +15,7 @@ import {AvField, AvForm} from "availity-reactstrap-validation";
 import Loader from "react-loader-spinner";
 import {toast} from "react-toastify";
 
-export default function Agenda({agendas, roleMember, meetingId, memberId, quorum, fromReestr, currentMeeting}) {
+export default function Agenda({agendas, lang, roleMember, meetingId, memberId, quorum, fromReestr, currentMeeting}) {
 
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -29,13 +29,13 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
 
     function editStatusElement(element) {
         if (currentMeeting?.status === FINISH) {
-            return toast.error("Засидание в статусе - Заверщено!")
+            return toast.error(lang("toast.statusMeeting.finish"))
         }
         if (currentMeeting?.status === CANCELED) {
-            return toast.error("Засидание в статусе - Отмена!")
+            return toast.error(lang("toast.statusMeeting.canceled"))
         }
         if (currentMeeting?.status === ACTIVE) {
-            return toast.error("Засидание в статусе - Активный!")
+            return toast.error(lang("toast.statusMeeting.active"))
         }
         if (element.active) {
             setCurrentAgenda(element)
@@ -48,18 +48,18 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
             }
 
             confirmAlert({
-                title: 'Изменить статус',
-                message: 'Вы действительно хотите?',
+                title: lang("alert.updateStatus"),
+                message: lang("alert.updateMsg"),
                 buttons: [
                     {
-                        label: 'Да',
+                        label: lang("alert.yes"),
                         onClick: () => {
                             dispatch(meetingStarted.editStatusAgendaAction({data}))
                         }
 
                     },
                     {
-                        label: 'Нет',
+                        label: lang("alert.no"),
                     }
                 ]
             });
@@ -68,13 +68,13 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
 
     function editAgendaStatusIsActive(e, v) {
         if (currentMeeting?.status === FINISH) {
-            return toast.error("Засидание в статусе - Заверщено!")
+            return toast.error(lang("toast.statusMeeting.finish"))
         }
         if (currentMeeting?.status === CANCELED) {
-            return toast.error("Засидание в статусе - Отмена!")
+            return toast.error(lang("toast.statusMeeting.canceled"))
         }
         if (currentMeeting?.status === ACTIVE) {
-            return toast.error("Засидание в статусе - Активный!")
+            return toast.error(lang("toast.statusMeeting.active"))
         }
         const data = {
             id: currentAgenda.id,
@@ -91,7 +91,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
             <>
                 <p style={{fontWeight: 'bold'}}>{subject}</p>
                 <span style={{fontSize: "12px"}}
-                      className={extraInfo === null || extraInfo === undefined ? 'd-none' : ''}>Причина: {extraInfo}</span>
+                      className={extraInfo === null || extraInfo === undefined ? 'd-none' : ''}>{lang("meetingStarted.cause")}: {extraInfo}</span>
                 <hr/>
                 {votingList?.map((element, index) =>
                     <div className='text-start'><span key={index}>{index + 1} - {element.votingText}</span><br/></div>
@@ -117,7 +117,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                 <span
                                                     style={element.active ? {} : {color: '#CBCBC7FF'}}><b>{element.subject}</b></span><br/>
                                                 <span
-                                                    style={element.active ? {color: '#6B8C67FF'} : {color: '#CBCBC7FF'}}><b>Доклатчик: {element.userName}</b></span>
+                                                    style={element.active ? {color: '#6B8C67FF'} : {color: '#CBCBC7FF'}}><b>{lang("meetingCreated.roles.speaker")}: {element.userName}</b></span>
                                             </div>
                                         </AccordionAgenda.Header>
                                         <AccordionAgenda.Body>
@@ -126,18 +126,18 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                     <>
                                                         <div className="mt-2 container" key={index}>
                                                             {index === 0 ? <><span
-                                                                style={{fontSize: '23px'}}>Решения:</span><br/></> : ""}
+                                                                style={{fontSize: '23px'}}>{lang("pages.agenda.solution")}:</span><br/></> : ""}
                                                             <span
                                                                 style={{fontWeight: 'bold'}}>{elementOption.votingText}</span>
                                                         </div>
-                                                        <AgendaByVoting quorum={quorum} agenda={element}
+                                                        <AgendaByVoting quorum={quorum} agenda={element} lang={lang}
                                                                         variant={elementOption}
                                                                         memberId={memberId} meetingId={meetingId}
                                                                         currentMeeting={currentMeeting}
                                                         />
                                                     </>
                                                 ) :
-                                                <span>Причина: {element.extraInfo}</span>
+                                                <span>{lang("meetingStarted.cause")}: {element.extraInfo}</span>
                                             }
                                         </AccordionAgenda.Body>
                                     </AccordionAgenda.Item>
@@ -152,7 +152,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                 className="text-me d-flex align-items-center justify-content-between"><b
                                 style={element.active ? {color: '#198754'} : {color: '#bb2d3b'}}>{element.subject}</b></span>
                                 <button onClick={() => editStatusElement(element)} className='btn create py-2'
-                                        style={{width: '20vh'}}>{element.active ? "Отключить" : "Включить"}</button>
+                                        style={{width: '20vh'}}>{element.active ? lang("meetingStarted.disable") : lang("meetingStarted.turnOn")}</button>
                             </div>
                         )
                     :
@@ -164,7 +164,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                 className="text-me d-flex align-items-center justify-content-between"><b
                                 style={element.active ? {color: '#198754'} : {color: '#bb2d3b'}}>{element.subject}</b></span>
                                 <button onClick={() => editStatusElement(element)} className='btn create py-2'
-                                        style={{width: '20vh'}}>{element.active ? "Отключить" : "Включить"}</button>
+                                        style={{width: '20vh'}}>{element.active ? lang("meetingStarted.disable") : lang("meetingStarted.turnOn")}</button>
                             </div>
                         ) :
                         roleMember === SIMPLE ?
@@ -177,7 +177,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                     <span
                                                         style={element.active ? {} : {color: '#CBCBC7FF'}}><b>{element.subject}</b></span><br/>
                                                     <span
-                                                        style={element.active ? {color: '#6B8C67FF'} : {color: '#CBCBC7FF'}}><b>Доклатчик: {element.userName}</b></span>
+                                                        style={element.active ? {color: '#6B8C67FF'} : {color: '#CBCBC7FF'}}><b>{lang("meetingCreated.roles.speaker")}: {element.userName}</b></span>
                                                 </div>
                                             </AccordionAgenda.Header>
                                             <AccordionAgenda.Body>
@@ -185,9 +185,8 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                     element.votingOptions.map((elementOption, index) =>
                                                         <>
                                                             <div className="mt-2 container" key={index}>
-                                                                '
                                                                 {index === 0 ? <><span
-                                                                    style={{fontSize: '23px'}}>Решения:</span><br/></> : ""}
+                                                                    style={{fontSize: '23px'}}>{lang("pages.agenda.solution")}:</span><br/></> : ""}
                                                                 <span
                                                                     style={{fontWeight: 'bold'}}>{elementOption.votingText}</span>
                                                             </div>
@@ -196,7 +195,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                                             memberId={memberId} meetingId={meetingId}/>
                                                         </>
                                                     ) :
-                                                    <span>Причина: {element.extraInfo}</span>
+                                                    <span>{lang("meetingStarted.cause")}: {element.extraInfo}</span>
                                                 }
                                             </AccordionAgenda.Body>
                                         </AccordionAgenda.Item>
@@ -210,8 +209,8 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                             <thead className="navUsers">
                                             <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col" className="w-25">Докладчик</th>
-                                                <th scope="col">Вопрос | Решение</th>
+                                                <th scope="col" className="w-25">{lang("meetingCreated.roles.speaker")}</th>
+                                                <th scope="col">{lang("pages.agenda.question")} | {lang("pages.agenda.solution")}</th>
                                                 <th scope="col" style={{width: '0'}}>
                                                     <BiCheckDouble fontSize={25} color={"green"}/>
                                                 </th>
@@ -237,7 +236,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                                 ))
                                                 :
                                                 <tr className='text-center'>
-                                                    <th colSpan="5">Ничего не найдена</th>
+                                                    <th colSpan="5">{lang("meetingCreated.emptyList")}</th>
                                                 </tr>
                                             }
                                             </tbody>
@@ -249,14 +248,15 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
             <Modal isOpen={openModal} className="modal-dialog modal-md">
                 <ModalHeader toggle={() => setOpenModal(!openModal)}
                              className="d-flex align-items-center">
-                    <h3>Вы действительно хотите изменить статус?</h3>
+                    <h3>{lang("alert.updateStatus")}</h3>
                 </ModalHeader>
                 <ModalBody className='container-fluid'>
                     <AvForm onValidSubmit={editAgendaStatusIsActive}>
                         <AvField
                             type="textarea"
                             name="extraInfo"
-                            label="Комментирование"
+                            label={lang("meetingStarted.navbar.comment")}
+                            placeholder={lang("meetingCreated.placeholders.enterDescription")}
                             className="border"
                             style={{backgroundColor: '#FFFFFF', resize: 'none', height: '30vh'}}
                             required
@@ -274,7 +274,7 @@ export default function Agenda({agendas, roleMember, meetingId, memberId, quorum
                                 />
                             </div>
                             :
-                            <button className="btn create mt-2">Подтвердит</button>
+                            <button className="btn create mt-2">{lang("meetingStarted.confirm")}</button>
                         }
                     </AvForm>
                 </ModalBody>

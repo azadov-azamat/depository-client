@@ -5,7 +5,7 @@ import {AiOutlineLeft, AiOutlineRight, FaArrowLeft} from "react-icons/all";
 import {ACTIVE, EXTRAORDINARY, ORDINARY, PENDING} from "../../utils/contants";
 import {RiTimeFill} from "react-icons/ri";
 
-export default function Router({currentCompany, currentMeeting}) {
+export default function Router({currentCompany, currentMeeting, lang}) {
 
     const style = {
         textOverflow: 'ellipsis',
@@ -42,13 +42,12 @@ export default function Router({currentCompany, currentMeeting}) {
                                 <Link to={"/issuerLegal/meetings?company_id=" + currentCompany?.id + "&type=active"}
                                       className="text-dark"><FaArrowLeft/></Link>
 
-                                <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>Электронное
-                                    голосование</Link>
+                                <Link to={'/'} className="nav-link" style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.electronVoting")}</Link>
 
                                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
 
                                 <Link to={'/issuerLegal/companies'} className="nav-link"
-                                      style={{color: "rgba(155,153,150,0.98)"}}>Акционерное общества</Link>
+                                      style={{color: "rgba(155,153,150,0.98)"}}>{lang("routes.controlPage.clientPage")}</Link>
 
                                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
 
@@ -59,8 +58,8 @@ export default function Router({currentCompany, currentMeeting}) {
                                 <Link to={'#'} className="nav-link disabled"><AiOutlineRight/></Link>
 
                                 <Link to={'#'} style={style} className="nav-link h5 disabled text-dark">{
-                                    currentMeeting?.typeEnum === ORDINARY ? 'Внеплановое заседание наблюдательного совета' : '' ||
-                                    currentMeeting?.typeEnum === EXTRAORDINARY ? 'Плановое заседание наблюдательного совета' : ''
+                                    currentMeeting?.typeEnum === ORDINARY ? lang("meetingCreated.meetingStatus.ordinary") : '' ||
+                                    currentMeeting?.typeEnum === EXTRAORDINARY ? lang("meetingCreated.meetingStatus.extraordinary") : ''
                                 }</Link>
                             </div>
                         </div>
@@ -73,8 +72,8 @@ export default function Router({currentCompany, currentMeeting}) {
                         <Link to={"/issuerLegal/meetings?company_id=" + currentCompany?.id + "&type=active"}
                               className="nav-link text-dark"><AiOutlineLeft className="h3"/></Link>
                         <div style={styleMobile} className='h5 float-end text-center'>{
-                            currentMeeting?.typeEnum === ORDINARY ? 'Внеплановое заседание наблюдательного совета' : '' ||
-                            currentMeeting?.typeEnum === EXTRAORDINARY ? 'Плановое заседание наблюдательного совета' : ''
+                            currentMeeting?.typeEnum === ORDINARY ? lang("meetingCreated.meetingStatus.ordinary") : '' ||
+                            currentMeeting?.typeEnum === EXTRAORDINARY ? lang("meetingCreated.meetingStatus.extraordinary") : ''
                         }</div>
                     </div>
                 </Col>
@@ -82,20 +81,20 @@ export default function Router({currentCompany, currentMeeting}) {
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-center my-3">
                 <div className='d-none d-md-block'>
                     <b>{
-                        currentMeeting?.typeEnum === ORDINARY ? 'Внеплановое заседание наблюдательного совета' : '' ||
-                        currentMeeting?.typeEnum === EXTRAORDINARY ? 'Плановое заседание наблюдательного совета' : ''
+                        currentMeeting?.typeEnum === ORDINARY ? lang("meetingCreated.meetingStatus.ordinary") : '' ||
+                        currentMeeting?.typeEnum === EXTRAORDINARY ? lang("meetingCreated.meetingStatus.extraordinary") : ''
                     }</b>
                 </div>
                 <div>
                     {
                         currentMeeting?.status === PENDING ?
                             <>
-                                Начата регистрация на засидания <span className="text-success text-2xl "><RiTimeFill
+                                {lang("meetingStarted.startRegister")} <span className="text-success text-2xl "><RiTimeFill
                                 fontSize={23}/></span>
                             </> : "" ||
                             currentMeeting?.status === ACTIVE ?
                                 <>
-                                    Zoom meeting boshlandi
+                                    {lang("meetingStarted.startZoom")}
                                 </> : ""
                     }
                 </div>

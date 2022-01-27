@@ -35,7 +35,7 @@ export default function OrganizationUser({lang, ID}) {
                         <th style={{width: '140px'}}
                             className='text-center '>{lang("companiesList.webSite")}</th>
                         <th style={{width: '135px'}}
-                            className='text-center '>Коментарии
+                            className='text-center '>{lang("pages.company.comment")}
                         </th>
                         <th style={{width: '123px'}}
                             className='text-center '>{lang("clientPage.countMeeting")}</th>

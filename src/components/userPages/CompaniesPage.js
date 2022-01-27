@@ -67,7 +67,7 @@ export default function CompaniesPage() {
                             <div className="nab d-none d-md-grid justify-content-end" style={{marginTop: '7em'}}>
                                 <div
                                     className="nabAdd d-flex justify-content-center align-items-center align-content-center ">
-                                    <span>Создать заседание</span>
+                                    <span>{t("createButton")}</span>
                                     <div className="btnAdd border mx-3 d-flex justify-content-center text-center">
                                         <button className="btn"
                                                 onClick={() => history.push("/supervisory/addOrEditMeeting/meeting?type=create")}>

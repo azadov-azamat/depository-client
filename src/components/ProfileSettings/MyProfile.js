@@ -7,6 +7,7 @@ import OrganizationUser from "./components/OrganizationUser";
 import {useTranslation} from "react-i18next";
 import MeetingsListByUser from "./MeetingsListByUser";
 import * as companyAction from "../../redux/actions/CompanyAction";
+import {getUserById} from "../../redux/actions/UsersAction";
 
 function useQuery() {
     const {search} = useLocation();
@@ -21,7 +22,7 @@ export default function MyProfile() {
     const reducers = useSelector(state => state)
     let query = useQuery();
     const {currentUser} = reducers.auth
-    const {loading} = reducers.users
+    const {loading, currentForUser} = reducers.users
     const {companiesByUserId} = reducers.company
 
     const [booleanMy, setBooleanMy] = useState(false);
@@ -31,13 +32,14 @@ export default function MyProfile() {
     useEffect(() => {
         setBooleanMy(
             companiesByUserId?.some(element => element.chairmanId === userId || element.secretaryId === userId));
-    }, [booleanMy, companiesByUserId])
+    }, [companiesByUserId])
 
     useEffect(() => {
         if (userId) {
             dispatch(companyAction.getCompanyByUserId({currentUserId: userId}))
         }
-    })
+        dispatch(getUserById({userId}))
+    },[userId])
 
     const styleCursor = {
         cursor: 'wait'
@@ -48,7 +50,7 @@ export default function MyProfile() {
             <ProfileRoute lang={t}/>
             <Switch>
                 <Route path={"/supervisory/profile/user"} exact>
-                    <ProfileUser lang={t} loading={loading} currentUser={currentUser} boolean={booleanMy}/>
+                    <ProfileUser lang={t} loading={loading} currentUser={currentForUser} boolean={booleanMy}/>
                 </Route>
                 <Route path={"/supervisory/profile/organization"}>
                     <OrganizationUser lang={t} ID={currentUser?.id}/>
