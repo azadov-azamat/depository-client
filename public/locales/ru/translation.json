@@ -179,7 +179,15 @@
       "selectFileReestr": "Выберите файл Excel",
       "selectFile": "Загрузить файл для засидание",
       "selectAgenda": "Выберите голосование",
-      "yourAnswer": "Ваш ответ"
+      "yourAnswer": "Ваш ответ",
+      "enterName": "Введите фамилья, имя и отчество",
+      "enterEmail": "Введите адрес электронной почты",
+      "enterPhone": "Введите номер телефона",
+      "enterPinfl": "Введите ПИНФЛ",
+      "enterInn": "Введите ИНН",
+      "enterLogin": "Вам нужно ввести пинфл",
+      "enterPassport": "Введите серию и номер паспорта",
+      "enterPassword": "Введите пароль"
     },
     "meetingStatus": {
       "pending": "Ожидает запуска",

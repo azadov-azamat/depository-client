@@ -182,7 +182,15 @@
       "selectFileReestr": "Select the Excel file",
       "selectFile": "Upload file for meeting",
       "selectAgenda": "Choose a vote",
-      "yourAnswer": "Your answer"
+      "yourAnswer": "Your answer",
+      "enterName": "Enter last name, first name and patronymic",
+      "enterEmail": "Enter email address",
+      "enterPhone": "Enter phone number",
+      "enterPinfl": "Enter PINFL",
+      "enterInn": "Enter INN",
+      "enterLogin": "You need to enter a PINFL",
+      "enterPassport": "Enter the series and number of the passport",
+      "enterPassword": "Enter password"
     },
     "meetingStatus": {
       "pending": "Awaiting launch",

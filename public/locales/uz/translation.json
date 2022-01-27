@@ -180,7 +180,15 @@
       "selectFileReestr": "Excel fayl tanlang",
       "selectFile": "Uchrashuv uchun fayl yuklang",
       "selectAgenda": "Kun tartibini tanlang",
-      "yourAnswer": "Sizning javobingiz"
+      "yourAnswer": "Sizning javobingiz",
+      "enterName": "Familiya, ism va otasining ismini kiriting",
+      "enterEmail": "Elektron pochtasini kiriting",
+      "enterPhone": "Telefon raqamini kiriting",
+      "enterPinfl": "PINFL raqamini kiriting",
+      "enterInn": "INN raqamini kiriting",
+      "enterLogin": "Oldin PINFL kiritishingiz kerak!",
+      "enterPassport": "Pasport seriyasi va raqamini kiriting",
+      "enterPassword": "Parol kiriting"
     },
     "meetingStatus": {
       "pending": "Ishga tushirish kutilmoqda",

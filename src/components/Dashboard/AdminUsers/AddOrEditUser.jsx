@@ -223,7 +223,7 @@ export default function AddOrEditUser() {
                                 <AvField
                                     name="fullName"
                                     value={currentForUser?.fullName}
-                                    placeholder={"Введите фамилья, имя и отчество"}
+                                    placeholder={t("meetingCreated.placeholders.enterName")}
                                     style={{backgroundColor: "#ffffff"}}
                                     /* FULL_NAME */ className="setting_input border  p-2 w-100"
                                     type="text"
@@ -233,7 +233,7 @@ export default function AddOrEditUser() {
                                 <AvField
                                     name="email"
                                     value={currentForUser?.email}
-                                    placeholder={"Введите адрес электронной почты"}
+                                    placeholder={t("meetingCreated.placeholders.enterEmail")}
                                     style={{backgroundColor: "#ffffff"}}
                                     /* EMAIL */ className="setting_input border  p-2 w-100"
                                     type="email"
@@ -277,7 +277,7 @@ export default function AddOrEditUser() {
                                         <Label>{t("companiesList.phoneNumber")}</Label>
                                         <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                             <PhoneInput
-                                                placeholder={"Введите номер телефона"}
+                                                placeholder={t("meetingCreated.placeholders.enterPhone")}
                                                 value={phoneNumber}
                                                 onChange={setPhoneNumber}/>
                                         </div>
@@ -324,7 +324,7 @@ export default function AddOrEditUser() {
                                         <Label className='required_fields'>{t("user.pnfl")}</Label>
                                         <AvField
                                             className="setting_input border w-100 form-control"
-                                            placeholder={"Введите ПИНФЛ"}
+                                            placeholder={t("meetingCreated.placeholders.enterPinfl")}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             mask="9 9999 999 999 999"
                                             tag={InputMask}
@@ -347,7 +347,7 @@ export default function AddOrEditUser() {
                                         <Label className='required_fields'>{t("user.login")}</Label>
                                         <AvField
                                             className="setting_input border"
-                                            placeholder={"Вам нужно ввести пинфл"}
+                                            placeholder={t("meetingCreated.placeholders.enterLogin")}
                                             value={userInfo.generateLogin}
                                             type="text"
                                             name="username"
@@ -359,8 +359,8 @@ export default function AddOrEditUser() {
                                 </Col>
                                 <Col md={6}>
                                     <AvField
-                                        name="passwordferfwrthtyhsdfwreg"
-                                        placeholder={"Введите пароль"}
+                                        name="password_depository"
+                                        placeholder={t("meetingCreated.placeholders.enterPassword")}
                                         label={t("user.parol")}
                                         value={userInfo.generatePassword}
                                         className="setting_input border"
@@ -407,7 +407,7 @@ export default function AddOrEditUser() {
                                         style={{backgroundColor: "#ffffff"}}
                                         name="passport"
                                         value={currentForUser?.passport}
-                                        placeholder={"Введите серию и номер паспорта"}
+                                        placeholder={t("meetingCreated.placeholders.enterPassport")}
                                         label={t("user.passport")}
                                         className="setting_input border"
                                         minLength={2}
