@@ -187,7 +187,11 @@
       "enterInn": "Введите ИНН",
       "enterLogin": "Вам нужно ввести пинфл",
       "enterPassport": "Введите серию и номер паспорта",
-      "enterPassword": "Введите пароль"
+      "enterPassword": "Введите пароль",
+      "enterNameCompany": "Введите название",
+      "enterPostalAddress": "Введите Почтовый адрес",
+      "enterLegalAddress": "Введите Юридический адрес",
+      "enterWebSite": "Введите веб сайт"
     },
     "meetingStatus": {
       "pending": "Ожидает запуска",

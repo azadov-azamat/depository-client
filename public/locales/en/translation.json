@@ -190,7 +190,11 @@
       "enterInn": "Enter INN",
       "enterLogin": "You need to enter a PINFL",
       "enterPassport": "Enter the series and number of the passport",
-      "enterPassword": "Enter password"
+      "enterPassword": "Enter password",
+      "enterNameCompany": "Enter the company name",
+      "enterPostalAddress": "Enter the postal address",
+      "enterLegalAddress": "Enter the legal address",
+      "enterWebSite": "Enter web-site link"
     },
     "meetingStatus": {
       "pending": "Awaiting launch",

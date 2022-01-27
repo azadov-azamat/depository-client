@@ -177,7 +177,7 @@ export default function AddOrEditCompany() {
                                 :
                                 <div className="app-custom-file">
                                     <div className={imagePreviewUrl ? `d-none` : ` `}>
-                                        <form action="http://localhost:3000" method="post"
+                                        <form method="post"
                                               encType="multipart/form-data">
                                             <input type="file" onChange={_handleImageChange} hidden={true} id="file"
                                                    accept="image/jpg, image/jpeg, image/png, .svg"/>
@@ -203,7 +203,7 @@ export default function AddOrEditCompany() {
                                 <AvField
                                     type="text"
                                     name="name"
-                                    placeholder={'Введите название '}
+                                    placeholder={t("meetingCreated.placeholders.enterNameCompany")}
                                     value={currentCompany.length !== 0 ? currentCompany.name : ""}
                                     style={{backgroundColor: "#ffffff"}}
                                     className="setting_input border"
@@ -216,14 +216,14 @@ export default function AddOrEditCompany() {
                                         <Label>{t("pages.company.status")}</Label>
                                         <Select
                                             className="setting_input w-100"
-                                            placeholder="Выберите статус"
+                                            placeholder={t("meetingCreated.placeholders.selectStatus")}
                                             optionFilterProp="children"
                                             onChange={(value => setSelectUsers({...selectUsers, active: value}))}
                                             defaultValue={currentCompany?.active}
                                             value={selectUsers.active}
                                         >
-                                            <Option value={true}>Активно</Option>
-                                            <Option value={false}>Неактивно</Option>
+                                            <Option value={true}>{t("pages.agenda.active")}</Option>
+                                            <Option value={false}>{t("pages.agenda.noActive")}</Option>
                                         </Select>
                                     </div>
                                 </Col>
@@ -231,7 +231,7 @@ export default function AddOrEditCompany() {
                                     <div className="form-group">
                                         <Label className='required_fields'>{t("pages.company.inn")}</Label>
                                         <AvInput
-                                            placeholder={'Введите ИНН '}
+                                            placeholder={t("meetingCreated.placeholders.enterInn")}
                                             style={{backgroundColor: "#ffffff", paddingLeft: '6px'}}
                                             name="inn"
                                             value={currentCompany.length !== 0 ? currentCompany.inn : ""}
@@ -263,7 +263,7 @@ export default function AddOrEditCompany() {
                                     className="setting_input w-100"
                                     showSearch
                                     allowClear={true}
-                                    placeholder="Выберите пользвателя"
+                                    placeholder={t("meetingCreated.placeholders.selectUser")}
                                     optionFilterProp="children"
                                     defaultValue={currentCompany?.secretaryId}
                                     value={selectUsers.secretary}
@@ -282,7 +282,7 @@ export default function AddOrEditCompany() {
                                 <Label className='required_fields'>{t("companiesList.phoneNumber")}</Label>
                                 <div className="setting_input border" style={{backgroundColor: "#ffffff"}}>
                                     <PhoneInput
-                                        placeholder="Введите номер телефона"
+                                        placeholder={t("meetingCreated.placeholders.enterPhone")}
                                         value={phoneNumber}
                                         onChange={setPhoneNumber}
                                         required={true}
@@ -300,7 +300,7 @@ export default function AddOrEditCompany() {
                                         className="setting_input w-100"
                                         showSearch
                                         allowClear={true}
-                                        placeholder="Выберите пользвателя"
+                                        placeholder={t("meetingCreated.placeholders.selectUser")}
                                         optionFilterProp="children"
                                         defaultValue={currentCompany?.chairmanId}
                                         value={selectUsers.chairman}
@@ -320,7 +320,7 @@ export default function AddOrEditCompany() {
                                 <Label className='required_fields'>{t("pages.company.mail")}</Label>
                                 <AvField
                                     type="email"
-                                    placeholder={"Введите адрес электронной почты "}
+                                    placeholder={t("meetingCreated.placeholders.enterEmail")}
                                     value={currentCompany?.email}
                                     label=""
                                     name="email"
@@ -337,8 +337,7 @@ export default function AddOrEditCompany() {
                                 <Label className='required_fields'>{t("pages.company.mailingAddress")}</Label>
                                 <AvField
                                     type="text"
-                                    label=""
-                                    placeholder={"Введите почтовый адрес "}
+                                    placeholder={t("meetingCreated.placeholders.enterPostalAddress")}
                                     name="postalAddress"
                                     value={currentCompany?.postalAddress}
                                     style={{backgroundColor: "#ffffff"}}
@@ -351,7 +350,7 @@ export default function AddOrEditCompany() {
                                 <AvField
                                     type="text"
                                     label=""
-                                    placeholder={"Введите юридический адрес "}
+                                    placeholder={t("meetingCreated.placeholders.enterLegalAddress")}
                                     name="legalAddress"
                                     value={currentCompany?.legalAddress}
                                     style={{backgroundColor: "#FFFFFF"}}
@@ -361,7 +360,7 @@ export default function AddOrEditCompany() {
 
                             <AvField
                                 type="text"
-                                placeholder={"Введите веб сайт"}
+                                placeholder={t("meetingCreated.placeholders.enterWebSite")}
                                 label={t("companiesList.webSite")}
                                 name="webPage"
                                 value={currentCompany?.webPage}
@@ -378,7 +377,7 @@ export default function AddOrEditCompany() {
                                 <AvField
                                     type="textarea"
                                     name="description"
-                                    placeholder={"Краткая информация"}
+                                    placeholder={t("meetingCreated.placeholders.enterDescription")}
                                     value={currentCompany?.description}
                                     style={{backgroundColor: "#ffffff", resize: "none"}}
                                     className="setting_input border "

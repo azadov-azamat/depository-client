@@ -188,7 +188,11 @@
       "enterInn": "INN raqamini kiriting",
       "enterLogin": "Oldin PINFL kiritishingiz kerak!",
       "enterPassport": "Pasport seriyasi va raqamini kiriting",
-      "enterPassword": "Parol kiriting"
+      "enterPassword": "Parol kiriting",
+      "enterNameCompany": "Kompaniya nomini kiriting",
+      "enterPostalAddress": "Pochta manzilini kiriting",
+      "enterLegalAddress": "Yuridik manzilni kiriting",
+      "enterWebSite": "Veb-sayt manzilini kiriting"
     },
     "meetingStatus": {
       "pending": "Ishga tushirish kutilmoqda",
