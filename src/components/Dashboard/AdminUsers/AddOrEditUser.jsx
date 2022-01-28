@@ -122,8 +122,7 @@ export default function AddOrEditUser() {
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber === undefined ? null : phoneNumber
             }
-            console.log(data)
-            // dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
+            dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
             toast.warning(t("toast.warning"))
         }
