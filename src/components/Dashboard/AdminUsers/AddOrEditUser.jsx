@@ -118,11 +118,12 @@ export default function AddOrEditUser() {
                 login: userInfo.generateLogin,
                 password: userInfo.generatePassword,
                 passport: v.passport,
-                pinfl: pinfl,
+                pinfl: pinfl.toString().replaceAll(" ", ""),
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber === undefined ? null : phoneNumber
             }
-            dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
+            console.log(data)
+            // dispatch(adminUsersAction.createUserForAdmin({data, history, toast}))
         } else {
             toast.warning(t("toast.warning"))
         }
@@ -149,7 +150,7 @@ export default function AddOrEditUser() {
                 login: userInfo.generateLogin,
                 password: userInfo.generatePassword,
                 passport: v.passport,
-                pinfl: pinfl,
+                pinfl: pinfl.toString().replaceAll(" ", ""),
                 resident: userInfo.resident,
                 phoneNumber: phoneNumber === undefined ? null : phoneNumber
             }
