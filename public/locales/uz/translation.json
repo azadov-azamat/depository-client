@@ -102,6 +102,7 @@
     "passport": "Pasport seriyasi va raqami",
     "loginetp": "Faqat login va parol",
     "etp": "Faqat E-imzo",
+    "any": "ERI yoki login parol",
     "registr": "Ro'yxatdan o'tish usuli",
     "parol": "Parol",
     "login": "Login",

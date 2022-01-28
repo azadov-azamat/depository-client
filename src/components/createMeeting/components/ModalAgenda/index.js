@@ -116,7 +116,6 @@ export default ({
                                         onChange={(value) => setCurrentStatus(value)}
                                         defaultValue={currentAgenda?.active}
                                         value={currentStatus}
-                                        disabled={true}
                                     >
                                         <Option value={true}>{lang("pages.agenda.active")}</Option>
                                         <Option value={false}>{lang("pages.agenda.noActive")}</Option>

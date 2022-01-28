@@ -25,6 +25,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
     const [selectSpeaker, setSelectSpeaker] = useState(null);
     const [selectTime, setSelectTime] = useState(null);
     const [selectDebug, setSelectDebug] = useState(null);
+    const [selectStatus, setSelectStatus] = useState(null);
 
     const [changeSubject, setChangeSubject] = useState('');
     const [openModal, setOpenModal] = useState(false);
@@ -110,7 +111,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
             })
 
             const data = {
-                active: true,
+                active: selectStatus,
                 speakerId: selectSpeaker === undefined ? null : selectSpeaker,
                 debateEnum: selectDebug,
                 meetingId: currentMeetingId,
@@ -322,9 +323,8 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     className="setting_input w-100"
                                     placeholder={lang("meetingCreated.placeholders.selectStatus")}
                                     optionFilterProp="children"
-                                    // onChange={(value) => setSelectStatus(value)}
-                                    value={true}
-                                    disabled
+                                    onChange={(value) => setSelectStatus(value)}
+                                    value={selectStatus}
                                 >
                                     <Option value={true}>{lang("pages.agenda.active")}</Option>
                                     <Option value={false}>{lang("pages.agenda.noActive")}</Option>

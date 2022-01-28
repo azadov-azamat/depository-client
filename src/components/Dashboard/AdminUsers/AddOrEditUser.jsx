@@ -7,7 +7,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import {ANY, ENTITY, FOREIGNER, INDIVIDUAL, INPASS} from "../../../utils/contants";
+import {ANY, ENTITY, ERI, FOREIGNER, INDIVIDUAL, INPASS} from "../../../utils/contants";
 import RouteByDashboard from "../RouteByDashboard";
 import {useTranslation} from "react-i18next";
 import PhoneInput from "react-phone-number-input";
@@ -203,8 +203,9 @@ export default function AddOrEditUser() {
     ];
 
     const statusLogin = [
-        {id: 1, value: ANY, text: t("user.etp")},
+        {id: 1, value: ERI, text: t("user.etp")},
         {id: 2, value: INPASS, text: t("user.loginetp")},
+        {id: 3, value: ANY, text: t("user.any")}
     ];
 
     return (

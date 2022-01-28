@@ -65,7 +65,7 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                 </div>
                 {meetingStatus === PENDING ?
                     <div className="d-flex  justify-content-around align-items-end ">
-                        <button className=" btn-meet px-4 py-2 rounded" onClick={() => startMeeting({
+                        <button disabled={quorum >= 0} className=" btn-meet px-4 py-2 rounded" onClick={() => startMeeting({
                             status: ACTIVE,
                             quorumCount: quorum
                         })}>Начать

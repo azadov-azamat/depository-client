@@ -102,6 +102,7 @@
     "passport": "Passport series and number",
     "loginetp": "Login and Password only",
     "etp": "EDS only",
+    "any": "EDS or login and password",
     "registr": "Registration method",
     "parol": "Password",
     "login": "Login",
