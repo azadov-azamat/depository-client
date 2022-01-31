@@ -11,15 +11,15 @@ export default function Comment({loading, socketClient, meetingId, userId, curre
     const [logging, setLogging] = useState();
 
     async function postComment() {
-        if (currentMeeting?.status === FINISH) {
-            return toast.error("Засидание в статусе - Заверщено!")
-        }
-        if (currentMeeting?.status === CANCELED) {
-            return toast.error("Засидание в статусе - Отмена!")
-        }
-        if (currentMeeting?.status === ACTIVE) {
-            return toast.error("Засидание в статусе - Активный!")
-        }
+        // if (currentMeeting?.status === FINISH) {
+        //     return toast.error("Засидание в статусе - Заверщено!")
+        // }
+        // if (currentMeeting?.status === CANCELED) {
+        //     return toast.error("Засидание в статусе - Отмена!")
+        // }
+        // if (currentMeeting?.status === ACTIVE) {
+        //     return toast.error("Засидание в статусе - Активный!")
+        // }
         const data = {
             userId: userId,
             meetingId: meetingId,
