@@ -25,7 +25,6 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
         dispatch(meetingStartedAction.getBallotVoting(data))
     }, [agenda.id, loadingBallot])
 
-    console.log(countQuorum)
     const deleteBallot = (votingId) => {
         if (currentMeeting?.status === FINISH) {
             return toast.error(t("toast.statusMeeting.finish"))
@@ -33,9 +32,7 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
         if (currentMeeting?.status === CANCELED) {
             return toast.error(t("toast.statusMeeting.canceled"))
         }
-        if (currentMeeting?.status === ACTIVE) {
-            return toast.error(t("toast.statusMeeting.active"))
-        }
+
         const data = {
             memberId: parseInt(memberId),
             agendaId: agenda.id,
