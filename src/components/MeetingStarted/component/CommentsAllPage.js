@@ -93,9 +93,6 @@ export default function CommentsAllPage({
         if (currentMeeting?.status === CANCELED) {
             return toast.error("Засидание в статусе - Отмена!")
         }
-        if (currentMeeting?.status === ACTIVE) {
-            return toast.error("Засидание в статусе - Активный!")
-        }
 
         const data = {
             meetingId: currentMeetingId,
