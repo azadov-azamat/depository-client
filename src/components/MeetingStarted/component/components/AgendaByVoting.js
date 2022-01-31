@@ -67,9 +67,6 @@ export const AgendaByVoting = ({memberId, agenda, variant, meetingId}) => {
         if (currentMeeting?.status === CANCELED) {
             return toast.error(t("toast.statusMeeting.canceled"))
         }
-        if (currentMeeting?.status === ACTIVE) {
-            return toast.error(t("toast.statusMeeting.active"))
-        }
 
         if (countQuorum > 74) {
             confirmAlert({
