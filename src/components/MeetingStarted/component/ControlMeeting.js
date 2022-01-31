@@ -43,8 +43,6 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
         margin: '0'
     }
 
-    console.log(members)
-
     return (
         <>
             <div className="p-3 d-flex flex-column justify-content-between ">
@@ -56,9 +54,13 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                     <p>
                         <b>из них:</b>
                         <br/>
-                        принимали участие дистанционно: {(members?.filter(element=> element.isRemotely)).length} голосов;
+                        принимали участие дистанционно: {
+                        (members?.filter(element=> element.isConfirmed)).filter(element1=> element1.isRemotely).length
+                    } голосов;
                         <br/>
-                        принимали участие очно: {(members?.filter(element=> !element.isRemotely)).length} голосов
+                        принимали участие очно: {
+                        (members?.filter(element=> element.isConfirmed)).filter(element1=> !element1.isRemotely).length
+                    } голосов
                         <br/>
                         кворум ({isNaN(quorum) ? 0 : quorum}%)
                     </p>
@@ -67,14 +69,12 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                     <div className="d-flex  justify-content-around align-items-end ">
                         <button className=" btn-meet px-4 py-2 rounded" onClick={() => startMeeting({
                             status: ACTIVE,
-                            quorumCount: quorum
                         })}>Начать
                             заседание
                         </button>
                         <button className=" btn-meet-outline px-4 py-2 rounded"
                                 onClick={() => startMeeting({
                                     status: CANCELED,
-                                    quorumCount: quorum
                                 })}>Отменить заседание
                         </button>
                     </div> : '' ||
@@ -82,20 +82,17 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                         <div className="d-flex  justify-content-around align-items-end ">
                             <button className="btn-meet px-4 py-2 rounded" onClick={() => startMeeting({
                                 status: FINISH,
-                                quorumCount: quorum
                             })}>
                                 Завершить заседание
                             </button>
                             <button className=" btn-meet px-4 py-2 rounded" onClick={() => startMeeting({
                                 status: PENDING,
-                                quorumCount: quorum
                             })}>
                                 Перенести заседание
                             </button>
                             <button className=" btn-meet-outline px-4 py-2 rounded"
                                     onClick={() => startMeeting({
                                         status: CANCELED,
-                                        quorumCount: quorum
                                     })}>Отменить заседание
                             </button>
                         </div> : '' ||

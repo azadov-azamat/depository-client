@@ -239,7 +239,7 @@ export const ControllerMeeting = () => {
         history.push("/issuerLegal/meeting/" + id + "/agenda?companyId=" + companyId + "&memberId=" + memberId)
     }
 
-    function startMeeting({status, quorumCount}) {
+    function startMeeting({status}) {
 
         const dataForUpdateMeetingStatus = {
             meetingId,
@@ -254,7 +254,7 @@ export const ControllerMeeting = () => {
                     label: 'Да',
                     onClick: () => {
                         if (status === ACTIVE) {
-                            if (quorumCount > 74) {
+                            if (countQuorum > 74) {
                                 dispatch(meetingActions.updateMeetingStatusAction({
                                     dataForUpdateMeetingStatus,
                                     socketClient,
