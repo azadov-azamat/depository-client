@@ -2,8 +2,11 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import * as meetingStartedAction from "../../../../redux/actions/MeetingStartedAction";
 import {AGAINST, FOR, REFRAIN} from "../../../../utils/contants";
+import {FcStatistics} from "react-icons/all";
+import {Button} from "reactstrap";
+import {Link} from "react-router-dom";
 
-export default function AnalysisBallots({votingId, meetingStatus}) {
+export default function AnalysisBallots({votingId, meetingStatus, agendaId}) {
 
     const dispatch = useDispatch();
     const reducers = useSelector(state => state);
@@ -56,6 +59,8 @@ export default function AnalysisBallots({votingId, meetingStatus}) {
                 title="Воздержались">
                 <span>{countRefrain}</span>
             </div>
+            <Link className={"d-flex align-items-center mx-1"} target={"_blank"}
+                  to={"/supervisory/statistic_agenda?agenda_id=" + agendaId + "&voting_id=" + votingId}>Подробно...</Link>
         </div>
     )
 }
