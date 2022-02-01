@@ -127,7 +127,7 @@ export default function ControlMeeting({meetingStatus, startMeeting, quorum, lan
                                                                 <p style={styleTable}>{elementVoting.votingText}</p>
                                                             </td>
                                                             <td>
-                                                                <AnalysisBallots votingId={elementVoting.id}/>
+                                                                <AnalysisBallots votingId={elementVoting.id} meetingStatus={meetingStatus}/>
                                                             </td>
                                                         </tr>
                                                     )
