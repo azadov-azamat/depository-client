@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Container, Row, Table} from "reactstrap";
 import {useTranslation} from "react-i18next";
-import {useHistory, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import * as meetingActions from "../../../redux/actions/MeetingAction"
 import {AGAINST, FOR, REFRAIN} from "../../../utils/contants";
@@ -24,6 +24,10 @@ export default function StatisticAgenda() {
     const reducers = useSelector(state => state)
     const {voting_details, currentAgenda} = reducers.meeting
 
+    const [countFor, setCountFor] = useState(0);
+    const [countAgainst, setCountAgainst] = useState(0);
+    const [countRefrain, setCountRefrain] = useState(0);
+
     useEffect(() => {
         dispatch(meetingActions.get_voting_details_action(parseInt(votingId)))
     }, [votingId])
@@ -31,6 +35,26 @@ export default function StatisticAgenda() {
     useEffect(() => {
         dispatch(meetingActions.getAgendaById({agendaId: parseInt(agendaId)}))
     }, [agendaId])
+
+    useEffect(() => {
+        voting_details?.find(element => {
+            if (element.options === FOR) {
+                setCountFor(prevState => prevState + 1)
+            }
+            if (element.options === AGAINST) {
+                setCountAgainst(prevState => prevState + 1)
+            }
+            if (element.options === REFRAIN) {
+                setCountRefrain(prevState => prevState + 1)
+            }
+        })
+
+        return () => {
+            setCountRefrain(0)
+            setCountAgainst(0)
+            setCountFor(0)
+        }
+    }, [voting_details])
 
     return (
         <Container>
@@ -92,6 +116,17 @@ export default function StatisticAgenda() {
                                 <tr className='text-center'>
                                     <th colSpan="7">{t("meetingCreated.emptyList")}</th>
                                 </tr>
+                            }
+                            {
+                                voting_details?.length !== 0 ?
+                                    <tr>
+                                        <td className="text-center" colSpan={3}><b>Итого</b></td>
+                                        <td className="text-center"><b>{countFor}</b></td>
+                                        <td className="text-center"><b>{countAgainst}</b></td>
+                                        <td className="text-center"><b>{countRefrain}</b></td>
+                                    </tr>
+                                    :
+                                    ""
                             }
                             </tbody>
                         </>
