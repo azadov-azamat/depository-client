@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, CardBody, CardHeader, Col, Label, Modal, ModalBody, Row} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Label, Row} from "reactstrap";
 import {AvField, AvForm, AvInput} from "availity-reactstrap-validation";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Select} from "antd";
 import * as meetingActions from "../../../redux/actions/MeetingAction";
-import {BiCheckDouble, RiDeleteBinLine} from "react-icons/all";
+import {BiCheckDouble, FcStatistics, RiDeleteBinLine} from "react-icons/all";
 import {confirmAlert} from "react-confirm-alert";
 import {FIFTEENMIN, FIVEMIN, SPEAKER, TENMIN, TWENTYMIN, TWOMIN} from "../../../utils/contants";
 import {FaPen} from "react-icons/fa";
@@ -222,13 +222,19 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
         {value: TWENTYMIN, text: lang("pages.agenda.minute20")},
     ]
 
-    function agendaSubjectAndVoting({subject, votingLit}) {
+    function agendaSubjectAndVoting({subject, votingList}) {
         return (
             <>
                 <p style={{fontWeight: 'bold'}}>{subject}</p>
                 <hr/>
-                {votingLit?.map((element, index) =>
-                    <div className='text-start' key={index}><span>{index + 1} - {element.votingText}</span><br/></div>
+                {votingList?.map((element, index) =>
+                    <div className='text-start d-flex align-items-center' key={index}>
+                        <span>{index + 1} - {element.votingText}
+                        </span>&nbsp;
+                        <Link
+                            to={"/supervisory/statistic_agenda?agenda_id=" + element.agendaId + "&voting_id=" + element.id}>(подробно)<FcStatistics/></Link>
+                        <br/>
+                    </div>
                 )}
             </>
         )
@@ -419,7 +425,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                             <td className="text-center">{time(agenda.debateEnum)}</td>
                                             <td>{agendaSubjectAndVoting({
                                                 subject: agenda.subject,
-                                                votingLit: agenda.votingOptions
+                                                votingList: agenda.votingOptions
                                             })}</td>
                                             <td className="text-center">{agenda.active === true ? lang("pages.agenda.active") : lang("pages.agenda.noActive")}</td>
                                             <td className="text-center">
@@ -433,7 +439,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                                     ))
                                     :
                                     <tr className='text-center'>
-                                        <th colSpan="7">Ничего не найдена</th>
+                                        <th colSpan="7">{lang("meetingCreated.emptyList")}</th>
                                     </tr>
                                 }
                                 </tbody>

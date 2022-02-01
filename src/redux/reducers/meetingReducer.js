@@ -12,7 +12,8 @@ const initialState = {
     memberManagerType: {},
     currentAgenda: [],
     onlineMemberManager: [],
-    searchNameCompany: []
+    searchNameCompany: [],
+    voting_details: []
 };
 
 const reducers = {
@@ -152,6 +153,9 @@ const reducers = {
     },
     ['REQUEST_SUCCESS_MEETING_BY_USER_AND_COMPANY'](state, action) {
         state.meetingByUser = action.payload
+    },
+    ['REQUEST_VOTING_DETAILS_SUCCESS'](state, action) {
+        state.voting_details = action.payload
     },
 
     // [types.REQUEST_DELETE_BY_ID](state, payload) {

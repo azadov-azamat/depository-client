@@ -56,5 +56,6 @@ export const api = {
     getBallotByVoting: '/ballot/by-voting',
     getBallotVoting: "/ballot/ballots-by-agen-mem",
 
-    votingMethod: "/voting"
+    votingMethod: "/voting",
+    voting_details: "/ballot/by-voting-details"
 };

@@ -21,7 +21,6 @@ export const editMeetingApi = (data) => {
 }
 
 export const editMeetingStatusApi = (data) => {
-    console.log(data)
     return HttpClient.doPatch(api.editMeetingStatus + "?meetingId=" + data.meetingId + "&statusEnum=" + data.statusEnum)
 }
 
@@ -132,3 +131,9 @@ export const getCityByIdApi = (data) => {
 export const getCitiesApi = (data) => {
     return HttpClient.doGet(api.getCountry)
 }
+
+
+export const get_voting_details = (data) => {
+    return HttpClient.doGet(api.voting_details + (data && data ? "?votingId=" + data : ''))
+}
+

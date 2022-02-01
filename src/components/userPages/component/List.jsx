@@ -34,21 +34,6 @@ export const List = ({meetings, type, companyId, lang, history}) => {
         }
     }
 
-    function historyPushItem(meetingId) {
-        // history.push('/issuerLegal/meeting/' + meetingId + "?memberId=" + memberId + "&page=agenda')
-    }
-
-    function btnValue(meetingId) {
-        return (
-            <>
-                <button onClick={() => historyPushItem(meetingId)}
-                        className="create py-2 my-2 px-2">
-                    Ознакомиться
-                </button>
-            </>
-        )
-    }
-
     function getDate(currentDate) {
         return (
             <>
@@ -91,8 +76,6 @@ export const List = ({meetings, type, companyId, lang, history}) => {
                                 </div>
 
                                 <div className="col-md-4 d-md-flex justify-content-center align-items-center d-none">
-                                    {/*{statusMeet.success !== FINISH && statusMeet.cancel !== CANCELED ?*/}
-                                    {/*    btnValue(userMeeting.id) :*/}
                                         <ButtonValue meetingId={userMeeting.id}
                                                      companyId={companyId} lang={lang}  successStatus={statusMeet.success} cancelStatus={statusMeet.cancel}/>
                                 </div>

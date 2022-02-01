@@ -13,6 +13,7 @@ import MeetingReestr from "./components/MeetingReestr";
 import MeetingFiles from "./components/MeetingFiles";
 import Loader from "react-loader-spinner";
 import {useTranslation} from "react-i18next";
+import StatisticAgenda from "./components/StatisticAgenda";
 
 function useQuery() {
     const {search} = useLocation();

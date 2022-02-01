@@ -12,7 +12,7 @@ import {
     downloadByIdMeetingFilesApi,
     editAgendaApi,
     editMeetingApi,
-    editMeetingStatusApi,
+    editMeetingStatusApi, get_voting_details,
     getAgendaByIdApi,
     getAgendaByMeetingIdApi,
     getCitiesApi,
@@ -58,7 +58,7 @@ export const getMeetingList = (payload) => async (dispatch) => {
         ],
         data: payload
     }).then(res => {
-        // console.log(res)
+        //
     }).catch(err => {
 
     })
@@ -88,11 +88,11 @@ export const getMeetingSpecFilterAction = (payload) => async (dispatch) => {
             data: payload
         });
         if (res.success) {
-            console.log(res.success)
+
         }
     } catch (err) {
         if (err.response) {
-            console.log(err.response)
+
         }
     }
 }
@@ -104,11 +104,11 @@ export const createMeeting = (payload) => async (dispatch) => {
         types: ["REQUEST_START", types.REQUEST_CREATE_MEETING, "REQUEST_ERROR_CREATE_MEETING",],
         data: payload.data
     }).then(res => {
-        console.log(res)
+
         const currentMeetingId = res.payload.id;
         payload.history.push("/supervisory/addOrEditMeeting/add_members?type=update&meeting_id=" + currentMeetingId)
     }).catch(err => {
-        console.log(err.response.data)
+
         if (err.response.data.detail === "Company must have Chairmen or Secretary") {
             if (lang === "uz") {
                 payload.toast.error("Kompaniyada rais yoki kotib bo'lishi kerak")
@@ -132,7 +132,7 @@ export const updateMeetingAction = (payload) => async (dispatch) => {
         const currentMeetingId = res.payload.id;
         payload.history.push("/supervisory/addOrEditMeeting/add_members?type=update&meeting_id=" + currentMeetingId)
     }).catch(err => {
-        console.log(err)
+
     })
 }
 export const updateMeetingStatusAction = (payload) => async (dispatch) => {
@@ -155,7 +155,7 @@ export const updateMeetingStatusAction = (payload) => async (dispatch) => {
     }).catch(err => {
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title, status} = err.response.data;
-        console.log(err.response.data)
+
         if (errorKey === "CompanyNotActive") {
             if (lang === "uz") {
                 toast.error("Uchrashuv holatini o'zgartirish uchun kompaniya FAOL holatida bo'lishi kerak!");
@@ -189,7 +189,7 @@ export const deleteMeetingById = (payload) => async (dispatch) => {
     }).catch(err => {
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title, status} = err.response.data;
-        console.log(err.response.data)
+
         if (errorKey === "ReestrExist") {
             if (lang === "uz") {
                 toast.error("Bu uchrashuvda allaqachon Reestr ochilgan!");
@@ -220,8 +220,8 @@ export const getMemberByMeetingId = (payload) => async (dispatch) => {
         types: ["REQUEST_START_MEMBER", types.REQUEST_GET_MEMBER_LIST_SUCCESS, "REQUEST_ERROR_MEMBER"],
         data: payload
     }).then(res => {
-        console.log(res)
-        console.log("KELDI========================")
+
+
     });
 } // success 90%
 
@@ -231,7 +231,7 @@ export const addedChairmanFromReestrPageAction = (payload) => async (dispatch) =
         types: ["REQUEST_START_MEMBER", "REQUEST_ADDED_CHAIRMAN_FROM_REESTR_PAGE_SUCCESS", "REQUEST_ERROR_MEMBER"],
         data: payload.memberId
     }).then(res => {
-        console.log(res)
+
         dispatch(getMemberByMeetingId({meetingId: res.payload.meetingId, fromReestr: true}))
     });
 } // success 90%
@@ -276,7 +276,7 @@ export const addMemberManagers = (payload) => async (dispatch) => {
     }).catch(err => {
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title} = err.response.data;
-        console.log(err.response.data)
+
         if (errorKey === "memberExistByType") {
             if (lang === "uz") {
                 payload.toast.error("Bu foydalanuvchi, shu rol bilan allaqachon tizimga kiritilgan")
@@ -324,7 +324,7 @@ export const deleteMemberById = (payload) => async (dispatch) => {
     }).catch(err => {
         const lang = localStorage.getItem("i18nextLng")
         const {errorKey, detail, title, status} = err.response.data;
-        console.log(err.response.data)
+
         if (errorKey === "existInAgenda") {
             if (lang === "uz") {
                 payload.toast.error("Bu a'zo allaqachon boshqa kun tartibida ishtirok etgan!")
@@ -391,8 +391,6 @@ export const getAgendaById = (payload) => async (dispatch) => {
         api: getAgendaByIdApi,
         types: ["REQUEST_START_AGENDA", "REQUEST_GET_AGENDA_BY_ID_SUCCESS", "REQUEST_ERROR_AGENDA"],
         data: payload.agendaId
-    }).then(res => {
-        payload.modalStatus(true)
     })
 }
 
@@ -503,9 +501,9 @@ export const getMeetingByCompanyId = (payload) => async (dispatch) => {
         types: ['', 'REQUEST_GET_MEETING_BY_COMPANY_ID', ''],
         data: payload
     }).then(res => {
-        console.log(res)
+
     }).catch(err => {
-        console.log(err)
+
     })
 }
 
@@ -659,10 +657,23 @@ export const deleteVotingAction = (payload) => async (dispatch) => {
         types: ["REQUEST_DELETE_VOTING_START", "REQUEST_DELETE_VOTING_SUCCESS", "REQUEST_DELETE_VOTING_ERROR"],
         data: payload.id
     }).then(res => {
-        console.log(res)
+
         payload.handleRemoveClickEdit(parseInt(payload.index))
     }).catch(err => {
-        console.log(err)
-        console.log("error")
+
+
+    })
+}
+
+export const get_voting_details_action = (payload) => async (dispatch) => {
+    dispatch({
+        api: get_voting_details,
+        types: ["REQUEST_VOTING_DETAILS_START", "REQUEST_VOTING_DETAILS_SUCCESS", "REQUEST_VOTING_DETAILS_ERROR"],
+        data: payload
+    }).then(res => {
+
+    }).catch(err => {
+
+
     })
 }

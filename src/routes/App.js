@@ -28,6 +28,7 @@ import {MeetingLists} from "../components/userPages/MeetingLists";
 import eimzo from "../eImzo/eimzoo";
 import UserMaterialUI from "../components/Dashboard/AdminUsers/UserMaterialUI";
 import userCreate from '../components/Dashboard/AdminUsers/AddOrEdit/index'
+import StatisticAgenda from "../components/createMeeting/components/StatisticAgenda";
 
 const App = () => {
     const [infoV, setInfoV] = useState(true)
@@ -51,7 +52,6 @@ const App = () => {
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users" component={AdminUsers}/>
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users/create" component={AddOrEditUser}/>
-                {/*<PrivateRoute setNav={setInfoV} exact path="/admin/users/create" component={userCreate}/>*/}
 
                 <PrivateRoute setNav={setInfoV} exact path="/admin/users/:id" component={AddOrEditUser}/>
 
@@ -71,6 +71,8 @@ const App = () => {
 
                 <PrivateRoute setNav={setInfoV} path='/issuerLegal/meeting/:id'
                               component={ControllerMeeting}/>
+
+                <PrivateRoute setNav={setInfoV} path={"/supervisory/statistic_agenda"} component={StatisticAgenda}/>
 
                 <Route path="/eimzo" exact component={eimzo}/>
 
