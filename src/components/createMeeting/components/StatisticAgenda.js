@@ -122,8 +122,8 @@ export default function StatisticAgenda() {
                                     <tr>
                                         <td className="text-center" colSpan={3}><b>Итого</b></td>
                                         <td className="text-center"><b>{countFor}</b></td>
-                                        <td className="text-center"><b>{countAgainst}</b></td>
                                         <td className="text-center"><b>{countRefrain}</b></td>
+                                        <td className="text-center"><b>{countAgainst}</b></td>
                                     </tr>
                                     :
                                     ""
