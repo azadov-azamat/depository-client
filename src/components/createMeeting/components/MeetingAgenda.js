@@ -231,7 +231,7 @@ export default function MeetingAgenda({currentMeetingId, lang}) {
                     <div className='text-start d-flex align-items-center' key={index}>
                         <span>{index + 1} - {element.votingText}
                         </span>&nbsp;
-                        <Link
+                        <Link target={"_blank"}
                             to={"/supervisory/statistic_agenda?agenda_id=" + element.agendaId + "&voting_id=" + element.id}>(подробно)<FcStatistics/></Link>
                         <br/>
                     </div>
