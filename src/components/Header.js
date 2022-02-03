@@ -28,7 +28,7 @@ export default function Header({lang}) {
                         <Row>
                             <Col md="12">
                                 <div data-aos="fade-up" className="text-head">
-                                    {lang("text.headerText")}
+                                    <span>{lang("text.headerText")}</span>
                                 </div>
                             </Col>
                         </Row>

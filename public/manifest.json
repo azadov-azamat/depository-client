@@ -3,9 +3,14 @@
   "name": "Depository App",
   "icons": [
     {
-      "src": "/favicon/favicon-32x32.png",
+      "src": "/favicon/android-chrome-192x192.png",
       "type": "image/png",
-      "sizes": "1024*1024"
+      "sizes": "192x192"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
   "start_url": ".",
