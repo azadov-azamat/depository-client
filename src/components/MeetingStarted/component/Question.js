@@ -28,9 +28,9 @@ export default function Question({list, userId, currentMeeting}) {
         if (currentMeeting?.status === CANCELED) {
             return toast.error("Засидание в статусе - Отмена!")
         }
-        if (currentMeeting?.status === ACTIVE) {
-            return toast.error("Засидание в статусе - Активный!")
-        }
+        // if (currentMeeting?.status === ACTIVE) {
+        //     return toast.error("Засидание в статусе - Активный!")
+        // }
         const data = {
             id: v.currentId,
             questionAnswer: logging,
