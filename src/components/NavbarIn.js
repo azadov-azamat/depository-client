@@ -68,7 +68,7 @@ const NavbarIn = ({setNav}) => {
                     <Link to={'/'}
                           className={'text-dark text-decoration-none  '}>
                         <div className={'d-flex  align-items-md-center '}>
-                            <img src={"http://navoiyuran.uz/upload/ab216ca735ca9ac8ee293f9d5b9cf01a.png"} width={190} alt=''/>
+                            <img src={logo} width={190} alt=''/>
                             {/*<span className={'fs-7 d-md-flex d-none'} style={{*/}
                             {/*    width: language === 'ru' ? '32vh' : language === 'en' ? '20vh' : "25vh",*/}
                             {/*    fontWeight: 'bold'*/}
