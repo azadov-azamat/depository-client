@@ -1,1 +1,1 @@
-export const BASE_URL = "https://depositary.herokuapp.com:443/api"
+export const BASE_URL = "http://176.96.243.40:8080/api"

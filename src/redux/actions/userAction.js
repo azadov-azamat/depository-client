@@ -39,7 +39,7 @@ export function saveUser(event, error, values, history) {
 export function editUser(event, error, values, history) {
     console.log(values);
     return function (dispatch, getState) {
-        axios.put('https://depositary.herokuapp.com/api/moder/user', values)
+        axios.put('http://176.96.243.40:8080/api/moder/user', values)
             .then((res) => {
                 const {t} = useTranslation();
                 console.log("put");
