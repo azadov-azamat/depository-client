@@ -11,7 +11,6 @@ import "./utils/i18n";
 import {ToastContainer} from "react-toastify";
 import ReactDOM from "react-dom";
 import {BrowserRouter} from "react-router-dom";
-import logo from './images/img/lgo.png'
 
 const app = (
     <>
@@ -20,7 +19,6 @@ const app = (
             <Suspense fallback={
                 <div className="d-flex flex-column justify-content-center align-items-center"
                      style={{width: "100%", height: "100vh"}}>
-                    <img src={logo} alt="" style={{width: '22em'}}/>
                     <Loader
                         type="ThreeDots"
                         color="#132E85"
@@ -28,7 +26,6 @@ const app = (
                         width={80}
                         timeout={3000}
                     />
-                    <h2>Центральный депозитарий ценных бумаг </h2>
                 </div>}>
                 <App/>
             </Suspense>
