@@ -13,7 +13,7 @@ export const Socket = ({meetingId, memberId, currentMember, setOpenModal}) => {
     const clientRef = useRef(null);
     const topics = useSelector(state => state.socket.topics);
 
-    let url = 'https://depositary.herokuapp.com:443/websocket/logger/';
+    let url = 'http://176.96.243.40:8080/websocket/logger/';
     const authToken = localStorage.getItem(TOKEN);
 
     if (authToken) {

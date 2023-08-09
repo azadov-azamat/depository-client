@@ -68,13 +68,13 @@ const NavbarIn = ({setNav}) => {
                     <Link to={'/'}
                           className={'text-dark text-decoration-none  '}>
                         <div className={'d-flex  align-items-md-center '}>
-                            <img src={logo} width={85} alt=''/>
-                            <span className={'fs-7 d-md-flex d-none'} style={{
-                                width: language === 'ru' ? '32vh' : language === 'en' ? '20vh' : "25vh",
-                                fontWeight: 'bold'
-                            }}>{t("centralDepos")}</span>
-                            <h5 className={'my-0 fs d-lg-block d-none text-center'}
-                                style={{width: "22vh",}}>{t("electronVoice")}</h5>
+                            <img src={logo} width={190} alt=''/>
+                            {/*<span className={'fs-7 d-md-flex d-none'} style={{*/}
+                            {/*    width: language === 'ru' ? '32vh' : language === 'en' ? '20vh' : "25vh",*/}
+                            {/*    fontWeight: 'bold'*/}
+                            {/*}}>{t("centralDepos")}</span>*/}
+                            {/*<h5 className={'my-0 fs d-lg-block d-none text-center'}*/}
+                            {/*    style={{width: "22vh",}}>{t("electronVoice")}</h5>*/}
                         </div>
                     </Link>
                     <NavbarToggler onClick={toggle}/>

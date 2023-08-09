@@ -112,10 +112,11 @@ function NavbarOut({setNav}) {
                 <div className="container">
                     <Link onClick={infoVideoBtn2} to={'/'} className={'text-dark text-decoration-none  '}>
                         <div className={'d-flex  align-items-md-center '}>
-                            <img src={logo} width={85} alt=''/> <span className={' fs-7 d-md-flex d-none '}
-                                                                      style={{width: "30vh"}}>{t("centralDepos")}</span>
+                            <img src={logo} width={190} alt=''/>
+                            {/*<span className={' fs-7 d-md-flex d-none '}*/}
+                            {/*                                          style={{width: "30vh"}}>{t("centralDepos")}</span>*/}
                         </div>
-                        <h5 className={'my-0 fs  d-lg-block d-none'}>{t("electronVoice")}</h5>
+                        {/*<h5 className={'my-0 fs  d-lg-block d-none'}>{t("electronVoice")}</h5>*/}
                     </Link>
                     <NavbarToggler toggle={toggle} onClick={toggle}/>
                     <Collapse className={'justify-content-md-between'} isOpen={isOpen} navbar>
